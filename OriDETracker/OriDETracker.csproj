@@ -64,6 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Memory\Entities.cs" />
+    <Compile Include="Memory\Memory.cs" />
+    <Compile Include="Memory\OriMemory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -100,54 +103,56 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="emptytracker.png" />
+    <Content Include="data\emptytracker.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ori.ico" />
-    <Content Include="smbash.png">
+    <Content Include="data\smbash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smcflame.png">
+    <Content Include="data\smcflame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smcjump.png">
+    <Content Include="data\smcjump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smcleanwater.png">
+    <Content Include="data\smcleanwater.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smclimb.png">
+    <Content Include="data\smclimb.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smdash.png">
+    <Content Include="data\smdash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smdoublejump.png">
+    <Content Include="data\smdoublejump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smglide.png">
+    <Content Include="data\smglide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smgumonseal.png">
+    <Content Include="data\smgumonseal.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smlightgrenade.png">
+    <Content Include="data\smlightgrenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smspiritflame.png">
+    <Content Include="data\smspiritflame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smstomp.png">
+    <Content Include="data\smstomp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smsunstone.png">
+    <Content Include="data\smsunstone.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smwalljump.png">
+    <Content Include="data\smwalljump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smwatervein.png">
+    <Content Include="data\smwatervein.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="smwinds.png">
+    <Content Include="data\smwinds.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

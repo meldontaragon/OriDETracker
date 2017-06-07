@@ -8,84 +8,184 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using OriDE.Memory;
+using System.Threading;
+
 namespace OriDETracker
 {
     public partial class Tracker : Form
     {
+        protected OriMemory mem { get; set; }
+        protected Thread th;
+
         public Tracker()
         {
             InitializeComponent();
+            mem = new OriDE.Memory.OriMemory();
+            th = new Thread(UpdateLoop);
+            th.IsBackground = true;
         }
 
-        private Boolean spiritflame = false;
-        private Boolean sftree = false;
-        private Boolean walljump = false;
-        private Boolean wjtree = false;
-        private Boolean chargeflame = false;
-        private Boolean cftree = false;
-        private Boolean doublejump = false;
-        private Boolean djtree = false;
-        private Boolean bash = false;
-        private Boolean btree = false;
-        private Boolean stomp = false;
-        private Boolean stree = false;
-        private Boolean glide = false;
-        private Boolean gtree = false;
-        private Boolean climb = false;
-        private Boolean ctree = false;
-        private Boolean chargejump = false;
-        private Boolean cjtree = false;
-        private Boolean lightgrenade = false;
-        private Boolean lgtree = false;
-        private Boolean dash = false;
-        private Boolean dtree = false;
+        #region FrameMoving
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
 
-        private Boolean watervein = false;
-        private Boolean cleanwater = false;
-        private Boolean gumonseal = false;
-        private Boolean windsrestored = false;
-        private Boolean sunstone = false;
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+        
+        private void Tracker_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && draggable)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
 
-        private const int TOL = 25;
+        #endregion  
 
-        private Image image_spiritflame = Image.FromFile(@"smspiritflame.png");
+        protected const int TOL = 25;
+        protected bool auto_update = false;
+        protected bool draggable = false;
+        //private bool back_drawn = false;
+
+        private int level;
+        private int xp;
+        private float hp;
+        private float eng;
+        private int ability;
+        private int keystones;
+        private int mapstones;         
+
+        #region BooleanValues
+        protected Boolean spiritflame = false;
+        protected Boolean walljump = false;
+        protected Boolean chargeflame = false;
+        protected Boolean doublejump = false;
+        protected Boolean bash = false;
+        protected Boolean stomp = false;
+        protected Boolean glide = false;
+        protected Boolean gtree = false;
+        protected Boolean climb = false;
+        protected Boolean chargejump = false;
+        protected Boolean lightgrenade = false;
+        protected Boolean dash = false;
+
+        protected Boolean sftree = false;
+        protected Boolean wjtree = false;
+        protected Boolean cftree = false;
+        protected Boolean djtree = false;
+        protected Boolean btree = false;
+        protected Boolean stree = false;
+        protected Boolean ctree = false;
+        protected Boolean cjtree = false;
+        protected Boolean lgtree = false;
+        protected Boolean dtree = false;
 
 
-        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        protected Boolean watervein = false;
+        protected Boolean cleanwater = false;
+        protected Boolean gumonseal = false;
+        protected Boolean windsrestored = false;
+        protected Boolean sunstone = false;
+        #endregion
+
+        #region Images
+        protected Image background = Image.FromFile(@"data/emptytracker.png");
+
+        protected Image image_spiritflame = Image.FromFile(@"data\smspiritflame.png");
+        protected Image image_walljump = Image.FromFile(@"data\smwalljump.png");
+        protected Image image_cflame = Image.FromFile(@"data\smcflame.png");
+        protected Image image_doublejump = Image.FromFile(@"data\smdoublejump.png");
+        protected Image image_bash = Image.FromFile(@"data\smbash.png");
+        protected Image image_stomp = Image.FromFile(@"data\smstomp.png");
+        protected Image image_glide = Image.FromFile(@"data\smglide.png");
+        protected Image image_climb = Image.FromFile(@"data\smclimb.png");
+        protected Image image_cjump = Image.FromFile(@"data\smcjump.png");
+        protected Image image_lightgrenade = Image.FromFile(@"data\smlightgrenade.png");
+        protected Image image_dash = Image.FromFile(@"data\smdash.png");
+
+        protected Image image_watervein = Image.FromFile(@"data\smwatervein.png");
+        protected Image image_gumonseal = Image.FromFile(@"data\smgumonseal.png");
+        protected Image image_sunstone = Image.FromFile(@"data\smsunstone.png");
+        protected Image image_cleanwater = Image.FromFile(@"data\smcleanwater.png");
+        protected Image image_winds = Image.FromFile(@"data\smwinds.png");
+        #endregion
+
+        #region Points
+        protected Point point_spiritflame = new Point(165, 78);
+        protected Point point_walljump = new Point(228, 97);
+        protected Point point_cflame = new Point(267, 144);
+        protected Point point_doublejump = new Point(273, 205);
+        protected Point point_bash = new Point(249, 263);
+        protected Point point_stomp = new Point(196, 293);
+        protected Point point_glide = new Point(134, 293);
+        protected Point point_climb = new Point(83, 260);
+        protected Point point_cjump = new Point(54, 202);
+        protected Point point_lightgrenade = new Point(66, 143);
+        protected Point point_dash = new Point(106, 95);
+
+        protected Point point_watervein = new Point(91, 394);
+        protected Point point_gumonseal = new Point(159, 386);
+        protected Point point_sunstone = new Point(226, 386);
+        protected Point point_cleanwater = new Point(125, 465);
+        protected Point point_winds = new Point(185, 457);
+
+        #endregion
+
+        protected void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             reset_all();
+            Refresh();
         }
 
-        private void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            auto_update = !(auto_update);
+            //autoUpdateToolStripMenuItem.Checked = auto_update;
 
+            if (auto_update)
+            {
+                turn_on_auto_update();
+            }
+            else
+            {
+                turn_off_auto_update();
+            }
         }
 
-        private void Tracker_MouseClick(object sender, MouseEventArgs e)
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            draggable = !draggable;
+            //editToolStripMenuItem.Checked = draggable;
+        }
+        
+        #region Graphics
+        protected void Tracker_MouseClick(object sender, MouseEventArgs e)
         {
             int x, y;
             x = e.X;
             y = e.Y;
 
-            handle_click(x, y);
+            toggle(x, y);
+
+            Refresh();
+            this.Invalidate();
         }
 
-        private int Square(int x)
+        protected int Square(int x)
         {
             return x * x;
         }
 
-        private void handle_click(int x, int y)
-        {
-            toggle(x, y);
-        }
-
-        private void toggle(int x, int y)
+        protected bool toggle(int x, int y)
         {
             if (Math.Sqrt(Square(x - 201) + Square(y - 114)) <= TOL)
             {
@@ -195,137 +295,273 @@ namespace OriDETracker
             {
                 dtree = !dtree;
             }
+            else
+            {
+                return true;
+            }
+            return false;
         }
 
-        private void update_graphics(PaintEventArgs pea)
+        protected void update_graphics(PaintEventArgs pea)
         {
-            /* 
-              1 spiritflame 165,78
-              2 wjump 228,97
-              3 cflame 267,144
-              4 doublejump 273,205
-              5 bash 249,263
-              6 stomp 196,293
-              7 glide 134,293
-              8 climb 83,260
-              9 cjump 54,202
-              10 lightgrenade 66,143
-              11 dash 106,95
+            SolidBrush ellipse_brush = new SolidBrush(Color.White);
 
+            if (sftree) pea.Graphics.FillEllipse(ellipse_brush, 201 - 25, 54 - 25, 50, 50);
+            if (wjtree) pea.Graphics.FillEllipse(ellipse_brush, 296 - 25, 87 - 25, 50, 50);
+            if (cftree) pea.Graphics.FillEllipse(ellipse_brush, 356 - 25, 160 - 25, 50, 50);
+            if (djtree) pea.Graphics.FillEllipse(ellipse_brush, 367 - 25, 247 - 25, 50, 50);
+            if (btree) pea.Graphics.FillEllipse(ellipse_brush, 321 - 25, 340 - 25, 50, 50);
+            if (stree) pea.Graphics.FillEllipse(ellipse_brush, 246 - 25, 384 - 25, 50, 50);
+            if (gtree) pea.Graphics.FillEllipse(ellipse_brush, 153 - 25, 385 - 25, 50, 50);
+            if (ctree) pea.Graphics.FillEllipse(ellipse_brush, 78 - 25, 340 - 25, 50, 50);
+            if (cjtree) pea.Graphics.FillEllipse(ellipse_brush, 33 - 25, 246 - 25, 50, 50);
+            if (lgtree) pea.Graphics.FillEllipse(ellipse_brush, 48 - 25, 158 - 25, 50, 50);
+            if (dtree) pea.Graphics.FillEllipse(ellipse_brush, 98 - 25, 85 - 25, 50, 50);
 
-              12 watervein 91,394
-              13 gumonseal 159,386
-              14 sunstone 226,386
-              15 cleanwater 125,465
-              16 winds 185,457
-              */
+            //if (!back_drawn)
+            {
+                pea.Graphics.DrawImage(background, new Rectangle(new Point(0, 0), background.Size));
+            }
 
-            /*
-             * pb_sein.Visible = spiritflame;
-            pb_walljump.Visible = walljump;
-            pb_cflame.Visible = chargeflame;
-            pb_djump.Visible = doublejump;
-            pb_bash.Visible = bash;
-            pb_stomp.Visible = stomp;
-            pb_glide.Visible = glide;
-            pb_climb.Visible = climb;
-            pb_cjump.Visible = chargejump;
-            pb_grenade.Visible = lightgrenade;
-            pb_dash.Visible = dash;       
-            */
+            #region DrawSkills
             if (spiritflame)
             {
-                pea.Graphics.DrawImage(image_spiritflame, 165, 78);
+                pea.Graphics.DrawImage(image_spiritflame, new Rectangle(point_spiritflame, image_spiritflame.Size));
+                //new Point[] { point_spiritflame, SKILL_SIZE });
             }
-            
-        }
+            if (walljump)
+            {
+                pea.Graphics.DrawImage(image_walljump, new Rectangle(point_walljump, image_walljump.Size));
+            }
+            if (chargeflame)
+            {
+                pea.Graphics.DrawImage(image_cflame, new Rectangle(point_cflame, image_cflame.Size));
+            }
+            if (doublejump)
+            {
+                pea.Graphics.DrawImage(image_doublejump, new Rectangle(point_doublejump, image_doublejump.Size));
+            }
+            if (bash)
+            {
+                pea.Graphics.DrawImage(image_bash, new Rectangle(point_bash, image_bash.Size));
+            }
+            if (stomp)
+            {
+                pea.Graphics.DrawImage(image_stomp, new Rectangle(point_stomp, image_stomp.Size));
+            }
+            if (glide)
+            {
+                pea.Graphics.DrawImage(image_glide, new Rectangle(point_glide, image_glide.Size));
+            }
+            if (climb)
+            {
+                pea.Graphics.DrawImage(image_climb, new Rectangle(point_climb, image_climb.Size));
+            }
+            if (chargejump)
+            {
+                pea.Graphics.DrawImage(image_cjump, new Rectangle(point_cjump, image_cjump.Size));
+            }
+            if (lightgrenade)
+            {
+                pea.Graphics.DrawImage(image_lightgrenade, new Rectangle(point_lightgrenade, image_lightgrenade.Size));
+            }
+            if (dash)
+            {
+                pea.Graphics.DrawImage(image_dash, new Rectangle(point_dash, image_dash.Size));
+            }
+            #endregion
 
+            #region DrawEvents
+            if (watervein)
+            {
+                pea.Graphics.DrawImage(image_watervein, new Rectangle(point_watervein, image_watervein.Size));
+            }
+            if (gumonseal)
+            {
+                pea.Graphics.DrawImage(image_gumonseal, new Rectangle(point_gumonseal, image_gumonseal.Size));
+            }
+            if (sunstone)
+            {
+                pea.Graphics.DrawImage(image_sunstone, new Rectangle(point_sunstone, image_sunstone.Size));
+            }
+            if (cleanwater)
+            {
+                pea.Graphics.DrawImage(image_cleanwater, new Rectangle(point_cleanwater, image_cleanwater.Size));
+            }
+            if (windsrestored)
+            {
+                pea.Graphics.DrawImage(image_winds, new Rectangle(point_winds, image_winds.Size));
+            }
+            #endregion
 
-        private void reset_all()
-        {
-                     spiritflame = false;
-         sftree = false;
-         walljump = false;
-         wjtree = false;
-         chargeflame = false;
-         cftree = false;
-         doublejump = false;
-         djtree = false;
-         bash = false;
-         btree = false;
-         stomp = false;
-         stree = false;
-         glide = false;
-         gtree = false;
-         climb = false;
-         ctree = false;
-         chargejump = false;
-         cjtree = false;
-         lightgrenade = false;
-         lgtree = false;
-         dash = false;
-         dtree = false;
-
-         watervein = false;
-         cleanwater = false;
-         gumonseal = false;
-         windsrestored = false;
-         sunstone = false;
-    }
-
-        private void pb_skill_MouseClick(object sender, MouseEventArgs e)
-        {
-            PictureBox a;
-            if (sender.Equals(a = pb_sein))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_walljump))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_djump))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_cflame))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_bash))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_stomp))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_glide))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_cjump))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_climb))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_grenade))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
-            else if (sender.Equals(a = pb_dash))
-            {
-                handle_click(e.X + a.Location.X, e.Y + a.Location.Y);
-            }
+            /*
+            if (sftree) pea.Graphics.DrawEllipse(Pens.White, 201 - 25, 54 - 25, 50, 50);
+            if (wjtree) pea.Graphics.DrawEllipse(Pens.White, 296 - 25, 87 - 25, 50, 50);
+            if (cftree) pea.Graphics.DrawEllipse(Pens.White, 356 - 25, 160 - 25, 50, 50);
+            if (djtree) pea.Graphics.DrawEllipse(Pens.White, 367 - 25, 247 - 25, 50, 50);
+            if (btree) pea.Graphics.DrawEllipse(Pens.White, 321 - 25, 340 - 25, 50, 50);
+            if (stree) pea.Graphics.DrawEllipse(Pens.White, 246 - 25, 384 - 25, 50, 50);
+            if (gtree) pea.Graphics.DrawEllipse(Pens.White, 153 - 25, 385 - 25, 50, 50);
+            if (ctree) pea.Graphics.DrawEllipse(Pens.White, 78 - 25, 340 - 25, 50, 50);
+            if (cjtree) pea.Graphics.DrawEllipse(Pens.White, 33 - 25, 246 - 25, 50, 50);
+            if (lgtree) pea.Graphics.DrawEllipse(Pens.White, 48 - 25, 158 - 25, 50, 50);
+            if (dtree) pea.Graphics.DrawEllipse(Pens.White, 98 - 25, 85 - 25, 50, 50);
+            */
 
         }
 
-        private void Tracker_Paint(object sender, PaintEventArgs e)
+        protected void reset_all()
+        {
+
+            spiritflame = false;
+            sftree = false;
+            walljump = false;
+            wjtree = false;
+            chargeflame = false;
+            cftree = false;
+            doublejump = false;
+            djtree = false;
+            bash = false;
+            btree = false;
+            stomp = false;
+            stree = false;
+            glide = false;
+            gtree = false;
+            climb = false;
+            ctree = false;
+            chargejump = false;
+            cjtree = false;
+            lightgrenade = false;
+            lgtree = false;
+            dash = false;
+            dtree = false;
+
+            watervein = false;
+            cleanwater = false;
+            gumonseal = false;
+            windsrestored = false;
+            sunstone = false;
+
+            Refresh();
+        }
+
+        protected void Tracker_Paint(object sender, PaintEventArgs e)
         {
             update_graphics(e);
         }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            update_graphics(e);
+        }
+        #endregion
+
+
+        #region AutoUpdate
+        //these features need to be added
+        bool paused = false;
+        protected void turn_on_auto_update()
+        {
+            if (paused) 
+            {
+                th.Resume();
+            }
+            else
+            {
+                th.Start();
+            }
+        }
+
+        protected void turn_off_auto_update()
+        {
+            th.Suspend();
+            paused = true;
+        }
+        
+        private bool CheckInGame(GameState state)
+        {
+            return state != GameState.Logos && state != GameState.StartScreen && state != GameState.TitleScreen;
+        }
+
+        private bool CheckInGameWorld(GameState state)
+        {
+            return CheckInGame(state) && state != GameState.Prologue && !mem.IsEnteringGame();
+        }
+
+        private void UpdateLoop()
+        {
+            bool lastHooked = false;
+            while (true)
+            {
+                try
+                {
+                    bool hooked = mem.HookProcess();
+                    if (hooked)
+                    {
+                        UpdateValues();
+                    }
+                    if (lastHooked != hooked)
+                    {
+                        lastHooked = hooked;
+                        MessageBox.Show("Hooked: " + hooked.ToString());
+                        //this.Invoke((Action)delegate () { lblNote.Visible = !hooked; });
+                    }
+                    Thread.Sleep(12);
+                }
+                catch { }
+            }          
+        }
+
+        private void UpdateValues()
+        {
+            if ( CheckInGameWorld(mem.GetGameState()) )
+            {
+                level = mem.GetCurrentLevel();
+                xp = mem.GetExperience();               
+                hp = mem.GetCurrentHP();
+                eng = mem.GetCurrentEN();
+                ability = mem.GetAbilityCells();
+                keystones = mem.GetKeyStones();
+                mapstones = mem.GetMapStones();                              
+
+                UpdateSkills();
+                UpdateEvents();
+                CheckTrees();
+            }
+            //still need to update the graphics here
+        }
+
+        private void UpdateSkills()
+        {
+            spiritflame = mem.GetAbility("Spirit Flame");
+            walljump = mem.GetAbility("Wall Jump");
+            chargeflame = mem.GetAbility("Charge Flame");
+            doublejump = mem.GetAbility("Double Jump");
+            bash = mem.GetAbility("Bash");
+            stomp = mem.GetAbility("Stomp");
+            glide = mem.GetAbility("Glide");
+            climb = mem.GetAbility("Climb");
+            chargejump = mem.GetAbility("Charge Jump");
+            lightgrenade = mem.GetAbility("Light Grenade");
+            dash = mem.GetAbility("Dash");
+        }
+        
+        private void UpdateEvents()
+        {
+            watervein = mem.GetKey("Water Vein");
+            gumonseal = mem.GetKey("Gumon Seal");
+            sunstone = mem.GetKey("Sunstone");
+
+            cleanwater = mem.GetEvent("Warmth Returned");
+            windsrestored = mem.GetEvent("Wind Restored");
+        }
+
+        private void CheckTrees()
+        {
+            PointF pos = mem.GetCameraTargetPosition();
+            HitBox ori = new HitBox(pos, 0.68f, 1.15f, true);
+        }
+
+        #endregion
     }
 }
