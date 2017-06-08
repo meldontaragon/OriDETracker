@@ -34,9 +34,217 @@ namespace OriDETracker
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        
-        private void Tracker_MouseDown(object sender, MouseEventArgs e)
+
+
+        #endregion
+
+        protected const int TOL = 25;
+        protected bool auto_update = false;
+        protected bool draggable = false;
+
+        #region BooleanValues
+
+        private Dictionary<Skill, bool> hitTree = new Dictionary<Skill, bool>()
         {
+            {Skill.Sein, false },
+            {Skill.WallJump, false },
+            {Skill.ChargeFlame, false },
+            {Skill.DoubleJump, false },
+            {Skill.Bash, false },
+            {Skill.Stomp, false },
+            {Skill.Glide, false },
+            {Skill.Climb, false },
+            {Skill.ChargeJump, false },
+            {Skill.Grenade, false },
+            {Skill.Dash , false }
+        };
+
+        private Dictionary<Skill, bool> haveTree = new Dictionary<Skill, bool>()
+        {
+            {Skill.Sein, false },
+            {Skill.WallJump, false },
+            {Skill.ChargeFlame, false },
+            {Skill.DoubleJump, false },
+            {Skill.Bash, false },
+            {Skill.Stomp, false },
+            {Skill.Glide, false },
+            {Skill.Climb, false },
+            {Skill.ChargeJump, false },
+            {Skill.Grenade, false },
+            {Skill.Dash , false }
+        };
+
+        private Dictionary<Skill, bool> haveSkill = new Dictionary<Skill, bool>()
+        {
+            {Skill.Sein, false },
+            {Skill.WallJump, false },
+            {Skill.ChargeFlame, false },
+            {Skill.DoubleJump, false },
+            {Skill.Bash, false },
+            {Skill.Stomp, false },
+            {Skill.Glide, false },
+            {Skill.Climb, false },
+            {Skill.ChargeJump, false },
+            {Skill.Grenade, false },
+            {Skill.Dash , false }
+        };
+
+        private Dictionary<String, bool> haveEvent = new Dictionary<String, bool>()
+        {
+            {"Water Vein", false },
+            {"Warmth Returned", false }, //this is actually clean water
+			{"Wind Restored", false },
+            {"Gumon Seal", false },
+            {"Sunstone", false }
+        };
+        #endregion
+
+        #region Images
+        protected static Image background = Image.FromFile(@"data/emptytracker.png");
+
+        protected static Image image_spiritflame = Image.FromFile(@"data\smspiritflame.png");
+        protected static Image image_walljump = Image.FromFile(@"data\smwalljump.png");
+        protected static Image image_cflame = Image.FromFile(@"data\smcflame.png");
+        protected static Image image_doublejump = Image.FromFile(@"data\smdoublejump.png");
+        protected static Image image_bash = Image.FromFile(@"data\smbash.png");
+        protected static Image image_stomp = Image.FromFile(@"data\smstomp.png");
+        protected static Image image_glide = Image.FromFile(@"data\smglide.png");
+        protected static Image image_climb = Image.FromFile(@"data\smclimb.png");
+        protected static Image image_cjump = Image.FromFile(@"data\smcjump.png");
+        protected static Image image_lightgrenade = Image.FromFile(@"data\smlightgrenade.png");
+        protected static Image image_dash = Image.FromFile(@"data\smdash.png");
+
+        protected static Image image_watervein = Image.FromFile(@"data\smwatervein.png");
+        protected static Image image_gumonseal = Image.FromFile(@"data\smgumonseal.png");
+        protected static Image image_sunstone = Image.FromFile(@"data\smsunstone.png");
+        protected static Image image_cleanwater = Image.FromFile(@"data\smcleanwater.png");
+        protected static Image image_winds = Image.FromFile(@"data\smwinds.png");
+
+        private Dictionary<Skill, Image> skillImages = new Dictionary<Skill, Image>()
+        {
+            {Skill.Sein, image_spiritflame },
+            {Skill.WallJump, image_walljump },
+            {Skill.ChargeFlame, image_cflame },
+            {Skill.DoubleJump, image_doublejump },
+            {Skill.Bash, image_bash },
+            {Skill.Stomp, image_stomp },
+            {Skill.Glide, image_glide },
+            {Skill.Climb, image_climb },
+            {Skill.ChargeJump, image_cjump },
+            {Skill.Grenade, image_lightgrenade },
+            {Skill.Dash , image_dash }
+        };
+
+        private Dictionary<String, Image> eventImages = new Dictionary<String, Image>()
+        {
+            {"Water Vein", image_watervein },
+            {"Warmth Returned", image_cleanwater }, //this is actually clean water
+			{"Wind Restored", image_winds },
+            {"Gumon Seal", image_gumonseal },
+            {"Sunstone", image_sunstone }
+        };
+        #endregion
+
+        #region Points
+
+        private Dictionary<Skill, HitBox> treeHitboxes = new Dictionary<Skill, HitBox>()
+        {
+            { Skill.Sein,        new HitBox("-165,-262,1,2") },
+            { Skill.WallJump,    new HitBox("-317,-301,5,6") },
+            { Skill.ChargeFlame, new HitBox("-53,-153,5,6") },
+            { Skill.Dash,        new HitBox("293,-251,5,6") },
+            { Skill.DoubleJump,  new HitBox("785,-404,5,6") },
+            { Skill.Bash,        new HitBox("532,334,5,6") },
+            { Skill.Stomp,       new HitBox("859,-88,5,6") },
+            { Skill.Glide,       new HitBox("-458,-13,5,6") },
+            { Skill.Climb,       new HitBox("-1189,-95,5,6") },
+            { Skill.ChargeJump,  new HitBox("-697,413,5,6") },
+            { Skill.Grenade,     new HitBox("69,-373,5,6") }
+        };
+
+        private Dictionary<Skill, Point> skillPointLocation = new Dictionary<Skill, Point>()
+        {
+            { Skill.Sein,        new Point(165, 78) },
+            { Skill.WallJump,    new Point(228, 97) },
+            { Skill.ChargeFlame, new Point(267, 144) },
+            { Skill.Dash,        new Point(106, 95) },
+            { Skill.DoubleJump,  new Point(273, 205) },
+            { Skill.Bash,        new Point(249, 263) },
+            { Skill.Stomp,       new Point(196, 293) },
+            { Skill.Glide,       new Point(134, 293) },
+            { Skill.Climb,       new Point(83, 260) },
+            { Skill.ChargeJump,  new Point(54, 202) },
+            { Skill.Grenade,     new Point(66, 143) }
+        };
+
+        private Dictionary<String, Point> eventPointLocations = new Dictionary<string, Point>()
+        {
+            {"Water Vein", new Point(91, 394) },
+            {"Gumon Seal", new Point(159, 386) },
+            { "Sunstone", new Point(226, 386) },
+            { "Warmth Returned", new Point(125, 465) }, //this is actually clean water
+            { "Wind Restored", new Point(185, 457) }
+        };
+
+        private Dictionary<Skill, Rectangle> skillTreeRectangles = new Dictionary<Skill, Rectangle>()
+        {
+            { Skill.Sein,        new Rectangle(201 - 25, 54 - 25, 50, 50) },
+            { Skill.WallJump,    new Rectangle(296 - 25, 87 - 25, 50, 50) },
+            { Skill.ChargeFlame, new Rectangle(356 - 25, 160 - 25, 50, 50) },
+            { Skill.Dash,        new Rectangle(98 - 25, 85 - 25, 50, 50) },
+            { Skill.DoubleJump,  new Rectangle(367 - 25, 247 - 25, 50, 50) },
+            { Skill.Bash,        new Rectangle(321 - 25, 340 - 25, 50, 50) },
+            { Skill.Stomp,       new Rectangle(246 - 25, 384 - 25, 50, 50) },
+            { Skill.Glide,       new Rectangle(153 - 25, 385 - 25, 50, 50) },
+            { Skill.Climb,       new Rectangle(78 - 25, 340 - 25, 50, 50) },
+            { Skill.ChargeJump,  new Rectangle(33 - 25, 246 - 25, 50, 50) },
+            { Skill.Grenade,     new Rectangle(48 - 25, 158 - 25, 50, 50) }
+        };
+
+        private Dictionary<Skill, Point> skillMouseLocation = new Dictionary<Skill, Point>()
+        {
+            { Skill.Sein,        new Point(201, 114) },
+            { Skill.WallJump,    new Point(264, 134) },
+            { Skill.ChargeFlame, new Point(305, 181) },
+            { Skill.Dash,        new Point(143, 131) },
+            { Skill.DoubleJump,  new Point(313, 242) },
+            { Skill.Bash,        new Point(286, 297) },
+            { Skill.Stomp,       new Point(234, 333) },
+            { Skill.Glide,       new Point(170, 330) },
+            { Skill.Climb,       new Point(118, 296) },
+            { Skill.ChargeJump,  new Point(93, 241) },
+            { Skill.Grenade,     new Point(101, 180) }
+        };
+
+        private Dictionary<Skill, Point> treeMouseLocation = new Dictionary<Skill, Point>()
+        {
+            { Skill.Sein,        new Point(201, 54) },
+            { Skill.WallJump,    new Point(296, 87) },
+            { Skill.ChargeFlame, new Point(356, 160) },
+            { Skill.Dash,        new Point(98, 85) },
+            { Skill.DoubleJump,  new Point(367, 247) },
+            { Skill.Bash,        new Point(321, 340) },
+            { Skill.Stomp,       new Point(246, 384) },
+            { Skill.Glide,       new Point(153, 385) },
+            { Skill.Climb,       new Point(78, 340) },
+            { Skill.ChargeJump,  new Point(33, 246) },
+            { Skill.Grenade,     new Point(48, 158) }
+        };
+
+        private Dictionary<String, Point> eventMouseLocation = new Dictionary<string, Point>()
+        {
+            {"Water Vein",      new Point(139, 438) },
+            {"Gumon Seal",      new Point(206, 439) },
+            {"Sunstone",        new Point(270, 439) },
+            {"Warmth Returned", new Point(169, 509) }, //this is actually clean water
+			{"Wind Restored",   new Point(241, 509) }
+        };
+
+
+        #endregion
+
+        private void Tracker_MouseDown(object sender, MouseEventArgs e)
+        {            
             if (e.Button == MouseButtons.Left && draggable)
             {
                 ReleaseCapture();
@@ -44,108 +252,15 @@ namespace OriDETracker
             }
         }
 
-        #endregion  
-
-        protected const int TOL = 25;
-        protected bool auto_update = false;
-        protected bool draggable = false;
-        //private bool back_drawn = false;
-
-        private int level;
-        private int xp;
-        private float hp;
-        private float eng;
-        private int ability;
-        private int keystones;
-        private int mapstones;         
-
-        #region BooleanValues
-        protected Boolean spiritflame = false;
-        protected Boolean walljump = false;
-        protected Boolean chargeflame = false;
-        protected Boolean doublejump = false;
-        protected Boolean bash = false;
-        protected Boolean stomp = false;
-        protected Boolean glide = false;
-        protected Boolean gtree = false;
-        protected Boolean climb = false;
-        protected Boolean chargejump = false;
-        protected Boolean lightgrenade = false;
-        protected Boolean dash = false;
-
-        protected Boolean sftree = false;
-        protected Boolean wjtree = false;
-        protected Boolean cftree = false;
-        protected Boolean djtree = false;
-        protected Boolean btree = false;
-        protected Boolean stree = false;
-        protected Boolean ctree = false;
-        protected Boolean cjtree = false;
-        protected Boolean lgtree = false;
-        protected Boolean dtree = false;
-
-
-        protected Boolean watervein = false;
-        protected Boolean cleanwater = false;
-        protected Boolean gumonseal = false;
-        protected Boolean windsrestored = false;
-        protected Boolean sunstone = false;
-        #endregion
-
-        #region Images
-        protected Image background = Image.FromFile(@"data/emptytracker.png");
-
-        protected Image image_spiritflame = Image.FromFile(@"data\smspiritflame.png");
-        protected Image image_walljump = Image.FromFile(@"data\smwalljump.png");
-        protected Image image_cflame = Image.FromFile(@"data\smcflame.png");
-        protected Image image_doublejump = Image.FromFile(@"data\smdoublejump.png");
-        protected Image image_bash = Image.FromFile(@"data\smbash.png");
-        protected Image image_stomp = Image.FromFile(@"data\smstomp.png");
-        protected Image image_glide = Image.FromFile(@"data\smglide.png");
-        protected Image image_climb = Image.FromFile(@"data\smclimb.png");
-        protected Image image_cjump = Image.FromFile(@"data\smcjump.png");
-        protected Image image_lightgrenade = Image.FromFile(@"data\smlightgrenade.png");
-        protected Image image_dash = Image.FromFile(@"data\smdash.png");
-
-        protected Image image_watervein = Image.FromFile(@"data\smwatervein.png");
-        protected Image image_gumonseal = Image.FromFile(@"data\smgumonseal.png");
-        protected Image image_sunstone = Image.FromFile(@"data\smsunstone.png");
-        protected Image image_cleanwater = Image.FromFile(@"data\smcleanwater.png");
-        protected Image image_winds = Image.FromFile(@"data\smwinds.png");
-        #endregion
-
-        #region Points
-        protected Point point_spiritflame = new Point(165, 78);
-        protected Point point_walljump = new Point(228, 97);
-        protected Point point_cflame = new Point(267, 144);
-        protected Point point_doublejump = new Point(273, 205);
-        protected Point point_bash = new Point(249, 263);
-        protected Point point_stomp = new Point(196, 293);
-        protected Point point_glide = new Point(134, 293);
-        protected Point point_climb = new Point(83, 260);
-        protected Point point_cjump = new Point(54, 202);
-        protected Point point_lightgrenade = new Point(66, 143);
-        protected Point point_dash = new Point(106, 95);
-
-        protected Point point_watervein = new Point(91, 394);
-        protected Point point_gumonseal = new Point(159, 386);
-        protected Point point_sunstone = new Point(226, 386);
-        protected Point point_cleanwater = new Point(125, 465);
-        protected Point point_winds = new Point(185, 457);
-
-        #endregion
-
         protected void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-
         protected void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            reset_all();
+            ResetAll();
             Refresh();
         }
-
         protected void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             auto_update = !(auto_update);
@@ -153,318 +268,147 @@ namespace OriDETracker
 
             if (auto_update)
             {
-                turn_on_auto_update();
+                TurnOnAutoUpdate();
             }
             else
             {
-                turn_off_auto_update();
+                TurnOffAutoUpdate();
             }
         }
-
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             draggable = !draggable;
             //editToolStripMenuItem.Checked = draggable;
         }
-        
-        #region Graphics
         protected void Tracker_MouseClick(object sender, MouseEventArgs e)
         {
             int x, y;
             x = e.X;
             y = e.Y;
 
-            toggle(x, y);
+            ToggleMouseClick(x, y);
 
             Refresh();
             this.Invalidate();
         }
+        protected void Tracker_Paint(object sender, PaintEventArgs e)
+        {
+            UpdateGraphics(e);
+        }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            UpdateGraphics(e);
+        }
+
+        #region Graphics
 
         protected int Square(int x)
         {
             return x * x;
         }
 
-        protected bool toggle(int x, int y)
+        protected bool ToggleMouseClick(int x, int y)
         {
-            if (Math.Sqrt(Square(x - 201) + Square(y - 114)) <= TOL)
+            foreach (KeyValuePair<Skill, Point> sk in skillMouseLocation)
             {
-                spiritflame = !spiritflame;
+                if (Math.Sqrt(Square(x - sk.Value.X) + Square(y - sk.Value.Y)) <= TOL)
+                {
+                    haveSkill[sk.Key] = !haveSkill[sk.Key];
+                    return true;
+                }
             }
-            else if (Math.Sqrt(Square(x - 264) + Square(y - 134)) <= TOL)
+
+            foreach (KeyValuePair<Skill, Point> sk in treeMouseLocation)
             {
-                walljump = !walljump;
+                if (Math.Sqrt(Square(x - sk.Value.X) + Square(y - sk.Value.Y)) <= TOL)
+                {
+                    haveTree[sk.Key] = !haveTree[sk.Key];
+                    return true;
+                }
             }
-            else if (Math.Sqrt(Square(x - 305) + Square(y - 181)) <= TOL)
+
+            foreach (KeyValuePair<String, Point> sk in eventMouseLocation)
             {
-                chargeflame = !chargeflame;
-            }
-            else if (Math.Sqrt(Square(x - 313) + Square(y - 242)) <= TOL)
-            {
-                doublejump = !doublejump;
-            }
-            else if (Math.Sqrt(Square(x - 286) + Square(y - 297)) <= TOL)
-            {
-                bash = !bash;
-            }
-            else if (Math.Sqrt(Square(x - 234) + Square(y - 333)) <= TOL)
-            {
-                stomp = !stomp;
-            }
-            else if (Math.Sqrt(Square(x - 170) + Square(y - 330)) <= 27)
-            {
-                glide = !glide;
-            }
-            else if (Math.Sqrt(Square(x - 118) + Square(y - 296)) <= TOL)
-            {
-                climb = !climb;
-            }
-            else if (Math.Sqrt(Square(x - 93) + Square(y - 241)) <= TOL)
-            {
-                chargejump = !chargejump;
-            }
-            else if (Math.Sqrt(Square(x - 101) + Square(y - 180)) <= TOL)
-            {
-                lightgrenade = !lightgrenade;
-            }
-            else if (Math.Sqrt(Square(x - 143) + Square(y - 131)) <= TOL)
-            {
-                dash = !dash;
-            }
-            else if (Math.Sqrt(Square(x - 139) + Square(y - 438)) <= TOL)
-            {
-                watervein = !watervein;
-            }
-            else if (Math.Sqrt(Square(x - 206) + Square(y - 439)) <= TOL)
-            {
-                gumonseal = !gumonseal;
-            }
-            else if (Math.Sqrt(Square(x - 270) + Square(y - 439)) <= TOL)
-            {
-                sunstone = !sunstone;
-            }
-            else if (Math.Sqrt(Square(x - 169) + Square(y - 509)) <= TOL)
-            {
-                cleanwater = !cleanwater;
-            }
-            else if (Math.Sqrt(Square(x - 241) + Square(y - 509)) <= TOL)
-            {
-                windsrestored = !windsrestored;
-            }
-            else if (Math.Sqrt(Square(x - 201) + Square(y - 54)) <= TOL)
-            {
-                sftree = !sftree;
-            }
-            else if (Math.Sqrt(Square(x - 296) + Square(y - 87)) <= TOL)
-            {
-                wjtree = !wjtree;
-            }
-            else if (Math.Sqrt(Square(x - 356) + Square(y - 160)) <= TOL)
-            {
-                cftree = !cftree;
-            }
-            else if (Math.Sqrt(Square(x - 367) + Square(y - 247)) <= TOL)
-            {
-                djtree = !djtree;
-            }
-            else if (Math.Sqrt(Square(x - 321) + Square(y - 340)) <= TOL)
-            {
-                btree = !btree;
-            }
-            else if (Math.Sqrt(Square(x - 246) + Square(y - 384)) <= TOL)
-            {
-                stree = !stree;
-            }
-            else if (Math.Sqrt(Square(x - 153) + Square(y - 385)) <= TOL)
-            {
-                gtree = !gtree;
-            }
-            else if (Math.Sqrt(Square(x - 78) + Square(y - 340)) <= TOL)
-            {
-                ctree = !ctree;
-            }
-            else if (Math.Sqrt(Square(x - 33) + Square(y - 246)) <= TOL)
-            {
-                cjtree = !cjtree;
-            }
-            else if (Math.Sqrt(Square(x - 48) + Square(y - 158)) <= TOL)
-            {
-                lgtree = !lgtree;
-            }
-            else if (Math.Sqrt(Square(x - 98) + Square(y - 85)) <= TOL)
-            {
-                dtree = !dtree;
-            }
-            else
-            {
-                return true;
+                if (Math.Sqrt(Square(x - sk.Value.X) + Square(y - sk.Value.Y)) <= TOL)
+                {
+                    haveEvent[sk.Key] = !haveEvent[sk.Key];
+                    return true;
+                }
             }
             return false;
         }
 
-        protected void update_graphics(PaintEventArgs pea)
+        protected void UpdateGraphics(PaintEventArgs pea)
         {
-            SolidBrush ellipse_brush = new SolidBrush(Color.White);
-
-            if (sftree) pea.Graphics.FillEllipse(ellipse_brush, 201 - 25, 54 - 25, 50, 50);
-            if (wjtree) pea.Graphics.FillEllipse(ellipse_brush, 296 - 25, 87 - 25, 50, 50);
-            if (cftree) pea.Graphics.FillEllipse(ellipse_brush, 356 - 25, 160 - 25, 50, 50);
-            if (djtree) pea.Graphics.FillEllipse(ellipse_brush, 367 - 25, 247 - 25, 50, 50);
-            if (btree) pea.Graphics.FillEllipse(ellipse_brush, 321 - 25, 340 - 25, 50, 50);
-            if (stree) pea.Graphics.FillEllipse(ellipse_brush, 246 - 25, 384 - 25, 50, 50);
-            if (gtree) pea.Graphics.FillEllipse(ellipse_brush, 153 - 25, 385 - 25, 50, 50);
-            if (ctree) pea.Graphics.FillEllipse(ellipse_brush, 78 - 25, 340 - 25, 50, 50);
-            if (cjtree) pea.Graphics.FillEllipse(ellipse_brush, 33 - 25, 246 - 25, 50, 50);
-            if (lgtree) pea.Graphics.FillEllipse(ellipse_brush, 48 - 25, 158 - 25, 50, 50);
-            if (dtree) pea.Graphics.FillEllipse(ellipse_brush, 98 - 25, 85 - 25, 50, 50);
-
-            //if (!back_drawn)
+            try
             {
+                SolidBrush ellipse_brush = new SolidBrush(Color.White);
+
+                Dictionary<Skill, bool> tmp = new Dictionary<Skill, bool>(haveTree);
+                foreach (KeyValuePair<Skill, bool> sk in tmp)
+                {
+                    if (sk.Value)
+                    {
+                        pea.Graphics.FillEllipse(ellipse_brush, skillTreeRectangles[sk.Key]);
+                    }
+                }
+
                 pea.Graphics.DrawImage(background, new Rectangle(new Point(0, 0), background.Size));
-            }
 
-            #region DrawSkills
-            if (spiritflame)
-            {
-                pea.Graphics.DrawImage(image_spiritflame, new Rectangle(point_spiritflame, image_spiritflame.Size));
-                //new Point[] { point_spiritflame, SKILL_SIZE });
-            }
-            if (walljump)
-            {
-                pea.Graphics.DrawImage(image_walljump, new Rectangle(point_walljump, image_walljump.Size));
-            }
-            if (chargeflame)
-            {
-                pea.Graphics.DrawImage(image_cflame, new Rectangle(point_cflame, image_cflame.Size));
-            }
-            if (doublejump)
-            {
-                pea.Graphics.DrawImage(image_doublejump, new Rectangle(point_doublejump, image_doublejump.Size));
-            }
-            if (bash)
-            {
-                pea.Graphics.DrawImage(image_bash, new Rectangle(point_bash, image_bash.Size));
-            }
-            if (stomp)
-            {
-                pea.Graphics.DrawImage(image_stomp, new Rectangle(point_stomp, image_stomp.Size));
-            }
-            if (glide)
-            {
-                pea.Graphics.DrawImage(image_glide, new Rectangle(point_glide, image_glide.Size));
-            }
-            if (climb)
-            {
-                pea.Graphics.DrawImage(image_climb, new Rectangle(point_climb, image_climb.Size));
-            }
-            if (chargejump)
-            {
-                pea.Graphics.DrawImage(image_cjump, new Rectangle(point_cjump, image_cjump.Size));
-            }
-            if (lightgrenade)
-            {
-                pea.Graphics.DrawImage(image_lightgrenade, new Rectangle(point_lightgrenade, image_lightgrenade.Size));
-            }
-            if (dash)
-            {
-                pea.Graphics.DrawImage(image_dash, new Rectangle(point_dash, image_dash.Size));
-            }
-            #endregion
+                tmp = new Dictionary<Skill, bool>(haveSkill);
+                foreach (KeyValuePair<Skill, bool> sk in tmp)
+                {
+                    if (sk.Value)
+                    {
+                        pea.Graphics.DrawImage(skillImages[sk.Key], new Rectangle(skillPointLocation[sk.Key], skillImages[sk.Key].Size));
+                    }
+                }
 
-            #region DrawEvents
-            if (watervein)
-            {
-                pea.Graphics.DrawImage(image_watervein, new Rectangle(point_watervein, image_watervein.Size));
+                Dictionary<String, bool> tmp_ev = new Dictionary<string, bool>(haveEvent);
+                foreach (KeyValuePair<String, bool> ev in tmp_ev)
+                {
+                    if (ev.Value)
+                    {
+                        pea.Graphics.DrawImage(eventImages[ev.Key], new Rectangle(eventPointLocations[ev.Key], eventImages[ev.Key].Size));
+                    }
+                }
             }
-            if (gumonseal)
-            {
-                pea.Graphics.DrawImage(image_gumonseal, new Rectangle(point_gumonseal, image_gumonseal.Size));
-            }
-            if (sunstone)
-            {
-                pea.Graphics.DrawImage(image_sunstone, new Rectangle(point_sunstone, image_sunstone.Size));
-            }
-            if (cleanwater)
-            {
-                pea.Graphics.DrawImage(image_cleanwater, new Rectangle(point_cleanwater, image_cleanwater.Size));
-            }
-            if (windsrestored)
-            {
-                pea.Graphics.DrawImage(image_winds, new Rectangle(point_winds, image_winds.Size));
-            }
-            #endregion
-
-            /*
-            if (sftree) pea.Graphics.DrawEllipse(Pens.White, 201 - 25, 54 - 25, 50, 50);
-            if (wjtree) pea.Graphics.DrawEllipse(Pens.White, 296 - 25, 87 - 25, 50, 50);
-            if (cftree) pea.Graphics.DrawEllipse(Pens.White, 356 - 25, 160 - 25, 50, 50);
-            if (djtree) pea.Graphics.DrawEllipse(Pens.White, 367 - 25, 247 - 25, 50, 50);
-            if (btree) pea.Graphics.DrawEllipse(Pens.White, 321 - 25, 340 - 25, 50, 50);
-            if (stree) pea.Graphics.DrawEllipse(Pens.White, 246 - 25, 384 - 25, 50, 50);
-            if (gtree) pea.Graphics.DrawEllipse(Pens.White, 153 - 25, 385 - 25, 50, 50);
-            if (ctree) pea.Graphics.DrawEllipse(Pens.White, 78 - 25, 340 - 25, 50, 50);
-            if (cjtree) pea.Graphics.DrawEllipse(Pens.White, 33 - 25, 246 - 25, 50, 50);
-            if (lgtree) pea.Graphics.DrawEllipse(Pens.White, 48 - 25, 158 - 25, 50, 50);
-            if (dtree) pea.Graphics.DrawEllipse(Pens.White, 98 - 25, 85 - 25, 50, 50);
-            */
-
+            catch { }
         }
 
-        protected void reset_all()
+        protected void ResetAll()
         {
-
-            spiritflame = false;
-            sftree = false;
-            walljump = false;
-            wjtree = false;
-            chargeflame = false;
-            cftree = false;
-            doublejump = false;
-            djtree = false;
-            bash = false;
-            btree = false;
-            stomp = false;
-            stree = false;
-            glide = false;
-            gtree = false;
-            climb = false;
-            ctree = false;
-            chargejump = false;
-            cjtree = false;
-            lightgrenade = false;
-            lgtree = false;
-            dash = false;
-            dtree = false;
-
-            watervein = false;
-            cleanwater = false;
-            gumonseal = false;
-            windsrestored = false;
-            sunstone = false;
+            for (int i = 0; i < haveSkill.Count; i++)
+            {
+                haveSkill[haveSkill.ElementAt(i).Key] = false;
+            }
+            for (int i = 0; i < haveTree.Count; i++)
+            {
+                haveTree[haveTree.ElementAt(i).Key] = false;
+            }
+            for (int i = 0; i < hitTree.Count; i++)
+            {
+                hitTree[hitTree.ElementAt(i).Key] = false;
+            }
+            for (int i = 0; i < haveEvent.Count; i++)
+            {
+                haveEvent[haveEvent.ElementAt(i).Key] = false;
+            }
 
             Refresh();
         }
 
-        protected void Tracker_Paint(object sender, PaintEventArgs e)
-        {
-            update_graphics(e);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            update_graphics(e);
-        }
         #endregion
-
 
         #region AutoUpdate
         //these features need to be added
         bool paused = false;
-        protected void turn_on_auto_update()
+        protected void TurnOnAutoUpdate()
         {
-            if (paused) 
+            if (paused)
             {
                 th.Resume();
+                paused = false;
             }
             else
             {
@@ -472,12 +416,12 @@ namespace OriDETracker
             }
         }
 
-        protected void turn_off_auto_update()
+        protected void TurnOffAutoUpdate()
         {
             th.Suspend();
             paused = true;
         }
-        
+
         private bool CheckInGame(GameState state)
         {
             return state != GameState.Logos && state != GameState.StartScreen && state != GameState.TitleScreen;
@@ -493,73 +437,128 @@ namespace OriDETracker
             bool lastHooked = false;
             while (true)
             {
-                try
+                //try
                 {
                     bool hooked = mem.HookProcess();
                     if (hooked)
                     {
                         UpdateValues();
+
                     }
                     if (lastHooked != hooked)
                     {
                         lastHooked = hooked;
-                        MessageBox.Show("Hooked: " + hooked.ToString());
-                        //this.Invoke((Action)delegate () { lblNote.Visible = !hooked; });
+                        //MessageBox.Show("Hooked: " + hooked.ToString());
+                        this.Invoke((Action)delegate () { labelBlank.Visible = false; });
                     }
                     Thread.Sleep(12);
                 }
-                catch { }
-            }          
+                //catch { }
+            }
         }
 
         private void UpdateValues()
         {
-            if ( CheckInGameWorld(mem.GetGameState()) )
+            if (CheckInGameWorld(mem.GetGameState()))
             {
-                level = mem.GetCurrentLevel();
-                xp = mem.GetExperience();               
-                hp = mem.GetCurrentHP();
-                eng = mem.GetCurrentEN();
-                ability = mem.GetAbilityCells();
-                keystones = mem.GetKeyStones();
-                mapstones = mem.GetMapStones();                              
-
                 UpdateSkills();
                 UpdateEvents();
                 CheckTrees();
             }
-            //still need to update the graphics here
+
+            //the following works but is "incorrect"
+            try
+            {
+                this.Invalidate();
+                this.Update();
+                //Application.DoEvents();
+            }
+            catch { }
         }
 
         private void UpdateSkills()
         {
-            spiritflame = mem.GetAbility("Spirit Flame");
-            walljump = mem.GetAbility("Wall Jump");
-            chargeflame = mem.GetAbility("Charge Flame");
-            doublejump = mem.GetAbility("Double Jump");
-            bash = mem.GetAbility("Bash");
-            stomp = mem.GetAbility("Stomp");
-            glide = mem.GetAbility("Glide");
-            climb = mem.GetAbility("Climb");
-            chargejump = mem.GetAbility("Charge Jump");
-            lightgrenade = mem.GetAbility("Light Grenade");
-            dash = mem.GetAbility("Dash");
+            Skill cur;
+            for (int i = 0; i < haveSkill.Count; i++)
+            {
+                cur = haveSkill.ElementAt(i).Key;
+                haveSkill[cur] = mem.GetAbility(GetSkillName(cur));
+            }
         }
-        
+
         private void UpdateEvents()
         {
-            watervein = mem.GetKey("Water Vein");
-            gumonseal = mem.GetKey("Gumon Seal");
-            sunstone = mem.GetKey("Sunstone");
-
-            cleanwater = mem.GetEvent("Warmth Returned");
-            windsrestored = mem.GetEvent("Wind Restored");
+            String cur;
+            for (int i = 0; i < haveEvent.Count; i++)
+            {
+                cur = haveEvent.ElementAt(i).Key;
+                switch (cur)
+                {
+                    case "Water Vein":
+                    case "Gumon Seal":
+                    case "Sunstone":
+                        haveEvent[cur] = mem.GetKey(cur);
+                        break;
+                    case "Warmth Returned":
+                    case "Wind Restored":
+                        haveEvent[cur] = mem.GetEvent(cur);
+                        break;
+                }
+            }
         }
 
         private void CheckTrees()
         {
-            PointF pos = mem.GetCameraTargetPosition();
-            HitBox ori = new HitBox(pos, 0.68f, 1.15f, true);
+            HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
+
+            Skill tree_at = Skill.None;
+            bool touchingAnyTree = false;
+            foreach (KeyValuePair<Skill, HitBox> tree in treeHitboxes)
+            {
+                if (tree.Value.Intersects(ori))
+                {
+                    touchingAnyTree = true;
+                    if (!mem.CanMove())
+                    {
+                        tree_at = tree.Key;
+                        touchingAnyTree = false;
+                    }
+                    break;
+                }
+            }
+
+            if (!touchingAnyTree && tree_at != Skill.None)
+            {
+                hitTree[tree_at] = true;
+                haveTree[tree_at] = true;
+            }
+
+            //this loops over all trees and updates the have values to the hit values
+
+			foreach (KeyValuePair<Skill, bool> skills in hitTree)
+			{
+				haveTree[skills.Key] = (hitTree[skills.Key] || skills.Value);
+			}
+
+        }
+
+        private string GetSkillName(Skill sk)
+        {
+            switch (sk)
+            {
+                case Skill.Sein: return "Spirit Flame";
+                case Skill.WallJump: return "Wall Jump";
+                case Skill.ChargeFlame: return "Charge Flame";
+                case Skill.Dash: return "Dash";
+                case Skill.DoubleJump: return "Double Jump";
+                case Skill.Bash: return "Bash";
+                case Skill.Stomp: return "Stomp";
+                case Skill.Glide: return "Glide";
+                case Skill.Climb: return "Climb";
+                case Skill.ChargeJump: return "Charge Jump";
+                case Skill.Grenade: return "Light Grenade";
+            }
+            return "N/A";
         }
 
         #endregion

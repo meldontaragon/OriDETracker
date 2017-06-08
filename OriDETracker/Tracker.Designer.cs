@@ -36,6 +36,7 @@
             this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.labelBlank = new System.Windows.Forms.Label();
             this.contextMenu_Tracker.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,6 +90,14 @@
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
+            // labelBlank
+            // 
+            this.labelBlank.AutoSize = true;
+            this.labelBlank.Location = new System.Drawing.Point(35, 36);
+            this.labelBlank.Name = "labelBlank";
+            this.labelBlank.Size = new System.Drawing.Size(0, 13);
+            this.labelBlank.TabIndex = 1;
+            // 
             // Tracker
             // 
             this.AllowDrop = true;
@@ -98,6 +107,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(400, 584);
             this.ContextMenuStrip = this.contextMenu_Tracker;
+            this.Controls.Add(this.labelBlank);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -112,6 +122,7 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Tracker_MouseDown);
             this.contextMenu_Tracker.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -122,6 +133,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.Label labelBlank;
     }
 }
 
