@@ -17,13 +17,16 @@ namespace OriDETracker
     {
         protected OriMemory mem { get; set; }
         protected Thread th;
-
+        protected formSettings settings;
         public Tracker()
         {
             InitializeComponent();
+            settings = new formSettings();
+            settings.Visible = false;
             mem = new OriDE.Memory.OriMemory();
             th = new Thread(UpdateLoop);
             th.IsBackground = true;
+            this.settingsToolStripMenuItem.Visible = false;
         }
 
         #region FrameMoving
@@ -562,5 +565,15 @@ namespace OriDETracker
         }
 
         #endregion
+
+        private void alwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.TopMost = alwaysOnTopToolStripMenuItem.Checked;
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            settings.Show();
+        }
     }
 }
