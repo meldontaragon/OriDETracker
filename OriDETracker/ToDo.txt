@@ -1,5 +1,7 @@
 # To Do
 + Add option for changing the background color
++ Allow the window to be resized
+	- Need to figure out the best way to resize things
 + Fix the drag and drop setting (and remove the Edit toggle if possible)
 + Add additional tracking options
 	- Non Randomizer (All Skills, All Cells, REO, etc.)
