@@ -64,11 +64,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="formSettings.cs">
+    <Compile Include="PercentNumericUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SettingsLayout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="formSettings.Designer.cs">
-      <DependentUpon>formSettings.cs</DependentUpon>
+    <Compile Include="SettingsLayout.Designer.cs">
+      <DependentUpon>SettingsLayout.cs</DependentUpon>
     </Compile>
     <Compile Include="Memory\Entities.cs" />
     <Compile Include="Memory\Memory.cs" />
@@ -86,8 +89,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="formSettings.resx">
-      <DependentUpon>formSettings.cs</DependentUpon>
+    <EmbeddedResource Include="SettingsLayout.resx">
+      <DependentUpon>SettingsLayout.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tracker.resx">
       <DependentUpon>Tracker.cs</DependentUpon>

@@ -13,20 +13,42 @@ using System.Threading;
 
 namespace OriDETracker
 {
+    public enum TrackerLayout
+    {
+        RandomizerAllTrees,
+        RandomizerAllEvents,
+        AllSkills,
+        AllCells,
+        ReverseEventOrder
+    }
+
     public partial class Tracker : Form
     {
         protected OriMemory mem { get; set; }
         protected Thread th;
-        protected formSettings settings;
+        protected SettingsLayout settings;
         public Tracker()
         {
             InitializeComponent();
-            settings = new formSettings();
+
+            settings = new SettingsLayout(this);
             settings.Visible = false;
+
             mem = new OriDE.Memory.OriMemory();
             th = new Thread(UpdateLoop);
             th.IsBackground = true;
-            this.settingsToolStripMenuItem.Visible = false;
+
+            labelLastPickup = new Label();
+            labelLastPickup.Visible = false;
+            labelLastPickup.BackColor = Color.White;
+            labelLastPickup.TextAlign = ContentAlignment.TopLeft;
+            labelLastPickup.Font = new Font(FontFamily.GenericSerif, 16, FontStyle.Bold);
+            labelLastPickup.ForeColor = Color.Black;
+
+            //this is here until the settings menu is complete
+            //this.settingsToolStripMenuItem.Visible = false;        
+            this.layoutToolStripMenuItem.Visible = false;   
+            SetLayoutRandomizerAllTrees();
         }
 
         #region FrameMoving
@@ -41,114 +63,90 @@ namespace OriDETracker
 
         #endregion
 
+        public float Scaling { get { return scaling; } set { scaling = value; } }
+
         protected const int TOL = 25;
         protected bool auto_update = false;
         protected bool draggable = false;
+        protected float scaling = 1.0f;
 
-        #region BooleanValues
+        #region LogicDictionary
+        //general: Skills and Events
+        private Dictionary<Skill, bool> haveSkill;
+        private Dictionary<String, bool> haveEvent;
 
-        private Dictionary<Skill, bool> hitTree = new Dictionary<Skill, bool>()
-        {
-            {Skill.Sein, false },
-            {Skill.WallJump, false },
-            {Skill.ChargeFlame, false },
-            {Skill.DoubleJump, false },
-            {Skill.Bash, false },
-            {Skill.Stomp, false },
-            {Skill.Glide, false },
-            {Skill.Climb, false },
-            {Skill.ChargeJump, false },
-            {Skill.Grenade, false },
-            {Skill.Dash , false }
-        };
+        //general HP/ENG/AC
+        private int healthCells;
+        private int abilityCells;
+        private float energyCells;
 
-        private Dictionary<Skill, bool> haveTree = new Dictionary<Skill, bool>()
-        {
-            {Skill.Sein, false },
-            {Skill.WallJump, false },
-            {Skill.ChargeFlame, false },
-            {Skill.DoubleJump, false },
-            {Skill.Bash, false },
-            {Skill.Stomp, false },
-            {Skill.Glide, false },
-            {Skill.Climb, false },
-            {Skill.ChargeJump, false },
-            {Skill.Grenade, false },
-            {Skill.Dash , false }
-        };
+        //All Trees
+        private Dictionary<Skill, bool> hitTree;
+        private Dictionary<Skill, bool> haveTree;
 
-        private Dictionary<Skill, bool> haveSkill = new Dictionary<Skill, bool>()
-        {
-            {Skill.Sein, false },
-            {Skill.WallJump, false },
-            {Skill.ChargeFlame, false },
-            {Skill.DoubleJump, false },
-            {Skill.Bash, false },
-            {Skill.Stomp, false },
-            {Skill.Glide, false },
-            {Skill.Climb, false },
-            {Skill.ChargeJump, false },
-            {Skill.Grenade, false },
-            {Skill.Dash , false }
-        };
-
-        private Dictionary<String, bool> haveEvent = new Dictionary<String, bool>()
-        {
-            {"Water Vein", false },
-            {"Warmth Returned", false }, //this is actually clean water
-			{"Wind Restored", false },
-            {"Gumon Seal", false },
-            {"Sunstone", false }
-        };
+        //All Events
+        private Dictionary<String, bool> haveEventLocation;
+        private Dictionary<String, bool> hitEventLocation;
         #endregion
 
         #region Images
-        protected static Image background = Image.FromFile(@"data/emptytracker.png");
 
-        protected static Image image_spiritflame = Image.FromFile(@"data\smspiritflame.png");
+        protected static Image backgroundAllTrees = Image.FromFile(@"data/emptytracker.png");
+
+        protected static Image image_sein = Image.FromFile(@"data\smspiritflame.png");
         protected static Image image_walljump = Image.FromFile(@"data\smwalljump.png");
-        protected static Image image_cflame = Image.FromFile(@"data\smcflame.png");
+        protected static Image image_chargeflame = Image.FromFile(@"data\smcflame.png");
         protected static Image image_doublejump = Image.FromFile(@"data\smdoublejump.png");
         protected static Image image_bash = Image.FromFile(@"data\smbash.png");
         protected static Image image_stomp = Image.FromFile(@"data\smstomp.png");
         protected static Image image_glide = Image.FromFile(@"data\smglide.png");
         protected static Image image_climb = Image.FromFile(@"data\smclimb.png");
-        protected static Image image_cjump = Image.FromFile(@"data\smcjump.png");
-        protected static Image image_lightgrenade = Image.FromFile(@"data\smlightgrenade.png");
+        protected static Image image_chargejump = Image.FromFile(@"data\smcjump.png");
+        protected static Image image_grenade = Image.FromFile(@"data\smlightgrenade.png");
         protected static Image image_dash = Image.FromFile(@"data\smdash.png");
 
         protected static Image image_watervein = Image.FromFile(@"data\smwatervein.png");
         protected static Image image_gumonseal = Image.FromFile(@"data\smgumonseal.png");
         protected static Image image_sunstone = Image.FromFile(@"data\smsunstone.png");
         protected static Image image_cleanwater = Image.FromFile(@"data\smcleanwater.png");
-        protected static Image image_winds = Image.FromFile(@"data\smwinds.png");
+        protected static Image image_windrestored = Image.FromFile(@"data\smwinds.png");
+        protected static Image image_warmthreturned;
 
+        //protected static Image image_abilitycell;
+        //protected static Image image_healthcell;
+        //protected static Image image_energycell;
+
+        //no category of the tracker uses different skill images
         private Dictionary<Skill, Image> skillImages = new Dictionary<Skill, Image>()
         {
-            {Skill.Sein, image_spiritflame },
-            {Skill.WallJump, image_walljump },
-            {Skill.ChargeFlame, image_cflame },
-            {Skill.DoubleJump, image_doublejump },
-            {Skill.Bash, image_bash },
-            {Skill.Stomp, image_stomp },
-            {Skill.Glide, image_glide },
-            {Skill.Climb, image_climb },
-            {Skill.ChargeJump, image_cjump },
-            {Skill.Grenade, image_lightgrenade },
-            {Skill.Dash , image_dash }
+            {Skill.Sein,        image_sein },
+            {Skill.WallJump,    image_walljump },
+            {Skill.ChargeFlame, image_chargeflame },
+            {Skill.DoubleJump,  image_doublejump },
+            {Skill.Bash,        image_bash },
+            {Skill.Stomp,       image_stomp },
+            {Skill.Glide,       image_glide },
+            {Skill.Climb,       image_climb },
+            {Skill.ChargeJump,  image_chargejump },
+            {Skill.Grenade,     image_grenade },
+            {Skill.Dash ,       image_dash }
         };
 
-        private Dictionary<String, Image> eventImages = new Dictionary<String, Image>()
-        {
-            {"Water Vein", image_watervein },
-            {"Warmth Returned", image_cleanwater }, //this is actually clean water
-			{"Wind Restored", image_winds },
-            {"Gumon Seal", image_gumonseal },
-            {"Sunstone", image_sunstone }
-        };
+        private Dictionary<String, Image> eventImages;
+
+        private Image healthImage;
+        private Image energyImage;
+        private Image abilityImage;
+
+        private Image background;
+
+
         #endregion
 
-        #region Points
+        #region Hitbox
+        //Game hitboxes for trees and events
+        private bool checkTreeHitbox = false;
+        private bool checkEventHitbox = false;
 
         private Dictionary<Skill, HitBox> treeHitboxes = new Dictionary<Skill, HitBox>()
         {
@@ -163,89 +161,219 @@ namespace OriDETracker
             { Skill.Climb,       new HitBox("-1189,-95,5,6") },
             { Skill.ChargeJump,  new HitBox("-697,413,5,6") },
             { Skill.Grenade,     new HitBox("69,-373,5,6") }
-        };
-
-        private Dictionary<Skill, Point> skillPointLocation = new Dictionary<Skill, Point>()
+        }; 
+           
+        //placeholder until I get the actual coordinates
+        private Dictionary<String, HitBox> eventHitboxes = new Dictionary<String, HitBox>()
         {
-            { Skill.Sein,        new Point(165, 78) },
-            { Skill.WallJump,    new Point(228, 97) },
-            { Skill.ChargeFlame, new Point(267, 144) },
-            { Skill.Dash,        new Point(106, 95) },
-            { Skill.DoubleJump,  new Point(273, 205) },
-            { Skill.Bash,        new Point(249, 263) },
-            { Skill.Stomp,       new Point(196, 293) },
-            { Skill.Glide,       new Point(134, 293) },
-            { Skill.Climb,       new Point(83, 260) },
-            { Skill.ChargeJump,  new Point(54, 202) },
-            { Skill.Grenade,     new Point(66, 143) }
+            {"Water Vein",      new HitBox( "0,0,1,1") },
+            {"Gumon Seal",      new HitBox( "0,0,1,1") },
+            {"Sunstone",        new HitBox( "0,0,1,1") },
+            {"Clear Water",     new HitBox( "0,0,1,1") },
+            {"Wind Restored",   new HitBox( "0,0,1,1") },
+            {"Warmth Returned", new HitBox( "0,0,1,1") },
         };
+        #endregion
 
-        private Dictionary<String, Point> eventPointLocations = new Dictionary<string, Point>()
+        #region PointsAndRectangles
+        //Rectangles to draw background for skill or event locations
+        private Dictionary<String, Rectangle> eventLocationRectangles;
+        private Dictionary<Skill, Rectangle> skillTreeRectangles;
+
+        //General Skill and Event Locations on Tracker
+        private Dictionary<Skill, Point> skillPointLocation;
+        private Dictionary<String, Point> eventPointLocations;
+
+        //points for mouse clicks (with certain tolerance defined by TOL)
+        private Dictionary<Skill, Point> skillMousePoint;
+        private Dictionary<String, Point> eventMousePoint;
+
+        private Dictionary<Skill, Point> treeMouseLocation;
+        private Dictionary<String, Point> eventMouseLocation;
+
+        private bool drawInfo = false;
+
+        private Dictionary<String, Point> infoImageLocations;
+        private Dictionary<String, Point> infoTextLocations;
+
+        private bool showLastPickup = false;
+        private Point lastPickupLocation = new Point(87, 562);
+        private Label labelLastPickup;
+        #endregion
+
+        #region SetLayout
+
+        private void SetLayoutRandomizerAllTrees()
         {
-            {"Water Vein", new Point(91, 394) },
-            {"Gumon Seal", new Point(159, 386) },
-            { "Sunstone", new Point(226, 386) },
-            { "Warmth Returned", new Point(125, 465) }, //this is actually clean water
-            { "Wind Restored", new Point(185, 457) }
-        };
+            #region Logic
+            hitTree = new Dictionary<Skill, bool>()
+            {
+                { Skill.Sein,        false },
+                { Skill.WallJump,    false },
+                { Skill.ChargeFlame, false },
+                { Skill.DoubleJump,  false },
+                { Skill.Bash,        false },
+                { Skill.Stomp,       false },
+                { Skill.Glide,       false },
+                { Skill.Climb,       false },
+                { Skill.ChargeJump,  false },
+                { Skill.Grenade,     false },
+                { Skill.Dash ,       false }
+            };
 
-        private Dictionary<Skill, Rectangle> skillTreeRectangles = new Dictionary<Skill, Rectangle>()
+            haveTree = new Dictionary<Skill, bool>()
+            {
+                { Skill.Sein,        false },
+                { Skill.WallJump,    false },
+                { Skill.ChargeFlame, false },
+                { Skill.DoubleJump,  false },
+                { Skill.Bash,        false },
+                { Skill.Stomp,       false },
+                { Skill.Glide,       false },
+                { Skill.Climb,       false },
+                { Skill.ChargeJump,  false },
+                { Skill.Grenade,     false },
+                { Skill.Dash ,       false }
+            };
+
+            haveSkill = new Dictionary<Skill, bool>()
+            {
+                { Skill.Sein,        false },
+                { Skill.WallJump,    false },
+                { Skill.Dash ,       false },
+                { Skill.ChargeFlame, false },
+                { Skill.DoubleJump,  false },
+                { Skill.Bash,        false },
+                { Skill.Stomp,       false },
+                { Skill.Glide,       false },
+                { Skill.Climb,       false },
+                { Skill.ChargeJump,  false },
+                { Skill.Grenade,     false }
+            };
+
+            haveEvent = new Dictionary<String, bool>()
+            {
+                { "Water Vein",      false },
+                { "Gumon Seal",      false },
+                { "Sunstone",        false },
+                { "Warmth Returned", false }, //this is actually clean water
+                { "Wind Restored",   false }
+            };
+
+            #endregion
+            checkTreeHitbox = true;
+            checkEventHitbox = false;
+
+            background = backgroundAllTrees;
+
+            skillPointLocation = new Dictionary<Skill, Point>()
+            {
+                { Skill.Sein,        new Point(165, 78) },
+                { Skill.WallJump,    new Point(228, 97) },
+                { Skill.ChargeFlame, new Point(267, 144) },
+                { Skill.Dash,        new Point(106, 95) },
+                { Skill.DoubleJump,  new Point(273, 205) },
+                { Skill.Bash,        new Point(249, 263) },
+                { Skill.Stomp,       new Point(196, 293) },
+                { Skill.Glide,       new Point(134, 293) },
+                { Skill.Climb,       new Point(83, 260) },
+                { Skill.ChargeJump,  new Point(54, 202) },
+                { Skill.Grenade,     new Point(66, 143) }
+            };
+
+            eventPointLocations = new Dictionary<string, Point>()
+            {
+                {"Water Vein",       new Point(91, 394) },
+                {"Gumon Seal",       new Point(159, 386) },
+                { "Sunstone",        new Point(226, 386) },
+                { "Warmth Returned", new Point(125, 465) }, //this is actually clean water
+                { "Wind Restored",   new Point(185, 457) }
+            };
+
+            eventImages = new Dictionary<String, Image>()
+            {
+                {"Water Vein",      image_watervein },
+                {"Warmth Returned", image_cleanwater }, //this is actually clean water
+			    {"Wind Restored",   image_windrestored },
+                {"Gumon Seal",      image_gumonseal },
+                {"Sunstone",        image_sunstone }
+            };
+
+            skillTreeRectangles = new Dictionary<Skill, Rectangle>()
+            {
+                { Skill.Sein,        new Rectangle(201 - 25, 54 - 25, 50, 50) },
+                { Skill.WallJump,    new Rectangle(296 - 25, 87 - 25, 50, 50) },
+                { Skill.ChargeFlame, new Rectangle(356 - 25, 160 - 25, 50, 50) },
+                { Skill.Dash,        new Rectangle(98 - 25, 85 - 25, 50, 50) },
+                { Skill.DoubleJump,  new Rectangle(367 - 25, 247 - 25, 50, 50) },
+                { Skill.Bash,        new Rectangle(321 - 25, 340 - 25, 50, 50) },
+                { Skill.Stomp,       new Rectangle(246 - 25, 384 - 25, 50, 50) },
+                { Skill.Glide,       new Rectangle(153 - 25, 385 - 25, 50, 50) },
+                { Skill.Climb,       new Rectangle(78 - 25, 340 - 25, 50, 50) },
+                { Skill.ChargeJump,  new Rectangle(33 - 25, 246 - 25, 50, 50) },
+                { Skill.Grenade,     new Rectangle(48 - 25, 158 - 25, 50, 50) }
+            };
+
+            skillMousePoint = new Dictionary<Skill, Point>()
+            {
+                { Skill.Sein,        new Point(201, 114) },
+                { Skill.WallJump,    new Point(264, 134) },
+                { Skill.ChargeFlame, new Point(305, 181) },
+                { Skill.Dash,        new Point(143, 131) },
+                { Skill.DoubleJump,  new Point(313, 242) },
+                { Skill.Bash,        new Point(286, 297) },
+                { Skill.Stomp,       new Point(234, 333) },
+                { Skill.Glide,       new Point(170, 330) },
+                { Skill.Climb,       new Point(118, 296) },
+                { Skill.ChargeJump,  new Point(93, 241) },
+                { Skill.Grenade,     new Point(101, 180) }
+            };
+
+           treeMouseLocation = new Dictionary<Skill, Point>()
+            {
+                { Skill.Sein,        new Point(201, 54) },
+                { Skill.WallJump,    new Point(296, 87) },
+                { Skill.ChargeFlame, new Point(356, 160) },
+                { Skill.Dash,        new Point(98, 85) },
+                { Skill.DoubleJump,  new Point(367, 247) },
+                { Skill.Bash,        new Point(321, 340) },
+                { Skill.Stomp,       new Point(246, 384) },
+                { Skill.Glide,       new Point(153, 385) },
+                { Skill.Climb,       new Point(78, 340) },
+                { Skill.ChargeJump,  new Point(33, 246) },
+                { Skill.Grenade,     new Point(48, 158) }
+            };
+
+            eventMousePoint = new Dictionary<string, Point>()
+            {
+                {"Water Vein",      new Point(139, 438) },
+                {"Gumon Seal",      new Point(206, 439) },
+                {"Sunstone",        new Point(270, 439) },
+                {"Warmth Returned", new Point(169, 509) }, //this is actually clean water
+			    {"Wind Restored",   new Point(241, 509) }
+            };
+
+        }
+        private void SetLayoutRandomizerAllEvents()
         {
-            { Skill.Sein,        new Rectangle(201 - 25, 54 - 25, 50, 50) },
-            { Skill.WallJump,    new Rectangle(296 - 25, 87 - 25, 50, 50) },
-            { Skill.ChargeFlame, new Rectangle(356 - 25, 160 - 25, 50, 50) },
-            { Skill.Dash,        new Rectangle(98 - 25, 85 - 25, 50, 50) },
-            { Skill.DoubleJump,  new Rectangle(367 - 25, 247 - 25, 50, 50) },
-            { Skill.Bash,        new Rectangle(321 - 25, 340 - 25, 50, 50) },
-            { Skill.Stomp,       new Rectangle(246 - 25, 384 - 25, 50, 50) },
-            { Skill.Glide,       new Rectangle(153 - 25, 385 - 25, 50, 50) },
-            { Skill.Climb,       new Rectangle(78 - 25, 340 - 25, 50, 50) },
-            { Skill.ChargeJump,  new Rectangle(33 - 25, 246 - 25, 50, 50) },
-            { Skill.Grenade,     new Rectangle(48 - 25, 158 - 25, 50, 50) }
-        };
 
-        private Dictionary<Skill, Point> skillMouseLocation = new Dictionary<Skill, Point>()
+        }
+        private void SetLayoutAllSkills()
         {
-            { Skill.Sein,        new Point(201, 114) },
-            { Skill.WallJump,    new Point(264, 134) },
-            { Skill.ChargeFlame, new Point(305, 181) },
-            { Skill.Dash,        new Point(143, 131) },
-            { Skill.DoubleJump,  new Point(313, 242) },
-            { Skill.Bash,        new Point(286, 297) },
-            { Skill.Stomp,       new Point(234, 333) },
-            { Skill.Glide,       new Point(170, 330) },
-            { Skill.Climb,       new Point(118, 296) },
-            { Skill.ChargeJump,  new Point(93, 241) },
-            { Skill.Grenade,     new Point(101, 180) }
-        };
 
-        private Dictionary<Skill, Point> treeMouseLocation = new Dictionary<Skill, Point>()
+        }
+        private void SetLayoutAllCells()
         {
-            { Skill.Sein,        new Point(201, 54) },
-            { Skill.WallJump,    new Point(296, 87) },
-            { Skill.ChargeFlame, new Point(356, 160) },
-            { Skill.Dash,        new Point(98, 85) },
-            { Skill.DoubleJump,  new Point(367, 247) },
-            { Skill.Bash,        new Point(321, 340) },
-            { Skill.Stomp,       new Point(246, 384) },
-            { Skill.Glide,       new Point(153, 385) },
-            { Skill.Climb,       new Point(78, 340) },
-            { Skill.ChargeJump,  new Point(33, 246) },
-            { Skill.Grenade,     new Point(48, 158) }
-        };
 
-        private Dictionary<String, Point> eventMouseLocation = new Dictionary<string, Point>()
+        }
+        private void SetLayoutReverseEventOrder()
         {
-            {"Water Vein",      new Point(139, 438) },
-            {"Gumon Seal",      new Point(206, 439) },
-            {"Sunstone",        new Point(270, 439) },
-            {"Warmth Returned", new Point(169, 509) }, //this is actually clean water
-			{"Wind Restored",   new Point(241, 509) }
-        };
 
+        }
 
         #endregion
 
+        #region EventHandlers
         private void Tracker_MouseDown(object sender, MouseEventArgs e)
         {            
             if (e.Button == MouseButtons.Left && draggable)
@@ -254,7 +382,6 @@ namespace OriDETracker
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
-
         protected void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -277,6 +404,10 @@ namespace OriDETracker
             {
                 TurnOffAutoUpdate();
             }
+        }
+        private void alwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.TopMost = alwaysOnTopToolStripMenuItem.Checked;
         }
         protected void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -302,6 +433,36 @@ namespace OriDETracker
         {
             UpdateGraphics(e);
         }
+        private void randomizerAllTreesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UnsetLayoutCheck();
+            this.randomizerAllEventsToolStripMenuItem.Checked = true;
+        }
+        private void randomizerAllEventsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UnsetLayoutCheck();
+            this.randomizerAllEventsToolStripMenuItem.Checked = true;
+        }
+        private void allSkillsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UnsetLayoutCheck();
+            this.allSkillsToolStripMenuItem.Checked = true;
+        }
+        private void allCellsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UnsetLayoutCheck();
+            this.allCellsToolStripMenuItem.Checked = true;
+        }
+        private void reverseEventOrderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UnsetLayoutCheck();
+            this.reverseEventOrderToolStripMenuItem.Checked = true;
+        }
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            settings.Show();
+        }        
+        #endregion  
 
         #region Graphics
 
@@ -309,12 +470,38 @@ namespace OriDETracker
         {
             return x * x;
         }
+        public void ChangeLayout(TrackerLayout layout)
+        {
+            switch (layout)
+            {
+                case TrackerLayout.AllCells:
+                    SetLayoutAllCells();
+                    break;
+                case TrackerLayout.AllSkills:
+                    SetLayoutAllSkills();
+                    break;
+                case TrackerLayout.ReverseEventOrder:
+                    SetLayoutReverseEventOrder();
+                    break;
+                case TrackerLayout.RandomizerAllTrees:
+                    SetLayoutRandomizerAllTrees();
+                    break;
+                case TrackerLayout.RandomizerAllEvents:
+                    SetLayoutRandomizerAllEvents();
+                    break;
+                default:
+                    break;
+            }
+        }
 
         protected bool ToggleMouseClick(int x, int y)
         {
-            foreach (KeyValuePair<Skill, Point> sk in skillMouseLocation)
+            //scaling = 1.5;
+            int CUR_TOL = (int)(TOL * scaling);
+
+            foreach (KeyValuePair<Skill, Point> sk in skillMousePoint)
             {
-                if (Math.Sqrt(Square(x - sk.Value.X) + Square(y - sk.Value.Y)) <= TOL)
+                if (Math.Sqrt(Square(x - (int)(sk.Value.X*scaling)) + Square(y - (int)(sk.Value.Y * scaling))) <= CUR_TOL)
                 {
                     haveSkill[sk.Key] = !haveSkill[sk.Key];
                     return true;
@@ -323,16 +510,16 @@ namespace OriDETracker
 
             foreach (KeyValuePair<Skill, Point> sk in treeMouseLocation)
             {
-                if (Math.Sqrt(Square(x - sk.Value.X) + Square(y - sk.Value.Y)) <= TOL)
+                if (Math.Sqrt(Square(x - (int)(sk.Value.X * scaling)) + Square(y - (int)(sk.Value.Y * scaling))) <= CUR_TOL)
                 {
                     haveTree[sk.Key] = !haveTree[sk.Key];
                     return true;
                 }
             }
 
-            foreach (KeyValuePair<String, Point> sk in eventMouseLocation)
+            foreach (KeyValuePair<String, Point> sk in eventMousePoint)
             {
-                if (Math.Sqrt(Square(x - sk.Value.X) + Square(y - sk.Value.Y)) <= TOL)
+                if (Math.Sqrt(Square(x - (int)(sk.Value.X * scaling)) + Square(y - (int)(sk.Value.Y * scaling))) <= CUR_TOL)
                 {
                     haveEvent[sk.Key] = !haveEvent[sk.Key];
                     return true;
@@ -343,27 +530,59 @@ namespace OriDETracker
 
         protected void UpdateGraphics(PaintEventArgs pea)
         {
+            //scaling = 1.5;
             try
             {
                 SolidBrush ellipse_brush = new SolidBrush(Color.White);
 
-                Dictionary<Skill, bool> tmp = new Dictionary<Skill, bool>(haveTree);
-                foreach (KeyValuePair<Skill, bool> sk in tmp)
+                #region DrawingforHitboxLocationChecks
+
+                //draw tree location ellipses
+                if (checkTreeHitbox)
                 {
-                    if (sk.Value)
+                    Dictionary<Skill, bool> tmp_tree = new Dictionary<Skill, bool>(haveTree);
+                    foreach (KeyValuePair<Skill, bool> sk in tmp_tree)
                     {
-                        pea.Graphics.FillEllipse(ellipse_brush, skillTreeRectangles[sk.Key]);
+                        if (sk.Value)
+                        {
+                            RectangleF newRect = new RectangleF((scaling*skillTreeRectangles[sk.Key].X), (scaling*skillTreeRectangles[sk.Key].Y), (scaling*skillTreeRectangles[sk.Key].Width), (scaling*skillTreeRectangles[sk.Key].Height));
+                            //pea.Graphics.FillEllipse(ellipse_brush, skillTreeRectangles[sk.Key]);
+                            pea.Graphics.FillEllipse(ellipse_brush, newRect);
+                        }
                     }
                 }
 
-                pea.Graphics.DrawImage(background, new Rectangle(new Point(0, 0), background.Size));
+                //draw event location ellipses (not currently implemented);
+                if (checkEventHitbox)
+                {
+                    Dictionary<String, bool> tmp_loc = new Dictionary<String, bool>(haveEventLocation);
+                    foreach (KeyValuePair<String, bool> ev in tmp_loc)
+                    {
+                        if (ev.Value)
+                        {
+                            RectangleF newRect = new RectangleF((scaling * eventLocationRectangles[ev.Key].X), (scaling * eventLocationRectangles[ev.Key].Y), 
+                                (scaling * eventLocationRectangles[ev.Key].Width), (scaling * eventLocationRectangles[ev.Key].Height));
+                            //pea.Graphics.FillEllipse(ellipse_brush, eventLocationRectangles[ev.Key]);
+                            pea.Graphics.FillEllipse(ellipse_brush, newRect);
+                        }
+                    }
+                }
+                #endregion  
 
-                tmp = new Dictionary<Skill, bool>(haveSkill);
+                Size newSize = new Size((int)Math.Ceiling(background.Size.Width * scaling), (int)Math.Ceiling(background.Size.Height * scaling));
+                pea.Graphics.DrawImage(background, new Rectangle(new Point(0, 0), newSize));
+                this.Size = newSize;
+
+                Dictionary<Skill, bool> tmp = new Dictionary<Skill, bool>(haveSkill);
                 foreach (KeyValuePair<Skill, bool> sk in tmp)
                 {
                     if (sk.Value)
                     {
-                        pea.Graphics.DrawImage(skillImages[sk.Key], new Rectangle(skillPointLocation[sk.Key], skillImages[sk.Key].Size));
+                        RectangleF newRect = new RectangleF((skillPointLocation[sk.Key].X * scaling), (skillPointLocation[sk.Key].Y * scaling),
+                            (skillImages[sk.Key].Size.Width * scaling), (skillImages[sk.Key].Size.Height * scaling));
+                        //pea.Graphics.DrawImage(skillImages[sk.Key], new Rectangle(skillPointLocation[sk.Key], skillImages[sk.Key].Size));
+                        pea.Graphics.DrawImage(skillImages[sk.Key], newRect);
+
                     }
                 }
 
@@ -372,8 +591,18 @@ namespace OriDETracker
                 {
                     if (ev.Value)
                     {
-                        pea.Graphics.DrawImage(eventImages[ev.Key], new Rectangle(eventPointLocations[ev.Key], eventImages[ev.Key].Size));
+                        RectangleF newRect = new RectangleF((eventPointLocations[ev.Key].X * scaling), (eventPointLocations[ev.Key].Y * scaling),
+                            (eventImages[ev.Key].Size.Width * scaling), (eventImages[ev.Key].Size.Height * scaling));
+                        //pea.Graphics.DrawImage(eventImages[ev.Key], new Rectangle(eventPointLocations[ev.Key], eventImages[ev.Key].Size));
+                        pea.Graphics.DrawImage(eventImages[ev.Key], newRect);
                     }
+                }
+
+                if (drawInfo)
+                {
+                    pea.Graphics.DrawImage(energyImage,  new Rectangle(infoImageLocations["Energy"], energyImage.Size));
+                    pea.Graphics.DrawImage(healthImage,  new Rectangle(infoImageLocations["Health"], healthImage.Size));
+                    pea.Graphics.DrawImage(abilityImage, new Rectangle(infoImageLocations["Ability"], abilityImage.Size));
                 }
             }
             catch { }
@@ -397,6 +626,8 @@ namespace OriDETracker
             {
                 haveEvent[haveEvent.ElementAt(i).Key] = false;
             }
+            settings.Reset();
+            scaling = 1.0f;
 
             Refresh();
         }
@@ -427,12 +658,12 @@ namespace OriDETracker
 
         private bool CheckInGame(GameState state)
         {
-            return state != GameState.Logos && state != GameState.StartScreen && state != GameState.TitleScreen;
+            return (state != GameState.Logos && state != GameState.StartScreen && state != GameState.TitleScreen);
         }
 
         private bool CheckInGameWorld(GameState state)
         {
-            return CheckInGame(state) && state != GameState.Prologue && !mem.IsEnteringGame();
+            return (CheckInGame(state) && state != GameState.Prologue && !mem.IsEnteringGame());
         }
 
         private void UpdateLoop()
@@ -466,17 +697,16 @@ namespace OriDETracker
             {
                 UpdateSkills();
                 UpdateEvents();
-                CheckTrees();
-            }
+                CheckTrees();           
 
-            //the following works but is "incorrect"
-            try
-            {
-                this.Invalidate();
-                this.Update();
-                //Application.DoEvents();
+                //the following works but is "incorrect"
+                try
+                {
+                    this.Invalidate();
+                    this.Update();
+                }
+                catch { }
             }
-            catch { }
         }
 
         private void UpdateSkills()
@@ -504,6 +734,7 @@ namespace OriDETracker
                         break;
                     case "Warmth Returned":
                     case "Wind Restored":
+                    case "Clean Water":
                         haveEvent[cur] = mem.GetEvent(cur);
                         break;
                 }
@@ -545,6 +776,41 @@ namespace OriDETracker
 
         }
 
+        private void CheckEventLocations()
+        {
+            HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
+
+            String event_at = "";
+            bool touchingAnyEvent = false;
+            foreach (KeyValuePair<String, HitBox> loc in eventHitboxes)
+            {
+                if (loc.Value.Intersects(ori))
+                {
+                    touchingAnyEvent = true;
+                    if (!mem.CanMove())
+                    {
+                        event_at = loc.Key;
+                        touchingAnyEvent = false;
+                    }
+                    break;
+                }
+            }
+
+            if (!touchingAnyEvent && event_at != "")
+            {
+                hitEventLocation[event_at] = true;
+                haveEventLocation[event_at] = true;
+            }
+
+            //this loops over all trees and updates the have values to the hit values
+            //looking at this right now, I'm not exactly sure if it is working
+            foreach (KeyValuePair<String, bool> trees in hitEventLocation)
+            {
+                haveEventLocation[trees.Key] = (hitEventLocation[trees.Key] || trees.Value);
+            }
+
+        }
+
         private string GetSkillName(Skill sk)
         {
             switch (sk)
@@ -566,14 +832,13 @@ namespace OriDETracker
 
         #endregion
 
-        private void alwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UnsetLayoutCheck()
         {
-            this.TopMost = alwaysOnTopToolStripMenuItem.Checked;
-        }
-
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            settings.Show();
+            this.randomizerAllEventsToolStripMenuItem.Checked = false;
+            this.randomizerAllTreesToolStripMenuItem.Checked = false;
+            this.allSkillsToolStripMenuItem.Checked = false;
+            this.allCellsToolStripMenuItem.Checked = false;
+            this.reverseEventOrderToolStripMenuItem.Checked = false;
         }
     }
 }
