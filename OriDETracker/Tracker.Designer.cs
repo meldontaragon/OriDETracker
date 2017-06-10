@@ -38,13 +38,8 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.randomizerAllTreesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.randomizerAllEventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.allSkillsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.allCellsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reverseEventOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelBlank = new System.Windows.Forms.Label();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenu_Tracker.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,9 +51,9 @@
             this.alwaysOnTopToolStripMenuItem,
             this.toolStripSeparator,
             this.settingsToolStripMenuItem,
+            this.clearToolStripMenuItem,
             this.resetToolStripMenuItem,
-            this.closeToolStripMenuItem,
-            this.layoutToolStripMenuItem});
+            this.closeToolStripMenuItem});
             this.contextMenu_Tracker.Name = "contextMenu_Tracker";
             this.contextMenu_Tracker.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.contextMenu_Tracker.ShowCheckMargin = true;
@@ -118,55 +113,6 @@
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
-            // layoutToolStripMenuItem
-            // 
-            this.layoutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.randomizerAllTreesToolStripMenuItem,
-            this.randomizerAllEventsToolStripMenuItem,
-            this.allSkillsToolStripMenuItem,
-            this.allCellsToolStripMenuItem,
-            this.reverseEventOrderToolStripMenuItem});
-            this.layoutToolStripMenuItem.Name = "layoutToolStripMenuItem";
-            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
-            this.layoutToolStripMenuItem.Text = "Layout";
-            // 
-            // randomizerAllTreesToolStripMenuItem
-            // 
-            this.randomizerAllTreesToolStripMenuItem.Checked = true;
-            this.randomizerAllTreesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.randomizerAllTreesToolStripMenuItem.Name = "randomizerAllTreesToolStripMenuItem";
-            this.randomizerAllTreesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.randomizerAllTreesToolStripMenuItem.Text = "Randomizer All Trees";
-            this.randomizerAllTreesToolStripMenuItem.Click += new System.EventHandler(this.randomizerAllTreesToolStripMenuItem_Click);
-            // 
-            // randomizerAllEventsToolStripMenuItem
-            // 
-            this.randomizerAllEventsToolStripMenuItem.Name = "randomizerAllEventsToolStripMenuItem";
-            this.randomizerAllEventsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.randomizerAllEventsToolStripMenuItem.Text = "Randomizer All Events";
-            this.randomizerAllEventsToolStripMenuItem.Click += new System.EventHandler(this.randomizerAllEventsToolStripMenuItem_Click);
-            // 
-            // allSkillsToolStripMenuItem
-            // 
-            this.allSkillsToolStripMenuItem.Name = "allSkillsToolStripMenuItem";
-            this.allSkillsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.allSkillsToolStripMenuItem.Text = "All Skills";
-            this.allSkillsToolStripMenuItem.Click += new System.EventHandler(this.allSkillsToolStripMenuItem_Click);
-            // 
-            // allCellsToolStripMenuItem
-            // 
-            this.allCellsToolStripMenuItem.Name = "allCellsToolStripMenuItem";
-            this.allCellsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.allCellsToolStripMenuItem.Text = "All Cells";
-            this.allCellsToolStripMenuItem.Click += new System.EventHandler(this.allCellsToolStripMenuItem_Click);
-            // 
-            // reverseEventOrderToolStripMenuItem
-            // 
-            this.reverseEventOrderToolStripMenuItem.Name = "reverseEventOrderToolStripMenuItem";
-            this.reverseEventOrderToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.reverseEventOrderToolStripMenuItem.Text = "Reverse Event Order";
-            this.reverseEventOrderToolStripMenuItem.Click += new System.EventHandler(this.reverseEventOrderToolStripMenuItem_Click);
-            // 
             // labelBlank
             // 
             this.labelBlank.AutoSize = true;
@@ -174,6 +120,13 @@
             this.labelBlank.Name = "labelBlank";
             this.labelBlank.Size = new System.Drawing.Size(0, 13);
             this.labelBlank.TabIndex = 1;
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // Tracker
             // 
@@ -216,12 +169,7 @@
         private System.Windows.Forms.Label labelBlank;
         private System.Windows.Forms.ToolStripMenuItem alwaysOnTopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem layoutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem randomizerAllTreesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem randomizerAllEventsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem allSkillsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem allCellsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem reverseEventOrderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
     }
 }
 

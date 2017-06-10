@@ -34,5 +34,17 @@ namespace OriDETracker.Properties {
                 this["Scaling"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public TrackerLayout Layout {
+            get {
+                return ((TrackerLayout)(this["Layout"]));
+            }
+            set {
+                this["Layout"] = value;
+            }
+        }
     }
 }

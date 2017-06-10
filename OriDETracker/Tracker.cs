@@ -33,6 +33,8 @@ namespace OriDETracker
             InitializeComponent();
 
             scaling = Properties.Settings.Default.Scaling;
+            current_layout = Properties.Settings.Default.Layout;
+
             settings = new SettingsLayout(this);
             settings.Visible = false;
 
@@ -47,10 +49,7 @@ namespace OriDETracker
             labelLastPickup.Font = new Font(FontFamily.GenericSerif, 16, FontStyle.Bold);
             labelLastPickup.ForeColor = Color.Black;
 
-            //this is here until the settings menu is complete
-            this.layoutToolStripMenuItem.Visible = false;   
-            SetLayoutRandomizerAllTrees();
-
+            this.ChangeLayout(current_layout);
         }
 
         #region FrameMoving
@@ -205,7 +204,30 @@ namespace OriDETracker
         #endregion
 
         #region SetLayout
-
+        public void ChangeLayout(TrackerLayout layout)
+        {
+            this.current_layout = layout;
+            switch (layout)
+            {
+                case TrackerLayout.AllCells:
+                    SetLayoutAllCells();
+                    break;
+                case TrackerLayout.AllSkills:
+                    SetLayoutAllSkills();
+                    break;
+                case TrackerLayout.ReverseEventOrder:
+                    SetLayoutReverseEventOrder();
+                    break;
+                case TrackerLayout.RandomizerAllTrees:
+                    SetLayoutRandomizerAllTrees();
+                    break;
+                case TrackerLayout.RandomizerAllEvents:
+                    SetLayoutRandomizerAllEvents();
+                    break;
+                default:
+                    break;
+            }
+        }
         private void SetLayoutRandomizerAllTrees()
         {
             #region Logic
@@ -391,7 +413,25 @@ namespace OriDETracker
         }
         protected void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ResetAll();
+            ClearAll();
+
+            settings.Reset();
+
+            scaling = 1.0f;
+            current_layout = TrackerLayout.RandomizerAllTrees;
+            ChangeLayout(current_layout);
+
+            auto_update = false;
+            this.autoUpdateToolStripMenuItem.Checked = false;
+            draggable = false;
+            this.editToolStripMenuItem.Checked = false;
+
+            this.TopMost = true;
+            this.alwaysOnTopToolStripMenuItem.Checked = false;
+
+            this.BackColor = SystemColors.ControlDarkDark;
+            this.TransparencyKey = Color.Empty;
+
             Refresh();
         }
         protected void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -436,31 +476,7 @@ namespace OriDETracker
         {
             UpdateGraphics(e);
         }
-        private void randomizerAllTreesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UnsetLayoutCheck();
-            this.randomizerAllEventsToolStripMenuItem.Checked = true;
-        }
-        private void randomizerAllEventsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UnsetLayoutCheck();
-            this.randomizerAllEventsToolStripMenuItem.Checked = true;
-        }
-        private void allSkillsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UnsetLayoutCheck();
-            this.allSkillsToolStripMenuItem.Checked = true;
-        }
-        private void allCellsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UnsetLayoutCheck();
-            this.allCellsToolStripMenuItem.Checked = true;
-        }
-        private void reverseEventOrderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UnsetLayoutCheck();
-            this.reverseEventOrderToolStripMenuItem.Checked = true;
-        }
+
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             settings.Show();
@@ -472,29 +488,6 @@ namespace OriDETracker
         protected int Square(int x)
         {
             return x * x;
-        }
-        public void ChangeLayout(TrackerLayout layout)
-        {
-            switch (layout)
-            {
-                case TrackerLayout.AllCells:
-                    SetLayoutAllCells();
-                    break;
-                case TrackerLayout.AllSkills:
-                    SetLayoutAllSkills();
-                    break;
-                case TrackerLayout.ReverseEventOrder:
-                    SetLayoutReverseEventOrder();
-                    break;
-                case TrackerLayout.RandomizerAllTrees:
-                    SetLayoutRandomizerAllTrees();
-                    break;
-                case TrackerLayout.RandomizerAllEvents:
-                    SetLayoutRandomizerAllEvents();
-                    break;
-                default:
-                    break;
-            }
         }
 
         protected bool ToggleMouseClick(int x, int y)
@@ -613,7 +606,7 @@ namespace OriDETracker
             catch { }
         }
 
-        protected void ResetAll()
+        protected void ClearAll()
         {
             for (int i = 0; i < haveSkill.Count; i++)
             {
@@ -631,9 +624,6 @@ namespace OriDETracker
             {
                 haveEvent[haveEvent.ElementAt(i).Key] = false;
             }
-            settings.Reset();
-            scaling = 1.0f;
-
             Refresh();
         }
 
@@ -837,19 +827,17 @@ namespace OriDETracker
 
         #endregion
 
-        private void UnsetLayoutCheck()
-        {
-            this.randomizerAllEventsToolStripMenuItem.Checked = false;
-            this.randomizerAllTreesToolStripMenuItem.Checked = false;
-            this.allSkillsToolStripMenuItem.Checked = false;
-            this.allCellsToolStripMenuItem.Checked = false;
-            this.reverseEventOrderToolStripMenuItem.Checked = false;
-        }
-
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
             Properties.Settings.Default.Scaling = scaling;
+            Properties.Settings.Default.Layout = current_layout;
             Properties.Settings.Default.Save();
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClearAll();
+            Refresh();
         }
     }
 }

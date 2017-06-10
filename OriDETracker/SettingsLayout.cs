@@ -23,6 +23,8 @@ namespace OriDETracker
             Refresh();
         }
 
+        public float Scaling { get { return (float)(numericUpDownScaling.Value / 100); } set { numericUpDownScaling.Value = (int)(100 * value); } }
+        
         private void numericUpDownScaling_ValueChanged(object sender, EventArgs e)
         {
             parent.Scaling = (float)(numericUpDownScaling.Value / (decimal)100.0);
@@ -65,6 +67,19 @@ namespace OriDETracker
             {
                 this.Visible = false;
                 e.Cancel = true;
+            }
+        }
+
+        private void percentNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            parent.Opacity = (double)(percentNumericUpDown.Value / (decimal)100.0);
+        }
+
+        private void buttonBackgroundColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialogBackground.ShowDialog() == DialogResult.OK)
+            {
+                parent.BackColor = colorDialogBackground.Color;
             }
         }
     }

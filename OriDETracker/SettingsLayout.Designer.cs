@@ -30,14 +30,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.colorDialogBackground = new System.Windows.Forms.ColorDialog();
             this.rbRandoTrees = new System.Windows.Forms.RadioButton();
             this.rbRandoEvents = new System.Windows.Forms.RadioButton();
             this.rbOriAllSkills = new System.Windows.Forms.RadioButton();
             this.rbOriAllCells = new System.Windows.Forms.RadioButton();
             this.rbReverseEventOrder = new System.Windows.Forms.RadioButton();
-            this.numericUpDownScaling = new OriDETracker.PercentNumericUpDown();
             this.labelScaling = new System.Windows.Forms.Label();
+            this.labelOpacity = new System.Windows.Forms.Label();
+            this.buttonBackgroundColor = new System.Windows.Forms.Button();
+            this.percentNumericUpDown = new OriDETracker.PercentNumericUpDown();
+            this.numericUpDownScaling = new OriDETracker.PercentNumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.percentNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScaling)).BeginInit();
             this.SuspendLayout();
             // 
@@ -101,6 +105,47 @@
             this.rbReverseEventOrder.UseVisualStyleBackColor = true;
             this.rbReverseEventOrder.CheckedChanged += new System.EventHandler(this.rbReverseEventOrder_CheckedChanged);
             // 
+            // labelScaling
+            // 
+            this.labelScaling.AutoSize = true;
+            this.labelScaling.Location = new System.Drawing.Point(12, 141);
+            this.labelScaling.Name = "labelScaling";
+            this.labelScaling.Size = new System.Drawing.Size(34, 13);
+            this.labelScaling.TabIndex = 6;
+            this.labelScaling.Text = "Scale";
+            // 
+            // labelOpacity
+            // 
+            this.labelOpacity.AutoSize = true;
+            this.labelOpacity.Location = new System.Drawing.Point(12, 167);
+            this.labelOpacity.Name = "labelOpacity";
+            this.labelOpacity.Size = new System.Drawing.Size(43, 13);
+            this.labelOpacity.TabIndex = 8;
+            this.labelOpacity.Text = "Opacity";
+            // 
+            // buttonBackgroundColor
+            // 
+            this.buttonBackgroundColor.Location = new System.Drawing.Point(12, 191);
+            this.buttonBackgroundColor.Name = "buttonBackgroundColor";
+            this.buttonBackgroundColor.Size = new System.Drawing.Size(131, 23);
+            this.buttonBackgroundColor.TabIndex = 9;
+            this.buttonBackgroundColor.Text = "Background Color";
+            this.buttonBackgroundColor.UseVisualStyleBackColor = true;
+            this.buttonBackgroundColor.Click += new System.EventHandler(this.buttonBackgroundColor_Click);
+            // 
+            // percentNumericUpDown
+            // 
+            this.percentNumericUpDown.Location = new System.Drawing.Point(72, 165);
+            this.percentNumericUpDown.Name = "percentNumericUpDown";
+            this.percentNumericUpDown.Size = new System.Drawing.Size(59, 20);
+            this.percentNumericUpDown.TabIndex = 7;
+            this.percentNumericUpDown.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.percentNumericUpDown.ValueChanged += new System.EventHandler(this.percentNumericUpDown_ValueChanged);
+            // 
             // numericUpDownScaling
             // 
             this.numericUpDownScaling.Location = new System.Drawing.Point(72, 139);
@@ -124,20 +169,14 @@
             0});
             this.numericUpDownScaling.ValueChanged += new System.EventHandler(this.numericUpDownScaling_ValueChanged);
             // 
-            // labelScaling
-            // 
-            this.labelScaling.AutoSize = true;
-            this.labelScaling.Location = new System.Drawing.Point(9, 141);
-            this.labelScaling.Name = "labelScaling";
-            this.labelScaling.Size = new System.Drawing.Size(34, 13);
-            this.labelScaling.TabIndex = 6;
-            this.labelScaling.Text = "Scale";
-            // 
             // SettingsLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(154, 171);
+            this.ClientSize = new System.Drawing.Size(154, 224);
+            this.Controls.Add(this.buttonBackgroundColor);
+            this.Controls.Add(this.labelOpacity);
+            this.Controls.Add(this.percentNumericUpDown);
             this.Controls.Add(this.labelScaling);
             this.Controls.Add(this.numericUpDownScaling);
             this.Controls.Add(this.rbReverseEventOrder);
@@ -152,15 +191,15 @@
             this.Text = "Tracker Layout";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsLayout_FormClosing);
+            ((System.ComponentModel.ISupportInitialize)(this.percentNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScaling)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
 
-        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.ColorDialog colorDialogBackground;
         private System.Windows.Forms.RadioButton rbRandoTrees;
         private System.Windows.Forms.RadioButton rbRandoEvents;
         private System.Windows.Forms.RadioButton rbOriAllSkills;
@@ -168,5 +207,8 @@
         private System.Windows.Forms.RadioButton rbReverseEventOrder;
         private PercentNumericUpDown numericUpDownScaling;
         private System.Windows.Forms.Label labelScaling;
+        private PercentNumericUpDown percentNumericUpDown;
+        private System.Windows.Forms.Label labelOpacity;
+        private System.Windows.Forms.Button buttonBackgroundColor;
     }
 }

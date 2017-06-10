@@ -27,12 +27,19 @@ you've started a run, it is impossible to track the trees correctly.
 Currently the tracker is always the top most window by default. To disable this, right click and
 unselect the 'Always on Top' option.
 
+### Clear and Reset
+Clear will remove any items on the tracker while reset will also change any values to the default values
+which can be useful for debugging any problems that occur.
+
 ## Help
 For any questions or issues please post here:
 https://github.com/david-c-miller/OriDERandomizerTracker/issues
 
 There are some known issues with the tracker using a lot of CPU time. I recommend setting the
 affinity to only 1 or 2 CPU cores to help alleviate this negatively affecting performance in Ori.
+
+Additionally, some people have had problems with the auto update feature but have found that running 
+the tracker as Administrator can fix this.
 
 ## Thanks
 Thanks to SigmaSin for creating the Ori DE Randomizer! Additionally, thanks to DevilSquirrel
