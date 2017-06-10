@@ -27,10 +27,12 @@ namespace OriDETracker
         protected OriMemory mem { get; set; }
         protected Thread th;
         protected SettingsLayout settings;
+
         public Tracker()
         {
             InitializeComponent();
 
+            scaling = Properties.Settings.Default.Scaling;
             settings = new SettingsLayout(this);
             settings.Visible = false;
 
@@ -46,9 +48,9 @@ namespace OriDETracker
             labelLastPickup.ForeColor = Color.Black;
 
             //this is here until the settings menu is complete
-            //this.settingsToolStripMenuItem.Visible = false;        
             this.layoutToolStripMenuItem.Visible = false;   
             SetLayoutRandomizerAllTrees();
+
         }
 
         #region FrameMoving
@@ -69,6 +71,7 @@ namespace OriDETracker
         protected bool auto_update = false;
         protected bool draggable = false;
         protected float scaling = 1.0f;
+        protected TrackerLayout current_layout;
 
         #region LogicDictionary
         //general: Skills and Events
@@ -573,6 +576,7 @@ namespace OriDETracker
                 pea.Graphics.DrawImage(background, new Rectangle(new Point(0, 0), newSize));
                 this.Size = newSize;
 
+                #region DrawingSkillsAndEvents
                 Dictionary<Skill, bool> tmp = new Dictionary<Skill, bool>(haveSkill);
                 foreach (KeyValuePair<Skill, bool> sk in tmp)
                 {
@@ -597,6 +601,7 @@ namespace OriDETracker
                         pea.Graphics.DrawImage(eventImages[ev.Key], newRect);
                     }
                 }
+                #endregion
 
                 if (drawInfo)
                 {
@@ -839,6 +844,12 @@ namespace OriDETracker
             this.allSkillsToolStripMenuItem.Checked = false;
             this.allCellsToolStripMenuItem.Checked = false;
             this.reverseEventOrderToolStripMenuItem.Checked = false;
+        }
+
+        private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.Scaling = scaling;
+            Properties.Settings.Default.Save();
         }
     }
 }

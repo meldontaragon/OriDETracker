@@ -15,8 +15,12 @@ namespace OriDETracker
         Tracker parent;
         public SettingsLayout(Tracker par)
         {
-            parent = par;
             InitializeComponent();
+
+            parent = par;
+            numericUpDownScaling.Value = (int)(100 * par.Scaling);
+
+            Refresh();
         }
 
         private void numericUpDownScaling_ValueChanged(object sender, EventArgs e)
@@ -53,6 +57,15 @@ namespace OriDETracker
         private void rbReverseEventOrder_CheckedChanged(object sender, EventArgs e)
         {
             parent.ChangeLayout(TrackerLayout.ReverseEventOrder);
+        }
+
+        private void SettingsLayout_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!(e.CloseReason == CloseReason.ApplicationExitCall || e.CloseReason == CloseReason.FormOwnerClosing))
+            {
+                this.Visible = false;
+                e.Cancel = true;
+            }
         }
     }
 

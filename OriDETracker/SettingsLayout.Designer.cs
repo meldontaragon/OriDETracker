@@ -151,6 +151,7 @@
             this.Name = "SettingsLayout";
             this.Text = "Tracker Layout";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsLayout_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScaling)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

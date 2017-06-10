@@ -1,7 +1,6 @@
 # To Do
 + Add option for changing the background color
-+ Allow the window to be resized
-	- Need to figure out the best way to resize things
+	- More important might be to change the color of the background image in the tracker
 + Fix the drag and drop setting (and remove the Edit toggle if possible)
 + Add additional tracking options
 	- Non Randomizer (All Skills, All Cells, REO, etc.)
@@ -9,7 +8,6 @@
 	- **Need to make additional backgrounds for these trackers and move points
 	  and other details to functions**
 	- Need Cell images
-	- Need Warmth Returned image
 	- Need Event location image
 + Lower CPU usage
 + Fix shared Dictionary usage (and the results Exception)
@@ -20,3 +18,5 @@
 
   # Done
   + Add toggle for 'Always on top'
+  + Allow the window to be resized
+	- Need to figure out the best way to resize things
