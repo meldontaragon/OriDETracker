@@ -39,10 +39,14 @@
             this.labelScaling = new System.Windows.Forms.Label();
             this.labelOpacity = new System.Windows.Forms.Label();
             this.buttonBackgroundColor = new System.Windows.Forms.Button();
-            this.percentNumericUpDown = new OriDETracker.PercentNumericUpDown();
-            this.numericUpDownScaling = new OriDETracker.PercentNumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.percentNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScaling)).BeginInit();
+            this.trackBarScale = new System.Windows.Forms.TrackBar();
+            this.trackBarOpacity = new System.Windows.Forms.TrackBar();
+            this.numericUpDownOpacity = new OriDETracker.PercentNumericUpDown();
+            this.numericUpDownScale = new OriDETracker.PercentNumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOpacity)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).BeginInit();
             this.SuspendLayout();
             // 
             // rbRandoTrees
@@ -108,7 +112,7 @@
             // labelScaling
             // 
             this.labelScaling.AutoSize = true;
-            this.labelScaling.Location = new System.Drawing.Point(12, 141);
+            this.labelScaling.Location = new System.Drawing.Point(185, 11);
             this.labelScaling.Name = "labelScaling";
             this.labelScaling.Size = new System.Drawing.Size(34, 13);
             this.labelScaling.TabIndex = 6;
@@ -117,7 +121,7 @@
             // labelOpacity
             // 
             this.labelOpacity.AutoSize = true;
-            this.labelOpacity.Location = new System.Drawing.Point(12, 167);
+            this.labelOpacity.Location = new System.Drawing.Point(185, 50);
             this.labelOpacity.Name = "labelOpacity";
             this.labelOpacity.Size = new System.Drawing.Size(43, 13);
             this.labelOpacity.TabIndex = 8;
@@ -125,60 +129,82 @@
             // 
             // buttonBackgroundColor
             // 
-            this.buttonBackgroundColor.Location = new System.Drawing.Point(12, 191);
+            this.buttonBackgroundColor.Location = new System.Drawing.Point(300, 94);
             this.buttonBackgroundColor.Name = "buttonBackgroundColor";
-            this.buttonBackgroundColor.Size = new System.Drawing.Size(131, 23);
+            this.buttonBackgroundColor.Size = new System.Drawing.Size(104, 23);
             this.buttonBackgroundColor.TabIndex = 9;
             this.buttonBackgroundColor.Text = "Background Color";
             this.buttonBackgroundColor.UseVisualStyleBackColor = true;
             this.buttonBackgroundColor.Click += new System.EventHandler(this.buttonBackgroundColor_Click);
             // 
-            // percentNumericUpDown
+            // trackBarScale
             // 
-            this.percentNumericUpDown.Location = new System.Drawing.Point(72, 165);
-            this.percentNumericUpDown.Name = "percentNumericUpDown";
-            this.percentNumericUpDown.Size = new System.Drawing.Size(59, 20);
-            this.percentNumericUpDown.TabIndex = 7;
-            this.percentNumericUpDown.Value = new decimal(new int[] {
+            this.trackBarScale.Location = new System.Drawing.Point(300, 7);
+            this.trackBarScale.Maximum = 200;
+            this.trackBarScale.Name = "trackBarScale";
+            this.trackBarScale.Size = new System.Drawing.Size(104, 45);
+            this.trackBarScale.TabIndex = 10;
+            this.trackBarScale.Value = 100;
+            this.trackBarScale.Scroll += new System.EventHandler(this.trackBarScale_Scroll);
+            // 
+            // trackBarOpacity
+            // 
+            this.trackBarOpacity.Location = new System.Drawing.Point(300, 41);
+            this.trackBarOpacity.Maximum = 100;
+            this.trackBarOpacity.Name = "trackBarOpacity";
+            this.trackBarOpacity.Size = new System.Drawing.Size(104, 45);
+            this.trackBarOpacity.TabIndex = 11;
+            this.trackBarOpacity.Value = 100;
+            this.trackBarOpacity.Scroll += new System.EventHandler(this.trackBarOpacity_Scroll);
+            // 
+            // numericUpDownOpacity
+            // 
+            this.numericUpDownOpacity.Location = new System.Drawing.Point(235, 48);
+            this.numericUpDownOpacity.Name = "numericUpDownOpacity";
+            this.numericUpDownOpacity.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownOpacity.TabIndex = 7;
+            this.numericUpDownOpacity.Value = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            this.percentNumericUpDown.ValueChanged += new System.EventHandler(this.percentNumericUpDown_ValueChanged);
+            this.numericUpDownOpacity.ValueChanged += new System.EventHandler(this.percentNumericUpDown_ValueChanged);
             // 
-            // numericUpDownScaling
+            // numericUpDownScale
             // 
-            this.numericUpDownScaling.Location = new System.Drawing.Point(72, 139);
-            this.numericUpDownScaling.Maximum = new decimal(new int[] {
+            this.numericUpDownScale.Location = new System.Drawing.Point(235, 10);
+            this.numericUpDownScale.Maximum = new decimal(new int[] {
             400,
             0,
             0,
             0});
-            this.numericUpDownScaling.Minimum = new decimal(new int[] {
+            this.numericUpDownScale.Minimum = new decimal(new int[] {
             50,
             0,
             0,
             0});
-            this.numericUpDownScaling.Name = "numericUpDownScaling";
-            this.numericUpDownScaling.Size = new System.Drawing.Size(59, 20);
-            this.numericUpDownScaling.TabIndex = 5;
-            this.numericUpDownScaling.Value = new decimal(new int[] {
+            this.numericUpDownScale.Name = "numericUpDownScale";
+            this.numericUpDownScale.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownScale.TabIndex = 5;
+            this.numericUpDownScale.Value = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            this.numericUpDownScaling.ValueChanged += new System.EventHandler(this.numericUpDownScaling_ValueChanged);
+            this.numericUpDownScale.ValueChanged += new System.EventHandler(this.numericUpDownScaling_ValueChanged);
             // 
             // SettingsLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(154, 224);
+            this.ClientSize = new System.Drawing.Size(416, 129);
+            this.Controls.Add(this.trackBarOpacity);
+            this.Controls.Add(this.trackBarScale);
             this.Controls.Add(this.buttonBackgroundColor);
             this.Controls.Add(this.labelOpacity);
-            this.Controls.Add(this.percentNumericUpDown);
+            this.Controls.Add(this.numericUpDownOpacity);
             this.Controls.Add(this.labelScaling);
-            this.Controls.Add(this.numericUpDownScaling);
+            this.Controls.Add(this.numericUpDownScale);
             this.Controls.Add(this.rbReverseEventOrder);
             this.Controls.Add(this.rbOriAllCells);
             this.Controls.Add(this.rbOriAllSkills);
@@ -191,10 +217,13 @@
             this.Text = "Tracker Layout";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsLayout_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.percentNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScaling)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOpacity)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -205,10 +234,12 @@
         private System.Windows.Forms.RadioButton rbOriAllSkills;
         private System.Windows.Forms.RadioButton rbOriAllCells;
         private System.Windows.Forms.RadioButton rbReverseEventOrder;
-        private PercentNumericUpDown numericUpDownScaling;
+        private PercentNumericUpDown numericUpDownScale;
         private System.Windows.Forms.Label labelScaling;
-        private PercentNumericUpDown percentNumericUpDown;
+        private PercentNumericUpDown numericUpDownOpacity;
         private System.Windows.Forms.Label labelOpacity;
         private System.Windows.Forms.Button buttonBackgroundColor;
+        private System.Windows.Forms.TrackBar trackBarScale;
+        private System.Windows.Forms.TrackBar trackBarOpacity;
     }
 }

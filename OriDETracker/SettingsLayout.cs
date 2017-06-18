@@ -18,22 +18,25 @@ namespace OriDETracker
             InitializeComponent();
 
             parent = par;
-            numericUpDownScaling.Value = (int)(100 * par.Scaling);
+
+            numericUpDownScale.Value = (int)(100 * par.Scaling);
+            trackBarScale.Value = (int)(100 * par.Scaling);
+
+            numericUpDownOpacity.Value = (int)(100 * par.Opacity);
+            trackBarOpacity.Value = (int)(100 * par.Opacity);
 
             Refresh();
         }
 
-        public float Scaling { get { return (float)(numericUpDownScaling.Value / 100); } set { numericUpDownScaling.Value = (int)(100 * value); } }
-        
-        private void numericUpDownScaling_ValueChanged(object sender, EventArgs e)
-        {
-            parent.Scaling = (float)(numericUpDownScaling.Value / (decimal)100.0);
-            parent.Refresh();
-        }
+        public float Scaling { get { return (float)(numericUpDownScale.Value / 100); } set { numericUpDownScale.Value = (int)(100 * value); } }
+
 
         public void Reset()
         {
-            numericUpDownScaling.Value = 100;
+            numericUpDownScale.Value = 100;
+            numericUpDownOpacity.Value = 100;
+            trackBarScale.Value = 100;
+            trackBarOpacity.Value = 100;
         }
 
         private void rbRandoTrees_CheckedChanged(object sender, EventArgs e)
@@ -70,9 +73,24 @@ namespace OriDETracker
             }
         }
 
+        private void numericUpDownScaling_ValueChanged(object sender, EventArgs e)
+        {
+            parent.Scaling = (float)(numericUpDownScale.Value / (decimal)100.0);
+            parent.Refresh();
+
+            int tmp = (int)numericUpDownScale.Value;
+            trackBarScale.Value = tmp;
+            numericUpDownScale.Value = tmp;
+        }
+
         private void percentNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            parent.Opacity = (double)(percentNumericUpDown.Value / (decimal)100.0);
+            parent.Opacity = (double)(numericUpDownOpacity.Value / (decimal)100.0);
+            parent.Refresh();
+
+            int tmp = (int)numericUpDownOpacity.Value;
+            trackBarOpacity.Value = tmp;
+            numericUpDownOpacity.Value = tmp;
         }
 
         private void buttonBackgroundColor_Click(object sender, EventArgs e)
@@ -81,6 +99,29 @@ namespace OriDETracker
             {
                 parent.BackColor = colorDialogBackground.Color;
             }
+        }
+
+        private void trackBarScale_Scroll(object sender, EventArgs e)
+        {
+            int tmp = trackBarScale.Value;
+            if (tmp < 50)
+                tmp = 50;
+
+            parent.Scaling = (float)(tmp / (decimal)100.0);
+            parent.Refresh();
+
+            trackBarScale.Value = tmp;
+            numericUpDownScale.Value = tmp;
+        }
+
+        private void trackBarOpacity_Scroll(object sender, EventArgs e)
+        {
+            parent.Opacity = (double)(trackBarOpacity.Value / (decimal)100.0);
+            parent.Refresh();
+
+            int tmp = trackBarOpacity.Value;
+            trackBarOpacity.Value = tmp;
+            numericUpDownOpacity.Value = tmp;
         }
     }
 

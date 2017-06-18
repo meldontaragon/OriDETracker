@@ -34,6 +34,7 @@ namespace OriDETracker
 
             scaling = Properties.Settings.Default.Scaling;
             current_layout = Properties.Settings.Default.Layout;
+            this.Opacity = Properties.Settings.Default.Opacity;
 
             settings = new SettingsLayout(this);
             settings.Visible = false;
@@ -48,6 +49,21 @@ namespace OriDETracker
             labelLastPickup.TextAlign = ContentAlignment.TopLeft;
             labelLastPickup.Font = new Font(FontFamily.GenericSerif, 16, FontStyle.Bold);
             labelLastPickup.ForeColor = Color.Black;
+
+            this.skillImages = new Dictionary<Skill, Image>()
+            {
+                {Skill.Sein,        image_sein },
+                {Skill.WallJump,    image_walljump },
+                {Skill.ChargeFlame, image_chargeflame },
+                {Skill.DoubleJump,  image_doublejump },
+                {Skill.Bash,        image_bash },
+                {Skill.Stomp,       image_stomp },
+                {Skill.Glide,       image_glide },
+                {Skill.Climb,       image_climb },
+                {Skill.ChargeJump,  image_chargejump },
+                {Skill.Grenade,     image_grenade },
+                {Skill.Dash ,       image_dash }
+            };
 
             this.ChangeLayout(current_layout);
         }
@@ -93,7 +109,7 @@ namespace OriDETracker
 
         #region Images
 
-        protected static Image backgroundAllTrees = Image.FromFile(@"data/emptytracker.png");
+        protected static Image backgroundAllTrees = Image.FromFile(@"data/emptytracker_small.png");
 
         protected static Image image_sein = Image.FromFile(@"data\smspiritflame.png");
         protected static Image image_walljump = Image.FromFile(@"data\smwalljump.png");
@@ -112,33 +128,16 @@ namespace OriDETracker
         protected static Image image_sunstone = Image.FromFile(@"data\smsunstone.png");
         protected static Image image_cleanwater = Image.FromFile(@"data\smcleanwater.png");
         protected static Image image_windrestored = Image.FromFile(@"data\smwinds.png");
-        protected static Image image_warmthreturned;
+        //protected static Image image_warmthreturned;
 
         //protected static Image image_abilitycell;
         //protected static Image image_healthcell;
         //protected static Image image_energycell;
 
         //no category of the tracker uses different skill images
-        private Dictionary<Skill, Image> skillImages = new Dictionary<Skill, Image>()
-        {
-            {Skill.Sein,        image_sein },
-            {Skill.WallJump,    image_walljump },
-            {Skill.ChargeFlame, image_chargeflame },
-            {Skill.DoubleJump,  image_doublejump },
-            {Skill.Bash,        image_bash },
-            {Skill.Stomp,       image_stomp },
-            {Skill.Glide,       image_glide },
-            {Skill.Climb,       image_climb },
-            {Skill.ChargeJump,  image_chargejump },
-            {Skill.Grenade,     image_grenade },
-            {Skill.Dash ,       image_dash }
-        };
 
-        private Dictionary<String, Image> eventImages;
-
-        private Image healthImage;
-        private Image energyImage;
-        private Image abilityImage;
+        protected Dictionary<Skill, Image> skillImages = new Dictionary<Skill, Image>();
+        protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
 
         private Image background;
 
@@ -418,6 +417,7 @@ namespace OriDETracker
             settings.Reset();
 
             scaling = 1.0f;
+            this.Opacity = 1.0;
             current_layout = TrackerLayout.RandomizerAllTrees;
             ChangeLayout(current_layout);
 
@@ -596,12 +596,14 @@ namespace OriDETracker
                 }
                 #endregion
 
+                /*
                 if (drawInfo)
                 {
                     pea.Graphics.DrawImage(energyImage,  new Rectangle(infoImageLocations["Energy"], energyImage.Size));
                     pea.Graphics.DrawImage(healthImage,  new Rectangle(infoImageLocations["Health"], healthImage.Size));
                     pea.Graphics.DrawImage(abilityImage, new Rectangle(infoImageLocations["Ability"], abilityImage.Size));
                 }
+                */
             }
             catch { }
         }
@@ -831,6 +833,7 @@ namespace OriDETracker
         {
             Properties.Settings.Default.Scaling = scaling;
             Properties.Settings.Default.Layout = current_layout;
+            Properties.Settings.Default.Opacity = this.Opacity;
             Properties.Settings.Default.Save();
         }
 

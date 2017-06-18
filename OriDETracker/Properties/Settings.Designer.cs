@@ -34,10 +34,27 @@ namespace OriDETracker.Properties {
                 this["Scaling"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double Opacity
+        {
+            get
+            {
+                return ((double)(this["Opacity"]));
+            }
+            set
+            {
+                this["Opacity"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
+
+        //[global::System.Configuration.DefaultSettingValueAttribute(TrackerLayout.RandomizerAllEvents)]
         public TrackerLayout Layout {
             get {
                 return ((TrackerLayout)(this["Layout"]));
