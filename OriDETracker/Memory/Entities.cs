@@ -5,7 +5,6 @@ namespace OriDE.Memory {
 		Sein,
 		WallJump,
 		ChargeFlame,
-		Dash,
 		DoubleJump,
 		Bash,
 		Stomp,
@@ -13,8 +12,9 @@ namespace OriDE.Memory {
 		Climb,
 		ChargeJump,
 		Grenade,
-		None
-	}
+        Dash,
+        None
+    }
 	public struct Scene {
 		public string Name { get; set; }
 		public bool Active { get; set; }
