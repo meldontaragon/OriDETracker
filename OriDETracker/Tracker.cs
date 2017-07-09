@@ -46,6 +46,7 @@ namespace OriDETracker
         protected Thread th;
         protected SettingsLayout settings;
         protected TrackerLayout current_layout;
+        protected Graphics selfGraphics;
 
         public float Scaling { get { return scaling; } set { scaling = value; } }
 
@@ -171,11 +172,6 @@ namespace OriDETracker
 
         protected Dictionary<Skill, Image> treeImages = new Dictionary<Skill, Image>();
         //protected Dictionary<Skill, Image> treeGreyImages = new Dictionary<Skill, Image>();
-
-        protected Dictionary<Skill, TrackerPictureBox> skillPicBox = new Dictionary<Skill, TrackerPictureBox>();
-
-        protected TrackerPictureBox test1;
-        protected TrackerPictureBox test2;
 
         #endregion
 
@@ -555,7 +551,7 @@ namespace OriDETracker
         }
         protected override void OnPaint(PaintEventArgs e)
         {
-            UpdateGraphics(e);
+            UpdateGraphics(e.Graphics);
         }
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -613,10 +609,12 @@ namespace OriDETracker
             return false;
         }
 
-        protected void UpdateGraphics(PaintEventArgs pea)
+        protected void UpdateGraphics(Graphics g)
         {
-            //scaling = 1.5;
-            //try
+            if (this.selfGraphics != g)
+                this.selfGraphics = g;
+
+            try
             {
                 /*
                  * Drawing consists of the following steps:
@@ -628,74 +626,65 @@ namespace OriDETracker
                  * */
 
                 scaledSize = new Size((int)(DEFAULTSIZE.Width * scaling), (int)(DEFAULTSIZE.Height * scaling));
-
                 this.Size = scaledSize;
-
                 Rectangle drawRect = new Rectangle(new Point(0, 0), scaledSize);
 
-
                 #region Draw
-
                 #region Skills
 
-                pea.Graphics.DrawImage(imageGSkills, drawRect);
+                this.selfGraphics.DrawImage(imageGSkills, drawRect);
                 foreach (KeyValuePair<Skill, bool> sk in haveSkill)
                 {
                     if (sk.Value)
                     {
-                        pea.Graphics.DrawImage(skillImages[sk.Key], drawRect);
+                        g.DrawImage(skillImages[sk.Key], drawRect);
                     }
                     /*
                     else
                     {
-                        pea.Graphics.DrawImage(skillGreyImages[sk.Key], drawRect);
+                        this.selfGraphics.DrawImage(skillGreyImages[sk.Key], drawRect);
                     }
                     */
                 }
 
                 #endregion
-
-
                 #region Events
 
                 foreach (KeyValuePair<String, bool> ev in haveEvent)
                 {
                     if (ev.Value)
                     {
-                        pea.Graphics.DrawImage(eventImages[ev.Key], drawRect);
+                        this.selfGraphics.DrawImage(eventImages[ev.Key], drawRect);
                     }
                     else
                     {
-                        pea.Graphics.DrawImage(eventGreyImages[ev.Key], drawRect);
+                        this.selfGraphics.DrawImage(eventGreyImages[ev.Key], drawRect);
                     }
                 }
                 #endregion
-
-
                 #region Tree
 
-                pea.Graphics.DrawImage(imageGTrees, drawRect);
+                this.selfGraphics.DrawImage(imageGTrees, drawRect);
                 foreach (KeyValuePair<Skill, bool> sk in haveTree)
                 {
                     if (sk.Value)
                     {
-                        pea.Graphics.DrawImage(treeImages[sk.Key], drawRect);
+                        this.selfGraphics.DrawImage(treeImages[sk.Key], drawRect);
                     }
                     /*
                     else
                     {
-                        pea.Graphics.DrawImage(treeGreyImages[sk.Key], drawRect);
+                        this.selfGraphics.DrawImage(treeGreyImages[sk.Key], drawRect);
                     }
                     */
                 }
 
-                #endregion
-                
+                #endregion                
                 #endregion
 
-                pea.Graphics.DrawImage(imageSkillWheelDouble, drawRect);
-
+                this.selfGraphics.DrawImage(imageSkillWheelDouble, drawRect);
             }
+            catch { }
         }
 
         protected void ClearAll()
@@ -764,7 +753,6 @@ namespace OriDETracker
                     if (hooked)
                     {
                         UpdateValues();
-
                     }
                     if (lastHooked != hooked)
                     {
@@ -784,7 +772,10 @@ namespace OriDETracker
             {
                 UpdateSkills();
                 UpdateEvents();
-                CheckTrees();           
+                if (checkTreeHitbox)
+                    CheckTrees();
+                if (checkEventHitbox)
+                    CheckEventLocations();    
 
                 //the following works but is "incorrect"
                 try
