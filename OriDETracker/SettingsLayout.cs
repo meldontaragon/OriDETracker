@@ -25,6 +25,14 @@ namespace OriDETracker
             numericUpDownOpacity.Value = (int)(100 * par.Opacity);
             trackBarOpacity.Value = (int)(100 * par.Opacity);
 
+            rbRandoTrees.Checked = true;
+
+            rbRandoEvents.Enabled = false;
+            rbRandoTrees.Enabled = false;
+            rbOriAllSkills.Enabled = false;
+            rbOriAllCells.Enabled = false;
+            rbReverseEventOrder.Enabled = false;
+
             Refresh();
         }
 
