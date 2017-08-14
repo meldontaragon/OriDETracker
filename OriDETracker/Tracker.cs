@@ -747,7 +747,7 @@ namespace OriDETracker
             bool lastHooked = false;
             while (true)
             {
-                //try
+                try
                 {
                     bool hooked = mem.HookProcess();
                     if (hooked)
@@ -762,7 +762,7 @@ namespace OriDETracker
                     }
                     Thread.Sleep(12);
                 }
-                //catch { }
+                catch { }
             }
         }
 

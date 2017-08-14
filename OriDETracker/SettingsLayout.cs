@@ -25,6 +25,7 @@ namespace OriDETracker
             numericUpDownOpacity.Value = (int)(100 * par.Opacity);
             trackBarOpacity.Value = (int)(100 * par.Opacity);
 
+            this.Text = "Tracker Layer v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             rbRandoTrees.Checked = true;
 
             rbRandoEvents.Enabled = false;
