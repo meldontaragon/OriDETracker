@@ -305,7 +305,19 @@ namespace OriDE.Memory {
 		public int GetAbilityCells() {
 			return seinCharacter.Read<int>(0x00, 0x2c, 0x24);
 		}
-		public int GetSkillPointsAvailable() {
+        public int WaterVeinShards() {
+            return (GetAbilityCells() & 0x00060000) >> 17;
+        }
+        public int GumonSealShards() {
+            return (GetAbilityCells() & 0x00180000) >> 19;
+        }
+        public int SunstoneShards() {
+            return (GetAbilityCells() & 0x00600000) >> 21;
+        }
+        public int MapStoneProgression() {
+            return (GetAbilityCells() & 0x07800000) >> 23;
+        }
+        public int GetSkillPointsAvailable() {
 			return seinCharacter.Read<int>(0x00, 0x38, 0x24);
 		}
 		public int GetCurrentLevel() {

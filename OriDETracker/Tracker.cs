@@ -1058,6 +1058,8 @@ namespace OriDETracker
             {
                 UpdateSkills();
                 UpdateEvents();
+                UpdateShards();
+                UpdateMapstoneProgression();
                 if (checkTreeHitbox)
                     CheckTrees();
                 if (checkEventHitbox)
@@ -1103,6 +1105,22 @@ namespace OriDETracker
                         break;
                 }
             }
+        }
+
+        private void UpdateShards()
+        {
+            DisplayShards = mem.WaterVeinShards() > 0 || mem.GumonSealShards() > 0 || mem.SunstoneShards() > 0;
+            haveShards["Water Vein 1"] = mem.WaterVeinShards() > 0;
+            haveShards["Water Vein 2"] = mem.WaterVeinShards() > 1;
+            haveShards["Gumon Seal 1"] = mem.GumonSealShards() > 0;
+            haveShards["Water Vein 2"] = mem.GumonSealShards() > 1;
+            haveShards["Sunstone 1"] = mem.SunstoneShards() > 0;
+            haveShards["Sunstone 2"] = mem.SunstoneShards() > 1;
+        }
+
+        private void UpdateMapstoneProgression()
+        {
+            MapstoneCount = mem.MapStoneProgression();
         }
 
         private void CheckTrees()
