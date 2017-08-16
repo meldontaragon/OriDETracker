@@ -66,6 +66,7 @@ namespace OriDETracker
             trackBarOpacity.Value = 100;
             rb_400.Checked = false;
             rb_600.Checked = true;
+            cb_shards.Checked = false;
         }
 
         private void rbRandoTrees_CheckedChanged(object sender, EventArgs e)
@@ -157,6 +158,7 @@ namespace OriDETracker
         private void cb_shards_CheckedChanged(object sender, EventArgs e)
         {
             parent.DisplayShards = cb_shards.Checked;
+            parent.ChangeShards();
         }
 
         private void rb_400_CheckedChanged(object sender, EventArgs e)
@@ -180,6 +182,11 @@ namespace OriDETracker
                 parent.font_brush = new SolidBrush(colorDialogFont.Color);
             }
             parent.Refresh();
+        }
+
+        internal void ChangeShards(bool display_shards)
+        {
+            cb_shards.Checked = display_shards;
         }
     }
 

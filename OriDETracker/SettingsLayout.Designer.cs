@@ -48,9 +48,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button_mapstone_font = new System.Windows.Forms.Button();
+            this.colorDialogFont = new System.Windows.Forms.ColorDialog();
             this.numericUpDownOpacity = new OriDETracker.PercentNumericUpDown();
             this.numericUpDownScale = new OriDETracker.PercentNumericUpDown();
-            this.colorDialogFont = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).BeginInit();
             this.panel1.SuspendLayout();
@@ -190,7 +190,7 @@
             // rb_400
             // 
             this.rb_400.AutoSize = true;
-            this.rb_400.Location = new System.Drawing.Point(37, 5);
+            this.rb_400.Location = new System.Drawing.Point(4, 5);
             this.rb_400.Name = "rb_400";
             this.rb_400.Size = new System.Drawing.Size(57, 17);
             this.rb_400.TabIndex = 15;
@@ -202,7 +202,7 @@
             // 
             this.rb_600.AutoSize = true;
             this.rb_600.Checked = true;
-            this.rb_600.Location = new System.Drawing.Point(100, 5);
+            this.rb_600.Location = new System.Drawing.Point(67, 5);
             this.rb_600.Name = "rb_600";
             this.rb_600.Size = new System.Drawing.Size(57, 17);
             this.rb_600.TabIndex = 16;
@@ -215,9 +215,9 @@
             // 
             this.panel1.Controls.Add(this.rb_600);
             this.panel1.Controls.Add(this.rb_400);
-            this.panel1.Location = new System.Drawing.Point(214, 93);
+            this.panel1.Location = new System.Drawing.Point(218, 93);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(157, 25);
+            this.panel1.Size = new System.Drawing.Size(154, 25);
             this.panel1.TabIndex = 17;
             // 
             // panel2

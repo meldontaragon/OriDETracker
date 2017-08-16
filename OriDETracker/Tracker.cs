@@ -33,9 +33,13 @@ namespace OriDETracker
             this.Opacity = Properties.Settings.Default.Opacity;
             this.display_shards = Properties.Settings.Default.Shards;
             this.image_pixel_size = Properties.Settings.Default.Pixels;
+            
+            edit_form = new EditForm(this);
+            edit_form.Visible = false;
 
             settings = new SettingsLayout(this);
             settings.Visible = false;
+
 
             mem = new OriDE.Memory.OriMemory();
             th = new Thread(UpdateLoop);
@@ -71,6 +75,7 @@ namespace OriDETracker
         protected Thread th;
         protected SettingsLayout settings;
         protected TrackerLayout current_layout;
+        protected EditForm edit_form;
         protected Graphics selfGraphics;
 
         public float Scaling { get { return scaling; } set { scaling = value; } }
@@ -110,15 +115,18 @@ namespace OriDETracker
 
         #region LogicDictionary
         //general: Skills and Events
-        private Dictionary<Skill, bool> haveSkill;
-        private Dictionary<String, bool> haveEvent;
+        public Dictionary<Skill, bool> haveSkill;
+        public Dictionary<String, bool> haveEvent;
 
         //All Trees
-        private Dictionary<Skill, bool> hitTree;
-        private Dictionary<Skill, bool> haveTree;
+        public Dictionary<Skill, bool> hitTree;
+        public Dictionary<Skill, bool> haveTree;
 
         //Shards
-        private Dictionary<String, bool> haveShards;
+        public Dictionary<String, bool> haveShards;
+
+        //Mapstone
+        public int MapstoneCount { get { return mapstone_count; } set { mapstone_count = value; } }
 
         /*
         //All Events
@@ -351,7 +359,7 @@ namespace OriDETracker
             {"Water Vein",      new HitBox( "0,0,1,1") },
             {"Gumon Seal",      new HitBox( "0,0,1,1") },
             {"Sunstone",        new HitBox( "0,0,1,1") },
-            {"Clear Water",     new HitBox( "0,0,1,1") },
+            {"Clean Water",     new HitBox( "0,0,1,1") },
             {"Wind Restored",   new HitBox( "0,0,1,1") },
             {"Warmth Returned", new HitBox( "0,0,1,1") },
         };
@@ -394,6 +402,7 @@ namespace OriDETracker
             SetLayoutDefaults();
 
             display_mapstone = true;
+            ChangeMapstone();
 
             hitTree = new Dictionary<Skill, bool>()
             {
@@ -666,10 +675,13 @@ namespace OriDETracker
             ClearAll();
 
             settings.Reset();
-            this.settings.Close();
-
+            edit_form.Reset();
+            this.settings.Visible = false;
+            
             scaling = 1.0f;
             this.Opacity = 1.0;
+            this.image_pixel_size = 600;
+
             current_layout = TrackerLayout.RandomizerAllTrees;
             ChangeLayout(current_layout);
 
@@ -680,6 +692,8 @@ namespace OriDETracker
 
             this.TopMost = true;
             this.alwaysOnTopToolStripMenuItem.Checked = false;
+
+            this.display_shards = false; 
 
             this.BackColor = Color.Black;
             this.font_brush = new SolidBrush(Color.White);
@@ -733,7 +747,16 @@ namespace OriDETracker
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             settings.Show();
-        }        
+        }
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClearAll();
+            Refresh();
+        }
+        private void editToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.edit_form.Show();
+        }
         #endregion  
 
         #region Graphics
@@ -864,16 +887,12 @@ namespace OriDETracker
                 this.selfGraphics.DrawImage(imageGSkills, drawRect);
                 foreach (KeyValuePair<Skill, bool> sk in haveSkill)
                 {
+                    edit_form.UpdateSkill(sk.Key, sk.Value);
+
                     if (sk.Value)
                     {
                         g.DrawImage(skillImages[sk.Key], drawRect);
                     }
-                    /*
-                    else
-                    {
-                        this.selfGraphics.DrawImage(skillGreyImages[sk.Key], drawRect);
-                    }
-                    */
                 }
 
                 #endregion
@@ -881,9 +900,12 @@ namespace OriDETracker
 
                 foreach (KeyValuePair<String, bool> ev in haveEvent)
                 {
+                    edit_form.UpdateEvent(ev.Key, ev.Value);
+
                     if (ev.Value)
                     {
                         this.selfGraphics.DrawImage(eventImages[ev.Key], drawRect);
+
                     }
                     else
                     {
@@ -896,6 +918,8 @@ namespace OriDETracker
                 this.selfGraphics.DrawImage(imageGTrees, drawRect);
                 foreach (KeyValuePair<Skill, bool> sk in haveTree)
                 {
+                    edit_form.UpdateTree(sk.Key, sk.Value);
+
                     if (sk.Value)
                     {
                         this.selfGraphics.DrawImage(treeImages[sk.Key], drawRect);
@@ -912,23 +936,21 @@ namespace OriDETracker
                 #region Shards
                 if (display_shards)
                 {
-                    foreach (KeyValuePair<String, bool> sk in haveShards)
+                    foreach (KeyValuePair<String, bool> ev in haveShards)
                     {
-                        if (sk.Value)
+                        edit_form.UpdateShard(ev.Key, ev.Value);
+
+                        if (ev.Value)
                         {
-                            this.selfGraphics.DrawImage(shardImages[sk.Key], drawRect);
+                            this.selfGraphics.DrawImage(shardImages[ev.Key], drawRect);
                         }
-                        /*
-                        else
-                        {
-                            this.selfGraphics.DrawImage(treeGreyImages[sk.Key], drawRect);
-                        }
-                        */
                     }
                 }
                 #endregion  
                 if (display_mapstone)
                 {
+                    edit_form.UpdateMapstones(mapstone_count);
+
                     this.selfGraphics.DrawImage(imageMapStone, drawRect);
                     this.selfGraphics.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new PointF(285 * scaling, 375 * scaling));
                 }
@@ -957,7 +979,19 @@ namespace OriDETracker
             {
                 haveEvent[haveEvent.ElementAt(i).Key] = false;
             }
+            edit_form.Clear();
+
             Refresh();
+        }
+
+        public void ChangeMapstone()
+        {
+            edit_form.ChangeMapstone(display_mapstone);
+        }
+        public void ChangeShards()
+        {
+            settings.ChangeShards(display_shards);
+            edit_form.ChangeShards(display_shards);
         }
 
         #endregion
@@ -1012,7 +1046,7 @@ namespace OriDETracker
                         //MessageBox.Show("Hooked: " + hooked.ToString());
                         this.Invoke((Action)delegate () { labelBlank.Visible = false; });
                     }
-                    Thread.Sleep(12);
+                    Thread.Sleep(100);
                 }
                 catch { }
             }
@@ -1173,10 +1207,6 @@ namespace OriDETracker
             Properties.Settings.Default.Save();
         }
 
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ClearAll();
-            Refresh();
-        }
+
     }
 }
