@@ -84,7 +84,7 @@
             this.cb_skill_sein.TabIndex = 0;
             this.cb_skill_sein.Text = "Spirit Flame";
             this.cb_skill_sein.UseVisualStyleBackColor = true;
-            this.cb_skill_sein.CheckedChanged += new System.EventHandler(this.cb_skill_sein_CheckedChanged);
+            this.cb_skill_sein.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_sein_MouseClick);
             // 
             // cb_skill_wj
             // 
@@ -96,7 +96,7 @@
             this.cb_skill_wj.TabIndex = 1;
             this.cb_skill_wj.Text = "Wall Jump";
             this.cb_skill_wj.UseVisualStyleBackColor = true;
-            this.cb_skill_wj.CheckedChanged += new System.EventHandler(this.cb_skill_wj_CheckedChanged);
+            this.cb_skill_wj.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_wj_MouseClick);
             // 
             // cb_skill_cflame
             // 
@@ -108,7 +108,7 @@
             this.cb_skill_cflame.TabIndex = 2;
             this.cb_skill_cflame.Text = "Charge Flame";
             this.cb_skill_cflame.UseVisualStyleBackColor = true;
-            this.cb_skill_cflame.CheckedChanged += new System.EventHandler(this.cb_skill_cflame_CheckedChanged);
+            this.cb_skill_cflame.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_cflame_MouseClick);
             // 
             // cb_skill_djump
             // 
@@ -120,7 +120,7 @@
             this.cb_skill_djump.TabIndex = 3;
             this.cb_skill_djump.Text = "Double Jump";
             this.cb_skill_djump.UseVisualStyleBackColor = true;
-            this.cb_skill_djump.CheckedChanged += new System.EventHandler(this.cb_skill_djump_CheckedChanged);
+            this.cb_skill_djump.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_djump_MouseClick);
             // 
             // cb_skill_bash
             // 
@@ -132,7 +132,7 @@
             this.cb_skill_bash.TabIndex = 4;
             this.cb_skill_bash.Text = "Bash";
             this.cb_skill_bash.UseVisualStyleBackColor = true;
-            this.cb_skill_bash.CheckedChanged += new System.EventHandler(this.cb_skill_bash_CheckedChanged);
+            this.cb_skill_bash.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_bash_MouseClick);
             // 
             // cb_skill_stomp
             // 
@@ -144,7 +144,7 @@
             this.cb_skill_stomp.TabIndex = 5;
             this.cb_skill_stomp.Text = "Stomp";
             this.cb_skill_stomp.UseVisualStyleBackColor = true;
-            this.cb_skill_stomp.CheckedChanged += new System.EventHandler(this.cb_skill_stomp_CheckedChanged);
+            this.cb_skill_stomp.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_stomp_MouseClick);
             // 
             // cb_skill_glide
             // 
@@ -156,7 +156,7 @@
             this.cb_skill_glide.TabIndex = 6;
             this.cb_skill_glide.Text = "Feather";
             this.cb_skill_glide.UseVisualStyleBackColor = true;
-            this.cb_skill_glide.CheckedChanged += new System.EventHandler(this.cb_skill_glide_CheckedChanged);
+            this.cb_skill_glide.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_glide_MouseClick);
             // 
             // cb_skill_climb
             // 
@@ -168,7 +168,7 @@
             this.cb_skill_climb.TabIndex = 7;
             this.cb_skill_climb.Text = "Climb";
             this.cb_skill_climb.UseVisualStyleBackColor = true;
-            this.cb_skill_climb.CheckedChanged += new System.EventHandler(this.cb_skill_climb_CheckedChanged);
+            this.cb_skill_climb.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_climb_MouseClick);
             // 
             // cb_skill_cjump
             // 
@@ -180,7 +180,7 @@
             this.cb_skill_cjump.TabIndex = 8;
             this.cb_skill_cjump.Text = "Charge Jump";
             this.cb_skill_cjump.UseVisualStyleBackColor = true;
-            this.cb_skill_cjump.CheckedChanged += new System.EventHandler(this.cb_skill_cjump_CheckedChanged);
+            this.cb_skill_cjump.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_cjump_MouseClick);
             // 
             // cb_skill_grenade
             // 
@@ -192,7 +192,7 @@
             this.cb_skill_grenade.TabIndex = 9;
             this.cb_skill_grenade.Text = "Light Grenade";
             this.cb_skill_grenade.UseVisualStyleBackColor = true;
-            this.cb_skill_grenade.CheckedChanged += new System.EventHandler(this.cb_skill_grenade_CheckedChanged);
+            this.cb_skill_grenade.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_grenade_MouseClick);
             // 
             // cb_skill_dash
             // 
@@ -204,7 +204,7 @@
             this.cb_skill_dash.TabIndex = 10;
             this.cb_skill_dash.Text = "Dash";
             this.cb_skill_dash.UseVisualStyleBackColor = true;
-            this.cb_skill_dash.CheckedChanged += new System.EventHandler(this.cb_skill_dash_CheckedChanged);
+            this.cb_skill_dash.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_skill_dash_MouseClick);
             // 
             // label1
             // 
@@ -246,7 +246,8 @@
             this.cb_event_watervein.TabIndex = 25;
             this.cb_event_watervein.Text = "Water Vein";
             this.cb_event_watervein.UseVisualStyleBackColor = true;
-            this.cb_event_watervein.CheckedChanged += new System.EventHandler(this.cb_event_watervein_CheckedChanged);
+            this.cb_event_watervein.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_event_watervein_MouseClick);
+            this.cb_event_watervein.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_event_watervein_MouseClick);
             // 
             // cb_event_gumonseal
             // 
@@ -258,7 +259,7 @@
             this.cb_event_gumonseal.TabIndex = 26;
             this.cb_event_gumonseal.Text = "Gumon Seal";
             this.cb_event_gumonseal.UseVisualStyleBackColor = true;
-            this.cb_event_gumonseal.CheckedChanged += new System.EventHandler(this.cb_event_gumonseal_CheckedChanged);
+            this.cb_event_gumonseal.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_event_gumonseal_MouseClick);
             // 
             // cb_event_sunstone
             // 
@@ -270,7 +271,7 @@
             this.cb_event_sunstone.TabIndex = 27;
             this.cb_event_sunstone.Text = "Sunstone";
             this.cb_event_sunstone.UseVisualStyleBackColor = true;
-            this.cb_event_sunstone.CheckedChanged += new System.EventHandler(this.cb_event_sunstone_CheckedChanged);
+            this.cb_event_sunstone.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_event_sunstone_MouseClick);
             // 
             // cb_event_cleanwater
             // 
@@ -282,7 +283,7 @@
             this.cb_event_cleanwater.TabIndex = 28;
             this.cb_event_cleanwater.Text = "Clean Water";
             this.cb_event_cleanwater.UseVisualStyleBackColor = true;
-            this.cb_event_cleanwater.CheckedChanged += new System.EventHandler(this.cb_event_cleanwater_CheckedChanged);
+            this.cb_event_cleanwater.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_event_cleanwater_MouseClick);
             // 
             // cb_event_wind
             // 
@@ -294,7 +295,7 @@
             this.cb_event_wind.TabIndex = 29;
             this.cb_event_wind.Text = "Wind Restored";
             this.cb_event_wind.UseVisualStyleBackColor = true;
-            this.cb_event_wind.CheckedChanged += new System.EventHandler(this.cb_event_wind_CheckedChanged);
+            this.cb_event_wind.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_event_wind_MouseClick);
             // 
             // cb_event_warmth
             // 
@@ -307,7 +308,7 @@
             this.cb_event_warmth.TabIndex = 30;
             this.cb_event_warmth.Text = "Warmth Returned";
             this.cb_event_warmth.UseVisualStyleBackColor = true;
-            this.cb_event_warmth.CheckedChanged += new System.EventHandler(this.cb_event_warmth_CheckedChanged);
+            this.cb_event_warmth.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_event_warmth_MouseClick);
             // 
             // cb_shard_wv1
             // 
@@ -320,7 +321,7 @@
             this.cb_shard_wv1.TabIndex = 31;
             this.cb_shard_wv1.Text = "Shard 1/3";
             this.cb_shard_wv1.UseVisualStyleBackColor = true;
-            this.cb_shard_wv1.CheckedChanged += new System.EventHandler(this.cb_shard_wv1_CheckedChanged);
+            this.cb_shard_wv1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_shard_wv1_MouseClick);
             // 
             // cb_shard_wv2
             // 
@@ -333,7 +334,7 @@
             this.cb_shard_wv2.TabIndex = 32;
             this.cb_shard_wv2.Text = "Shard 2/3";
             this.cb_shard_wv2.UseVisualStyleBackColor = true;
-            this.cb_shard_wv2.CheckedChanged += new System.EventHandler(this.cb_shard_wv2_CheckedChanged);
+            this.cb_shard_wv2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_shard_wv2_MouseClick);
             // 
             // numeric_mapstone
             // 
@@ -402,7 +403,7 @@
             this.cb_shard_gs2.TabIndex = 54;
             this.cb_shard_gs2.Text = "Shard 2/3";
             this.cb_shard_gs2.UseVisualStyleBackColor = true;
-            this.cb_shard_gs2.CheckedChanged += new System.EventHandler(this.cb_shard_gs2_CheckedChanged);
+            this.cb_shard_gs2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_shard_gs2_MouseClick);
             // 
             // cb_shard_gs1
             // 
@@ -415,7 +416,7 @@
             this.cb_shard_gs1.TabIndex = 53;
             this.cb_shard_gs1.Text = "Shard 1/3";
             this.cb_shard_gs1.UseVisualStyleBackColor = true;
-            this.cb_shard_gs1.CheckedChanged += new System.EventHandler(this.cb_shard_gs1_CheckedChanged);
+            this.cb_shard_gs1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_shard_gs1_MouseClick);
             // 
             // cb_shard_ss2
             // 
@@ -428,7 +429,7 @@
             this.cb_shard_ss2.TabIndex = 56;
             this.cb_shard_ss2.Text = "Shard 2/3";
             this.cb_shard_ss2.UseVisualStyleBackColor = true;
-            this.cb_shard_ss2.CheckedChanged += new System.EventHandler(this.cb_shard_ss2_CheckedChanged);
+            this.cb_shard_ss2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_shard_ss2_MouseClick);
             // 
             // cb_shard_ss1
             // 
@@ -441,7 +442,7 @@
             this.cb_shard_ss1.TabIndex = 55;
             this.cb_shard_ss1.Text = "Shard 1/3";
             this.cb_shard_ss1.UseVisualStyleBackColor = true;
-            this.cb_shard_ss1.CheckedChanged += new System.EventHandler(this.cb_shard_ss1_CheckedChanged);
+            this.cb_shard_ss1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_shard_ss1_MouseClick);
             // 
             // cb_tree_dash
             // 
@@ -453,7 +454,7 @@
             this.cb_tree_dash.TabIndex = 66;
             this.cb_tree_dash.Text = "Dash";
             this.cb_tree_dash.UseVisualStyleBackColor = true;
-            this.cb_tree_dash.CheckedChanged += new System.EventHandler(this.cb_tree_dash_CheckedChanged);
+            this.cb_tree_dash.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_dash_MouseClick);
             // 
             // cb_tree_grenade
             // 
@@ -465,7 +466,7 @@
             this.cb_tree_grenade.TabIndex = 65;
             this.cb_tree_grenade.Text = "Light Grenade";
             this.cb_tree_grenade.UseVisualStyleBackColor = true;
-            this.cb_tree_grenade.CheckedChanged += new System.EventHandler(this.cb_tree_grenade_CheckedChanged);
+            this.cb_tree_grenade.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_grenade_MouseClick);
             // 
             // cb_tree_cjump
             // 
@@ -477,7 +478,7 @@
             this.cb_tree_cjump.TabIndex = 64;
             this.cb_tree_cjump.Text = "Charge Jump";
             this.cb_tree_cjump.UseVisualStyleBackColor = true;
-            this.cb_tree_cjump.CheckedChanged += new System.EventHandler(this.cb_tree_cjump_CheckedChanged);
+            this.cb_tree_cjump.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_cjump_MouseClick);
             // 
             // cb_tree_climb
             // 
@@ -489,7 +490,7 @@
             this.cb_tree_climb.TabIndex = 63;
             this.cb_tree_climb.Text = "Climb";
             this.cb_tree_climb.UseVisualStyleBackColor = true;
-            this.cb_tree_climb.CheckedChanged += new System.EventHandler(this.cb_tree_climb_CheckedChanged);
+            this.cb_tree_climb.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_climb_MouseClick);
             // 
             // cb_tree_glide
             // 
@@ -501,7 +502,7 @@
             this.cb_tree_glide.TabIndex = 62;
             this.cb_tree_glide.Text = "Feather";
             this.cb_tree_glide.UseVisualStyleBackColor = true;
-            this.cb_tree_glide.CheckedChanged += new System.EventHandler(this.cb_tree_glide_CheckedChanged);
+            this.cb_tree_glide.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_glide_MouseClick);
             // 
             // cb_tree_stomp
             // 
@@ -513,7 +514,7 @@
             this.cb_tree_stomp.TabIndex = 61;
             this.cb_tree_stomp.Text = "Stomp";
             this.cb_tree_stomp.UseVisualStyleBackColor = true;
-            this.cb_tree_stomp.CheckedChanged += new System.EventHandler(this.cb_tree_stomp_CheckedChanged);
+            this.cb_tree_stomp.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_stomp_MouseClick);
             // 
             // cb_tree_djump
             // 
@@ -525,7 +526,7 @@
             this.cb_tree_djump.TabIndex = 60;
             this.cb_tree_djump.Text = "Double Jump";
             this.cb_tree_djump.UseVisualStyleBackColor = true;
-            this.cb_tree_djump.CheckedChanged += new System.EventHandler(this.cb_tree_djump_CheckedChanged);
+            this.cb_tree_djump.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_djump_MouseClick);
             // 
             // cb_tree_cflame
             // 
@@ -537,7 +538,7 @@
             this.cb_tree_cflame.TabIndex = 59;
             this.cb_tree_cflame.Text = "Charge Flame";
             this.cb_tree_cflame.UseVisualStyleBackColor = true;
-            this.cb_tree_cflame.CheckedChanged += new System.EventHandler(this.cb_tree_cflame_CheckedChanged);
+            this.cb_tree_cflame.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_cflame_MouseClick);
             // 
             // cb_tree_wj
             // 
@@ -549,7 +550,7 @@
             this.cb_tree_wj.TabIndex = 58;
             this.cb_tree_wj.Text = "Wall Jump";
             this.cb_tree_wj.UseVisualStyleBackColor = true;
-            this.cb_tree_wj.CheckedChanged += new System.EventHandler(this.cb_tree_wj_CheckedChanged);
+            this.cb_tree_wj.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_wj_MouseClick);
             // 
             // cb_tree_sein
             // 
@@ -561,7 +562,7 @@
             this.cb_tree_sein.TabIndex = 57;
             this.cb_tree_sein.Text = "Spirit Flame";
             this.cb_tree_sein.UseVisualStyleBackColor = true;
-            this.cb_tree_sein.CheckedChanged += new System.EventHandler(this.cb_tree_sein_CheckedChanged);
+            this.cb_tree_sein.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_sein_MouseClick);
             // 
             // cb_tree_bash
             // 
@@ -573,7 +574,7 @@
             this.cb_tree_bash.TabIndex = 67;
             this.cb_tree_bash.Text = "Bash";
             this.cb_tree_bash.UseVisualStyleBackColor = true;
-            this.cb_tree_bash.CheckedChanged += new System.EventHandler(this.cb_tree_bash_CheckedChanged);
+            this.cb_tree_bash.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_tree_bash_MouseClick);
             // 
             // cb_shards
             // 
@@ -583,7 +584,7 @@
             this.cb_shards.Size = new System.Drawing.Size(15, 14);
             this.cb_shards.TabIndex = 68;
             this.cb_shards.UseVisualStyleBackColor = true;
-            this.cb_shards.CheckedChanged += new System.EventHandler(this.cb_shards_CheckedChanged);
+            this.cb_shards.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_shards_MouseClick);
             // 
             // EditForm
             // 

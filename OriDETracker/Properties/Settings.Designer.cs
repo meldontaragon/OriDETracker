@@ -53,7 +53,7 @@ namespace OriDETracker.Properties {
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("false")]
         public bool Shards
         {
             get
@@ -84,8 +84,8 @@ namespace OriDETracker.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
+        //[global::System.Configuration.DefaultSettingValueAttribute("OriDETracker.TrackerLayout.RandomizerAllEvents")]
 
-        //[global::System.Configuration.DefaultSettingValueAttribute(TrackerLayout.RandomizerAllEvents)]
         public TrackerLayout Layout {
             get {
                 return ((TrackerLayout)(this["Layout"]));
@@ -94,5 +94,54 @@ namespace OriDETracker.Properties {
                 this["Layout"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        //[global::System.Configuration.DefaultSettingValueAttribute("System.Drawing.Color.White")]
+        public System.Drawing.Color FontColor
+        {            
+            get
+            {
+                return ((System.Drawing.Color)(this["FontColor"]));
+            }
+            set
+            {
+                this["FontColor"] = value;
+            }
+        }         
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        //[global::System.Configuration.DefaultSettingValueAttribute("System.Drawing.Color.Black")]
+        public System.Drawing.Color Background
+        {
+            get
+            {
+                return ((System.Drawing.Color)(this["Background"]));
+            }
+            set
+            {
+                this["Background"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Saved
+        {
+            get
+            {
+                return ((int)(this["Saved"]));
+            }
+            set
+            {
+                this["Saved"] = value;
+            }
+        }
+
+
     }
 }

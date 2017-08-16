@@ -285,63 +285,63 @@ namespace OriDETracker
 
 
 		#region Skills
-		private void cb_skill_sein_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_sein_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.Sein, cb_skill_sein.Checked);
 		}
 
-		private void cb_skill_wj_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_wj_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.WallJump, cb_skill_wj.Checked);
 		}
 
-		private void cb_skill_cflame_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_cflame_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.ChargeFlame, cb_skill_cflame.Checked);
 
 		}
 
-		private void cb_skill_djump_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_djump_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.DoubleJump, cb_skill_djump.Checked);
 		}
 
-		private void cb_skill_bash_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_bash_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.Bash, cb_skill_bash.Checked);
 
 		}
 
-		private void cb_skill_stomp_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_stomp_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.Stomp, cb_skill_stomp.Checked);
 		}
 
-		private void cb_skill_glide_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_glide_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.Glide, cb_skill_glide.Checked);
 
 		}
 
-		private void cb_skill_climb_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_climb_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.Climb, cb_skill_climb.Checked);
 
 		}
 
-		private void cb_skill_cjump_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_cjump_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.ChargeJump, cb_skill_cjump.Checked);
 
 		}
 
-		private void cb_skill_grenade_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_grenade_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.Grenade, cb_skill_grenade.Checked);
 
 		}
 
-		private void cb_skill_dash_CheckedChanged(object sender, EventArgs e)
+		private void cb_skill_dash_MouseClick(object sender, EventArgs e)
 		{
 			SendSkillChange(Skill.Dash, cb_skill_dash.Checked);
 
@@ -349,63 +349,63 @@ namespace OriDETracker
 		#endregion
 
 		#region Trees
-		private void cb_tree_sein_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_sein_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.Sein, cb_tree_sein.Checked);
 		}
 
-		private void cb_tree_wj_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_wj_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.WallJump, cb_tree_wj.Checked);
 		}
 
-		private void cb_tree_cflame_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_cflame_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.ChargeFlame, cb_tree_cflame.Checked);
 
 		}
 
-		private void cb_tree_djump_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_djump_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.DoubleJump, cb_tree_djump.Checked);
 		}
 
-		private void cb_tree_bash_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_bash_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.Bash, cb_tree_bash.Checked);
 
 		}
 
-		private void cb_tree_stomp_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_stomp_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.Stomp, cb_tree_stomp.Checked);
 		}
 
-		private void cb_tree_glide_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_glide_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.Glide, cb_tree_glide.Checked);
 
 		}
 
-		private void cb_tree_climb_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_climb_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.Climb, cb_tree_climb.Checked);
 
 		}
 
-		private void cb_tree_cjump_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_cjump_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.ChargeJump, cb_tree_cjump.Checked);
 
 		}
 
-		private void cb_tree_grenade_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_grenade_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.Grenade, cb_tree_grenade.Checked);
 
 		}
 
-		private void cb_tree_dash_CheckedChanged(object sender, EventArgs e)
+		private void cb_tree_dash_MouseClick(object sender, EventArgs e)
 		{
 			SendTreeChange(Skill.Dash, cb_tree_dash.Checked);
 
@@ -413,37 +413,36 @@ namespace OriDETracker
 		#endregion
 
 		#region Events
-		private void cb_event_watervein_CheckedChanged(object sender, EventArgs e)
+		private void cb_event_watervein_MouseClick(object sender, EventArgs e)
 		{
-			SendEventChange("Water Vein", cb_event_watervein.Checked);
-
+            SendEventChange("Water Vein", cb_event_watervein.Checked);
 		}
 
-		private void cb_event_gumonseal_CheckedChanged(object sender, EventArgs e)
+		private void cb_event_gumonseal_MouseClick(object sender, EventArgs e)
 		{
 			SendEventChange("Gumon Seal", cb_event_gumonseal.Checked);
 
 		}
 
-		private void cb_event_sunstone_CheckedChanged(object sender, EventArgs e)
+		private void cb_event_sunstone_MouseClick(object sender, EventArgs e)
 		{
 			SendEventChange("Sunstone", cb_event_sunstone.Checked);
 
 		}
 
-		private void cb_event_cleanwater_CheckedChanged(object sender, EventArgs e)
+		private void cb_event_cleanwater_MouseClick(object sender, EventArgs e)
 		{
 			SendEventChange("Clean Water", cb_event_cleanwater.Checked);
 
 		}
 
-		private void cb_event_wind_CheckedChanged(object sender, EventArgs e)
+		private void cb_event_wind_MouseClick(object sender, EventArgs e)
 		{
 			SendEventChange("Wind Restored", cb_event_wind.Checked);
 
 		}
 
-		private void cb_event_warmth_CheckedChanged(object sender, EventArgs e)
+		private void cb_event_warmth_MouseClick(object sender, EventArgs e)
 		{
 			SendEventChange("Warmth Returned", cb_event_warmth.Checked);
 
@@ -451,37 +450,37 @@ namespace OriDETracker
 		#endregion
 
 		#region Shards
-		private void cb_shard_wv1_CheckedChanged(object sender, EventArgs e)
+		private void cb_shard_wv1_MouseClick(object sender, EventArgs e)
 		{
 			SendShardChange("Water Vein 1", cb_shard_wv1.Checked);
 
 		}
 
-		private void cb_shard_wv2_CheckedChanged(object sender, EventArgs e)
+		private void cb_shard_wv2_MouseClick(object sender, EventArgs e)
 		{
 			SendShardChange("Water Vein 2", cb_shard_wv2.Checked);
 
 		}
 
-		private void cb_shard_gs1_CheckedChanged(object sender, EventArgs e)
+		private void cb_shard_gs1_MouseClick(object sender, EventArgs e)
 		{
 			SendShardChange("Gumon Seal 1", cb_shard_gs1.Checked);
 
 		}
 
-		private void cb_shard_gs2_CheckedChanged(object sender, EventArgs e)
+		private void cb_shard_gs2_MouseClick(object sender, EventArgs e)
 		{
 			SendShardChange("Gumon Seal 2", cb_shard_gs2.Checked);
 
 		}
 
-		private void cb_shard_ss1_CheckedChanged(object sender, EventArgs e)
+		private void cb_shard_ss1_MouseClick(object sender, EventArgs e)
 		{
 			SendShardChange("Sunstone 1", cb_shard_ss1.Checked);
 
 		}
 
-		private void cb_shard_ss2_CheckedChanged(object sender, EventArgs e)
+		private void cb_shard_ss2_MouseClick(object sender, EventArgs e)
 		{
 			SendShardChange("Sunstone 2", cb_shard_ss2.Checked);
 
@@ -521,10 +520,10 @@ namespace OriDETracker
 
 		#endregion
 
-		private void cb_shards_CheckedChanged(object sender, EventArgs e)
+		private void cb_shards_MouseClick(object sender, EventArgs e)
 		{
 			parent.DisplayShards = cb_shards.Checked;
 			parent.ChangeShards();
 		}
-	}
+    }
 }
