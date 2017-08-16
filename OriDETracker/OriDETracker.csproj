@@ -25,7 +25,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <PublisherName>David Miller</PublisherName>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -117,6 +117,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="AmaticSC-Bold.ttf" />
+    <None Include="AmaticSC-Regular.ttf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -131,385 +133,518 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Bash.png">
+    <None Include="Assets_1000\Bash.png" />
+    <None Include="Assets_1000\BlackBackground.png" />
+    <None Include="Assets_1000\ChargeFlame.png" />
+    <None Include="Assets_1000\ChargeJump.png" />
+    <None Include="Assets_1000\CleanWater.png" />
+    <None Include="Assets_1000\Climb.png" />
+    <None Include="Assets_1000\Dash.png" />
+    <None Include="Assets_1000\DoubleJump.png" />
+    <None Include="Assets_1000\GBash.png" />
+    <None Include="Assets_1000\GChargeFlame.png" />
+    <None Include="Assets_1000\GChargeJump.png" />
+    <None Include="Assets_1000\GCleanWater.png" />
+    <None Include="Assets_1000\GClimb.png" />
+    <None Include="Assets_1000\GDash.png" />
+    <None Include="Assets_1000\GDoubleJump.png" />
+    <None Include="Assets_1000\GGlide.png" />
+    <None Include="Assets_1000\GGumonSeal.png" />
+    <None Include="Assets_1000\Glide.png" />
+    <None Include="Assets_1000\GLightGrenade.png" />
+    <None Include="Assets_1000\GreySkillTree.png" />
+    <None Include="Assets_1000\GreyTrees.png" />
+    <None Include="Assets_1000\GSpiritFlame.png" />
+    <None Include="Assets_1000\GStomp.png" />
+    <None Include="Assets_1000\GSunstone.png" />
+    <None Include="Assets_1000\GTBash.png" />
+    <None Include="Assets_1000\GTChargeFlame.png" />
+    <None Include="Assets_1000\GTChargeJump.png" />
+    <None Include="Assets_1000\GTClimb.png" />
+    <None Include="Assets_1000\GTDash.png" />
+    <None Include="Assets_1000\GTDoubleJump.png" />
+    <None Include="Assets_1000\GTGlide.png" />
+    <None Include="Assets_1000\GTLightGrenade.png" />
+    <None Include="Assets_1000\GTSpiritFlame.png" />
+    <None Include="Assets_1000\GTStomp.png" />
+    <None Include="Assets_1000\GTWallJump.png" />
+    <None Include="Assets_1000\GumonSeal.png" />
+    <None Include="Assets_1000\GumonSealShard1.png" />
+    <None Include="Assets_1000\GumonSealShard2.png" />
+    <None Include="Assets_1000\GWallJump.png" />
+    <None Include="Assets_1000\GWarmthReturned.png" />
+    <None Include="Assets_1000\GWaterVein.png" />
+    <None Include="Assets_1000\GWindRestored.png" />
+    <None Include="Assets_1000\GWindRestoredRando.png" />
+    <None Include="Assets_1000\LightGrenade.png" />
+    <None Include="Assets_1000\MapStone.png" />
+    <None Include="Assets_1000\SkillRing_Double.png" />
+    <None Include="Assets_1000\SkillRing_Single.png" />
+    <None Include="Assets_1000\SkillRing_Triple.png" />
+    <None Include="Assets_1000\SpiritFlame.png" />
+    <None Include="Assets_1000\Stomp.png" />
+    <None Include="Assets_1000\Sunstone.png" />
+    <None Include="Assets_1000\SunstoneShard1.png" />
+    <None Include="Assets_1000\SunstoneShard2.png" />
+    <None Include="Assets_1000\TBash.png" />
+    <None Include="Assets_1000\TChargeFlame.png" />
+    <None Include="Assets_1000\TChargeJump.png" />
+    <None Include="Assets_1000\TClimb.png" />
+    <None Include="Assets_1000\TDash.png" />
+    <None Include="Assets_1000\TDoubleJump.png" />
+    <None Include="Assets_1000\TGlide.png" />
+    <None Include="Assets_1000\TLightGrenade.png" />
+    <None Include="Assets_1000\TSpiritFlame.png" />
+    <None Include="Assets_1000\TStomp.png" />
+    <None Include="Assets_1000\TWallJump.png" />
+    <None Include="Assets_1000\Visible.png" />
+    <None Include="Assets_1000\WallJump.png" />
+    <None Include="Assets_1000\WarmthReturned.png" />
+    <None Include="Assets_1000\WaterVein.png" />
+    <None Include="Assets_1000\WaterVeinShard1.png" />
+    <None Include="Assets_1000\WaterVeinShard2.png" />
+    <None Include="Assets_1000\WhiteBackground.png" />
+    <None Include="Assets_1000\WindRestored.png" />
+    <None Include="Assets_1000\WindRestoredRando.png" />
+    <Content Include="Assets_400\Bash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\BlackBackground.png">
+    <Content Include="Assets_400\BlackBackground.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\ChargeFlame.png">
+    <Content Include="Assets_400\ChargeFlame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\ChargeJump.png">
+    <Content Include="Assets_400\ChargeJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\CleanWater.png">
+    <Content Include="Assets_400\CleanWater.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Climb.png">
+    <Content Include="Assets_400\Climb.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Dash.png">
+    <Content Include="Assets_400\Dash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\DoubleJump.png">
+    <Content Include="Assets_400\DoubleJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GBash.png">
+    <Content Include="Assets_400\GBash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GChargeFlame.png">
+    <Content Include="Assets_400\GChargeFlame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GChargeJump.png">
+    <Content Include="Assets_400\GChargeJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GCleanWater.png">
+    <Content Include="Assets_400\GCleanWater.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GClimb.png">
+    <Content Include="Assets_400\GClimb.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GDash.png">
+    <Content Include="Assets_400\GDash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GDoubleJump.png">
+    <Content Include="Assets_400\GDoubleJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GGlide.png">
+    <Content Include="Assets_400\GGlide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GGumonSeal.png">
+    <Content Include="Assets_400\GGumonSeal.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Glide.png">
+    <Content Include="Assets_400\Glide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GLightGrenade.png">
+    <Content Include="Assets_400\GLightGrenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GSpiritFlame.png">
+    <Content Include="Assets_400\GreySkillTree.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GStomp.png">
+    <Content Include="Assets_400\GreyTrees.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GSunstone.png">
+    <Content Include="Assets_400\GSpiritFlame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTBash.png">
+    <Content Include="Assets_400\GStomp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTChargeFlame.png">
+    <Content Include="Assets_400\GSunstone.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTChargeJump.png">
+    <Content Include="Assets_400\GTBash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTClimb.png">
+    <Content Include="Assets_400\GTChargeFlame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTDash.png">
+    <Content Include="Assets_400\GTChargeJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTDoubleJump.png">
+    <Content Include="Assets_400\GTClimb.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTGlide.png">
+    <Content Include="Assets_400\GTDash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTLightGrenade.png">
+    <Content Include="Assets_400\GTDoubleJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTSpiritFlame.png">
+    <Content Include="Assets_400\GTGlide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTStomp.png">
+    <Content Include="Assets_400\GTLightGrenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GTWallJump.png">
+    <Content Include="Assets_400\GTSpiritFlame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GumonSeal.png">
+    <Content Include="Assets_400\GTStomp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GWallJump.png">
+    <Content Include="Assets_400\GTWallJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GWarmthReturned.png">
+    <Content Include="Assets_400\GumonSeal.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GWaterVein.png">
+    <Content Include="Assets_400\GumonSealShard1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\GWindRestored.png">
+    <Content Include="Assets_400\GumonSealShard2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\LightGrenade.png">
+    <Content Include="Assets_400\GWallJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\SkillRing_Double.png">
+    <Content Include="Assets_400\GWarmthReturned.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\SkillRing_Single.png">
+    <Content Include="Assets_400\GWaterVein.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\SkillRing_Triple.png">
+    <Content Include="Assets_400\GWindRestored.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\SpiritFlame.png">
+    <Content Include="Assets_400\GWindRestoredRando.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Stomp.png">
+    <Content Include="Assets_400\LightGrenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Sunstone.png">
+    <Content Include="Assets_400\MapStone.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TBash.png">
+    <Content Include="Assets_400\SkillRing_Double.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TChargeFlame.png">
+    <Content Include="Assets_400\SkillRing_Single.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TChargeJump.png">
+    <Content Include="Assets_400\SkillRing_Triple.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TClimb.png">
+    <Content Include="Assets_400\SpiritFlame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TDash.png">
+    <Content Include="Assets_400\Stomp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TDoubleJump.png">
+    <Content Include="Assets_400\Sunstone.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TGlide.png">
+    <Content Include="Assets_400\SunstoneShard1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TLightGrenade.png">
+    <Content Include="Assets_400\SunstoneShard2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TSpiritFlame.png">
+    <Content Include="Assets_400\TBash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TStomp.png">
+    <Content Include="Assets_400\TChargeFlame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\TWallJump.png">
+    <Content Include="Assets_400\TChargeJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Visible.png">
+    <Content Include="Assets_400\TClimb.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\WallJump.png">
+    <Content Include="Assets_400\TDash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\WarmthReturned.png">
+    <Content Include="Assets_400\TDoubleJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\WaterVein.png">
+    <Content Include="Assets_400\TGlide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\WhiteBackground.png">
+    <Content Include="Assets_400\TLightGrenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\WindRestored.png">
+    <Content Include="Assets_400\TSpiritFlame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\TStomp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\TWallJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\Visible.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\WallJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\WarmthReturned.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\WaterVein.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\WaterVeinShard1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\WaterVeinShard2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\WhiteBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\WindRestored.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_400\WindRestoredRando.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\Bash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\BlackBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\ChargeFlame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\ChargeJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\CleanWater.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\Climb.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\Dash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\DoubleJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GBash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GChargeFlame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GChargeJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GCleanWater.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GClimb.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GDash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GDoubleJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GGlide.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GGumonSeal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\Glide.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GLightGrenade.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GreySkillTree.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GreyTrees.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GSpiritFlame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GStomp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GSunstone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTBash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTChargeFlame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTChargeJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTClimb.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTDash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTDoubleJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTGlide.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTLightGrenade.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTSpiritFlame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTStomp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GTWallJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GumonSeal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GumonSealShard1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GumonSealShard2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GWallJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GWarmthReturned.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GWaterVein.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GWindRestored.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\GWindRestoredRando.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\LightGrenade.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\MapStone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\SkillRing_Double.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\SkillRing_Single.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\SkillRing_Triple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\SpiritFlame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\Stomp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\Sunstone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\SunstoneShard1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\SunstoneShard2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TBash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TChargeFlame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TChargeJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TClimb.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TDash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TDoubleJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TGlide.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TLightGrenade.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TSpiritFlame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TStomp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\TWallJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\Visible.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\WallJump.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\WarmthReturned.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\WaterVein.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\WaterVeinShard1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\WaterVeinShard2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\WhiteBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\WindRestored.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_600\WindRestoredRando.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ori_red.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\Bash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\BlackBackground.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\ChargeFlame.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\ChargeJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\CleanWater.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\Climb.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\Dash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\DoubleJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GBash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GChargeFlame.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GChargeJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GCleanWater.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GClimb.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GDash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GDoubleJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GGlide.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GGumonSeal.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\Glide.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GLightGrenade.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GreySkillTree.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GreyTrees.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GSpiritFlame.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GStomp.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GSunstone.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTBash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTChargeFlame.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTChargeJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTClimb.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTDash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTDoubleJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTGlide.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTLightGrenade.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTSpiritFlame.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTStomp.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GTWallJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GumonSeal.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GWallJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GWarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GWaterVein.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\GWindRestored.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\LightGrenade.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\SkillRing_Double.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\SkillRing_Single.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\SkillRing_Triple.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\SpiritFlame.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\Stomp.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\Sunstone.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TBash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TChargeFlame.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TChargeJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TClimb.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TDash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TDoubleJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TGlide.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TLightGrenade.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TSpiritFlame.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TStomp.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\TWallJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\Visible.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\WallJump.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\WarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\WaterVein.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\WhiteBackground.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmallAssets\WindRestored.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

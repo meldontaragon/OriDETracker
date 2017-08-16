@@ -40,6 +40,7 @@
             this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelBlank = new System.Windows.Forms.Label();
+            this.fontDialog_mapstone = new System.Windows.Forms.FontDialog();
             this.contextMenu_Tracker.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -170,6 +171,7 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.Label labelBlank;
+        private System.Windows.Forms.FontDialog fontDialog_mapstone;
     }
 }
 

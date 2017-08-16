@@ -44,4 +44,5 @@ the tracker as Administrator can fix this.
 ## Thanks
 Thanks to SigmaSin for creating the Ori DE Randomizer! Additionally, thanks to DevilSquirrel
 for help with setting up the auto updating component and for writing the memory related
-classes. Also, thanks to ViresMajores for designing all the visual components of the tracker.
+classes. Thanks to ViresMajores and Hydra for their work in designing the visual components of
+the tracker.

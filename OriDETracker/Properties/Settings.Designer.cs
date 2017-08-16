@@ -50,6 +50,37 @@ namespace OriDETracker.Properties {
             }
         }
 
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public bool Shards
+        {
+            get
+            {
+                return ((bool)(this["Shards"]));
+            }
+            set
+            {
+                this["Shards"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("600")]
+        public int Pixels
+        {
+            get
+            {
+                return ((int)(this["Pixels"]));
+            }
+            set
+            {
+                this["Pixels"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]

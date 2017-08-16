@@ -31,6 +31,8 @@ namespace OriDETracker
             scaling = Properties.Settings.Default.Scaling;
             current_layout = Properties.Settings.Default.Layout;
             this.Opacity = Properties.Settings.Default.Opacity;
+            this.display_shards = Properties.Settings.Default.Shards;
+            this.image_pixel_size = Properties.Settings.Default.Pixels;
 
             settings = new SettingsLayout(this);
             settings.Visible = false;
@@ -39,8 +41,31 @@ namespace OriDETracker
             th = new Thread(UpdateLoop);
             th.IsBackground = true;
 
+            scaledSize = new Size(image_pixel_size, image_pixel_size);
+
+            this.UpdateImages();
             this.ChangeLayout(current_layout);
-        }
+
+            int tmp = 1;
+            foreach (FontFamily ff in FontFamily.Families)
+            {
+                if (ff.Name.ToLower() == "amatic sc")
+                {
+                    map_font = new Font(new FontFamily("Amatic SC"), 24, FontStyle.Bold);
+                    tmp = 0;
+                    break;
+                }
+            }
+
+            if (tmp == 1)
+            {
+                if (this.fontDialog_mapstone.ShowDialog() == DialogResult.OK)
+                {
+                    map_font = fontDialog_mapstone.Font;
+                    map_font = new Font(fontDialog_mapstone.Font.FontFamily, 24f, FontStyle.Bold);
+                }
+            }
+        }          
 
         protected OriMemory mem { get; set; }
         protected Thread th;
@@ -49,14 +74,27 @@ namespace OriDETracker
         protected Graphics selfGraphics;
 
         public float Scaling { get { return scaling; } set { scaling = value; } }
+        public int ImagePixelSize { get { return image_pixel_size; } set { image_pixel_size = value; } }
+        public bool DisplayShards { get { return display_shards; } set { display_shards = value; } }
+        public Font MapFont { set { map_font = value;  } }
 
         protected const int TOL = 25;
         protected bool auto_update = false;
         protected bool draggable = false;
-        protected float scaling = 0.4f;
-        private Size scaledSize = new Size(600, 600);
 
-        protected static Size DEFAULTSIZE = new Size(600, 600);
+        protected int mapstone_count = 0;
+
+        protected float scaling = 1.0f;
+        protected int image_pixel_size = 600;
+        protected Size scaledSize;
+
+        protected bool display_mapstone = false;
+        protected bool display_shards = false;
+
+        public Brush font_brush = new SolidBrush(Color.White);
+
+        protected Font map_font;
+        
 
         #region FrameMoving
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -79,6 +117,9 @@ namespace OriDETracker
         private Dictionary<Skill, bool> hitTree;
         private Dictionary<Skill, bool> haveTree;
 
+        //Shards
+        private Dictionary<String, bool> haveShards;
+
         /*
         //All Events
         private Dictionary<String, bool> haveEventLocation;
@@ -88,81 +129,188 @@ namespace OriDETracker
 
         #region Images
 
-        protected const String DIR = @"SmallAssets/";
 
-        protected Image imageSpiritFlame  = Image.FromFile(DIR + @"SpiritFlame.png");
-        protected Image imageWallJump     = Image.FromFile(DIR + @"WallJump.png");
-        protected Image imageChargeFlame  = Image.FromFile(DIR + @"ChargeFlame.png");
-        protected Image imageDoubleJump   = Image.FromFile(DIR + @"DoubleJump.png");
-        protected Image imageBash         = Image.FromFile(DIR + @"Bash.png");
-        protected Image imageStomp        = Image.FromFile(DIR + @"Stomp.png");
-        protected Image imageGlide        = Image.FromFile(DIR + @"Glide.png");
-        protected Image imageClimb        = Image.FromFile(DIR + @"Climb.png");
-        protected Image imageChargeJump   = Image.FromFile(DIR + @"ChargeJump.png");
-        protected Image imageLightGrenade = Image.FromFile(DIR + @"LightGrenade.png");
-        protected Image imageDash         = Image.FromFile(DIR + @"Dash.png");
+        protected String DIR = @"Assets_400/";
 
-        /*
-        protected Image imageGSpiritFlame   = Image.FromFile(DIR + @"GSpiritFlame.png");
-        protected Image imageGWallJump      = Image.FromFile(DIR + @"GWallJump.png");
-        protected Image imageGChargeFlame   = Image.FromFile(DIR + @"GChargeFlame.png");
-        protected Image imageGDoubleJump    = Image.FromFile(DIR + @"GDoubleJump.png");
-        protected Image imageGBash          = Image.FromFile(DIR + @"GBash.png");
-        protected Image imageGStomp         = Image.FromFile(DIR + @"GStomp.png");
-        protected Image imageGChargeJump    = Image.FromFile(DIR + @"GChargeJump.png");
-        protected Image imageGClimb         = Image.FromFile(DIR + @"GClimb.png");
-        protected Image imageGGlide         = Image.FromFile(DIR + @"GGlide.png");
-        protected Image imageGLightGrenade  = Image.FromFile(DIR + @"GLightGrenade.png");
-        protected Image imageGDash          = Image.FromFile(DIR + @"GDash.png");
-        */
-
-        protected Image imageTreeSpiritFlame  = Image.FromFile(DIR + @"TSpiritFlame.png");
-        protected Image imageTreeWallJump     = Image.FromFile(DIR + @"TWallJump.png");
-        protected Image imageTreeChargeFlame  = Image.FromFile(DIR + @"TChargeFlame.png");
-        protected Image imageTreeDoubleJump   = Image.FromFile(DIR + @"TDoubleJump.png");
-        protected Image imageTreeBash         = Image.FromFile(DIR + @"TBash.png");
-        protected Image imageTreeStomp        = Image.FromFile(DIR + @"TStomp.png");
-        protected Image imageTreeChargeJump   = Image.FromFile(DIR + @"TChargeJump.png");
-        protected Image imageTreeGlide        = Image.FromFile(DIR + @"TGlide.png");
-        protected Image imageTreeClimb        = Image.FromFile(DIR + @"TClimb.png");
-        protected Image imageTreeLightGrenade = Image.FromFile(DIR + @"TLightGrenade.png");
-        protected Image imageTreeDash         = Image.FromFile(DIR + @"TDash.png");
+        protected Image imageSpiritFlame ;
+        protected Image imageWallJump ; 
+        protected Image imageChargeFlame ; 
+        protected Image imageDoubleJump ;
+        protected Image imageBash ; 
+        protected Image imageStomp ;
+        protected Image imageGlide ; 
+        protected Image imageClimb ; 
+        protected Image imageChargeJump ;
+        protected Image imageLightGrenade ; 
+        protected Image imageDash ;
 
         /*
-        protected Image imageGTreeSpiritFlame  = Image.FromFile(DIR + @"GTSpiritFlame.png");
-        protected Image imageGTreeWallJump     = Image.FromFile(DIR + @"GTWallJump.png");
-        protected Image imageGTreeChargeFlame  = Image.FromFile(DIR + @"GTChargeFlame.png");
-        protected Image imageGTreeDoubleJump   = Image.FromFile(DIR + @"GTDoubleJump.png");
-        protected Image imageGTreeBash         = Image.FromFile(DIR + @"GTBash.png");
-        protected Image imageGTreeStomp        = Image.FromFile(DIR + @"GTStomp.png");
-        protected Image imageGTreeChargeJump   = Image.FromFile(DIR + @"GTChargeJump.png");
-        protected Image imageGTreeGlide        = Image.FromFile(DIR + @"GTGlide.png");
-        protected Image imageGTreeClimb        = Image.FromFile(DIR + @"GTClimb.png");
-        protected Image imageGTreeLightGrenade = Image.FromFile(DIR + @"GTLightGrenade.png");
-        protected Image imageGTreeDash         = Image.FromFile(DIR + @"GTDash.png");
+        protected Image imageGSpiritFlame   ;
+        protected Image imageGWallJump      ;
+        protected Image imageGChargeFlame   ; 
+        protected Image imageGDoubleJump    ;
+        protected Image imageGBash          ; 
+        protected Image imageGStomp         ; 
+        protected Image imageGChargeJump    ; 
+        protected Image imageGClimb         ;
+        protected Image imageGGlide         ; 
+        protected Image imageGLightGrenade  ; 
+        protected Image imageGDash          ; 
         */
 
-        protected Image imageWaterVein      = Image.FromFile(DIR + @"WaterVein.png");
-        protected Image imageGumonSeal      = Image.FromFile(DIR + @"GumonSeal.png");
-        protected Image imageSunstone       = Image.FromFile(DIR + @"Sunstone.png");
-        protected Image imageCleanWater     = Image.FromFile(DIR + @"CleanWater.png");
-        protected Image imageWindRestored   = Image.FromFile(DIR + @"WindRestored.png");
-        protected Image imageWarmthReturned = Image.FromFile(DIR + @"WarmthReturned.png");
+        protected Image imageTreeSpiritFlame ;
+        protected Image imageTreeWallJump ;
+        protected Image imageTreeChargeFlame ; 
+        protected Image imageTreeDoubleJump ;
+        protected Image imageTreeBash ;
+        protected Image imageTreeStomp ; 
+        protected Image imageTreeChargeJump ; 
+        protected Image imageTreeGlide ; 
+        protected Image imageTreeClimb ; 
+        protected Image imageTreeLightGrenade ; 
+        protected Image imageTreeDash ; 
 
-        protected Image imageGWaterVein      = Image.FromFile(DIR + @"GWaterVein.png");
-        protected Image imageGGumonSeal      = Image.FromFile(DIR + @"GGumonSeal.png");
-        protected Image imageGSunstone       = Image.FromFile(DIR + @"GSunstone.png");
-        protected Image imageGCleanWater     = Image.FromFile(DIR + @"GCleanWater.png");
-        protected Image imageGWindRestored   = Image.FromFile(DIR + @"GWindRestored.png");
-        protected Image imageGWarmthReturned = Image.FromFile(DIR + @"GWarmthReturned.png");
+        /*
+        protected Image imageGTreeSpiritFlame  ; + @"GTSpiritFlame.png");
+        protected Image imageGTreeWallJump     ; + @"GTWallJump.png");
+        protected Image imageGTreeChargeFlame  ; + @"GTChargeFlame.png");
+        protected Image imageGTreeDoubleJump   ; + @"GTDoubleJump.png");
+        protected Image imageGTreeBash         ; + @"GTBash.png");
+        protected Image imageGTreeStomp        ; + @"GTStomp.png");
+        protected Image imageGTreeChargeJump   ; + @"GTChargeJump.png");
+        protected Image imageGTreeGlide        ; + @"GTGlide.png");
+        protected Image imageGTreeClimb        ; + @"GTClimb.png");
+        protected Image imageGTreeLightGrenade ; + @"GTLightGrenade.png");
+        protected Image imageGTreeDash         ; + @"GTDash.png");
+        */
 
-        protected Image imageSkillWheel =       Image.FromFile(DIR + @"SkillRing_Single.png");
-        protected Image imageSkillWheelDouble = Image.FromFile(DIR + @"SkillRing_Double.png");
-        protected Image imageSkillWheelTriple = Image.FromFile(DIR + @"SkillRing_Triple.png");
+        protected Image imageWaterVein ; 
+        protected Image imageGumonSeal ; 
+        protected Image imageSunstone ; 
+        protected Image imageCleanWater ; 
+        protected Image imageWindRestored ; 
+        protected Image imageWarmthReturned ;
 
-        protected Image imageBlackBackground = Image.FromFile(DIR + @"BlackBackground.png");
-        protected Image imageGSkills = Image.FromFile(DIR + @"GreySkillTree.png");
-        protected Image imageGTrees = Image.FromFile(DIR + @"GreyTrees.png");
+        protected Image imageGWaterVein ; 
+        protected Image imageGGumonSeal ; 
+        protected Image imageGSunstone ; 
+        protected Image imageGCleanWater ;
+        protected Image imageGWindRestored ; 
+        protected Image imageGWarmthReturned ;
+
+        protected Image imageWindRestoredRando ;
+        protected Image imageGWindRestoredRando ;
+
+        protected Image imageWaterVeinShard1 ;
+        protected Image imageWaterVeinShard2 ;
+
+        protected Image imageGumonSealShard1 ; 
+        protected Image imageGumonSealShard2 ; 
+
+        protected Image imageSunstoneShard1 ;
+        protected Image imageSunstoneShard2 ; 
+
+        protected Image imageSkillWheel ;
+        protected Image imageSkillWheelDouble ; 
+        protected Image imageSkillWheelTriple ; 
+        protected Image imageBlackBackground ;
+        protected Image imageGSkills ; 
+        protected Image imageGTrees ;
+
+        protected Image imageMapStone;
+
+        public void UpdateImages()
+        {
+            DIR = "Assets_" + image_pixel_size.ToString() + @"/";
+
+            imageSpiritFlame = Image.FromFile(DIR + @"SpiritFlame.png");
+            imageWallJump = Image.FromFile(DIR + @"WallJump.png");
+            imageChargeFlame = Image.FromFile(DIR + @"ChargeFlame.png");
+            imageDoubleJump = Image.FromFile(DIR + @"DoubleJump.png");
+            imageBash = Image.FromFile(DIR + @"Bash.png");
+            imageStomp = Image.FromFile(DIR + @"Stomp.png");
+            imageGlide = Image.FromFile(DIR + @"Glide.png");
+            imageClimb = Image.FromFile(DIR + @"Climb.png");
+            imageChargeJump = Image.FromFile(DIR + @"ChargeJump.png");
+            imageLightGrenade = Image.FromFile(DIR + @"LightGrenade.png");
+            imageDash = Image.FromFile(DIR + @"Dash.png");
+
+            /*
+            imageGSpiritFlame   = Image.FromFile(DIR + @"GSpiritFlame.png");
+            imageGWallJump      = Image.FromFile(DIR + @"GWallJump.png");
+            imageGChargeFlame   = Image.FromFile(DIR + @"GChargeFlame.png");
+            imageGDoubleJump    = Image.FromFile(DIR + @"GDoubleJump.png");
+            imageGBash          = Image.FromFile(DIR + @"GBash.png");
+            imageGStomp         = Image.FromFile(DIR + @"GStomp.png");
+            imageGChargeJump    = Image.FromFile(DIR + @"GChargeJump.png");
+            imageGClimb         = Image.FromFile(DIR + @"GClimb.png");
+            imageGGlide         = Image.FromFile(DIR + @"GGlide.png");
+            imageGLightGrenade  = Image.FromFile(DIR + @"GLightGrenade.png");
+            imageGDash          = Image.FromFile(DIR + @"GDash.png");
+            */
+
+            imageTreeSpiritFlame = Image.FromFile(DIR + @"TSpiritFlame.png");
+            imageTreeWallJump = Image.FromFile(DIR + @"TWallJump.png");
+            imageTreeChargeFlame = Image.FromFile(DIR + @"TChargeFlame.png");
+            imageTreeDoubleJump = Image.FromFile(DIR + @"TDoubleJump.png");
+            imageTreeBash = Image.FromFile(DIR + @"TBash.png");
+            imageTreeStomp = Image.FromFile(DIR + @"TStomp.png");
+            imageTreeChargeJump = Image.FromFile(DIR + @"TChargeJump.png");
+            imageTreeGlide = Image.FromFile(DIR + @"TGlide.png");
+            imageTreeClimb = Image.FromFile(DIR + @"TClimb.png");
+            imageTreeLightGrenade = Image.FromFile(DIR + @"TLightGrenade.png");
+            imageTreeDash = Image.FromFile(DIR + @"TDash.png");
+
+            /*
+            imageGTreeSpiritFlame  = Image.FromFile(DIR + @"GTSpiritFlame.png");
+            imageGTreeWallJump     = Image.FromFile(DIR + @"GTWallJump.png");
+            imageGTreeChargeFlame  = Image.FromFile(DIR + @"GTChargeFlame.png");
+            imageGTreeDoubleJump   = Image.FromFile(DIR + @"GTDoubleJump.png");
+            imageGTreeBash         = Image.FromFile(DIR + @"GTBash.png");
+            imageGTreeStomp        = Image.FromFile(DIR + @"GTStomp.png");
+            imageGTreeChargeJump   = Image.FromFile(DIR + @"GTChargeJump.png");
+            imageGTreeGlide        = Image.FromFile(DIR + @"GTGlide.png");
+            imageGTreeClimb        = Image.FromFile(DIR + @"GTClimb.png");
+            imageGTreeLightGrenade = Image.FromFile(DIR + @"GTLightGrenade.png");
+            imageGTreeDash         = Image.FromFile(DIR + @"GTDash.png");
+            */
+
+            imageWaterVein = Image.FromFile(DIR + @"WaterVein.png");
+            imageGumonSeal = Image.FromFile(DIR + @"GumonSeal.png");
+            imageSunstone = Image.FromFile(DIR + @"Sunstone.png");
+            imageCleanWater = Image.FromFile(DIR + @"CleanWater.png");
+            imageWindRestored = Image.FromFile(DIR + @"WindRestored.png");
+            imageWarmthReturned = Image.FromFile(DIR + @"WarmthReturned.png");
+
+            imageGWaterVein = Image.FromFile(DIR + @"GWaterVein.png");
+            imageGGumonSeal = Image.FromFile(DIR + @"GGumonSeal.png");
+            imageGSunstone = Image.FromFile(DIR + @"GSunstone.png");
+            imageGCleanWater = Image.FromFile(DIR + @"GCleanWater.png");
+            imageGWindRestored = Image.FromFile(DIR + @"GWindRestored.png");
+            imageGWarmthReturned = Image.FromFile(DIR + @"GWarmthReturned.png");
+
+            imageSkillWheel = Image.FromFile(DIR + @"SkillRing_Single.png");
+            imageSkillWheelDouble = Image.FromFile(DIR + @"SkillRing_Double.png");
+            imageSkillWheelTriple = Image.FromFile(DIR + @"SkillRing_Triple.png");
+
+            imageBlackBackground = Image.FromFile(DIR + @"BlackBackground.png");
+            imageGSkills = Image.FromFile(DIR + @"GreySkillTree.png");
+            imageGTrees = Image.FromFile(DIR + @"GreyTrees.png");
+
+            imageMapStone = Image.FromFile(DIR + @"MapStone.png");
+
+            imageWindRestoredRando = Image.FromFile(DIR + @"WindRestoredRando.png");
+            imageGWindRestoredRando = Image.FromFile(DIR + @"GWindRestoredRando.png");
+
+            imageWaterVeinShard1 = Image.FromFile(DIR + @"WaterVeinShard1.png");
+            imageWaterVeinShard2 = Image.FromFile(DIR + @"WaterVeinShard2.png");
+
+            imageGumonSealShard1 = Image.FromFile(DIR + @"GumonSealShard1.png");
+            imageGumonSealShard2 = Image.FromFile(DIR + @"GumonSealShard2.png");
+
+            imageSunstoneShard1 = Image.FromFile(DIR + @"SunstoneShard1.png");
+            imageSunstoneShard2 = Image.FromFile(DIR + @"SunstoneShard2.png");
+        }
 
         protected Dictionary<Skill, Image> skillImages = new Dictionary<Skill, Image>();
         //protected Dictionary<Skill, Image> skillGreyImages = new Dictionary<Skill, Image>();
@@ -171,6 +319,8 @@ namespace OriDETracker
         protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
 
         protected Dictionary<Skill, Image> treeImages = new Dictionary<Skill, Image>();
+
+        protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
         //protected Dictionary<Skill, Image> treeGreyImages = new Dictionary<Skill, Image>();
 
         #endregion
@@ -211,6 +361,7 @@ namespace OriDETracker
         private Dictionary<Skill, Point> skillMousePoint = new Dictionary<Skill, Point>();
         private Dictionary<String, Point> eventMousePoint = new Dictionary<string, Point>();
         private Dictionary<Skill, Point> treeMouseLocation = new Dictionary<Skill, Point>();
+        private Point mapstoneMousePoint = new Point(305, 343);
         //private Dictionary<String, Point> eventMouseLocation;
 
         #region SetLayout
@@ -241,6 +392,9 @@ namespace OriDETracker
         private void SetLayoutRandomizerAllTrees()
         {
             SetLayoutDefaults();
+
+            display_mapstone = true;
+
             hitTree = new Dictionary<Skill, bool>()
             {
                 { Skill.Sein,        false },
@@ -279,12 +433,22 @@ namespace OriDETracker
                 { "Wind Restored",   false }
             };
 
+            haveShards = new Dictionary<string, bool>()
+            {
+                { "Water Vein 1",     false },
+                { "Water Vein 2",     false },
+                { "Gumon Seal 1",     false },
+                { "Gumon Seal 2",     false },
+                { "Sunstone 1",      false },
+                { "Sunstone 2",      false },
+            };
+
             eventImages = new Dictionary<String, Image>()
             {
                 { "Water Vein",       imageWaterVein },
                 { "Gumon Seal",      imageGumonSeal },
                 { "Sunstone",        imageSunstone },
-                { "Wind Restored",    imageWindRestored },
+                { "Wind Restored",    imageWindRestoredRando },
                 { "Warmth Returned", imageCleanWater }
             };
 
@@ -293,8 +457,18 @@ namespace OriDETracker
                 { "Water Vein",      imageGWaterVein },
                 { "Gumon Seal",      imageGGumonSeal },
                 { "Sunstone",        imageGSunstone },
-                { "Wind Restored",   imageGWindRestored },
+                { "Wind Restored",   imageGWindRestoredRando },
                 { "Warmth Returned", imageGCleanWater}
+            };
+
+            shardImages = new Dictionary<string, Image>()
+            {
+                { "Water Vein 1",     imageWaterVeinShard1 },
+                { "Water Vein 2",     imageWaterVeinShard2 },
+                { "Gumon Seal 1",     imageGumonSealShard1 },
+                { "Gumon Seal 2",     imageGumonSealShard2 },
+                { "Sunstone 1",      imageSunstoneShard1 },
+                { "Sunstone 2",      imageSunstoneShard2 },
             };
 
             treeImages = new Dictionary<Skill, Image>()
@@ -334,7 +508,7 @@ namespace OriDETracker
                 { "Water Vein", new Point(206, 240) },
                 { "Gumon Seal", new Point(300, 202) },
                 { "Sunstone",   new Point(393, 233) },
-                { "Wind Restored", new Point(300, 404) },
+                { "Wind Restored", new Point(391, 342) },
                 { "Warmth Returned", new Point(205, 343) }
             };
 
@@ -492,6 +666,7 @@ namespace OriDETracker
             ClearAll();
 
             settings.Reset();
+            this.settings.Close();
 
             scaling = 1.0f;
             this.Opacity = 1.0;
@@ -506,7 +681,8 @@ namespace OriDETracker
             this.TopMost = true;
             this.alwaysOnTopToolStripMenuItem.Checked = false;
 
-            this.BackColor = SystemColors.ControlDarkDark;
+            this.BackColor = Color.Black;
+            this.font_brush = new SolidBrush(Color.White);
             this.TransparencyKey = Color.Empty;
 
             Refresh();
@@ -540,6 +716,7 @@ namespace OriDETracker
             x = e.X;
             y = e.Y;
 
+            //MessageBox.Show("X: " + x + "   Y: " + y);
             ToggleMouseClick(x, y);
 
             Refresh();
@@ -568,12 +745,22 @@ namespace OriDETracker
 
         protected bool ToggleMouseClick(int x, int y)
         {
-            //scaling = 1.5;
-            int CUR_TOL = (int)(TOL * scaling);
+            double mouse_scaling = scaling * ((image_pixel_size * 1.0)/ 600.0 );
+            int CUR_TOL = (int)(TOL * mouse_scaling);
+
+            if ( display_mapstone && (Math.Sqrt(Square(x - (int)(mapstoneMousePoint.X * mouse_scaling)) + Square(y - (int)(mapstoneMousePoint.Y * mouse_scaling))) <= 2 * CUR_TOL) )
+            {
+                mapstone_count += 1;
+                if (mapstone_count > 9)
+                {
+                    mapstone_count = 0;
+                }
+                return true;
+            }
 
             foreach (KeyValuePair<Skill, Point> sk in skillMousePoint)
             {
-                if (Math.Sqrt(Square(x - (int)(sk.Value.X*scaling)) + Square(y - (int)(sk.Value.Y * scaling))) <= 2*CUR_TOL)
+                if (Math.Sqrt(Square(x - (int)(sk.Value.X*mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= 2*CUR_TOL)
                 {
                     if (haveSkill.ContainsKey(sk.Key))
                     {
@@ -585,7 +772,7 @@ namespace OriDETracker
 
             foreach (KeyValuePair<Skill, Point> sk in treeMouseLocation)
             {
-                if (Math.Sqrt(Square(x - (int)(sk.Value.X * scaling)) + Square(y - (int)(sk.Value.Y * scaling))) <= CUR_TOL)
+                if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL)
                 {
                     if (haveTree.ContainsKey(sk.Key))
                     {
@@ -597,11 +784,53 @@ namespace OriDETracker
 
             foreach (KeyValuePair<String, Point> sk in eventMousePoint)
             {
-                if (Math.Sqrt(Square(x - (int)(sk.Value.X * scaling)) + Square(y - (int)(sk.Value.Y * scaling))) <= CUR_TOL)
+                if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL)
                 {
                     if (haveEvent.ContainsKey(sk.Key))
                     {
-                        haveEvent[sk.Key] = !haveEvent[sk.Key];
+                        switch (sk.Key)
+                        {
+                            case "Water Vein":
+                            case "Gumon Seal":
+                            case "Sunstone":
+                                if (display_shards)
+                                {
+                                    if (haveEvent[sk.Key])
+                                    {
+                                        haveShards[sk.Key + " 1"] = false;
+                                        haveShards[sk.Key + " 2"] = false;
+                                        haveEvent[sk.Key] = false;
+                                    }
+                                    else if (haveShards[sk.Key + " 2"])
+                                    {
+                                        haveShards[sk.Key + " 1"] = true;
+                                        haveShards[sk.Key + " 2"] = true;
+                                        haveEvent[sk.Key] = true;
+                                    }
+                                    else if (haveShards[sk.Key + " 1"])
+                                    {
+                                        haveShards[sk.Key + " 1"] = true;
+                                        haveShards[sk.Key + " 2"] = true;
+                                        haveEvent[sk.Key] = false;
+                                    }
+                                    else
+                                    {
+                                        haveShards[sk.Key + " 1"] = true;
+                                        haveShards[sk.Key + " 2"] = false;
+                                        haveEvent[sk.Key] = false;
+                                    }
+                                }
+                                else
+                                {
+                                    haveEvent[sk.Key] = !haveEvent[sk.Key];
+                                }
+                                break;
+                            case "Warmth Returned":
+                            case "Wind Restored":
+                            case "Clean Water":
+                                haveEvent[sk.Key] = !haveEvent[sk.Key];
+                                break;
+                        }
                         return true;
                     }
                 }
@@ -625,7 +854,7 @@ namespace OriDETracker
                  * (5) Putting the skill wheel on top
                  * */
 
-                scaledSize = new Size((int)(DEFAULTSIZE.Width * scaling), (int)(DEFAULTSIZE.Height * scaling));
+                scaledSize = new Size((int)(image_pixel_size * scaling), (int)(image_pixel_size * scaling));
                 this.Size = scaledSize;
                 Rectangle drawRect = new Rectangle(new Point(0, 0), scaledSize);
 
@@ -679,7 +908,30 @@ namespace OriDETracker
                     */
                 }
 
-                #endregion                
+                #endregion
+                #region Shards
+                if (display_shards)
+                {
+                    foreach (KeyValuePair<String, bool> sk in haveShards)
+                    {
+                        if (sk.Value)
+                        {
+                            this.selfGraphics.DrawImage(shardImages[sk.Key], drawRect);
+                        }
+                        /*
+                        else
+                        {
+                            this.selfGraphics.DrawImage(treeGreyImages[sk.Key], drawRect);
+                        }
+                        */
+                    }
+                }
+                #endregion  
+                if (display_mapstone)
+                {
+                    this.selfGraphics.DrawImage(imageMapStone, drawRect);
+                    this.selfGraphics.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new PointF(285 * scaling, 375 * scaling));
+                }
                 #endregion
 
                 this.selfGraphics.DrawImage(imageSkillWheelDouble, drawRect);
@@ -916,6 +1168,8 @@ namespace OriDETracker
             Properties.Settings.Default.Scaling = scaling;
             Properties.Settings.Default.Layout = current_layout;
             Properties.Settings.Default.Opacity = this.Opacity;
+            Properties.Settings.Default.Shards = this.display_shards;
+            Properties.Settings.Default.Pixels = this.image_pixel_size;
             Properties.Settings.Default.Save();
         }
 

@@ -24,8 +24,26 @@ namespace OriDETracker
 
             numericUpDownOpacity.Value = (int)(100 * par.Opacity);
             trackBarOpacity.Value = (int)(100 * par.Opacity);
+            
+            if (parent.ImagePixelSize == 400)
+            {
+                this.rb_400.Checked = true;
+                this.rb_600.Checked = false;
+            }
+            else if (parent.ImagePixelSize == 600)
+            {
+                this.rb_400.Checked = false;
+                this.rb_600.Checked = true;
+            }
+            else
+            {
+
+            }
+
+            this.cb_shards.Checked = parent.DisplayShards;
 
             this.Text = "Tracker Layer v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
             rbRandoTrees.Checked = true;
 
             rbRandoEvents.Enabled = false;
@@ -46,6 +64,8 @@ namespace OriDETracker
             numericUpDownOpacity.Value = 100;
             trackBarScale.Value = 100;
             trackBarOpacity.Value = 100;
+            rb_400.Checked = false;
+            rb_600.Checked = true;
         }
 
         private void rbRandoTrees_CheckedChanged(object sender, EventArgs e)
@@ -108,6 +128,7 @@ namespace OriDETracker
             {
                 parent.BackColor = colorDialogBackground.Color;
             }
+            parent.Refresh();
         }
 
         private void trackBarScale_Scroll(object sender, EventArgs e)
@@ -131,6 +152,34 @@ namespace OriDETracker
             int tmp = trackBarOpacity.Value;
             trackBarOpacity.Value = tmp;
             numericUpDownOpacity.Value = tmp;
+        }
+
+        private void cb_shards_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.DisplayShards = cb_shards.Checked;
+        }
+
+        private void rb_400_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.ImagePixelSize = 400;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+
+        private void rb_600_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.ImagePixelSize = 600;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+
+        private void button_mapstone_font_Click(object sender, EventArgs e)
+        {
+            if (colorDialogFont.ShowDialog() == DialogResult.OK)
+            {
+                parent.font_brush = new SolidBrush(colorDialogFont.Color);
+            }
+            parent.Refresh();
         }
     }
 
