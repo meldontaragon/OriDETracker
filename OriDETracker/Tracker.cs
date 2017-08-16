@@ -1248,6 +1248,11 @@ namespace OriDETracker
             {
                 haveEvent[haveEvent.ElementAt(i).Key] = false;
             }
+            for (int i = 0; i < haveShards.Count; i++)
+            {
+                haveShards[haveShards.ElementAt(i).Key] = false;
+            }
+            mapstone_count = 0;
             edit_form.Clear();
 
             Refresh();

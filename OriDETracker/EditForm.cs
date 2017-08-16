@@ -39,6 +39,8 @@ namespace OriDETracker
 
 			cb_shard_ss1.Enabled = new_val;
 			cb_shard_ss2.Enabled = new_val;
+
+            cb_shards.Checked = new_val;
 		}
 		public void ChangeWarmth(bool new_val)
 		{
@@ -47,6 +49,8 @@ namespace OriDETracker
 		public void Reset()
 		{
 			Clear();
+            cb_shards.Checked = false;
+
 			cb_shard_wv1.Enabled = false;
 			cb_shard_wv2.Enabled = false;
 
@@ -102,7 +106,6 @@ namespace OriDETracker
 			cb_shard_ss2.Checked = false;
 
 			numeric_mapstone.Value = 0;
-
 		}
 
 		public void UpdateSkill(Skill sk, bool b)
