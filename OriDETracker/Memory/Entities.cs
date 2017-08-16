@@ -1,7 +1,9 @@
 ﻿using System.Drawing;
 using System.Globalization;
-namespace OriDE.Memory {
-	public enum Skill {
+namespace OriDE.Memory
+{
+	public enum Skill
+	{
 		Sein,
 		WallJump,
 		ChargeFlame,
@@ -12,29 +14,52 @@ namespace OriDE.Memory {
 		Climb,
 		ChargeJump,
 		Grenade,
-        Dash,
-        None
-    }
-	public struct Scene {
-		public string Name { get; set; }
-		public bool Active { get; set; }
-		public SceneState State { get; set; }
+		Dash,
+		None
+	}
+	public struct Scene
+	{
+		public string Name {
+			get;
+			set;
+		}
+		public bool Active {
+			get;
+			set;
+		}
+		public SceneState State {
+			get;
+			set;
+		}
 
-		public override string ToString() {
+		public override string ToString()
+		{
 			return Name + " - " + State.ToString();
 		}
 	}
 
-	public struct Area {
-		public string Name { get; set; }
-		public decimal Progress { get; set; }
-		public bool Current { get; set; }
+	public struct Area
+	{
+		public string Name {
+			get;
+			set;
+		}
+		public decimal Progress {
+			get;
+			set;
+		}
+		public bool Current {
+			get;
+			set;
+		}
 
-		public override string ToString() {
+		public override string ToString()
+		{
 			return (string.IsNullOrEmpty(Name) ? "N/A" : Name) + " - " + Progress.ToString("0.00") + "%";
 		}
 	}
-	public enum GameState {
+	public enum GameState
+	{
 		Logos,
 		StartScreen,
 		TitleScreen,
@@ -43,7 +68,8 @@ namespace OriDE.Memory {
 		TrialEnd,
 		Prologue
 	}
-	public enum SceneState {
+	public enum SceneState
+	{
 		Disabling,
 		Disabled,
 		Loading,
@@ -51,14 +77,28 @@ namespace OriDE.Memory {
 		Loaded
 	}
 	public class HitBox {
-		public float X { get; set; }
-		public float Y { get; set; }
-		public float W { get; set; }
-		public float H { get; set; }
+		public float X {
+			get;
+			set;
+		}
+		public float Y {
+			get;
+			set;
+		}
+		public float W {
+			get;
+			set;
+		}
+		public float H {
+			get;
+			set;
+		}
 
-		public HitBox(string cordinates) {
+		public HitBox(string cordinates)
+		{
 			string[] cords = cordinates.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
-			if (cords.Length == 4) {
+			if (cords.Length == 4)
+			{
 				float temp = 0;
 				float.TryParse(cords[0], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
 				this.X = temp;
@@ -68,18 +108,24 @@ namespace OriDE.Memory {
 				this.W = temp;
 				float.TryParse(cords[3], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
 				this.H = temp;
-			} else {
+			}
+			else
+			{
 				this.X = 0;
 				this.Y = 0;
 				this.W = 0;
 				this.H = 0;
 			}
 		}
-		public HitBox(PointF pos, float w, float h, bool center) {
-			if (center) {
+		public HitBox(PointF pos, float w, float h, bool center)
+		{
+			if (center)
+			{
 				this.X = pos.X - (w / 2);
 				this.Y = pos.Y + (h / 2);
-			} else {
+			}
+			else
+			{
 				this.X = pos.X;
 				this.Y = pos.Y;
 			}
@@ -88,15 +134,18 @@ namespace OriDE.Memory {
 			this.H = h;
 		}
 
-		public PointF GetCenter() {
+		public PointF GetCenter()
+		{
 			return new PointF(X + (W / 2), Y - (H / 2));
 		}
 
-		public bool Intersects(HitBox other) {
+		public bool Intersects(HitBox other)
+		{
 			return X + W >= other.X && other.X + other.W >= X && Y - H <= other.Y && other.Y - other.H <= Y;
 		}
 
-		public override string ToString() {
+		public override string ToString()
+		{
 			return string.Concat(X.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")), ", ", Y.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")), ", ", W.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")), ", ", H.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")));
 		}
 	}
