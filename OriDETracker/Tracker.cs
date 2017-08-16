@@ -1215,7 +1215,9 @@ namespace OriDETracker
                     {
                         font_brush = new SolidBrush(Color.White);
                     }
-                    g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new PointF(285 * scaling, 375 * scaling));
+                    float text_scaling = scaling * ((image_pixel_size * 1.0f) / 600.0f);
+                    float x_mod = image_pixel_size == 400 ? -5f : 5f;
+                    g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new PointF( (280+x_mod) * text_scaling, 375 * text_scaling));
                 }
                 #endregion
 
