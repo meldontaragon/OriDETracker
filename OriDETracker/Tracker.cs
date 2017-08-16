@@ -1109,6 +1109,7 @@ namespace OriDETracker
 
         private void UpdateShards()
         {
+            DisplayShards = mem.WaterVeinShards() > 0 || mem.GumonSealShards() > 0 || mem.SunstoneShards() > 0;
             haveShards["Water Vein 1"] = mem.WaterVeinShards() > 0;
             haveShards["Water Vein 2"] = mem.WaterVeinShards() > 1;
             haveShards["Gumon Seal 1"] = mem.GumonSealShards() > 0;
