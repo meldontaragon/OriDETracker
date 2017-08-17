@@ -26,21 +26,22 @@ namespace OriDETracker
     {
         public Tracker()
         {
-
             edit_form = new EditForm(this);
             edit_form.Visible = false;
+
+            image_pixel_size = Properties.Settings.Default.Pixels;
 
             settings = new SettingsLayout(this);
             settings.Visible = false;
 
             InitializeComponent();
 
-            destroy = Properties.Settings.Default.Destroy;
+            display_shards = Properties.Settings.Default.Shards;
+
             scaling = Properties.Settings.Default.Scaling;
             current_layout = Properties.Settings.Default.Layout;
             Opacity = Properties.Settings.Default.Opacity;
             display_shards = Properties.Settings.Default.Shards;
-            image_pixel_size = Properties.Settings.Default.Pixels;
             font_color = Properties.Settings.Default.FontColoring;
             BackColor = Properties.Settings.Default.Background;
 
@@ -1248,10 +1249,10 @@ namespace OriDETracker
 
                 g.DrawImage(imageSkillWheelDouble, drawRect);
             }
-            catch (Exception exc)
+            catch //(Exception exc)
             {
-                MessageBox.Show(exc.ToString());
-                Refresh();
+                //MessageBox.Show(exc.ToString());
+                //Refresh();
             }
         }
 
@@ -1572,15 +1573,13 @@ namespace OriDETracker
             Properties.Settings.Default.FontColoring = font_color;
             Properties.Settings.Default.Background = BackColor;
 
-//MessageBox.Show("Stored Font Color: " + Properties.Settings.Default.FontColoring.ToString());
+            //MessageBox.Show("Stored Font Color: " + Properties.Settings.Default.FontColoring.ToString());
 
             Properties.Settings.Default.Scaling = scaling;
             Properties.Settings.Default.Layout = current_layout;
             Properties.Settings.Default.Opacity = Opacity;
             Properties.Settings.Default.Shards = display_shards;
             Properties.Settings.Default.Pixels = image_pixel_size;
-
-            Properties.Settings.Default.Destroy = 0;
             
             Properties.Settings.Default.Save();
         }
