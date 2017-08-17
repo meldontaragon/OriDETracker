@@ -149,6 +149,7 @@
             // 
             // trackBarScale
             // 
+            this.trackBarScale.Enabled = false;
             this.trackBarScale.Location = new System.Drawing.Point(267, 10);
             this.trackBarScale.Maximum = 200;
             this.trackBarScale.Name = "trackBarScale";
@@ -257,6 +258,7 @@
             // 
             // numericUpDownScale
             // 
+            this.numericUpDownScale.Enabled = false;
             this.numericUpDownScale.Location = new System.Drawing.Point(202, 13);
             this.numericUpDownScale.Maximum = new decimal(new int[] {
             400,

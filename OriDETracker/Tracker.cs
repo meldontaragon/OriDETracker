@@ -46,13 +46,12 @@ namespace OriDETracker
 
             if (font_color == null)
             {
-                MessageBox.Show("Font Color is null, loading default font color instead");
+                //MessageBox.Show("Font Color is null, loading default font color instead");
                 font_color = Color.White;
             }
             if (BackColor == null)
             {
-                MessageBox.Show("BackColor is null, loading default background color instead");
-
+                //MessageBox.Show("BackColor is null, loading default background color instead");
                 BackColor = Color.Black;
             }
 
@@ -70,7 +69,7 @@ namespace OriDETracker
 
             if (destroy == 1)
             {
-                MessageBox.Show("Resetting to default settings.");
+                //MessageBox.Show("Resetting to default settings.");
                 this.Reset();
             }
 
@@ -1573,7 +1572,7 @@ namespace OriDETracker
             Properties.Settings.Default.FontColoring = font_color;
             Properties.Settings.Default.Background = BackColor;
 
-            MessageBox.Show("Stored Font Color: " + Properties.Settings.Default.FontColoring.ToString());
+//MessageBox.Show("Stored Font Color: " + Properties.Settings.Default.FontColoring.ToString());
 
             Properties.Settings.Default.Scaling = scaling;
             Properties.Settings.Default.Layout = current_layout;
