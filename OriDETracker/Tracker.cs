@@ -26,16 +26,6 @@ namespace OriDETracker
     {
         public Tracker()
         {
-            InitializeComponent();
-
-            this.saved = Properties.Settings.Default.Saved;
-            this.scaling = Properties.Settings.Default.Scaling;
-            this.current_layout = Properties.Settings.Default.Layout;
-            this.Opacity = Properties.Settings.Default.Opacity;
-            this.display_shards = Properties.Settings.Default.Shards;
-            this.image_pixel_size = Properties.Settings.Default.Pixels;
-            this.font_color = Properties.Settings.Default.FontColor;
-            this.BackColor = Properties.Settings.Default.Background;
 
             edit_form = new EditForm(this);
             edit_form.Visible = false;
@@ -43,17 +33,44 @@ namespace OriDETracker
             settings = new SettingsLayout(this);
             settings.Visible = false;
 
-            mem = new OriDE.Memory.OriMemory();
+            InitializeComponent();
+
+            destroy = Properties.Settings.Default.Destroy;
+            scaling = Properties.Settings.Default.Scaling;
+            current_layout = Properties.Settings.Default.Layout;
+            Opacity = Properties.Settings.Default.Opacity;
+            display_shards = Properties.Settings.Default.Shards;
+            image_pixel_size = Properties.Settings.Default.Pixels;
+            font_color = Properties.Settings.Default.FontColoring;
+            BackColor = Properties.Settings.Default.Background;
+
+            if (font_color == null)
+            {
+                MessageBox.Show("Font Color is null, loading default font color instead");
+                font_color = Color.White;
+            }
+            if (BackColor == null)
+            {
+                MessageBox.Show("BackColor is null, loading default background color instead");
+
+                BackColor = Color.Black;
+            }
+
+            mem = new OriMemory();
             th = new Thread(UpdateLoop);
             th.IsBackground = true;
-
+            
             scaledSize = new Size((int)(image_pixel_size * scaling), (int)(image_pixel_size * scaling));
             this.UpdateImages();
             this.ChangeLayout(current_layout);
             font_brush = new SolidBrush(font_color);
 
-            if (saved == 0)
+            this.ChangeShards();
+            this.ChangeMapstone();
+
+            if (destroy == 1)
             {
+                MessageBox.Show("Resetting to default settings.");
                 this.Reset();
             }
 
@@ -62,7 +79,7 @@ namespace OriDETracker
             {
                 if (ff.Name.ToLower() == "amatic sc")
                 {
-                    map_font = new Font(new FontFamily("Amatic SC"), 24, FontStyle.Bold);
+                    map_font = new Font(new FontFamily("Amatic SC"), 24f, FontStyle.Bold);
                     tmp = 0;
                     break;
                 }
@@ -73,6 +90,10 @@ namespace OriDETracker
                 {
                     map_font = fontDialog_mapstone.Font;
                     map_font = new Font(fontDialog_mapstone.Font.FontFamily, 24f, FontStyle.Bold);
+                }
+                else
+                {
+                    map_font = new Font(FontFamily.GenericSansSerif, 24f, FontStyle.Bold);
                 }
             }
         }
@@ -86,6 +107,11 @@ namespace OriDETracker
         protected SettingsLayout settings;
         protected EditForm edit_form;
 
+        public Color FontColor
+        {
+            get { return font_color; }
+            set { font_color = value; font_brush = new SolidBrush(value); }
+        }
         public float Scaling
         {
             get
@@ -132,7 +158,7 @@ namespace OriDETracker
         protected Size scaledSize;
         protected bool display_shards = false;
         protected TrackerLayout current_layout;
-        protected Color font_color = Color.White;
+        protected Color font_color;
 
         public Brush font_brush;
         protected const int TOL = 25;
@@ -142,7 +168,7 @@ namespace OriDETracker
         protected bool display_mapstone = false;
         protected Font map_font;
 
-        private int saved = 0;
+        private int destroy = 1;
 
         #region FrameMoving
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -1262,6 +1288,8 @@ namespace OriDETracker
         {
             ClearAll();
 
+            Properties.Settings.Default.Reset();
+
             settings.Reset();
             edit_form.Reset();
             this.settings.Visible = false;
@@ -1542,13 +1570,18 @@ namespace OriDETracker
 
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Properties.Settings.Default.Scaling = this.scaling;
-            Properties.Settings.Default.Layout = this.current_layout;
-            Properties.Settings.Default.Opacity = this.Opacity;
-            Properties.Settings.Default.Shards = this.display_shards;
-            Properties.Settings.Default.Pixels = this.image_pixel_size;
-            Properties.Settings.Default.FontColor = this.font_color;
-            Properties.Settings.Default.Background = this.BackColor;
+            Properties.Settings.Default.FontColoring = font_color;
+            Properties.Settings.Default.Background = BackColor;
+
+            MessageBox.Show("Stored Font Color: " + Properties.Settings.Default.FontColoring.ToString());
+
+            Properties.Settings.Default.Scaling = scaling;
+            Properties.Settings.Default.Layout = current_layout;
+            Properties.Settings.Default.Opacity = Opacity;
+            Properties.Settings.Default.Shards = display_shards;
+            Properties.Settings.Default.Pixels = image_pixel_size;
+
+            Properties.Settings.Default.Destroy = 0;
             
             Properties.Settings.Default.Save();
         }

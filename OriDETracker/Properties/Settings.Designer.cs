@@ -8,29 +8,36 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OriDETracker.Properties {
-    
-    
+namespace OriDETracker.Properties
+{
+
+
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
+    {
+
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-        
-        public static Settings Default {
-            get {
+
+        public static Settings Default
+        {
+            get
+            {
                 return defaultInstance;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public float Scaling {
-            get {
+        public float Scaling
+        {
+            get
+            {
                 return ((float)(this["Scaling"]));
             }
-            set {
+            set
+            {
                 this["Scaling"] = value;
             }
         }
@@ -83,38 +90,39 @@ namespace OriDETracker.Properties {
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("RandomizerAllEvents")]
         //[global::System.Configuration.DefaultSettingValueAttribute("OriDETracker.TrackerLayout.RandomizerAllEvents")]
 
-        public TrackerLayout Layout {
-            get {
+        public TrackerLayout Layout
+        {
+            get
+            {
                 return ((TrackerLayout)(this["Layout"]));
             }
-            set {
+            set
+            {
                 this["Layout"] = value;
             }
         }
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        //[global::System.Configuration.DefaultSettingValueAttribute("System.Drawing.Color.White")]
-        public System.Drawing.Color FontColor
-        {            
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public System.Drawing.Color FontColoring
+        {
             get
             {
-                return ((System.Drawing.Color)(this["FontColor"]));
+                return ((System.Drawing.Color)(this["FontColoring"]));
             }
             set
             {
-                this["FontColor"] = value;
+                this["FontColoring"] = value;
             }
-        }         
+        }
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        //[global::System.Configuration.DefaultSettingValueAttribute("System.Drawing.Color.Black")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
         public System.Drawing.Color Background
         {
             get
@@ -129,16 +137,16 @@ namespace OriDETracker.Properties {
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int Saved
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int Destroy
         {
             get
             {
-                return ((int)(this["Saved"]));
+                return ((int)(this["Destroy"]));
             }
             set
             {
-                this["Saved"] = value;
+                this["Destroy"] = value;
             }
         }
 

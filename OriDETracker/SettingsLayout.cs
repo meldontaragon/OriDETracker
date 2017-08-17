@@ -186,7 +186,7 @@ namespace OriDETracker
 		{
 			if (colorDialogFont.ShowDialog() == DialogResult.OK)
 			{
-				parent.font_brush = new SolidBrush(colorDialogFont.Color);
+                parent.FontColor = colorDialogFont.Color;
 			}
 			parent.Refresh();
 		}
