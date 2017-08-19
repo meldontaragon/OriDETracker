@@ -8,6 +8,10 @@
 *.sln.docstates
 
 image_work/*
+*.zip
+*.tar
+*.tar.gz
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

@@ -71,6 +71,8 @@
             this.cb_tree_sein = new System.Windows.Forms.CheckBox();
             this.cb_tree_bash = new System.Windows.Forms.CheckBox();
             this.cb_shards = new System.Windows.Forms.CheckBox();
+            this.button_title_text = new System.Windows.Forms.Button();
+            this.title_text_box = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_mapstone)).BeginInit();
             this.SuspendLayout();
             // 
@@ -246,7 +248,6 @@
             this.cb_event_watervein.TabIndex = 25;
             this.cb_event_watervein.Text = "Water Vein";
             this.cb_event_watervein.UseVisualStyleBackColor = true;
-            this.cb_event_watervein.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_event_watervein_MouseClick);
             this.cb_event_watervein.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_event_watervein_MouseClick);
             // 
             // cb_event_gumonseal
@@ -586,11 +587,31 @@
             this.cb_shards.UseVisualStyleBackColor = true;
             this.cb_shards.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cb_shards_MouseClick);
             // 
+            // button_title_text
+            // 
+            this.button_title_text.Location = new System.Drawing.Point(632, 292);
+            this.button_title_text.Name = "button_title_text";
+            this.button_title_text.Size = new System.Drawing.Size(75, 23);
+            this.button_title_text.TabIndex = 69;
+            this.button_title_text.Text = "Set Title Text";
+            this.button_title_text.UseVisualStyleBackColor = true;
+            this.button_title_text.Click += new System.EventHandler(this.button_title_text_Click);
+            // 
+            // title_text_box
+            // 
+            this.title_text_box.Location = new System.Drawing.Point(370, 294);
+            this.title_text_box.Name = "title_text_box";
+            this.title_text_box.Size = new System.Drawing.Size(256, 20);
+            this.title_text_box.TabIndex = 70;
+            this.title_text_box.Text = "Ori DE Randomizer Tracker ";
+            // 
             // EditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(727, 327);
+            this.Controls.Add(this.title_text_box);
+            this.Controls.Add(this.button_title_text);
             this.Controls.Add(this.cb_shards);
             this.Controls.Add(this.cb_tree_bash);
             this.Controls.Add(this.cb_tree_dash);
@@ -688,5 +709,7 @@
         private System.Windows.Forms.CheckBox cb_tree_sein;
         private System.Windows.Forms.CheckBox cb_tree_bash;
         private System.Windows.Forms.CheckBox cb_shards;
+        private System.Windows.Forms.Button button_title_text;
+        private System.Windows.Forms.TextBox title_text_box;
     }
 }

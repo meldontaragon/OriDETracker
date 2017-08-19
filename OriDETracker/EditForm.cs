@@ -527,6 +527,19 @@ namespace OriDETracker
 		{
 			parent.DisplayShards = cb_shards.Checked;
 			parent.ChangeShards();
+            parent.Refresh();
 		}
+
+        private void button_title_text_Click(object sender, EventArgs e)
+        {
+            parent.Text = title_text_box.Text;
+        }
+
+        private void button_transparent_Click(object sender, EventArgs e)
+        {
+            parent.BackColor = Color.Black;
+            parent.TransparencyKey = Color.Black;
+            parent.Opacity = 70;
+        }
     }
 }

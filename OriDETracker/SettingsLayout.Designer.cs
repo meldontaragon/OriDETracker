@@ -51,6 +51,7 @@
             this.colorDialogFont = new System.Windows.Forms.ColorDialog();
             this.numericUpDownOpacity = new OriDETracker.PercentNumericUpDown();
             this.numericUpDownScale = new OriDETracker.PercentNumericUpDown();
+            this.rb_250 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).BeginInit();
             this.panel1.SuspendLayout();
@@ -139,7 +140,7 @@
             // 
             // buttonBackgroundColor
             // 
-            this.buttonBackgroundColor.Location = new System.Drawing.Point(264, 124);
+            this.buttonBackgroundColor.Location = new System.Drawing.Point(304, 124);
             this.buttonBackgroundColor.Name = "buttonBackgroundColor";
             this.buttonBackgroundColor.Size = new System.Drawing.Size(104, 23);
             this.buttonBackgroundColor.TabIndex = 9;
@@ -153,7 +154,7 @@
             this.trackBarScale.Location = new System.Drawing.Point(267, 10);
             this.trackBarScale.Maximum = 200;
             this.trackBarScale.Name = "trackBarScale";
-            this.trackBarScale.Size = new System.Drawing.Size(104, 45);
+            this.trackBarScale.Size = new System.Drawing.Size(145, 45);
             this.trackBarScale.TabIndex = 10;
             this.trackBarScale.Value = 100;
             this.trackBarScale.Scroll += new System.EventHandler(this.trackBarScale_Scroll);
@@ -163,7 +164,7 @@
             this.trackBarOpacity.Location = new System.Drawing.Point(267, 44);
             this.trackBarOpacity.Maximum = 100;
             this.trackBarOpacity.Name = "trackBarOpacity";
-            this.trackBarOpacity.Size = new System.Drawing.Size(104, 45);
+            this.trackBarOpacity.Size = new System.Drawing.Size(145, 45);
             this.trackBarOpacity.TabIndex = 11;
             this.trackBarOpacity.Value = 100;
             this.trackBarOpacity.Scroll += new System.EventHandler(this.trackBarOpacity_Scroll);
@@ -191,7 +192,7 @@
             // rb_400
             // 
             this.rb_400.AutoSize = true;
-            this.rb_400.Location = new System.Drawing.Point(4, 5);
+            this.rb_400.Location = new System.Drawing.Point(66, 5);
             this.rb_400.Name = "rb_400";
             this.rb_400.Size = new System.Drawing.Size(57, 17);
             this.rb_400.TabIndex = 15;
@@ -203,7 +204,7 @@
             // 
             this.rb_600.AutoSize = true;
             this.rb_600.Checked = true;
-            this.rb_600.Location = new System.Drawing.Point(67, 5);
+            this.rb_600.Location = new System.Drawing.Point(129, 5);
             this.rb_600.Name = "rb_600";
             this.rb_600.Size = new System.Drawing.Size(57, 17);
             this.rb_600.TabIndex = 16;
@@ -214,11 +215,12 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.rb_250);
             this.panel1.Controls.Add(this.rb_600);
             this.panel1.Controls.Add(this.rb_400);
             this.panel1.Location = new System.Drawing.Point(218, 93);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(154, 25);
+            this.panel1.Size = new System.Drawing.Size(194, 25);
             this.panel1.TabIndex = 17;
             // 
             // panel2
@@ -235,7 +237,7 @@
             // 
             // button_mapstone_font
             // 
-            this.button_mapstone_font.Location = new System.Drawing.Point(136, 124);
+            this.button_mapstone_font.Location = new System.Drawing.Point(155, 124);
             this.button_mapstone_font.Name = "button_mapstone_font";
             this.button_mapstone_font.Size = new System.Drawing.Size(122, 23);
             this.button_mapstone_font.TabIndex = 19;
@@ -280,11 +282,20 @@
             0});
             this.numericUpDownScale.ValueChanged += new System.EventHandler(this.numericUpDownScaling_ValueChanged);
             // 
+            // rb_250
+            // 
+            this.rb_250.AutoSize = true;
+            this.rb_250.Location = new System.Drawing.Point(3, 5);
+            this.rb_250.Name = "rb_250";
+            this.rb_250.Size = new System.Drawing.Size(57, 17);
+            this.rb_250.TabIndex = 17;
+            this.rb_250.Text = "250 px";
+            // 
             // SettingsLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 159);
+            this.ClientSize = new System.Drawing.Size(420, 159);
             this.Controls.Add(this.button_mapstone_font);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.cb_shards);
@@ -340,5 +351,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button button_mapstone_font;
         private System.Windows.Forms.ColorDialog colorDialogFont;
+        private System.Windows.Forms.RadioButton rb_250;
     }
 }

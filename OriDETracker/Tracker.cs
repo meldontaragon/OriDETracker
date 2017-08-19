@@ -34,7 +34,12 @@ namespace OriDETracker
             settings = new SettingsLayout(this);
             settings.Visible = false;
 
+            log = new Logger("OriDERandoTracker");
+
             InitializeComponent();
+
+            started = false;
+            paused = false;
 
             display_shards = Properties.Settings.Default.Shards;
 
@@ -47,12 +52,12 @@ namespace OriDETracker
 
             if (font_color == null)
             {
-                //MessageBox.Show("Font Color is null, loading default font color instead");
+                log.WriteToLog("Font Color is null, loading default font color instead");
                 font_color = Color.White;
             }
             if (BackColor == null)
             {
-                //MessageBox.Show("BackColor is null, loading default background color instead");
+                log.WriteToLog("BackColor is null, loading default background color instead");
                 BackColor = Color.Black;
             }
 
@@ -70,7 +75,7 @@ namespace OriDETracker
 
             if (destroy == 1)
             {
-                //MessageBox.Show("Resetting to default settings.");
+                log.WriteToLog("Resetting to default settings.");
                 this.Reset();
             }
 
@@ -106,6 +111,7 @@ namespace OriDETracker
         protected Thread th;
         protected SettingsLayout settings;
         protected EditForm edit_form;
+        protected Logger log;
 
         public Color FontColor
         {
@@ -1243,17 +1249,17 @@ namespace OriDETracker
                     }
                     float text_scaling = scaling * ((image_pixel_size * 1.0f) / 600.0f);
                     float x_mod = image_pixel_size == 400 ? -5f : 5f;
-                    g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new PointF( (280+x_mod) * text_scaling, 375 * text_scaling));
+                    g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new PointF((280 + x_mod) * text_scaling, 375 * text_scaling));
                 }
                 #endregion
 
                 g.DrawImage(imageSkillWheelDouble, drawRect);
             }
-            catch //(Exception exc)
+            catch (Exception exc)
             {
-                //MessageBox.Show(exc.ToString());
-                //Refresh();
+                log.WriteToLog(exc.ToString());
             }
+                //Refresh();
         }
 
         protected void ClearAll()
@@ -1303,11 +1309,17 @@ namespace OriDETracker
 
             auto_update = false;
             this.autoUpdateToolStripMenuItem.Checked = false;
+
+            if (started && !(paused))
+            {
+                TurnOffAutoUpdate();
+            }
+
             draggable = false;
             this.editToolStripMenuItem.Checked = false;
 
             this.TopMost = true;
-            this.alwaysOnTopToolStripMenuItem.Checked = false;
+            this.alwaysOnTopToolStripMenuItem.Checked = true;
 
             this.display_shards = false;
 
@@ -1332,24 +1344,45 @@ namespace OriDETracker
 
         #region AutoUpdate
         //these features need to be added
-        bool paused = false;
+        bool paused;
+        bool started;
         protected void TurnOnAutoUpdate()
         {
-            if (paused)
+            if (started && paused)
             {
                 th.Resume();
+                started = true;
+                paused = false;
+            }
+            else if (!(started))
+            {
+                th.Start();
+                started = true;
                 paused = false;
             }
             else
             {
-                th.Start();
+                log.WriteToLog("Cannot start Auto Update if it is already running");
+                log.WriteToLog("paused = " + paused.ToString());
+                log.WriteToLog("started = " + started.ToString());
             }
         }
 
         protected void TurnOffAutoUpdate()
         {
-            th.Suspend();
-            paused = true;
+            if (!(paused) && started)
+            {
+                th.Suspend();
+                started = true;
+                paused = true;
+                //th = new Thread();
+            }
+            else if (!(started) || paused)
+            {
+                log.WriteToLog("Cannot pause Auto Update if it is not running");
+                log.WriteToLog("paused = " + paused.ToString());
+                log.WriteToLog("started = " + started.ToString());
+            }
         }
 
         private bool CheckInGame(GameState state)
@@ -1407,8 +1440,9 @@ namespace OriDETracker
                 //the following works but is "incorrect"
                 try
                 {
-                    this.Invalidate();
-                    this.Update();
+                    this.Refresh();
+                    //this.Invalidate();
+                    //this.Update();
                 }
                 catch { }
             }
