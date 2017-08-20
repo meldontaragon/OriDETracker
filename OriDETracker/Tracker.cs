@@ -1030,7 +1030,7 @@ namespace OriDETracker
             x = e.X;
             y = e.Y;
 
-            MessageBox.Show("X: " + x + "   Y: " + y);
+            //MessageBox.Show("X: " + x + "   Y: " + y);
             if (ToggleMouseClick(x, y))
             {
                 this.Refresh();
