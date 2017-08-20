@@ -25,17 +25,35 @@ namespace OriDETracker
 			numericUpDownOpacity.Value = (int) (100 * par.Opacity);
 			trackBarOpacity.Value = (int) (100 * par.Opacity);
 
-			if (parent.ImagePixelSize == 400)
+			if (parent.ImagePixelSize == 420)
 			{
-				this.rb_400.Checked = true;
-				this.rb_600.Checked = false;
-			}
-			else if (parent.ImagePixelSize == 600)
+				this.rb_420.Checked = true;
+				this.rb_640.Checked = false;
+                this.rb_300.Checked = false;
+                this.rb_720.Checked = false;
+            }
+            else if (parent.ImagePixelSize == 640)
 			{
-				this.rb_400.Checked = false;
-				this.rb_600.Checked = true;
-			}
-			else
+				this.rb_420.Checked = false;
+				this.rb_640.Checked = true;
+                this.rb_300.Checked = false;
+                this.rb_720.Checked = false;
+            }
+            else if (parent.ImagePixelSize == 300)
+            {
+                this.rb_420.Checked = false;
+                this.rb_640.Checked = false;
+                this.rb_300.Checked = true;
+                this.rb_720.Checked = false;
+            }
+            else if (parent.ImagePixelSize == 720)
+            {
+                this.rb_420.Checked = false;
+                this.rb_640.Checked = false;
+                this.rb_300.Checked = false;
+                this.rb_720.Checked = true;
+            }
+            else
 			{
 
 			}
@@ -68,8 +86,10 @@ namespace OriDETracker
 			numericUpDownOpacity.Value = 100;
 			trackBarScale.Value = 100;
 			trackBarOpacity.Value = 100;
-			rb_400.Checked = false;
-			rb_600.Checked = true;
+            rb_300.Checked = false;
+			rb_420.Checked = false;
+			rb_640.Checked = true;
+            rb_720.Checked = false;
 			cb_shards.Checked = false;
 		}
 
@@ -170,19 +190,26 @@ namespace OriDETracker
 
 		private void rb_400_CheckedChanged(object sender, EventArgs e)
 		{
-			parent.ImagePixelSize = 400;
+			parent.ImagePixelSize = 420;
 			parent.UpdateImages();
 			parent.Refresh();
 		}
 
 		private void rb_600_CheckedChanged(object sender, EventArgs e)
 		{
-			parent.ImagePixelSize = 600;
+			parent.ImagePixelSize = 640;
 			parent.UpdateImages();
 			parent.Refresh();
 		}
 
-		private void button_mapstone_font_Click(object sender, EventArgs e)
+        private void rb_300_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.ImagePixelSize = 300;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+
+        private void button_mapstone_font_Click(object sender, EventArgs e)
 		{
 			if (colorDialogFont.ShowDialog() == DialogResult.OK)
 			{
@@ -195,6 +222,13 @@ namespace OriDETracker
 		{
 			cb_shards.Checked = display_shards;
 		}
-	}
+
+        private void rb_720_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.ImagePixelSize = 720;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+    }
 
 }

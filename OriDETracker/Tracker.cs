@@ -13,14 +13,7 @@ using System.Threading;
 
 namespace OriDETracker
 {
-    public enum TrackerLayout
-    {
-        RandomizerAllTrees,
-        RandomizerAllEvents,
-        AllSkills,
-        AllCells,
-        ReverseEventOrder
-    }
+   
 
     public partial class Tracker : Form
     {
@@ -159,8 +152,21 @@ namespace OriDETracker
             }
         }
 
+        protected static int PIXEL_MAX = 640;
+
         protected float scaling = 1.0f;
-        protected int image_pixel_size = 600;
+        protected int image_pixel_size = PIXEL_MAX;
+
+        private Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>()
+            {
+            {300, new MapstoneText(140, 190, 14) },
+            {420, new MapstoneText(195, 268, 18) },
+            {640, new MapstoneText(304, 417, 24) },
+            {720, new MapstoneText(342, 471, 28) }
+            };
+        
+        
+
         protected Size scaledSize;
         protected bool display_shards = false;
         protected TrackerLayout current_layout;
@@ -222,7 +228,7 @@ namespace OriDETracker
 
         #region Images
 
-        protected String DIR = @"Assets_600/";
+        protected String DIR = @"Assets_640/";
 
         protected Image imageSpiritFlame;
         protected Image imageWallJump;
@@ -1024,7 +1030,7 @@ namespace OriDETracker
             x = e.X;
             y = e.Y;
 
-            //MessageBox.Show("X: " + x + "   Y: " + y);
+            MessageBox.Show("X: " + x + "   Y: " + y);
             if (ToggleMouseClick(x, y))
             {
                 this.Refresh();
@@ -1063,7 +1069,7 @@ namespace OriDETracker
 
         protected bool ToggleMouseClick(int x, int y)
         {
-            double mouse_scaling = scaling * ((image_pixel_size * 1.0) / 600.0);
+            double mouse_scaling = scaling * ((image_pixel_size * 1.0) / PIXEL_MAX);
             int CUR_TOL = (int)(TOL * mouse_scaling);
 
             if (display_mapstone && (Math.Sqrt(Square(x - (int)(mapstoneMousePoint.X * mouse_scaling)) + Square(y - (int)(mapstoneMousePoint.Y * mouse_scaling))) <= 2 * CUR_TOL))
@@ -1247,9 +1253,10 @@ namespace OriDETracker
                     {
                         font_brush = new SolidBrush(Color.White);
                     }
-                    float text_scaling = scaling * ((image_pixel_size * 1.0f) / 600.0f);
-                    float x_mod = image_pixel_size == 400 ? -5f : 5f;
-                    g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new PointF((280 + x_mod) * text_scaling, 375 * text_scaling));
+                    map_font = new Font(map_font.FontFamily, mapstone_text_parameters[image_pixel_size].TextSize, FontStyle.Bold);
+                    //float text_scaling = scaling * ((image_pixel_size * 1.0f) / PIXEL_MAX);
+                    //float x_mod = image_pixel_size == 420f ? -5f : (image_pixel_size == 300 ? -10f : 5f);
+                    g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new Point(mapstone_text_parameters[image_pixel_size].X, mapstone_text_parameters[image_pixel_size].Y));
                 }
                 #endregion
 
@@ -1302,7 +1309,7 @@ namespace OriDETracker
 
             scaling = 1.0f;
             this.Opacity = 1.0;
-            this.image_pixel_size = 600;
+            this.image_pixel_size = PIXEL_MAX;
 
             current_layout = TrackerLayout.RandomizerAllTrees;
             ChangeLayout(current_layout);
