@@ -12,6 +12,7 @@ image_work/*
 *.tar
 *.tar.gz
 
+*.sh
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
