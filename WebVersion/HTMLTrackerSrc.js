@@ -1,4 +1,6 @@
-var mapstone_count = 0;
+var mapstone_count_T1 = 0;
+var mapstone_count_T2 = 0;
+
 var SkillList = ["SpiritFlame", "WallJump", "ChargeFlame", "DoubleJump", "Bash", "Stomp", "Glide", "Climb", "ChargeJump", "LightGrenade", "Dash"];
 var KeyList = ["WaterVein", "GumonSeal", "Sunstone"];
 var EventList = ["CleanWater", "WindRestored"];
@@ -10,8 +12,41 @@ function clearCheckBoxes(doc) {
   }
 }
 
+function changeMapstone(doc, text)
+{
+    if (text == 'T1+')
+    {
+	if (mapstone_count_T1 < 9)
+	{
+	    mapstone_count_T1++;
+	}
+    }
+    else if (text == 'T1-')
+    {
+	if (mapstone_count_T1 > 0)
+	{
+	    mapstone_count_T1--;
+	}
+    }
+    else if (text == 'T2+')
+    {
+	if (mapstone_count_T2 < 9)
+	{
+	    mapstone_count_T2++;
+	}
+    }
+    else if (text == 'T2-')
+    {
+	if (mapstone_count_T2 > 0)
+	{
+	    mapstone_count_T2--;
+	}
+    }
+    doc.getElementById('mapstoneTextT1').innerText = mapstone_count_T1 + '/9';
+    doc.getElementById('mapstoneTextT2').innerText = mapstone_count_T2 + '/9';
+}
+
 function toggleCheckbox(doc, element) {
-  //doc.getElementById('check_side1_test').checked = !doc.getElementById('check_side1_test').checked;
   redrawGraphics(doc);
 }
 
