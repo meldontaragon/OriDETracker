@@ -32,8 +32,8 @@ namespace OriDETracker
 			started = false;
 			paused = false;
 
+      //load settings
 			display_shards = Properties.Settings.Default.Shards;
-
 			scaling = Properties.Settings.Default.Scaling;
 			current_layout = Properties.Settings.Default.Layout;
 			Opacity = Properties.Settings.Default.Opacity;
@@ -66,22 +66,24 @@ namespace OriDETracker
 
 			if (destroy == 1)
 			{
-				log.WriteToLog("Resetting to default settings.");
-				this.Reset();
+				log.WriteToLog("Settings may need to be reset. (%destroy% = " + destroy);
+				//this.Reset();
 			}
 
-			int tmp = 1;
+			int needFont = 1;
 			foreach (FontFamily ff in FontFamily.Families)
 			{
 				if (ff.Name.ToLower() == "amatic sc")
 				{
 					map_font = new Font(new FontFamily("Amatic SC"), 24f, FontStyle.Bold);
-					tmp = 0;
+					needFont = 0;
 					break;
 				}
 			}
-			if (tmp == 1)
+			if (needFont == 1)
 			{
+        MessageBox.Show("Please install the included fonts: Amatic SC and Amatic SC Bold");
+        log.WriteToLog("Don't have preferred font so checking with user.");
 				if (this.fontDialog_mapstone.ShowDialog() == DialogResult.OK)
 				{
 					map_font = fontDialog_mapstone.Font;
@@ -180,8 +182,6 @@ namespace OriDETracker
 				720, new MapstoneText(342, 471, 28)
 			}
 		};
-
-
 
 		protected Size scaledSize;
 		protected bool display_shards = false;
@@ -1117,6 +1117,10 @@ namespace OriDETracker
 					if (haveTree.ContainsKey(sk.Key))
 					{
 						haveTree[sk.Key] = !haveTree[sk.Key];
+						if (hitTree.ContainsKey(sk.Key))
+						{
+							hitTree[sk.Key] = haveTree[sk.Key];
+						}
 						return true;
 					}
 				}
@@ -1527,6 +1531,8 @@ namespace OriDETracker
 			HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
 
 			Skill tree_at = Skill.None;
+
+			//this checks whether Ori is in a tree hitbox
 			bool touchingAnyTree = false;
 
 			foreach (KeyValuePair<Skill, HitBox> tree in treeHitboxes)
@@ -1545,15 +1551,19 @@ namespace OriDETracker
 
 			if (!touchingAnyTree && tree_at != Skill.None)
 			{
+				//set both hitTree and haveTree accordingly
 				hitTree[tree_at] = true;
 				haveTree[tree_at] = true;
 			}
 
 			//this loops over all trees and updates the have values to the hit values
-
 			foreach (KeyValuePair<Skill, bool> skills in hitTree)
 			{
-				haveTree[skills.Key] = (hitTree[skills.Key] || skills.Value);
+				//this should allow
+				if (hitTree[skills.Key] || skills.Value)
+				{
+					haveTree[skills.Key] = true;
+				}
 			}
 		}
 
@@ -1629,9 +1639,6 @@ namespace OriDETracker
 		{
 			Properties.Settings.Default.FontColoring = font_color;
 			Properties.Settings.Default.Background = BackColor;
-
-			//MessageBox.Show("Stored Font Color: " + Properties.Settings.Default.FontColoring.ToString());
-
 			Properties.Settings.Default.Scaling = scaling;
 			Properties.Settings.Default.Layout = current_layout;
 			Properties.Settings.Default.Opacity = Opacity;
