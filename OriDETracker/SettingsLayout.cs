@@ -115,6 +115,12 @@ namespace OriDETracker
 			Refresh();
 		}
 
+        public void RefreshOpacityBar()
+        {
+            numericUpDownOpacity.Value = (int)(100 * parent.Opacity);
+            trackBarOpacity.Value = (int)(100 * parent.Opacity);
+        }
+
 		public void Reset()
 		{
 			numericUpDownOpacity.Value = 100;
@@ -200,23 +206,28 @@ namespace OriDETracker
 			parent.ChangeShards();
 		}
 
-		private void rb_400_CheckedChanged(object sender, EventArgs e)
+
+        private void rb_720_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackerSize = TrackerPixelSizes.size720px;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+        private void rb_600_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackerSize = TrackerPixelSizes.size640px;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+        private void rb_400_CheckedChanged(object sender, EventArgs e)
 		{
-			parent.TrackerSize = (TrackerPixelSizes)420;
+			parent.TrackerSize = TrackerPixelSizes.size420px;
 			parent.UpdateImages();
 			parent.Refresh();
 		}
-
-		private void rb_600_CheckedChanged(object sender, EventArgs e)
-		{
-			parent.TrackerSize = (TrackerPixelSizes)640;
-			parent.UpdateImages();
-			parent.Refresh();
-		}
-
         private void rb_300_CheckedChanged(object sender, EventArgs e)
         {
-            parent.TrackerSize = (TrackerPixelSizes)300;
+            parent.TrackerSize = TrackerPixelSizes.size300px;
             parent.UpdateImages();
             parent.Refresh();
         }
@@ -235,12 +246,6 @@ namespace OriDETracker
 			cb_shards.Checked = display_shards;
 		}
 
-        private void rb_720_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.TrackerSize = (TrackerPixelSizes)720;
-            parent.UpdateImages();
-            parent.Refresh();
-        }
 
         private void rb_1_hz_CheckedChanged(object sender, EventArgs e)
         {

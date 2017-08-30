@@ -39,9 +39,10 @@ namespace OriDETracker
             current_layout = Properties.Settings.Default.Layout;
             display_shards = Properties.Settings.Default.Shards;
             font_color = Properties.Settings.Default.FontColoring;
-
             Opacity = Properties.Settings.Default.Opacity;
             BackColor = Properties.Settings.Default.Background;
+
+            settings.RefreshOpacityBar();
 
             if (font_color == null)
             {
@@ -932,8 +933,6 @@ namespace OriDETracker
         protected void SoftReset()
         {
             ClearAll();
-            settings.Reset();
-            edit_form.Reset();
 
             this.settings.Visible = false;
 
@@ -953,6 +952,9 @@ namespace OriDETracker
         protected void HardReset()
         {
             this.SoftReset();
+
+            settings.Reset();
+            edit_form.Reset();
 
             Properties.Settings.Default.Reset();
 
