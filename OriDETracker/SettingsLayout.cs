@@ -19,34 +19,31 @@ namespace OriDETracker
 
 			parent = par;
 
-			numericUpDownScale.Value = (int) (100 * par.Scaling);
-			trackBarScale.Value = (int) (100 * par.Scaling);
-
 			numericUpDownOpacity.Value = (int) (100 * par.Opacity);
 			trackBarOpacity.Value = (int) (100 * par.Opacity);
 
-			if (parent.ImagePixelSize == 420)
+			if (parent.TrackerSize == TrackerPixelSizes.size420px)
 			{
 				this.rb_420.Checked = true;
 				this.rb_640.Checked = false;
                 this.rb_300.Checked = false;
                 this.rb_720.Checked = false;
             }
-            else if (parent.ImagePixelSize == 640)
+            else if (parent.TrackerSize == TrackerPixelSizes.size640px)
 			{
 				this.rb_420.Checked = false;
 				this.rb_640.Checked = true;
                 this.rb_300.Checked = false;
                 this.rb_720.Checked = false;
             }
-            else if (parent.ImagePixelSize == 300)
+            else if (parent.TrackerSize == TrackerPixelSizes.size300px)
             {
                 this.rb_420.Checked = false;
                 this.rb_640.Checked = false;
                 this.rb_300.Checked = true;
                 this.rb_720.Checked = false;
             }
-            else if (parent.ImagePixelSize == 720)
+            else if (parent.TrackerSize == TrackerPixelSizes.size720px)
             {
                 this.rb_420.Checked = false;
                 this.rb_640.Checked = false;
@@ -55,10 +52,55 @@ namespace OriDETracker
             }
             else
 			{
+                parent.Log.WriteToLog("Invalid Size (" + parent.TrackerSize + ")");
+                parent.TrackerSize = TrackerPixelSizes.size640px;
 
-			}
+                this.rb_420.Checked = false;
+                this.rb_640.Checked = true;
+                this.rb_300.Checked = false;
+                this.rb_720.Checked = false;
+            }
 
-			this.cb_shards.Checked = parent.DisplayShards;
+            if (parent.RefreshRate == (AutoUpdateRefreshRates)500)
+            {
+                this.rb_500_mHz.Checked = true;
+                this.rb_10_hz.Checked = false;
+                this.rb_1_hz.Checked = false;
+                this.rb_60_hz.Checked = false;
+            }
+            else if (parent.RefreshRate == (AutoUpdateRefreshRates)1000)
+            {
+                this.rb_500_mHz.Checked = false;
+                this.rb_10_hz.Checked = false;
+                this.rb_1_hz.Checked = true;
+                this.rb_60_hz.Checked = false;
+            }
+            else if (parent.RefreshRate == (AutoUpdateRefreshRates)10000)
+            {
+                this.rb_500_mHz.Checked = false;
+                this.rb_10_hz.Checked = true;
+                this.rb_1_hz.Checked = false;
+                this.rb_60_hz.Checked = false;
+            }
+            else if (parent.RefreshRate == (AutoUpdateRefreshRates)60000)
+            {
+                this.rb_500_mHz.Checked = false;
+                this.rb_10_hz.Checked = false;
+                this.rb_1_hz.Checked = false;
+                this.rb_60_hz.Checked = true;
+            }
+            else
+            {
+                parent.Log.WriteToLog("Invalid Refresh Rate (" + parent.RefreshRate + ")");
+                parent.RefreshRate = (AutoUpdateRefreshRates)10000;
+
+                this.rb_500_mHz.Checked = false;
+                this.rb_10_hz.Checked = true;
+                this.rb_1_hz.Checked = false;
+                this.rb_60_hz.Checked = false;
+            }
+
+            this.cb_shards.Checked = parent.DisplayShards;
 
 			this.Text = "Tracker Layer v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
@@ -73,18 +115,9 @@ namespace OriDETracker
 			Refresh();
 		}
 
-		public float Scaling {
-			get { return (float) (numericUpDownScale.Value / 100);
-			} set { numericUpDownScale.Value = (int) (100 * value);
-			}
-		}
-
-
 		public void Reset()
 		{
-			numericUpDownScale.Value = 100;
 			numericUpDownOpacity.Value = 100;
-			trackBarScale.Value = 100;
 			trackBarOpacity.Value = 100;
             rb_300.Checked = false;
 			rb_420.Checked = false;
@@ -129,13 +162,8 @@ namespace OriDETracker
 
 		private void numericUpDownScaling_ValueChanged(object sender, EventArgs e)
 		{
-			parent.Scaling = (float) (numericUpDownScale.Value / (decimal) 100.0);
 			parent.Refresh();
-
-			int tmp = (int) numericUpDownScale.Value;
-			trackBarScale.Value = tmp;
-			numericUpDownScale.Value = tmp;
-		}
+        }
 
 		private void percentNumericUpDown_ValueChanged(object sender, EventArgs e)
 		{
@@ -156,22 +184,6 @@ namespace OriDETracker
 			parent.Refresh();
 		}
 
-		private void trackBarScale_Scroll(object sender, EventArgs e)
-		{
-			int tmp = trackBarScale.Value;
-
-			if (tmp < 50)
-			{
-				tmp = 50;
-			}
-
-			parent.Scaling = (float) (tmp / (decimal) 100.0);
-			parent.Refresh();
-
-			trackBarScale.Value = tmp;
-			numericUpDownScale.Value = tmp;
-		}
-
 		private void trackBarOpacity_Scroll(object sender, EventArgs e)
 		{
 			parent.Opacity = (double) (trackBarOpacity.Value / (decimal) 100.0);
@@ -190,21 +202,21 @@ namespace OriDETracker
 
 		private void rb_400_CheckedChanged(object sender, EventArgs e)
 		{
-			parent.ImagePixelSize = 420;
+			parent.TrackerSize = (TrackerPixelSizes)420;
 			parent.UpdateImages();
 			parent.Refresh();
 		}
 
 		private void rb_600_CheckedChanged(object sender, EventArgs e)
 		{
-			parent.ImagePixelSize = 640;
+			parent.TrackerSize = (TrackerPixelSizes)640;
 			parent.UpdateImages();
 			parent.Refresh();
 		}
 
         private void rb_300_CheckedChanged(object sender, EventArgs e)
         {
-            parent.ImagePixelSize = 300;
+            parent.TrackerSize = (TrackerPixelSizes)300;
             parent.UpdateImages();
             parent.Refresh();
         }
@@ -225,9 +237,29 @@ namespace OriDETracker
 
         private void rb_720_CheckedChanged(object sender, EventArgs e)
         {
-            parent.ImagePixelSize = 720;
+            parent.TrackerSize = (TrackerPixelSizes)720;
             parent.UpdateImages();
             parent.Refresh();
+        }
+
+        private void rb_1_hz_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.RefreshRate = (AutoUpdateRefreshRates)1000;
+        }
+
+        private void rb_10_hz_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.RefreshRate = (AutoUpdateRefreshRates)10000;
+        }
+
+        private void rb_60_hz_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.RefreshRate = (AutoUpdateRefreshRates)60000;
+        }
+
+        private void rb_500_mHz_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.RefreshRate = (AutoUpdateRefreshRates)500;
         }
     }
 

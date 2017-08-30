@@ -29,16 +29,16 @@ namespace OriDETracker.Properties
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public float Scaling
+        [global::System.Configuration.DefaultSettingValueAttribute("rate10Hz")]
+        public AutoUpdateRefreshRates RefreshRate
         {
             get
             {
-                return ((float)(this["Scaling"]));
+                return ((AutoUpdateRefreshRates)(this["RefreshRate"]));
             }
             set
             {
-                this["Scaling"] = value;
+                this["RefreshRate"] = value;
             }
         }
 
@@ -75,12 +75,12 @@ namespace OriDETracker.Properties
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("640")]
-        public int Pixels
+        [global::System.Configuration.DefaultSettingValueAttribute("size640px")]
+        public TrackerPixelSizes Pixels
         {
             get
             {
-                return ((int)(this["Pixels"]));
+                return ((TrackerPixelSizes)(this["Pixels"]));
             }
             set
             {
@@ -90,7 +90,7 @@ namespace OriDETracker.Properties
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("RandomizerAllEvents")]
+        [global::System.Configuration.DefaultSettingValueAttribute("RandomizerAllTrees")]
         //[global::System.Configuration.DefaultSettingValueAttribute("OriDETracker.TrackerLayout.RandomizerAllEvents")]
 
         public TrackerLayout Layout

@@ -36,29 +36,31 @@
             this.rbOriAllSkills = new System.Windows.Forms.RadioButton();
             this.rbOriAllCells = new System.Windows.Forms.RadioButton();
             this.rbReverseEventOrder = new System.Windows.Forms.RadioButton();
-            this.labelScaling = new System.Windows.Forms.Label();
             this.labelOpacity = new System.Windows.Forms.Label();
             this.buttonBackgroundColor = new System.Windows.Forms.Button();
-            this.trackBarScale = new System.Windows.Forms.TrackBar();
             this.trackBarOpacity = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.cb_shards = new System.Windows.Forms.CheckBox();
             this.rb_420 = new System.Windows.Forms.RadioButton();
             this.rb_640 = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rb_720 = new System.Windows.Forms.RadioButton();
             this.rb_300 = new System.Windows.Forms.RadioButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button_mapstone_font = new System.Windows.Forms.Button();
             this.colorDialogFont = new System.Windows.Forms.ColorDialog();
             this.numericUpDownOpacity = new OriDETracker.PercentNumericUpDown();
-            this.numericUpDownScale = new OriDETracker.PercentNumericUpDown();
-            this.rb_720 = new System.Windows.Forms.RadioButton();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).BeginInit();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.rb_500_mHz = new System.Windows.Forms.RadioButton();
+            this.rb_1_hz = new System.Windows.Forms.RadioButton();
+            this.rb_60_hz = new System.Windows.Forms.RadioButton();
+            this.rb_10_hz = new System.Windows.Forms.RadioButton();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOpacity)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).BeginInit();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // rbRandoTrees
@@ -121,19 +123,10 @@
             this.rbReverseEventOrder.UseVisualStyleBackColor = true;
             this.rbReverseEventOrder.CheckedChanged += new System.EventHandler(this.rbReverseEventOrder_CheckedChanged);
             // 
-            // labelScaling
-            // 
-            this.labelScaling.AutoSize = true;
-            this.labelScaling.Location = new System.Drawing.Point(152, 14);
-            this.labelScaling.Name = "labelScaling";
-            this.labelScaling.Size = new System.Drawing.Size(34, 13);
-            this.labelScaling.TabIndex = 6;
-            this.labelScaling.Text = "Scale";
-            // 
             // labelOpacity
             // 
             this.labelOpacity.AutoSize = true;
-            this.labelOpacity.Location = new System.Drawing.Point(152, 53);
+            this.labelOpacity.Location = new System.Drawing.Point(152, 10);
             this.labelOpacity.Name = "labelOpacity";
             this.labelOpacity.Size = new System.Drawing.Size(43, 13);
             this.labelOpacity.TabIndex = 8;
@@ -149,20 +142,9 @@
             this.buttonBackgroundColor.UseVisualStyleBackColor = true;
             this.buttonBackgroundColor.Click += new System.EventHandler(this.buttonBackgroundColor_Click);
             // 
-            // trackBarScale
-            // 
-            this.trackBarScale.Enabled = false;
-            this.trackBarScale.Location = new System.Drawing.Point(267, 10);
-            this.trackBarScale.Maximum = 200;
-            this.trackBarScale.Name = "trackBarScale";
-            this.trackBarScale.Size = new System.Drawing.Size(200, 45);
-            this.trackBarScale.TabIndex = 10;
-            this.trackBarScale.Value = 100;
-            this.trackBarScale.Scroll += new System.EventHandler(this.trackBarScale_Scroll);
-            // 
             // trackBarOpacity
             // 
-            this.trackBarOpacity.Location = new System.Drawing.Point(267, 44);
+            this.trackBarOpacity.Location = new System.Drawing.Point(267, 1);
             this.trackBarOpacity.Maximum = 100;
             this.trackBarOpacity.Name = "trackBarOpacity";
             this.trackBarOpacity.Size = new System.Drawing.Size(200, 45);
@@ -225,6 +207,17 @@
             this.panel1.Size = new System.Drawing.Size(250, 25);
             this.panel1.TabIndex = 17;
             // 
+            // rb_720
+            // 
+            this.rb_720.AutoSize = true;
+            this.rb_720.Location = new System.Drawing.Point(192, 5);
+            this.rb_720.Name = "rb_720";
+            this.rb_720.Size = new System.Drawing.Size(57, 17);
+            this.rb_720.TabIndex = 18;
+            this.rb_720.Text = "720 px";
+            this.rb_720.UseVisualStyleBackColor = true;
+            this.rb_720.CheckedChanged += new System.EventHandler(this.rb_720_CheckedChanged);
+            // 
             // rb_300
             // 
             this.rb_300.AutoSize = true;
@@ -259,7 +252,7 @@
             // 
             // numericUpDownOpacity
             // 
-            this.numericUpDownOpacity.Location = new System.Drawing.Point(202, 51);
+            this.numericUpDownOpacity.Location = new System.Drawing.Point(202, 8);
             this.numericUpDownOpacity.Name = "numericUpDownOpacity";
             this.numericUpDownOpacity.Size = new System.Drawing.Size(59, 20);
             this.numericUpDownOpacity.TabIndex = 7;
@@ -270,57 +263,86 @@
             0});
             this.numericUpDownOpacity.ValueChanged += new System.EventHandler(this.percentNumericUpDown_ValueChanged);
             // 
-            // numericUpDownScale
+            // panel3
             // 
-            this.numericUpDownScale.Enabled = false;
-            this.numericUpDownScale.Location = new System.Drawing.Point(202, 13);
-            this.numericUpDownScale.Maximum = new decimal(new int[] {
-            400,
-            0,
-            0,
-            0});
-            this.numericUpDownScale.Minimum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numericUpDownScale.Name = "numericUpDownScale";
-            this.numericUpDownScale.Size = new System.Drawing.Size(59, 20);
-            this.numericUpDownScale.TabIndex = 5;
-            this.numericUpDownScale.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.numericUpDownScale.ValueChanged += new System.EventHandler(this.numericUpDownScaling_ValueChanged);
+            this.panel3.Controls.Add(this.rb_500_mHz);
+            this.panel3.Controls.Add(this.rb_1_hz);
+            this.panel3.Controls.Add(this.rb_60_hz);
+            this.panel3.Controls.Add(this.rb_10_hz);
+            this.panel3.Location = new System.Drawing.Point(218, 50);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(250, 25);
+            this.panel3.TabIndex = 21;
             // 
-            // rb_720
+            // rb_500_mHz
             // 
-            this.rb_720.AutoSize = true;
-            this.rb_720.Location = new System.Drawing.Point(192, 5);
-            this.rb_720.Name = "rb_720";
-            this.rb_720.Size = new System.Drawing.Size(57, 17);
-            this.rb_720.TabIndex = 18;
-            this.rb_720.Text = "720 px";
-            this.rb_720.UseVisualStyleBackColor = true;
-            this.rb_720.CheckedChanged += new System.EventHandler(this.rb_720_CheckedChanged);
+            this.rb_500_mHz.AutoSize = true;
+            this.rb_500_mHz.Location = new System.Drawing.Point(7, 4);
+            this.rb_500_mHz.Name = "rb_500_mHz";
+            this.rb_500_mHz.Size = new System.Drawing.Size(67, 17);
+            this.rb_500_mHz.TabIndex = 18;
+            this.rb_500_mHz.Text = "500 mHz";
+            this.rb_500_mHz.UseVisualStyleBackColor = true;
+            this.rb_500_mHz.CheckedChanged += new System.EventHandler(this.rb_500_mHz_CheckedChanged);
+            // 
+            // rb_1_hz
+            // 
+            this.rb_1_hz.AutoSize = true;
+            this.rb_1_hz.Location = new System.Drawing.Point(80, 5);
+            this.rb_1_hz.Name = "rb_1_hz";
+            this.rb_1_hz.Size = new System.Drawing.Size(47, 17);
+            this.rb_1_hz.TabIndex = 17;
+            this.rb_1_hz.Text = "1 Hz";
+            this.rb_1_hz.CheckedChanged += new System.EventHandler(this.rb_1_hz_CheckedChanged);
+            // 
+            // rb_60_hz
+            // 
+            this.rb_60_hz.AutoSize = true;
+            this.rb_60_hz.Checked = true;
+            this.rb_60_hz.Location = new System.Drawing.Point(192, 5);
+            this.rb_60_hz.Name = "rb_60_hz";
+            this.rb_60_hz.Size = new System.Drawing.Size(53, 17);
+            this.rb_60_hz.TabIndex = 16;
+            this.rb_60_hz.TabStop = true;
+            this.rb_60_hz.Text = "60 Hz";
+            this.rb_60_hz.UseVisualStyleBackColor = true;
+            this.rb_60_hz.CheckedChanged += new System.EventHandler(this.rb_60_hz_CheckedChanged);
+            // 
+            // rb_10_hz
+            // 
+            this.rb_10_hz.AutoSize = true;
+            this.rb_10_hz.Location = new System.Drawing.Point(133, 5);
+            this.rb_10_hz.Name = "rb_10_hz";
+            this.rb_10_hz.Size = new System.Drawing.Size(53, 17);
+            this.rb_10_hz.TabIndex = 15;
+            this.rb_10_hz.Text = "10 Hz";
+            this.rb_10_hz.UseVisualStyleBackColor = true;
+            this.rb_10_hz.CheckedChanged += new System.EventHandler(this.rb_10_hz_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(147, 56);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(68, 13);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "Update Rate";
             // 
             // SettingsLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(478, 159);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.button_mapstone_font);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.cb_shards);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBarOpacity);
-            this.Controls.Add(this.trackBarScale);
             this.Controls.Add(this.buttonBackgroundColor);
             this.Controls.Add(this.labelOpacity);
             this.Controls.Add(this.numericUpDownOpacity);
-            this.Controls.Add(this.labelScaling);
-            this.Controls.Add(this.numericUpDownScale);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -331,14 +353,14 @@
             this.Text = "Tracker Layout";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsLayout_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOpacity)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -352,12 +374,9 @@
         private System.Windows.Forms.RadioButton rbOriAllSkills;
         private System.Windows.Forms.RadioButton rbOriAllCells;
         private System.Windows.Forms.RadioButton rbReverseEventOrder;
-        private PercentNumericUpDown numericUpDownScale;
-        private System.Windows.Forms.Label labelScaling;
         private PercentNumericUpDown numericUpDownOpacity;
         private System.Windows.Forms.Label labelOpacity;
         private System.Windows.Forms.Button buttonBackgroundColor;
-        private System.Windows.Forms.TrackBar trackBarScale;
         private System.Windows.Forms.TrackBar trackBarOpacity;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox cb_shards;
@@ -369,5 +388,11 @@
         private System.Windows.Forms.ColorDialog colorDialogFont;
         private System.Windows.Forms.RadioButton rb_300;
         private System.Windows.Forms.RadioButton rb_720;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.RadioButton rb_500_mHz;
+        private System.Windows.Forms.RadioButton rb_1_hz;
+        private System.Windows.Forms.RadioButton rb_60_hz;
+        private System.Windows.Forms.RadioButton rb_10_hz;
+        private System.Windows.Forms.Label label2;
     }
 }

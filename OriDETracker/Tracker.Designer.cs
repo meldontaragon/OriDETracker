@@ -150,7 +150,6 @@
             this.ContextMenuStrip = this.contextMenu_Tracker;
             this.Controls.Add(this.labelBlank);
             this.DoubleBuffered = true;
-            this.ForeColor = System.Drawing.Color.Transparent;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -161,9 +160,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Ori DE Tracker";
             this.TopMost = true;
-            this.TransparencyKey = System.Drawing.Color.Transparent;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Tracker_FormClosing);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Tracker_Paint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Tracker_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Tracker_MouseDown);
             this.contextMenu_Tracker.ResumeLayout(false);
