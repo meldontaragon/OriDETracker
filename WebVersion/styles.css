@@ -84,3 +84,12 @@ button {
 	font-size: 28px;
 	font-weight: bold;
 }
+
+#matchForm {
+	padding: 20px;
+}
+
+#sync-message {
+	color: green;
+	font-weight: bold;
+}

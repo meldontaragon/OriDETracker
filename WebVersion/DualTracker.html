@@ -424,10 +424,17 @@
 		</div>
 	</div>
 	<!-- Should probably move jQuery locally, but whatever -->
+	<form id="matchForm">
+		<label for="match">Match ID: </label>
+		<input type="text" id="match" />
+		<input type="submit" value="Link">
+		<span id="sync-message"></span>
+		<div style="margin-top:10px;">This can be any unique string, but is required for any and all parties updating the tracker remotely.<br />I recommend using the seed name/number.</div>
+	</form>
 	<script
 	  src="https://code.jquery.com/jquery-3.2.1.min.js"
 	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 	  crossorigin="anonymous"></script>
-	<script src="HTMLTrackerSrc.js"></script>
+	<script src="client.js"></script>
 </body>
 </html>
