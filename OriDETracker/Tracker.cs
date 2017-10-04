@@ -15,32 +15,36 @@ namespace OriDETracker
 {
     public partial class Tracker : Form
     {
+
         public Tracker()
         {
+
             Log = new Logger("OriDERandoTracker");
             
             edit_form = new EditForm(this);
             edit_form.Visible = false;
 
-            RefreshRate = Properties.Settings.Default.RefreshRate;
-            TrackerSize = Properties.Settings.Default.Pixels;
+           
+
+            RefreshRate = TrackerSettings.Default.RefreshRate;
+            TrackerSize = TrackerSettings.Default.Pixels;
 
             settings = new SettingsLayout(this);
             settings.Visible = false;
 
             InitializeComponent();
 
-            //autoupate boolean values
+            //auto update boolean values
             started = false;
             paused = false;
 
             //load settings
-            display_shards = Properties.Settings.Default.Shards;
-            current_layout = Properties.Settings.Default.Layout;
-            display_shards = Properties.Settings.Default.Shards;
-            font_color = Properties.Settings.Default.FontColoring;
-            Opacity = Properties.Settings.Default.Opacity;
-            BackColor = Properties.Settings.Default.Background;
+            display_shards = TrackerSettings.Default.Shards;
+            current_layout = TrackerSettings.Default.Layout;
+            display_shards = TrackerSettings.Default.Shards;
+            font_color = TrackerSettings.Default.FontColoring;
+            Opacity = TrackerSettings.Default.Opacity;
+            BackColor = TrackerSettings.Default.Background;
 
             settings.RefreshOpacityBar();
 
@@ -956,7 +960,7 @@ namespace OriDETracker
             settings.Reset();
             edit_form.Reset();
 
-            Properties.Settings.Default.Reset();
+            TrackerSettings.Default.Reset();
 
             this.Opacity = 1.0;
             this.TrackerSize = (TrackerPixelSizes) PIXEL_DEF;
@@ -1266,15 +1270,21 @@ namespace OriDETracker
 
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Properties.Settings.Default.FontColoring = font_color;
-            Properties.Settings.Default.Background = BackColor;
-            Properties.Settings.Default.RefreshRate = RefreshRate;
-            Properties.Settings.Default.Layout = current_layout;
-            Properties.Settings.Default.Opacity = Opacity;
-            Properties.Settings.Default.Shards = display_shards;
-            Properties.Settings.Default.Pixels = TrackerSize;
 
-            Properties.Settings.Default.Save();
+            TrackerSettings.Default.FontColoring = font_color;
+            TrackerSettings.Default.Background = BackColor;
+            TrackerSettings.Default.RefreshRate = RefreshRate;
+            TrackerSettings.Default.Layout = current_layout;
+            TrackerSettings.Default.Opacity = Opacity;
+            TrackerSettings.Default.Shards = display_shards;
+            TrackerSettings.Default.Pixels = TrackerSize;
+
+            TrackerSettings.Default.Save();
+        }
+
+        private void Tracker_Load(object sender, EventArgs e)
+        {
+            //MessageBox.Show(Application.LocalUserAppDataPath);
         }
     }
 }
