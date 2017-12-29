@@ -1,5 +1,6 @@
 <?php
-
+ header("Access-Control-Allow-Origin: *");
+ 
 function getMatch( $id ) {
 	$filename = $id . '.json';
 
