@@ -1,444 +1,158 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic%20SC" />
-<link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic%20SC" />
+  <link rel="stylesheet" href="styles.css" />
 
-<body>
-	<!-- TRACKER 1 -->
-	<div id="tracker1" class="tracker-container">
-		<div class="tracker-display">
-			<!-- Default "unobtained" gray images -->
-			<img id="t1-event-watervein-g" class="show" src="Assets_420/GWaterVein.png" />
-			<img id="t1-event-gumonseal-g" class="show" src="Assets_420/GGumonSeal.png" />
-			<img id="t1-event-sunstone-g" class="show" src="Assets_420/GSunstone.png" />
-			<img id="t1-event-cleanwater-g" class="show" src="Assets_420/GCleanWater.png" />
-			<img id="t1-event-windrestored-g" class="show" src="Assets_420/GWindRestoredRando.png" />
+  <body>
+    <!-- TRACKER 1 -->
+    <span id="tracker1" class="tracker-container">
+      <div class="tracker-display">
+	<!-- Conditional images -->
+	<img id="t1-skill-sein" src="Assets_420/SpiritFlame.png" />
+	<img id="t1-skill-walljump" src="Assets_420/WallJump.png" />
+	<img id="t1-skill-cflame" src="Assets_420/ChargeFlame.png" />
+	<img id="t1-skill-djump" src="Assets_420/DoubleJump.png" />
+	<img id="t1-skill-bash" src="Assets_420/Bash.png" />
+	<img id="t1-skill-stomp" src="Assets_420/Stomp.png" />
+	<img id="t1-skill-feather" src="Assets_420/Glide.png" />
+	<img id="t1-skill-climb" src="Assets_420/Climb.png" />
+	<img id="t1-skill-cjump" src="Assets_420/ChargeJump.png" />
+	<img id="t1-skill-grenade" src="Assets_420/LightGrenade.png" />
+	<img id="t1-skill-dash" src="Assets_420/Dash.png" />
+      </div>
 
-			<!-- Conditional images -->
-			<img id="t1-skill-sein" src="Assets_420/SpiritFlame.png" />
-			<img id="t1-skill-walljump" src="Assets_420/WallJump.png" />
-			<img id="t1-skill-cflame" src="Assets_420/ChargeFlame.png" />
-			<img id="t1-skill-djump" src="Assets_420/DoubleJump.png" />
-			<img id="t1-skill-bash" src="Assets_420/Bash.png" />
-			<img id="t1-skill-stomp" src="Assets_420/Stomp.png" />
-			<img id="t1-skill-feather" src="Assets_420/Glide.png" />
-			<img id="t1-skill-climb" src="Assets_420/Climb.png" />
-			<img id="t1-skill-cjump" src="Assets_420/ChargeJump.png" />
-			<img id="t1-skill-grenade" src="Assets_420/LightGrenade.png" />
-			<img id="t1-skill-dash" src="Assets_420/Dash.png" />
-
-			<img id="t1-tree-sein" src="Assets_420/TSpiritFlame.png" />
-			<img id="t1-tree-walljump" src="Assets_420/TWallJump.png" />
-			<img id="t1-tree-cflame" src="Assets_420/TChargeFlame.png" />
-			<img id="t1-tree-djump" src="Assets_420/TDoubleJump.png" />
-			<img id="t1-tree-bash" src="Assets_420/TBash.png" />
-			<img id="t1-tree-stomp" src="Assets_420/TStomp.png" />
-			<img id="t1-tree-feather" src="Assets_420/TGlide.png" />
-			<img id="t1-tree-climb" src="Assets_420/TClimb.png" />
-			<img id="t1-tree-cjump" src="Assets_420/TChargeJump.png" />
-			<img id="t1-tree-grenade" src="Assets_420/TLightGrenade.png" />
-			<img id="t1-tree-dash" src="Assets_420/TDash.png" />
-
-			<img id="t1-event-watervein" src="Assets_420/WaterVein.png" />
-			<img id="t1-event-gumonseal" src="Assets_420/GumonSeal.png" />
-			<img id="t1-event-sunstone" src="Assets_420/Sunstone.png" />
-
-			<img id="t1-shard-wv1" src="Assets_420/WaterVeinShard1.png" />
-			<img id="t1-shard-wv2" src="Assets_420/WaterVeinShard2.png" />
-			<img id="t1-shard-gs1" src="Assets_420/GumonSealShard1.png" />
-			<img id="t1-shard-gs2" src="Assets_420/GumonSealShard2.png" />
-			<img id="t1-shard-ss1" src="Assets_420/SunstoneShard1.png" />
-			<img id="t1-shard-ss2" src="Assets_420/SunstoneShard2.png" />
-
-			<img id="t1-event-cleanwater" src="Assets_420/CleanWater.png" />
-			<img id="t1-event-windrestored" src="Assets_420/WindRestoredRando.png" />
-
-			<!-- Mapstone count -->
-			<div id="mapstoneTextT1" class="mapstone-text">0/9</div>
-		  </div>
-
-		<div class="tracker-controls">
-			<div class="inline-block">
-				<div class="tracker-control-group">
-					<h1>Skills</h1>
-					<div>
-						<input type="checkbox" id="check-t1-skill-sein" />
-						<label for="check-t1-skill-sein">Spirit Flame</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-walljump" />
-						<label for="check-t1-skill-walljump">Wall Jump</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-cflame" />
-						<label for="check-t1-skill-cflame">Charge Flame</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-djump" />
-						<label for="check-t1-skill-djump">Double Jump</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-bash" />
-						<label for="check-t1-skill-bash">Bash</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-stomp" />
-						<label for="check-t1-skill-stomp">Stomp</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-feather" />
-						<label for="check-t1-skill-feather">Glide</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-climb" />
-						<label for="check-t1-skill-climb">Climb</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-cjump" />
-						<label for="check-t1-skill-cjump">Charge Jump</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-grenade" />
-						<label for="check-t1-skill-grenade">Light Grenade</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t1-skill-dash" />
-						<label for="check-t1-skill-dash">Dash</label>
-					</div>
-				</div>
-
-				<div class="tracker-control-mapstones">
-					<span>Mapstones: </span>
-					<button id="mapstone-t1-inc">+</button>
-					<button id="mapstone-t1-dec">-</button>
-				</div>
-			</div>
-
-			<div class="tracker-control-group">
-				<h1>Trees</h1>
-				<div>
-					<input type="checkbox" id="check-t1-tree-sein" />
-					<label for="check-t1-tree-sein">Spirit Flame</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-walljump" />
-					<label for="check-t1-tree-walljump">Wall Jump</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-cflame" />
-					<label for="check-t1-tree-cflame">Charge Flame</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-djump" />
-					<label for="check-t1-tree-djump">Double Jump</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-bash" />
-					<label for="check-t1-tree-bash">Bash</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-stomp" />
-					<label for="check-t1-tree-stomp">Stomp</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-feather" />
-					<label for="check-t1-tree-feather">Glide</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-climb" />
-					<label for="check-t1-tree-climb">Climb</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-cjump" />
-					<label for="check-t1-tree-cjump">Charge Jump</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-grenade" />
-					<label for="check-t1-tree-grenade">Light Grenade</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-tree-dash" />
-					<label for="check-t1-tree-dash">Dash</label>
-				</div>
-			</div>
-
-			<div class="tracker-control-group">
-				<h1>Events</h1>
-				<div>
-					<input type="checkbox" id="check-t1-event-watervein" />
-					<label for="check-t1-event-watervein">Water Vein</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-event-gumonseal" />
-					<label for="check-t1-event-gumonseal">Gumon Seal</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-event-sunstone" />
-					<label for="check-t1-event-sunstone">Sunstone</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-event-cleanwater" />
-					<label for="check-t1-event-cleanwater">Clean Water</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-event-windrestored" />
-					<label for="check-t1-event-windrestored">Wind Restored</label>
-				</div>
-
-				<h1>Shards</h1>
-				<div>
-					<input type="checkbox" id="check-t1-shard-wv1" />
-					<label for="check-t1-shard-wv1">Water Vein Shard 1</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-shard-wv2" />
-					<label for="check-t1-shard-wv2">Water Vein Shard 2</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-shard-gs1" />
-					<label for="check-t1-shard-gs1">Gumon Seal Shard 1</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-shard-gs2" />
-					<label for="check-t1-shard-gs2">Gumon Seal Shard 2</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-shard-ss1" />
-					<label for="check-t1-shard-ss1">Sunstone Shard 1</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t1-shard-ss2" />
-					<label for="check-t1-shard-ss2">Sunstone Shard 2</label>
-				</div>
-			</div>
-		</div>
+      <div class="tracker-control-group">
+	<h1>Skills</h1>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-sein" />
+	  <label for="check-t1-skill-sein">Spirit Flame</label>
 	</div>
-
-	<!-- TRACKER 2 -->
-	<div id="tracker2" class="tracker-container">
-		<div class="tracker-display">
-			<!-- Default "unobtained" gray images -->
-			<img id="t2-event-watervein-g" class="show" src="Assets_420/GWaterVein.png" />
-			<img id="t2-event-gumonseal-g" class="show" src="Assets_420/GGumonSeal.png" />
-			<img id="t2-event-sunstone-g" class="show" src="Assets_420/GSunstone.png" />
-			<img id="t2-event-cleanwater-g" class="show" src="Assets_420/GCleanWater.png" />
-			<img id="t2-event-windrestored-g" class="show" src="Assets_420/GWindRestoredRando.png" />
-
-			<!-- Conditional images -->
-			<img id="t2-skill-sein" src="Assets_420/SpiritFlame.png" />
-			<img id="t2-skill-walljump" src="Assets_420/WallJump.png" />
-			<img id="t2-skill-cflame" src="Assets_420/ChargeFlame.png" />
-			<img id="t2-skill-djump" src="Assets_420/DoubleJump.png" />
-			<img id="t2-skill-bash" src="Assets_420/Bash.png" />
-			<img id="t2-skill-stomp" src="Assets_420/Stomp.png" />
-			<img id="t2-skill-feather" src="Assets_420/Glide.png" />
-			<img id="t2-skill-climb" src="Assets_420/Climb.png" />
-			<img id="t2-skill-cjump" src="Assets_420/ChargeJump.png" />
-			<img id="t2-skill-grenade" src="Assets_420/LightGrenade.png" />
-			<img id="t2-skill-dash" src="Assets_420/Dash.png" />
-
-			<img id="t2-tree-sein" src="Assets_420/TSpiritFlame.png" />
-			<img id="t2-tree-walljump" src="Assets_420/TWallJump.png" />
-			<img id="t2-tree-cflame" src="Assets_420/TChargeFlame.png" />
-			<img id="t2-tree-djump" src="Assets_420/TDoubleJump.png" />
-			<img id="t2-tree-bash" src="Assets_420/TBash.png" />
-			<img id="t2-tree-stomp" src="Assets_420/TStomp.png" />
-			<img id="t2-tree-feather" src="Assets_420/TGlide.png" />
-			<img id="t2-tree-climb" src="Assets_420/TClimb.png" />
-			<img id="t2-tree-cjump" src="Assets_420/TChargeJump.png" />
-			<img id="t2-tree-grenade" src="Assets_420/TLightGrenade.png" />
-			<img id="t2-tree-dash" src="Assets_420/TDash.png" />
-
-			<img id="t2-event-watervein" src="Assets_420/WaterVein.png" />
-			<img id="t2-event-gumonseal" src="Assets_420/GumonSeal.png" />
-			<img id="t2-event-sunstone" src="Assets_420/Sunstone.png" />
-
-			<img id="t2-shard-wv1" src="Assets_420/WaterVeinShard1.png" />
-			<img id="t2-shard-wv2" src="Assets_420/WaterVeinShard2.png" />
-			<img id="t2-shard-gs1" src="Assets_420/GumonSealShard1.png" />
-			<img id="t2-shard-gs2" src="Assets_420/GumonSealShard2.png" />
-			<img id="t2-shard-ss1" src="Assets_420/SunstoneShard1.png" />
-			<img id="t2-shard-ss2" src="Assets_420/SunstoneShard2.png" />
-
-			<img id="t2-event-cleanwater" src="Assets_420/CleanWater.png" />
-			<img id="t2-event-windrestored" src="Assets_420/WindRestoredRando.png" />
-
-			<!-- Mapstone count -->
-			<div id="mapstoneTextT2" class="mapstone-text">0/9</div>
-		  </div>
-
-		<div class="tracker-controls">
-			<div class="inline-block">
-				<div class="tracker-control-group">
-					<h1>Skills</h1>
-					<div>
-						<input type="checkbox" id="check-t2-skill-sein" />
-						<label for="check-t2-skill-sein">Spirit Flame</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-walljump" />
-						<label for="check-t2-skill-walljump">Wall Jump</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-cflame" />
-						<label for="check-t2-skill-cflame">Charge Flame</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-djump" />
-						<label for="check-t2-skill-djump">Double Jump</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-bash" />
-						<label for="check-t2-skill-bash">Bash</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-stomp" />
-						<label for="check-t2-skill-stomp">Stomp</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-feather" />
-						<label for="check-t2-skill-feather">Glide</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-climb" />
-						<label for="check-t2-skill-climb">Climb</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-cjump" />
-						<label for="check-t2-skill-cjump">Charge Jump</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-grenade" />
-						<label for="check-t2-skill-grenade">Light Grenade</label>
-					</div>
-					<div>
-						<input type="checkbox" id="check-t2-skill-dash" />
-						<label for="check-t2-skill-dash">Dash</label>
-					</div>
-				</div>
-
-				<div class="tracker-control-mapstones">
-					<span>Mapstones: </span>
-					<button id="mapstone-t2-inc">+</button>
-					<button id="mapstone-t2-dec">-</button>
-				</div>
-			</div>
-
-			<div class="tracker-control-group">
-				<h1>Trees</h1>
-				<div>
-					<input type="checkbox" id="check-t2-tree-sein" />
-					<label for="check-t2-tree-sein">Spirit Flame</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-walljump" />
-					<label for="check-t2-tree-walljump">Wall Jump</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-cflame" />
-					<label for="check-t2-tree-cflame">Charge Flame</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-djump" />
-					<label for="check-t2-tree-djump">Double Jump</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-bash" />
-					<label for="check-t2-tree-bash">Bash</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-stomp" />
-					<label for="check-t2-tree-stomp">Stomp</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-feather" />
-					<label for="check-t2-tree-feather">Glide</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-climb" />
-					<label for="check-t2-tree-climb">Climb</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-cjump" />
-					<label for="check-t2-tree-cjump">Charge Jump</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-grenade" />
-					<label for="check-t2-tree-grenade">Light Grenade</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-tree-dash" />
-					<label for="check-t2-tree-dash">Dash</label>
-				</div>
-			</div>
-
-			<div class="tracker-control-group">
-				<h1>Events</h1>
-				<div>
-					<input type="checkbox" id="check-t2-event-watervein" />
-					<label for="check-t2-event-watervein">Water Vein</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-event-gumonseal" />
-					<label for="check-t2-event-gumonseal">Gumon Seal</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-event-sunstone" />
-					<label for="check-t2-event-sunstone">Sunstone</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-event-cleanwater" />
-					<label for="check-t2-event-cleanwater">Clean Water</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-event-windrestored" />
-					<label for="check-t2-event-windrestored">Wind Restored</label>
-				</div>
-
-				<h1>Shards</h1>
-				<div>
-					<input type="checkbox" id="check-t2-shard-wv1" />
-					<label for="check-t2-shard-wv1">Water Vein Shard 1</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-shard-wv2" />
-					<label for="check-t2-shard-wv2">Water Vein Shard 2</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-shard-gs1" />
-					<label for="check-t2-shard-gs1">Gumon Seal Shard 1</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-shard-gs2" />
-					<label for="check-t2-shard-gs2">Gumon Seal Shard 2</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-shard-ss1" />
-					<label for="check-t2-shard-ss1">Sunstone Shard 1</label>
-				</div>
-				<div>
-					<input type="checkbox" id="check-t2-shard-ss2" />
-					<label for="check-t2-shard-ss2">Sunstone Shard 2</label>
-				</div>
-			</div>
-		</div>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-walljump" />
+	  <label for="check-t1-skill-walljump">Wall Jump</label>
 	</div>
-	<form id="matchForm">
-		<label for="match">Match ID: </label>
-		<input type="text" id="match" />
-		<input type="submit" value="Link">
-		<span id="sync-message"></span>
-		<div style="margin-top:10px;">This can be any unique string, but is required for any and all parties updating the tracker remotely.<br />I recommend using the seed name/number.</div>
-	</form>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-cflame" />
+	  <label for="check-t1-skill-cflame">Charge Flame</label>
+	</div>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-djump" />
+	  <label for="check-t1-skill-djump">Double Jump</label>
+	</div>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-bash" />
+	  <label for="check-t1-skill-bash">Bash</label>
+	</div>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-stomp" />
+	  <label for="check-t1-skill-stomp">Stomp</label>
+	</div>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-feather" />
+	  <label for="check-t1-skill-feather">Glide</label>
+	</div>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-climb" />
+	  <label for="check-t1-skill-climb">Climb</label>
+	</div>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-cjump" />
+	  <label for="check-t1-skill-cjump">Charge Jump</label>
+	</div>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-grenade" />
+	  <label for="check-t1-skill-grenade">Light Grenade</label>
+	</div>
+	<div>
+	  <input type="checkbox" id="check-t1-skill-dash" />
+	  <label for="check-t1-skill-dash">Dash</label>
+	</div>
+      </div>
+</span>
 
-	
-	<!-- sources jQuery locally now -->
-	<script src="jquery-3.2.1.js" crossorigin="anonymous"></script>
-	
-	<!-- Should probably move jQuery locally, but whatever -->
-	<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	  crossorigin="anonymous"> </script> -->
-	<script src="client.js"></script>
+<!-- TRACKER 2 -->
+<div id="tracker2" class="tracker-container">
+  <div class="tracker-display">
+    <!-- Conditional images -->
+    <img id="t2-skill-sein" src="Assets_420/SpiritFlame.png" />
+    <img id="t2-skill-walljump" src="Assets_420/WallJump.png" />
+    <img id="t2-skill-cflame" src="Assets_420/ChargeFlame.png" />
+    <img id="t2-skill-djump" src="Assets_420/DoubleJump.png" />
+    <img id="t2-skill-bash" src="Assets_420/Bash.png" />
+    <img id="t2-skill-stomp" src="Assets_420/Stomp.png" />
+    <img id="t2-skill-feather" src="Assets_420/Glide.png" />
+    <img id="t2-skill-climb" src="Assets_420/Climb.png" />
+    <img id="t2-skill-cjump" src="Assets_420/ChargeJump.png" />
+    <img id="t2-skill-grenade" src="Assets_420/LightGrenade.png" />
+    <img id="t2-skill-dash" src="Assets_420/Dash.png" />
+  </div>
+
+  <!-- <div class="inline-block"> -->
+  <div class="tracker-control-group">
+    <h1>Skills</h1>
+    <div>
+      <input type="checkbox" id="check-t2-skill-sein" />
+      <label for="check-t2-skill-sein">Spirit Flame</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-walljump" />
+      <label for="check-t2-skill-walljump">Wall Jump</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-cflame" />
+      <label for="check-t2-skill-cflame">Charge Flame</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-djump" />
+      <label for="check-t2-skill-djump">Double Jump</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-bash" />
+      <label for="check-t2-skill-bash">Bash</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-stomp" />
+      <label for="check-t2-skill-stomp">Stomp</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-feather" />
+      <label for="check-t2-skill-feather">Glide</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-climb" />
+      <label for="check-t2-skill-climb">Climb</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-cjump" />
+      <label for="check-t2-skill-cjump">Charge Jump</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-grenade" />
+      <label for="check-t2-skill-grenade">Light Grenade</label>
+    </div>
+    <div>
+      <input type="checkbox" id="check-t2-skill-dash" />
+      <label for="check-t2-skill-dash">Dash</label>
+    </div>
+  </div>
+  <!-- </div> -->
+</div>
+<form id="matchForm">
+  <label for="match">Match ID: </label>
+  <input type="text" id="match" />
+  <input type="submit" value="Link">
+  <span id="sync-message"></span>
+  <div style="margin-top:10px;">This can be any unique string, but is required for any and all parties updating the tracker remotely.<br />I recommend using the seed name/number.</div>
+</form>
+
+
+<!-- sources jQuery locally now -->
+<script src="jquery-3.2.1.min.js"></script>
+
+<!-- Should probably move jQuery locally, but whatever -->
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+     crossorigin="anonymous"> </script> -->
+<script src="client.js"></script>
 </body>
 </html>

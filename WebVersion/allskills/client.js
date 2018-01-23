@@ -1,40 +1,5 @@
-var mapstoneCount1 = 0,
-    mapstoneCount2 = 0,
-    matchId,
+var matchId,
     intervalHandle;
-
-function updateMapstone() {
-    // id is of format `mapstone-<t1|t2>-<inc|dec>`
-    var id = this.id,
-	words = id.split( '-' );
-
-    if ( words[1] === 't1' ) {
-	if ( words[2] === 'inc' && mapstoneCount1 < 9 ) {
-	    mapstoneCount1++;
-	} else if ( words[2] === 'dec' && mapstoneCount1 > 0 ) {
-	    mapstoneCount1--;
-	}
-	$( '#mapstoneTextT1' ).text( mapstoneCount1 + '/9' );
-    } else if ( words[1] === 't2' ) {
-	if ( words[2] === 'inc' && mapstoneCount2 < 9 ) {
-	    mapstoneCount2++;
-	} else if ( words[2] === 'dec' && mapstoneCount2 > 0 ) {
-	    mapstoneCount2--;
-	}
-	$( '#mapstoneTextT2' ).text( mapstoneCount2 + '/9' );
-    }
-
-    $.post( 'server.php', {
-	match: matchId,
-	state: {
-	    mapstones: {
-		t1: mapstoneCount1,
-		t2: mapstoneCount2
-	    }
-	}
-    }, function ( res ) {
-    } );
-}
 
 function onCheckboxChange() {
     // id is of format `<t1|t2>-<ID of corresponding image>`
@@ -44,10 +9,6 @@ function onCheckboxChange() {
 	data = {
 	    match: matchId,
 	    state: {
-		mapstones: {
-		    t1: mapstoneCount1,
-		    t2: mapstoneCount2
-		}
 	    }
 	};
 
@@ -65,12 +26,6 @@ function onCheckboxChange() {
 }
 
 function updateState( state ) {
-    mapstoneCount1 = state.mapstones.t1;
-    mapstoneCount2 = state.mapstones.t2;
-    $( '#mapstoneTextT1' ).text( mapstoneCount1 + '/9' );
-    $( '#mapstoneTextT2' ).text( mapstoneCount2 + '/9' );
-    delete state.mapstones;
-
     var ids = Object.keys( state );
 
     // We want to find everything that's currently shown EXCEPT
@@ -130,6 +85,5 @@ function linkMatch( e ) {
     e.preventDefault();
 }
 
-$( 'button' ).on( 'click', updateMapstone );
 $( 'body' ).on( 'change', 'input[type="checkbox"]', onCheckboxChange );
 $( '#matchForm' ).on( 'submit', linkMatch );
