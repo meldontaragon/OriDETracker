@@ -1,6 +1,5 @@
 <?php
- header("Access-Control-Allow-Origin: *");
- 
+
 function getMatch( $id ) {
 	$filename = $id . '.json';
 
@@ -18,6 +17,10 @@ function setMatch( $id, $data ) {
 header( 'Content-type: application/json' );
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
+       // file_put_contents( 'asdf-post.txt', 'test-post' );
+       // $contents = file_get_contents( 'asdf-post.txt' );
+       // die( $contents );
+
 	if ( !isset( $_POST['match'] ) ) {
 		// Reject the request
 		http_response_code( 400 );
@@ -27,9 +30,6 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 	$matchId = $_POST['match'];
 
 	$state = getMatch( $matchId );
-
-	$state['mapstones'] = $_POST['state']['mapstones'];
-	unset( $_POST['state']['mapstones'] );
 
 	$key = array_keys( $_POST['state'] )[0];
 
@@ -43,7 +43,10 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
 	echo json_encode( $state );
 } else {
-	if ( !isset( $_GET['match'] ) ) {
+       // file_put_contents( 'asdf-get.txt', 'test-get' );
+       // $contents = file_get_contents( 'asdf-get.txt' );
+       // die( $contents );
+       if ( !isset( $_GET['match'] ) ) {
 		// Reject the request
 		http_response_code( 400 );
 		die();
