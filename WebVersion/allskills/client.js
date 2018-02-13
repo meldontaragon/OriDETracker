@@ -1,62 +1,49 @@
 var matchId,
-    intervalHandle;
+    leadTracker = true,
+    intervalHandle,
+    leadT1 = 1,
+    leadT2 = 0;
 
 function onRadioChange()
 {
-    var id1 = "radio-t1-place-first",
-	imgId1 = id1.substr( 6 ),
-	state1 = document.getElementById(id1).checked,
-	id2 = "radio-t2-place-first",
-	imgId2 = id2.substr( 6 ),
-	state2 = document.getElementById(id2).checked,
-	data = {
-	    match: matchId,
-	    state: {
-	    }
-	};
+    //checked which one is now checked
+    leadTracker = document.getElementById('radio-place-first-t1').checked;
 
-    if ( state1 )
+    leadT1 = leadTracker ? 1 : 0;
+    leadT2 = leadTracker ? 0 : 1;
+
+    if ( leadTracker )
     {
-	$( '#' + imgId1 ).addClass( 'show' );
-	$( '#' + imgId1 + '-g' ).removeClass( 'show' );
+	$( '#' + 't1-' + 'place-first' ).addClass( 'lead' );
+	$( '#' + 't1-' + 'place-second' ).removeClass( 'lead' );
+
+	$( '#' + 't2-' + 'place-first' ).removeClass( 'lead' );
+	$( '#' + 't2-' + 'place-second' ).addClass( 'lead' );
     }
     else
     {
-	$( '#' + imgId1 ).removeClass( 'show' );
-	$( '#' + imgId1 + '-g' ).addClass( 'show' );
+	$( '#' + 't2-' + 'place-first' ).addClass( 'lead' );
+	$( '#' + 't2-' + 'place-second' ).removeClass( 'lead' );
+
+	$( '#' + 't1-' + 'place-first' ).removeClass( 'lead' );
+	$( '#' + 't1-' + 'place-second' ).addClass( 'lead' );
     }
 
-    if ( state2 )
-    {
-	$( '#' + imgId2 ).addClass( 'show' );
-	$( '#' + imgId2 + '-g' ).removeClass( 'show' );
-    }
-    else
-    {
-	$( '#' + imgId2 ).removeClass( 'show' );
-	$( '#' + imgId2 + '-g' ).addClass( 'show' );
+    $('input[type="radio"][value="t1"]').prop('checked', leadTracker);
+    $('input[type="radio"][value="t2"]').prop('checked', !leadTracker);
 
-    }
-
-    data.state[imgId1] = state1;
-    $.post( 'server.php', data, function ( res ) {
-	$( '#sync-message' )
-	    .text( 'First part sent successfully.' )
-	    .fadeIn( 50 )
-	    .delay( 3000 )
-	    .fadeOut( 1000 );
-    } );
-
-    var data2 = {
+    $.post( 'server.php', {
 	match: matchId,
 	state: {
+	    playerLead:
+	    {
+		p1: leadT1,
+		p2: leadT2
+	    }
 	}
-    };
-    
-    data2.state[imgId2] = state2;
-    $.post( 'server.php', data2, function ( res ) {
+    }, function ( res ) {
 	$( '#sync-message' )
-	    .text( 'Second part sent successfully.' )
+	    .text( 'Leader sent successfully.' )
 	    .fadeIn( 50 )
 	    .delay( 3000 )
 	    .fadeOut( 1000 );
@@ -71,36 +58,16 @@ function onCheckboxChange() {
 	data = {
 	    match: matchId,
 	    state: {
+		playerLead:
+		{
+		    p1: leadT1,
+		    p2: leadT2
+		}
 	    }
-	};
+	}
+    //var curLeadTracker = $('input[name="place-first"]:checked').val();
+    //leadTracker = curLeadTracker;
 
-    /*
-    //check if it's t1-place-first or t2-place-first
-    if ( this.id == 'check-t1-place-first' )
-    {
-	//document.getElementById('check-t2-place-first').checked = !(document.getElementById('check-t1-place-first').checked);
-	var state2 = !(document.getElementById('check-t1-place-first').checked),
-	    imgId2 = 'check-t2-place-first'.substr(6);
-
-	data.state[imgId2] = state2;
-
-	$( '#' + imgId2 ).toggleClass( 'show' );
-	$( '#' + imgId2 + '-g' ).toggleClass( 'show' );
-    }
-
-    
-    if ( this.id == 'check-t2-place-first' )
-    {
-	//document.getElementById('check-t1-place-first').checked = !(document.getElementById('check-t2-place-first').checked);
-	var state2 = !(document.getElementById('check-t2-place-first').checked),
-	    imgId2 = 'check-t1-place-first'.substr(6);
-
-	data.state[imgId2] = state2;
-
-	$( '#' + imgId2 ).toggleClass( 'show' );
-	$( '#' + imgId2 + '-g' ).toggleClass( 'show' );
-    }
-    */
     data.state[imgId] = state;
     $( '#' + imgId ).toggleClass( 'show' );
     $( '#' + imgId + '-g' ).toggleClass( 'show' );
@@ -115,6 +82,55 @@ function onCheckboxChange() {
 }
 
 function updateState( state ) {
+    leadT1 = state.playerLead.p1;
+    leadT2 = state.playerLead.p2;
+
+    if ( leadT1 == 1 )
+    {
+	leadTracker = true;
+	if ( leadT2 == 1 )
+	{
+	    leadT2 = 0;
+	}
+    }
+    else
+    {
+	if ( leadT2 == 1 )
+	{
+	    leadTracker = false;
+	}
+	else
+	{
+	    leadT1 = 1;
+	    leadT2 = 0;
+	    leadTracker = true;
+	}
+    }
+    
+    if ( leadTracker )
+    {
+	$( '#' + 't1-' + 'place-first' ).addClass( 'lead' );
+	$( '#' + 't1-' + 'place-second' ).removeClass( 'lead' );
+
+	$( '#' + 't2-' + 'place-first' ).removeClass( 'lead' );
+	$( '#' + 't2-' + 'place-second' ).addClass( 'lead' );
+
+    }
+    else
+    {
+	$( '#' + 't2-' + 'place-first' ).addClass( 'lead' );
+	$( '#' + 't2-' + 'place-second' ).removeClass( 'lead' );
+
+	$( '#' + 't1-' + 'place-first' ).removeClass( 'lead' );
+	$( '#' + 't1-' + 'place-second' ).addClass( 'lead' );
+	
+    }
+
+    $('input[type="radio"][value="t1"]').prop('checked', leadTracker);
+    $('input[type="radio"][value="t2"]').prop('checked', !leadTracker);
+
+    delete state.playerLead;
+
     var ids = Object.keys( state );
 
     // We want to find everything that's currently shown EXCEPT
@@ -177,3 +193,4 @@ function linkMatch( e ) {
 $( 'body' ).on( 'change', 'input[type="checkbox"]', onCheckboxChange );
 $( '#matchForm' ).on( 'submit', linkMatch );
 $( 'body' ).on( 'change', 'input[type="radio"]', onRadioChange );
+//$( 'body' ).on( 'clicked', 'input[type="radio"]', onRadioChange );

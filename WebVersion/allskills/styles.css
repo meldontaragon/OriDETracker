@@ -64,6 +64,9 @@ checkbox {
     display: block;
 }
 
+.tracker-display img.lead {
+    display: block;
+}
 
 #matchForm {
     padding: 20px;

@@ -31,6 +31,9 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
 	$state = getMatch( $matchId );
 
+	$state['playerLead'] = $_POST['state']['playerLead'];
+	unset( $_POST['state']['playerLead'] );
+
 	$key = array_keys( $_POST['state'] )[0];
 
 	if ( array_key_exists( $key, $state ) && $_POST['state'][$key] === 'false' ) {
