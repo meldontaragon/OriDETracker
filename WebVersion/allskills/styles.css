@@ -16,6 +16,10 @@ button {
     font-size: 28px;
 }
 
+checkbox {
+    checked: false;
+}
+
 .tracker-container {
     display: inline-block;
     margin-left: 20px;
@@ -60,6 +64,9 @@ button {
     display: block;
 }
 
+.tracker-display img.lead {
+    display: block;
+}
 
 #matchForm {
     padding: 20px;
@@ -68,4 +75,9 @@ button {
 #sync-message {
     color: green;
     font-weight: bold;
+}
+
+#inner {
+    width: 50%;
+    margin: 0 auto;
 }
