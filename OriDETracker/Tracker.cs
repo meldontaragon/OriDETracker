@@ -15,20 +15,23 @@ namespace OriDETracker
 {
     public partial class Tracker : Form
     {
-
         public Tracker()
         {
-
+            this.DoubleBuffered = true;
+                
+            //Log important things
             Log = new Logger("OriDERandoTracker");
+            Log.WriteToLog("**INFO**  : Starting Tracker (v " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")");
             
+            //Form for quickly editting things
             edit_form = new EditForm(this);
-            edit_form.Visible = false;
+            edit_form.Visible = false;           
 
-           
-
+            // Settings options for Refresh Rate and Tracker Size
             RefreshRate = TrackerSettings.Default.RefreshRate;
             TrackerSize = TrackerSettings.Default.Pixels;
 
+            //Settings window display
             settings = new SettingsLayout(this);
             settings.Visible = false;
 
@@ -38,28 +41,30 @@ namespace OriDETracker
             started = false;
             paused = false;
 
-            //load settings
-            display_shards = TrackerSettings.Default.Shards;
-            current_layout = TrackerSettings.Default.Layout;
-            display_shards = TrackerSettings.Default.Shards;
-            font_color = TrackerSettings.Default.FontColoring;
-            Opacity = TrackerSettings.Default.Opacity;
-            BackColor = TrackerSettings.Default.Background;
+            //load settings (except for those needed to initialize the settings window)
+            display_shards  = TrackerSettings.Default.Shards;
+            current_layout  = TrackerSettings.Default.Layout;
+            display_shards  = TrackerSettings.Default.Shards;
+            font_color      = TrackerSettings.Default.FontColoring;
+            Opacity         = TrackerSettings.Default.Opacity;
+            BackColor       = TrackerSettings.Default.Background;
 
             settings.RefreshOpacityBar();
 
             if (font_color == null)
             {
-                Log.WriteToLog("Font Color is null, loading default font color instead");
+                Log.WriteToLog("**INFO**  : Font Color is null, loading default font color instead");
                 font_color = Color.White;
             }
             if (BackColor == null)
             {
-                Log.WriteToLog("BackColor is null, loading default background color instead");
+                Log.WriteToLog("**INFO**  : BackColor is null, loading default background color instead");
                 BackColor = Color.Black;
             }
 
+            //initialize the OriMemory module that Devil wrote
             mem = new OriMemory();
+            //start the background loop
             th = new Thread(UpdateLoop);
             th.IsBackground = true;
 
@@ -74,7 +79,7 @@ namespace OriDETracker
             //handles weird exceptions and lets me know if there are potential problems
             if (destroy == 1)
             {
-                Log.WriteToLog("Settings may need to be reset.");
+                Log.WriteToLog("**DEBUG** : Settings may need to be reset.");
                 this.SoftReset();
             }
 
@@ -91,7 +96,7 @@ namespace OriDETracker
             if (needFont == 1)
             {
                 MessageBox.Show("Please install the included fonts: Amatic SC and Amatic SC Bold");
-                Log.WriteToLog("Don't have preferred font so checking with user.");
+                Log.WriteToLog("**DEBUG** : Don't have preferred font so checking with user.");
                 if (this.fontDialog_mapstone.ShowDialog() == DialogResult.OK)
                 {
                     map_font = fontDialog_mapstone.Font;
@@ -450,7 +455,7 @@ namespace OriDETracker
                 {"Water Vein",      false},
                 {"Gumon Seal",      false},
                 {"Sunstone",        false},
-                {"Warmth Returned", false},  //this is actually clean water
+                {"Clean Water",     false}, 
 				{"Wind Restored",   false}
             };
 
@@ -465,18 +470,18 @@ namespace OriDETracker
 
             eventImages = new Dictionary<String, Image>(){
                 {"Water Vein",       imageWaterVein},
-                {"Gumon Seal",      imageGumonSeal},
-                {"Sunstone",        imageSunstone},
+                {"Gumon Seal",       imageGumonSeal},
+                {"Sunstone",         imageSunstone},
                 {"Wind Restored",    imageWindRestoredRando},
-                {"Warmth Returned", imageCleanWater}
+                {"Clean Water",      imageCleanWater}
             };
 
             eventGreyImages = new Dictionary<String, Image>(){
-                {"Water Vein",      imageGWaterVein                },
-                {"Gumon Seal",      imageGGumonSeal                },
-                {"Sunstone",        imageGSunstone                },
-                {"Wind Restored",   imageGWindRestoredRando                },
-                {"Warmth Returned", imageGCleanWater                }
+                {"Water Vein",      imageGWaterVein},
+                {"Gumon Seal",      imageGGumonSeal},
+                {"Sunstone",        imageGSunstone},
+                {"Wind Restored",   imageGWindRestoredRando},
+                {"Clean Water",     imageGCleanWater}
             };
 
             shardImages = new Dictionary<string, Image>(){
@@ -508,7 +513,7 @@ namespace OriDETracker
                 {"Gumon Seal", new Point(328, 215)},
                 {"Sunstone",   new Point(428, 257)},
                 {"Wind Restored", new Point(423, 365)},
-                {"Warmth Returned", new Point(220, 360)}
+                {"Clean Water", new Point(220, 360)}
             };
 
             checkTreeHitbox = true;
@@ -673,9 +678,15 @@ namespace OriDETracker
             //MessageBox.Show("X: " + x + "   Y: " + y);
             if (ToggleMouseClick(x, y))
             {
-                //Log.WriteToLog("Mouse Click at X: " + x + "   Y: " + y);
+                Log.WriteToLog("**INFO**  : Mouse Click at X: " + x + "   Y: " + y);
 
+                bool tmp_auto_update = auto_update;
+                //try turning off auto update for a moment
+                if (tmp_auto_update)
+                    this.TurnOffAutoUpdate();
                 this.Refresh();
+                if (tmp_auto_update)
+                    this.TurnOnAutoUpdate();
             }
             //this.Invalidate();
         }
@@ -851,7 +862,6 @@ namespace OriDETracker
 
                 #endregion
 
-
                 #region Events
 
                 foreach (KeyValuePair<String, bool> ev in haveEvent)
@@ -901,13 +911,23 @@ namespace OriDETracker
             }
             catch (Exception exc)
             {
-                Log.WriteToLog(exc.ToString());
+                Log.WriteToLog("**ERROR** : Exception thrown, detail follow below.");
+                Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
+                Log.WriteToLog("**INFO**  : Source = " + exc.Source.ToString());
+                Log.WriteToLog("**INFO**  : Stack Trace = " + exc.StackTrace.ToString());
             }
             //Refresh();
         }
 
         protected void ClearAll()
         {
+            Log.WriteToLog("**INFO**  : Clearing the tracker.");
+            bool tmp_auto_update = this.auto_update;
+            if (tmp_auto_update)
+            {
+                this.TurnOffAutoUpdate();
+            }
+
             for (int i = 0; i < haveSkill.Count; i++)
             {
                 haveSkill[haveSkill.ElementAt(i).Key] = false;
@@ -931,6 +951,11 @@ namespace OriDETracker
             mapstone_count = 0;
             edit_form.Clear();
 
+            if (tmp_auto_update)
+            {
+                this.TurnOnAutoUpdate();
+            }
+
             Refresh();
         }
 
@@ -938,19 +963,19 @@ namespace OriDETracker
         {
             ClearAll();
 
+            Log.WriteToLog("**INFO**  : Performing soft reset.");
+
             this.settings.Visible = false;
 
             ChangeLayout(current_layout);
-            auto_update = false;
-            this.autoUpdateToolStripMenuItem.Checked = false;
-
-            if (started && !(paused))
+            if (auto_update)
             {
                 TurnOffAutoUpdate();
             }
-            draggable = false;
+            auto_update = false;
+            this.autoUpdateToolStripMenuItem.Checked = false;
 
-            Refresh();
+            draggable = false;
         }
 
         protected void HardReset()
@@ -978,7 +1003,6 @@ namespace OriDETracker
 
             this.BackColor = Color.Black;
             this.font_brush = new SolidBrush(Color.White);
-            //this.TransparencyKey = Color.Empty;
 
             Refresh();
         }
@@ -1015,9 +1039,9 @@ namespace OriDETracker
             }
             else
             {
-                Log.WriteToLog("Cannot start Auto Update if it is already running");
-                Log.WriteToLog("paused = " + paused.ToString());
-                Log.WriteToLog("started = " + started.ToString());
+                Log.WriteToLog("**ERROR** : Cannot start Auto Update if it is already running");
+                Log.WriteToLog("**INFO**  : `paused` = " + paused.ToString());
+                Log.WriteToLog("**INFO**  : `started` = " + started.ToString());
             }
         }
 
@@ -1032,9 +1056,9 @@ namespace OriDETracker
             }
             else if (!(started) || paused)
             {
-                Log.WriteToLog("Cannot pause Auto Update if it is not running");
-                Log.WriteToLog("paused = " + paused.ToString());
-                Log.WriteToLog("started = " + started.ToString());
+                Log.WriteToLog("**ERROR** : Cannot pause Auto Update if it is not running");
+                Log.WriteToLog("**INFO**  : `paused` = " + paused.ToString());
+                Log.WriteToLog("**INFO**  : `started` = " + started.ToString());
             }
         }
 
@@ -1051,8 +1075,7 @@ namespace OriDETracker
         private void UpdateLoop()
         {
             bool lastHooked = false;
-            DateTime cur = DateTime.Now;
-            //DateTime diff;
+
             while (true)
             {
                 try
@@ -1070,12 +1093,12 @@ namespace OriDETracker
                     }
                     Thread.Sleep((int)refresh_time);
                 }
-                catch
+                catch (Exception exc)
                 {
-                    //diff = (DateTime.Now - cur);
-                    Log.WriteToLog("Now: " + DateTime.Now.Ticks);
-                    Log.WriteToLog("cur: " + cur.Ticks);
-                    cur = DateTime.Now;
+                    Log.WriteToLog("**ERROR** : Exception thrown.");
+                    Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
+                    Log.WriteToLog("**INFO**  : Source = " + exc.Source.ToString());
+                    Log.WriteToLog("**INFO**  : Stack Trace = " + exc.StackTrace.ToString());
                 }
             }
         }
@@ -1101,8 +1124,6 @@ namespace OriDETracker
                 try
                 {
                     this.Refresh();
-                    //this.Invalidate();
-                    //this.Update();
                 }
                 catch { }
             }
@@ -1200,6 +1221,7 @@ namespace OriDETracker
             }
         }
 
+        //this does nothing right now
         private void CheckEventLocations()
         {
             HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
@@ -1270,7 +1292,6 @@ namespace OriDETracker
 
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
-
             TrackerSettings.Default.FontColoring = font_color;
             TrackerSettings.Default.Background = BackColor;
             TrackerSettings.Default.RefreshRate = RefreshRate;

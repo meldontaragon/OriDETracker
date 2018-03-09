@@ -27,8 +27,9 @@
     <SupportUrl>https://github.com/david-c-miller/OriDERandomizerTracker/issues</SupportUrl>
     <ErrorReportUrl>https://github.com/david-c-miller/OriDERandomizerTracker/issues</ErrorReportUrl>
     <ProductName>OriDERandoTracker</ProductName>
-    <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>1.4.0.%2a</ApplicationVersion>
+    <PublisherName>MeldonTaragon</PublisherName>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>

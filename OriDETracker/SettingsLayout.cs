@@ -52,7 +52,7 @@ namespace OriDETracker
             }
             else
 			{
-                parent.Log.WriteToLog("Invalid Size (" + parent.TrackerSize + ")");
+                parent.Log.WriteToLog("**ERROR** : Invalid Size (" + parent.TrackerSize + ")");
                 parent.TrackerSize = TrackerPixelSizes.size640px;
 
                 this.rb_420.Checked = false;
@@ -91,7 +91,7 @@ namespace OriDETracker
             }
             else
             {
-                parent.Log.WriteToLog("Invalid Refresh Rate (" + parent.RefreshRate + ")");
+                parent.Log.WriteToLog("**ERROR** : Invalid Refresh Rate (" + parent.RefreshRate + ")");
                 parent.RefreshRate = (AutoUpdateRefreshRates)10000;
 
                 this.rb_500_mHz.Checked = false;

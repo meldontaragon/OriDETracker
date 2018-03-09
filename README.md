@@ -10,7 +10,7 @@ All Trees NMG runs with the Ori DE Randomizer (https://github.com/sigmasin/OriDE
 ## Features
 
 ### Resizing
-To resize the tracker open the settings menu (right click and hit 'Settings') and then either change the initial image size (currently 400x400 px and 600x600 px) or change the scaling (values from 50% to 400%). Please note the various layout options in the settings menu are not operational.
+To resize the tracker open the settings menu (right click and hit 'Settings') and then either change the initial image size. Please note the some layout options in the settings menu are not operational.
 
 ### Moving
 To move the tracker around the screen right click and select 'Move'. This will disable the ability to change any of the items on the tracker except through the 'Edit' menu. Unselect the 'Move' option to update items on the tracker again.
@@ -51,4 +51,4 @@ There are some known issues with the tracker using a lot of CPU time. I recommen
 Additionally, some people have had problems with the auto update feature but have found that running the tracker as Administrator can fix this.
 
 ## Thanks
-Thanks to SigmaSin for creating the Ori DE Randomizer and his assistance in getting the shards and map stone auto update features working ! Additionally, thanks to DevilSquirrel for help with setting up the auto updating component and for writing the memory related classes. Thanks to ViresMajores and Hydra for their work in designing the visual components of the tracker.
+Thanks to SigmaSin for creating the Ori DE Randomizer and his assistance in getting the shards and map stone auto update features working! Additionally, thanks to DevilSquirrel for help with setting up the auto updating component and for writing the memory related classes. Thanks to ViresMajores and Hydra for their work in designing the visual components of the tracker.

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OriDETracker")]
 [assembly: AssemblyDescription("A visual tracker for Ori DE Randomizer runs")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("MeldonTaragon")]
 [assembly: AssemblyProduct("OriDETracker")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.1.*")]
-[assembly: AssemblyVersion("1.4.0.*")]
-[assembly: AssemblyFileVersion("1.4.0")]
+[assembly: AssemblyVersion("2.0.0.*")]
+[assembly: AssemblyFileVersion("2.0.0")]
