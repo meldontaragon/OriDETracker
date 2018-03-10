@@ -1,6 +1,7 @@
 html, body {
     padding: 0;
     margin: 0;
+    background-color: #1C1C1C;
 }
 
 label {
@@ -16,43 +17,56 @@ button {
     font-size: 28px;
 }
 
-checkbox {
-    checked: false;
-}
-
-.tracker-container {
-    display: inline-block;
-    margin-left: 20px;
+.main-container {
+    vertical-align: center;
+    text-align: center;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
+    margin-bottom: 0;
     padding: 0;
 }
 
+.tracker-container {
+    display: inline-flex;
+    margin-left: 5px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    text-align: left;
+}
+
 .tracker-controls {
+    vertical-align: center;
+    text-align: left;
     border: 1px solid black;
+    vertical-align: center;
 }
 
 .tracker-control-group {
-    vertical-align: top;
+    display: inline-block;
+    vertical-align: center;
     margin-left: auto;
     margin-right: auto;
     background-color: #aaa;
-    width: 195px;
-    padding: 15px;
+    width: 175px;
+    padding-left: 15px;
 }
 
 .tracker-control-group h1 {
     font-size: 48px;
     margin: 0;
     font-weight: normal;
+    display: inline;
 }
 
 .tracker-display {
     position: relative;
     background-image: url('Assets_420/tracker-bg.png');
     background-color: black;
-    border: 5px solid red;
+    border: 2px solid red;
     width: 420px;
     height: 420px;
-    margin: 10px 100px 10px;
+    margin-right: 2px;
 }
 
 .tracker-display img {
@@ -66,6 +80,24 @@ checkbox {
 
 .tracker-display img.lead {
     display: block;
+}
+
+.lead-controls {
+    display: inline-block;
+    text-align: center;
+    padding: 2px;
+    vertical-align: center;
+    background-color: #DDDDDD;
+    overflow: hidden;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
+}
+
+.info-controls {
+    margin-top: 5px;
+    display: inline-block;
+    background-color: #DDDDDD;
+    padding: 0;
 }
 
 #matchForm {

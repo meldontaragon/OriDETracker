@@ -1,6 +1,10 @@
-function onImageClick()
-{
-
+function onImageClick() {
+    var name = this.id;
+    //alert(name);
+    if (name == "allskills") {
+        window.location.href = name;
+    } else if (name == "randomizer") {
+        window.location.href = name;
+    }
 }
-
-$( 'body' ).on( 'click', 'input[type="image"]', onImageClick );
+$('img').on('click', onImageClick);

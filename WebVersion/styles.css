@@ -2,9 +2,16 @@ body {
     background-color: black;
 }
 
-image-display {
+.image-display {
     margin-top: 5px;
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 5px;
+
+    display: inline;
+    cursor: pointer;
+}
+
+.container {
+    display: inline;
 }
