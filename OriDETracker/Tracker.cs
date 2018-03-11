@@ -18,9 +18,9 @@ namespace OriDETracker
         public Tracker()
         {
             this.DoubleBuffered = true;
-                
+
             //Log important things
-            Log = new Logger("OriDERandoTracker");
+            Log = new Logger("OriDETracker-v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
             Log.WriteToLog("**INFO**  : Starting Tracker (v " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")");
             
             //Form for quickly editting things
@@ -190,10 +190,10 @@ namespace OriDETracker
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
 
-        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
 
         #endregion
 
@@ -911,10 +911,13 @@ namespace OriDETracker
             }
             catch (Exception exc)
             {
-                Log.WriteToLog("**ERROR** : Exception thrown, detail follow below.");
+                Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
                 Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
                 Log.WriteToLog("**INFO**  : Source = " + exc.Source.ToString());
                 Log.WriteToLog("**INFO**  : Stack Trace = " + exc.StackTrace.ToString());
+                Log.WriteToLog("**INFO**  : Target Site = " + exc.TargetSite.ToString());
+                Log.WriteToLog("**INFO**  : Data = " + exc.Data.ToString());
+                Log.WriteToLog("**INFO**  : " + exc.ToString());
             }
             //Refresh();
         }
@@ -1027,12 +1030,14 @@ namespace OriDETracker
         {
             if (started && paused)
             {
+                Log.WriteToLog("**DEBUG** : Resuming auto update thread.");
                 th.Resume();
                 started = true;
                 paused = false;
             }
             else if (!(started))
             {
+                Log.WriteToLog("**DEBUG** : Starting auto update thread.");
                 th.Start();
                 started = true;
                 paused = false;
@@ -1049,10 +1054,10 @@ namespace OriDETracker
         {
             if (!(paused) && started)
             {
+                Log.WriteToLog("**DEBUG** : Suspending auto update thread.");
                 th.Suspend();
                 started = true;
                 paused = true;
-                //th = new Thread();
             }
             else if (!(started) || paused)
             {
@@ -1095,10 +1100,13 @@ namespace OriDETracker
                 }
                 catch (Exception exc)
                 {
-                    Log.WriteToLog("**ERROR** : Exception thrown.");
+                    Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
                     Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
                     Log.WriteToLog("**INFO**  : Source = " + exc.Source.ToString());
                     Log.WriteToLog("**INFO**  : Stack Trace = " + exc.StackTrace.ToString());
+                    Log.WriteToLog("**INFO**  : Target Site = " + exc.TargetSite.ToString());
+                    Log.WriteToLog("**INFO**  : Data = " + exc.Data.ToString());
+                    Log.WriteToLog("**INFO**  : " + exc.ToString());
                 }
             }
         }
