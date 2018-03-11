@@ -1,0 +1,89 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    background-color: #1C1C1C;
+}
+
+label {
+    font-size: 18px;
+}
+
+button {
+    width: 40px;
+    height: 40px;
+    color: black;
+    font-family: 'Amatic SC';
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.main-container {
+    vertical-align: center;
+    text-align: center;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.tracker-container {
+    display: inline-flex;
+    margin-left: 5px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    text-align: left;
+}
+
+
+.tracker-controls {
+    display: block;
+    border: 1px solid black;
+}
+
+.tracker-control-group {
+    display: inline-block;
+    vertical-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #aaa;
+    width: 175px;
+    padding-left: 15px;
+}
+
+.tracker-control-group h1 {
+    font-size: 48px;
+    margin: 0;
+    font-weight: normal;
+    display: inline;
+}
+
+.tracker-display img {
+    position: absolute;
+    display: none;
+}
+
+.tracker-display img.show {
+    display: block;
+}
+
+.info-controls {
+    margin-top: 5px;
+    display: inline-block;
+    background-color: #DDDDDD;
+    padding: 0;
+}
+
+#matchForm {
+    padding: 20px;
+}
+
+#sync-message {
+    color: green;
+    font-weight: bold;
+}
+
+#inner {
+    width: 50%;
+    margin: 0 auto;
+}
