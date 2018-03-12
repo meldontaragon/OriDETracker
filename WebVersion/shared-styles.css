@@ -22,7 +22,8 @@ button {
     text-align: center;
     margin-left: 0 auto;
     margin-right: 0 auto;
-    margin-bottom: 0;
+    margin-bottom: auto;
+    margin-top: auto;
     padding: 0;
 }
 
@@ -34,7 +35,6 @@ button {
     padding: 0;
     text-align: left;
 }
-
 
 .tracker-controls {
     display: block;
