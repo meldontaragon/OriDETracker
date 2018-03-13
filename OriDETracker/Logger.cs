@@ -10,12 +10,12 @@ namespace OriDETracker
 {
     public class Logger
     {
-       public Logger(String AppName)
+       public Logger(String AppName, String Version)
         {
             DateTime utcDate = DateTime.UtcNow;
 
             app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            log_file = "LogFile_" + utcDate.Date.ToShortDateString() + ".txt";
+            log_file = "LogFile_" + "v" + Version + "_" + utcDate.Date.ToShortDateString() + ".txt";
             if (!(Directory.Exists(app_data_path + @"\MeldonTaragon")))
             {
                 Directory.CreateDirectory(app_data_path + @"\MeldonTaragon");
