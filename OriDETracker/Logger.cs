@@ -6,40 +6,44 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
 
+/*
+
 namespace OriDETracker
 {
-    public class Logger
+public class Logger
+{
+   public Logger(String AppName)
     {
-       public Logger(String AppName)
+        DateTime utcDate = DateTime.UtcNow;
+
+        app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        log_file = "LogFile_" + utcDate.Date.ToShortDateString() + ".txt";
+        if (!(Directory.Exists(app_data_path + @"\MeldonTaragon")))
         {
-            DateTime utcDate = DateTime.UtcNow;
-
-            app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            log_file = "LogFile_" + utcDate.Date.ToShortDateString() + ".txt";
-            if (!(Directory.Exists(app_data_path + @"\MeldonTaragon")))
-            {
-                Directory.CreateDirectory(app_data_path + @"\MeldonTaragon");
-            }
-            if (!(Directory.Exists(app_data_path + @"\MeldonTaragon\" + AppName)))
-            {
-                Directory.CreateDirectory(app_data_path + @"\MeldonTaragon\" + AppName);
-            }
-
-            full_path = app_data_path + @"\MeldonTaragon\" + AppName + @"\" + log_file;
+            Directory.CreateDirectory(app_data_path + @"\MeldonTaragon");
+        }
+        if (!(Directory.Exists(app_data_path + @"\MeldonTaragon\" + AppName)))
+        {
+            Directory.CreateDirectory(app_data_path + @"\MeldonTaragon\" + AppName);
         }
 
-        private string app_data_path;
-        private string full_path;
-        private string log_file;
+        full_path = app_data_path + @"\MeldonTaragon\" + AppName + @"\" + log_file;
+    }
 
-        public void WriteToLog(string line)
-        {
-            DateTime utcDate = DateTime.UtcNow;
-            System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-GB");
+    private string app_data_path;
+    private string full_path;
+    private string log_file;
 
-            string log_text = utcDate.ToString(culture) + " -- " + line + "\n";
+    /*
+    public void WriteToLog(string line)
+    {
+        DateTime utcDate = DateTime.UtcNow;
+        System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-GB");
 
-            File.AppendAllText(full_path, log_text);
-        }
+        string log_text = utcDate.ToString(culture) + " -- " + line + "\n";
+
+        File.AppendAllText(full_path, log_text);
     }
 }
+}
+    */
