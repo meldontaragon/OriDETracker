@@ -12,20 +12,32 @@ namespace OriDETracker
     {
        public Logger(String AppName, String Version)
         {
-            DateTime utcDate = DateTime.UtcNow;
-
-            app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            log_file = "LogFile_" + "v" + Version + "_" + utcDate.Date.ToShortDateString() + ".txt";
-            if (!(Directory.Exists(app_data_path + @"\MeldonTaragon")))
+            try
             {
-                Directory.CreateDirectory(app_data_path + @"\MeldonTaragon");
-            }
-            if (!(Directory.Exists(app_data_path + @"\MeldonTaragon\" + AppName)))
-            {
-                Directory.CreateDirectory(app_data_path + @"\MeldonTaragon\" + AppName);
-            }
 
-            full_path = app_data_path + @"\MeldonTaragon\" + AppName + @"\" + log_file;
+                DateTime utcDate = DateTime.UtcNow;
+
+                app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                log_file = "LogFile_" + utcDate.Date.ToShortDateString() + "_v" + Version + ".txt";
+                if (!(Directory.Exists(app_data_path + @"\MeldonTaragon")))
+                {
+                    Directory.CreateDirectory(app_data_path + @"\MeldonTaragon");
+                }
+                if (!(Directory.Exists(app_data_path + @"\MeldonTaragon\" + AppName)))
+                {
+                    Directory.CreateDirectory(app_data_path + @"\MeldonTaragon\" + AppName);
+                }
+
+                full_path = app_data_path + @"\MeldonTaragon\" + AppName + @"\" + log_file;
+            }
+            catch (Exception exc)
+            {
+                  System.Windows.Forms.MessageBox.Show(exc.ToString(), "WTF!");
+            }
+        }
+
+        public Logger(String AppName, System.Version Version) : this(AppName, Version.ToString())
+        {
         }
 
         private string app_data_path;

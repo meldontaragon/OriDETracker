@@ -20,7 +20,14 @@ namespace OriDETracker
             this.DoubleBuffered = true;
 
             //Log important things
-            Log = new Logger("OriDETracker", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            /*
+                Log = new Logger("OriDETracker", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "-"
+                + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString() + "-"
+                + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build.ToString() + "-"
+                + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision.ToString());
+                */
+            Log = new OriDETracker.Logger("OriDETracker", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+
             Log.WriteToLog("**INFO**  : Starting Tracker (v " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")");
             
             //Form for quickly editting things
