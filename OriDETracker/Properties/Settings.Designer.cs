@@ -8,131 +8,43 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OriDETracker.Properties
-{
-
-
+namespace OriDETracker.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
-            get
-            {
+        
+        public static Settings Default {
+            get {
                 return defaultInstance;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("rate10Hz")]
-        public AutoUpdateRefreshRates RefreshRate
-        {
-            get
-            {
-                return ((AutoUpdateRefreshRates)(this["RefreshRate"]));
-            }
-            set
-            {
-                this["RefreshRate"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public double Opacity
-        {
-            get
-            {
-                return ((double)(this["Opacity"]));
+        public float Scaling {
+            get {
+                return ((float)(this["Scaling"]));
             }
-            set
-            {
-                this["Opacity"] = value;
+            set {
+                this["Scaling"] = value;
             }
         }
-
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("false")]
-        public bool Shards
-        {
-            get
-            {
-                return ((bool)(this["Shards"]));
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Setting {
+            get {
+                return ((string)(this["Setting"]));
             }
-            set
-            {
-                this["Shards"] = value;
+            set {
+                this["Setting"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("size640px")]
-        public TrackerPixelSizes Pixels
-        {
-            get
-            {
-                return ((TrackerPixelSizes)(this["Pixels"]));
-            }
-            set
-            {
-                this["Pixels"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("RandomizerAllTrees")]
-        //[global::System.Configuration.DefaultSettingValueAttribute("OriDETracker.TrackerLayout.RandomizerAllEvents")]
-
-        public TrackerLayout Layout
-        {
-            get
-            {
-                return ((TrackerLayout)(this["Layout"]));
-            }
-            set
-            {
-                this["Layout"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("White")]
-        public System.Drawing.Color FontColoring
-        {
-            get
-            {
-                return ((System.Drawing.Color)(this["FontColoring"]));
-            }
-            set
-            {
-                this["FontColoring"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
-        public System.Drawing.Color Background
-        {
-            get
-            {
-                return ((System.Drawing.Color)(this["Background"]));
-            }
-            set
-            {
-                this["Background"] = value;
-            }
-        }       
     }
 }

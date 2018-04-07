@@ -13,5 +13,8 @@ body {
 }
 
 .container {
-    display: inline;
+    display: inline-block;
+    margin: auto;
+    margin-top: 5px;
+    padding: 20px;
 }
