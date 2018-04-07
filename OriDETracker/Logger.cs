@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,18 +41,20 @@ namespace OriDETracker
         {
         }
 
-        private string app_data_path;
-        private string full_path;
-        private string log_file;
+    private string app_data_path;
+    private string full_path;
+    private string log_file;
 
-        public void WriteToLog(string line)
-        {
-            DateTime utcDate = DateTime.UtcNow;
-            System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-GB");
+    /*
+    public void WriteToLog(string line)
+    {
+        DateTime utcDate = DateTime.UtcNow;
+        System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-GB");
 
-            string log_text = utcDate.ToString(culture) + " -- " + line + "\n";
+        string log_text = utcDate.ToString(culture) + " -- " + line + "\n";
 
-            File.AppendAllText(full_path, log_text);
-        }
+        File.AppendAllText(full_path, log_text);
     }
 }
+}
+    */

@@ -17,7 +17,9 @@ button {
     font-size: 28px;
 }
 
+/* main continaer for the whole page */
 .main-container {
+    display: grid;
     vertical-align: center;
     text-align: center;
     margin-left: 0 auto;
