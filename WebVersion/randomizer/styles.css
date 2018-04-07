@@ -8,22 +8,13 @@
     margin-right: 2px;
 }
 
-.tracker-control-mapstones {
-    margin-left: 20px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    display: inline-block;
-    text-align: center;
-    padding: 10px;
-    vertical-align: center;
-    background-color: #DDDDDD;
+.tracker-display img {
+    position: absolute;
+    display: none;
 }
 
-.tracker-control-mapstones span {
-    vertical-align: center;
-    line-height: 40px;
-    font-size: 20px;
-    font-weight: bold;
+.tracker-display img.show {
+    display: block;
 }
 
 .mapstone-text {
