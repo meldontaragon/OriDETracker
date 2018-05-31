@@ -641,6 +641,11 @@ namespace OriDETracker
         {
             Application.Exit();
         }
+        protected void debugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+                MessageBox.Show(started.ToString() + " " + paused.ToString());
+        }
+
         protected void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.HardReset();
@@ -1098,13 +1103,14 @@ namespace OriDETracker
                     if (lastHooked != hooked)
                     {
                         lastHooked = hooked;
-                        //MessageBox.Show("Hooked: " + hooked.ToString());
+//                        MessageBox.Show("Hooked: " + hooked.ToString());
                         this.Invoke((Action)delegate () { labelBlank.Visible = false; });
                     }
                     Thread.Sleep((int)refresh_time);
                 }
-                catch // (Exception exc)
+                catch  (Exception exc)
                 {
+                    MessageBox.Show(exc.Message.ToString());
                     /*
                     Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
                     Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
@@ -1126,21 +1132,22 @@ namespace OriDETracker
                 UpdateEvents();
                 UpdateShards();
                 UpdateMapstoneProgression();
-                if (checkTreeHitbox)
-                {
-                    CheckTrees();
-                }
-                if (checkEventHitbox)
-                {
-                    CheckEventLocations();
-                }
+                CheckTrees();
 
                 //the following works but is "incorrect"
                 try
                 {
-                    this.Refresh();
+                    if(this.InvokeRequired)
+                    {
+                        this.Invoke(new MethodInvoker(delegate { this.Refresh(); }));
+                    }
+                    else
+                        this.Refresh();
                 }
-                catch { }
+                catch (Exception err) {
+                    MessageBox.Show(err.StackTrace.ToString());
+
+                }
             }
         }
 
@@ -1197,80 +1204,15 @@ namespace OriDETracker
 
         private void CheckTrees()
         {
-            HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
-
-            Skill tree_at = Skill.None;
-
-            //this checks whether Ori is in a tree hitbox
-            bool touchingAnyTree = false;
-
-            foreach (KeyValuePair<Skill, HitBox> tree in treeHitboxes)
+            foreach (var tree in mem.GetTrees())
             {
-                if (tree.Value.Intersects(ori))
-                {
-                    touchingAnyTree = true;
-                    if (!mem.CanMove())
-                    {
-                        tree_at = tree.Key;
-                        touchingAnyTree = false;
-                    }
-                    break;
-                }
-            }
-
-            if (!touchingAnyTree && tree_at != Skill.None)
-            {
-                //set both hitTree and haveTree accordingly
-                hitTree[tree_at] = true;
-                haveTree[tree_at] = true;
-            }
-
-            //this loops over all trees and updates the have values to the hit values
-            foreach (KeyValuePair<Skill, bool> skills in hitTree)
-            {
-                //this should allow
-                if (hitTree[skills.Key] || skills.Value)
-                {
-                    haveTree[skills.Key] = true;
-                }
+                haveTree[tree.Key] = tree.Value;
             }
         }
 
         //this does nothing right now
         private void CheckEventLocations()
         {
-            HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
-
-            String event_at = "";
-            bool touchingAnyEvent = false;
-
-            foreach (KeyValuePair<String, HitBox> loc in eventHitboxes)
-            {
-                if (loc.Value.Intersects(ori))
-                {
-                    touchingAnyEvent = true;
-                    if (!mem.CanMove())
-                    {
-                        event_at = loc.Key;
-                        touchingAnyEvent = false;
-                    }
-                    break;
-                }
-            }
-
-            if (!touchingAnyEvent && event_at != "")
-            {
-                //hitEventLocation[event_at] = true;
-                //haveEventLocation[event_at] = true;
-            }
-            /*
-			   //this loops over all trees and updates the have values to the hit values
-			   //looking at this right now, I'm not exactly sure if it is working
-			   foreach (KeyValuePair<String, bool> trees in hitEventLocation)
-			   {
-			   haveEventLocation[trees.Key] = (hitEventLocation[trees.Key] || trees.Value);
-			   }
-			 */
         }
 
         private string GetSkillName(Skill sk)

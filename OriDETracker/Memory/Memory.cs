@@ -418,7 +418,7 @@ namespace OriDE.Memory
                 if (dump == 0) { break; }
 
                 long regionSize = (long)memInfo.RegionSize;
-                if (regionSize <= 0 || (int)regionSize != regionSize) { break; }
+                if (regionSize <= 0 || regionSize > int.MaxValue) { break; }
 
                 if (MemoryFilter(memInfo))
                 {

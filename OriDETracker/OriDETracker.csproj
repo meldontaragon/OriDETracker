@@ -28,7 +28,8 @@
     <ErrorReportUrl>https://github.com/david-c-miller/OriDERandomizerTracker/issues</ErrorReportUrl>
     <ProductName>OriDERandoTracker</ProductName>
     <PublisherName>MeldonTaragon</PublisherName>
-    <ApplicationRevision>0</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>2.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,10 +68,10 @@
     <ManifestKeyFile>OriDETracker_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>

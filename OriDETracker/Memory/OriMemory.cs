@@ -27,120 +27,6 @@ namespace OriDE.Memory
             lastHooked = DateTime.MinValue;
         }
 
-        public int SeinInputDir()
-        {
-            bool down = SeinCharacter.Read<bool>(Program, 0x0, 0x34, 0x8, 0x8);
-            bool left = SeinCharacter.Read<bool>(Program, 0x0, 0x34, 0xc, 0x8);
-            bool right = SeinCharacter.Read<bool>(Program, 0x0, 0x34, 0x10, 0x8);
-            bool up = SeinCharacter.Read<bool>(Program, 0x0, 0x34, 0x14, 0x8);
-            return down ? 1 : up ? 2 : left ? 3 : right ? 4 : 0;
-        }
-        public float WaterSpeed()
-        {
-            return SeinCharacter.Read<float>(Program, 0x0, 0x10, 0x3c, 0x98);
-        }
-        public void SetSpeed(float maxSpeed, float accGround, float accAir, float waterSpeed, float bashSpeed, float stompSpeed, float wallJumpImp, float chargeJumpSpeed, float wallChargeJumpSpeed, float jumpHeight, float climbSpeed, float dashSpeed, float chargeDashSpeed)
-        {
-            SeinCharacter.Write(Program, accGround, 0x0, 0x48, 0x14, 0x28, 0x8, 0x8);
-            SeinCharacter.Write(Program, accGround / 2f, 0x0, 0x48, 0x14, 0x28, 0x8, 0xc);
-            SeinCharacter.Write(Program, maxSpeed, 0x0, 0x48, 0x14, 0x28, 0x8, 0x10);
-
-            SeinCharacter.Write(Program, accAir, 0x0, 0x48, 0x14, 0x28, 0xc, 0x8);
-            SeinCharacter.Write(Program, accAir, 0x0, 0x48, 0x14, 0x28, 0xc, 0xc);
-            SeinCharacter.Write(Program, maxSpeed, 0x0, 0x48, 0x14, 0x28, 0xc, 0x10);
-
-            SeinCharacter.Write(Program, waterSpeed, 0x0, 0x10, 0x3c, 0x98);
-
-            SeinCharacter.Write(Program, bashSpeed, 0x0, 0x10, 0x50, 0x88);
-
-            SeinCharacter.Write(Program, stompSpeed, 0x0, 0x10, 0x20, 0x7c);
-
-            SeinCharacter.Write(Program, wallJumpImp, 0x0, 0x10, 0x10, 0x44);
-            SeinCharacter.Write(Program, wallJumpImp * 2, 0x0, 0x10, 0x10, 0x48);
-
-            SeinCharacter.Write(Program, chargeJumpSpeed, 0x0, 0x10, 0x18, 0x4c);
-            SeinCharacter.Write(Program, wallChargeJumpSpeed, 0x0, 0x10, 0x1c, 0x48);
-
-            if (jumpHeight == 3f)
-            {
-                SeinCharacter.Write(Program, 3f, 0x0, 0x10, 0xc, 0x60);
-                SeinCharacter.Write(Program, 3f, 0x0, 0x10, 0xc, 0x54);
-                SeinCharacter.Write(Program, 3f, 0x0, 0x10, 0xc, 0x64);
-                SeinCharacter.Write(Program, 3.75f, 0x0, 0x10, 0xc, 0x70);
-                SeinCharacter.Write(Program, 4.25f, 0x0, 0x10, 0xc, 0x74);
-                SeinCharacter.Write(Program, 4.25f, 0x0, 0x10, 0xc, 0x58);
-            }
-            else
-            {
-                SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x60);
-                SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x54);
-                SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x64);
-                SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x70);
-                SeinCharacter.Write(Program, jumpHeight, 0x0, 0x10, 0xc, 0x74);
-                SeinCharacter.Write(Program, jumpHeight * 2f, 0x0, 0x10, 0xc, 0x58);
-            }
-
-            SeinCharacter.Write(Program, climbSpeed, 0x0, 0x10, 0x30, 0x5c);
-            SeinCharacter.Write(Program, climbSpeed, 0x0, 0x10, 0x30, 0x60);
-
-            SeinCharacter.Write(Program, dashSpeed, 0x0, 0x10, 0x80, 0x20, 0x8, 0x84);
-            SeinCharacter.Write(Program, chargeDashSpeed, 0x0, 0x10, 0x80, 0x24, 0x8, 0x84);
-        }
-        public PointF CurrentSpeed()
-        {
-            if (!IsHooked) { return new PointF(0, 0); }
-
-            float px = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0xbc);
-            float py = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0xc0);
-            bool onGround = SeinCharacter.Read<bool>(Program, 0x0, 0x48, 0x10, 0x18, 0x9);
-            float gravityAngle = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0xb8);
-            float gx = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0x60);
-            float gy = SeinCharacter.Read<float>(Program, 0x0, 0x48, 0x10, 0x64);
-            PointF groundNormal = new PointF(gx, gy);
-            PointF groundBinomial = new PointF(gy, -gx);
-
-            return (py > 0.0001f || !onGround) ? Rotate(new PointF(px, py), gravityAngle) : Add(Mul(groundNormal, py), Mul(groundBinomial, px));
-        }
-        public static PointF Add(PointF one, PointF two)
-        {
-            return new PointF(one.X + two.X, one.Y + two.Y);
-        }
-        public static PointF Mul(PointF one, float scale)
-        {
-            return new PointF(one.X * scale, one.Y * scale);
-        }
-        public static PointF Rotate(PointF v, float angle)
-        {
-            if (angle == 0f)
-            {
-                return v;
-            }
-            float f = angle * 0.0174532924f;
-            float num = (float)Math.Cos(f);
-            float num2 = (float)Math.Sin(f);
-            return new PointF(v.X * num - v.Y * num2, v.X * num2 + v.Y * num);
-        }
-        public PointF GetCursorPosition()
-        {
-            float mx = CoreInput.Read<float>(Program);
-            float my = CoreInput.Read<float>(Program, 0x4);
-            return new PointF(mx, my);
-        }
-        public void ActivateRainbowDash()
-        {
-            if (GetAbility("Dash") && RainbowDash.GetPointer(Program) != IntPtr.Zero && !RainbowDash.Read<bool>(Program))
-            {
-                RainbowDash.Write<bool>(Program, true);
-            }
-        }
-        public PointF GetCameraTargetPosition()
-        {
-            if (!IsHooked) { return new PointF(0, 0); }
-
-            float px = GameplayCamera.Read<float>(Program, 0x0, 0x14, 0x10);
-            float py = GameplayCamera.Read<float>(Program, 0x0, 0x14, 0x14);
-            return new PointF(px, py);
-        }
         public Dictionary<string, bool> GetEvents()
         {
             Dictionary<string, bool> results = new Dictionary<string, bool>();
@@ -183,150 +69,6 @@ namespace OriDE.Memory
             int ability = abilities[name];
             return SeinCharacter.Read<bool>(Program, 0x0, 0x4c, ability * 4, 0x08);
         }
-        public void SetAbility(string name, bool enable)
-        {
-            int ability = abilities[name];
-            SeinCharacter.Write<bool>(Program, enable, 0x0, 0x4c, ability * 4, 0x08);
-        }
-        public void SetSkills(bool enable, params Skill[] skills)
-        {
-            if (skills == null || skills.Length == 0)
-            {
-                skills = AllSkills;
-            }
-
-            for (int i = 0; i < skills.Length; i++)
-            {
-                switch (skills[i])
-                {
-                    case Skill.Sein: SetAbility("Spirit Flame", enable); break;
-                    case Skill.WallJump: SetAbility("Wall Jump", enable); break;
-                    case Skill.ChargeFlame: SetAbility("Charge Flame", enable); break;
-                    case Skill.Dash: SetAbility("Dash", enable); break;
-                    case Skill.DoubleJump: SetAbility("Double Jump", enable); break;
-                    case Skill.Bash: SetAbility("Bash", enable); break;
-                    case Skill.Stomp: SetAbility("Stomp", enable); break;
-                    case Skill.Glide: SetAbility("Glide", enable); break;
-                    case Skill.Climb: SetAbility("Climb", enable); break;
-                    case Skill.ChargeJump: SetAbility("Charge Jump", enable); break;
-                    case Skill.Grenade: SetAbility("Light Grenade", enable); break;
-                }
-            }
-        }
-        public List<Area> GetMapCompletion()
-        {
-            List<Area> areas = new List<Area>();
-            if (GameWorld.GetPointer(Program) != IntPtr.Zero)
-            {
-                IntPtr current = (IntPtr)GameWorld.Read<uint>(Program, 0x0, 0x1c);
-                Area currentArea = GetArea(current);
-                IntPtr listHead = (IntPtr)GameWorld.Read<uint>(Program, 0x0, 0x18, 0x08);
-                int listSize = GameWorld.Read<int>(Program, 0x0, 0x18, 0x0c);
-
-                for (var i = 0; i < listSize; i++)
-                {
-                    IntPtr gameWorldAreaHead = (IntPtr)Program.Read<uint>(listHead, 0x10 + (i * 4));
-
-                    Area area = GetArea(gameWorldAreaHead);
-                    if (area.Name.Equals(currentArea.Name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        area.Current = true;
-                    }
-                    areas.Add(area);
-                }
-            }
-
-            return areas;
-        }
-        public Area GetCurrentArea()
-        {
-            if (GameWorld.GetPointer(Program) != IntPtr.Zero)
-            {
-                return GetArea((IntPtr)GameWorld.Read<uint>(Program, 0x0, 0x1c));
-            }
-            return default(Area);
-        }
-        public decimal GetTotalMapCompletion()
-        {
-            decimal total = 0;
-            int listSize = 0;
-            if (GameWorld.GetPointer(Program) != IntPtr.Zero)
-            {
-                IntPtr listHead = (IntPtr)GameWorld.Read<uint>(Program, 0x0, 0x18, 0x08);
-                listSize = GameWorld.Read<int>(Program, 0x0, 0x18, 0x0c);
-                for (var i = 0; i < listSize; i++)
-                {
-                    IntPtr gameWorldAreaHead = (IntPtr)Program.Read<uint>(listHead, 0x10 + (i * 4));
-                    Area area = GetArea(gameWorldAreaHead);
-                    total += area.Progress;
-                }
-            }
-
-            return total / (decimal)(listSize == 0 ? 1 : listSize);
-        }
-        private Area GetArea(IntPtr areaAddress)
-        {
-            float completionAmount = Program.Read<float>(areaAddress, 0x14);
-            string areaName = Program.Read((IntPtr)Program.Read<uint>(areaAddress, 0x08, 0x1c));
-            if (areaName.IndexOf("Mangrove", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                areaName = "Black Root";
-            }
-
-            Area area = new Area();
-            area.Name = areaName;
-            area.Progress = Math.Round((decimal)completionAmount * 100, 2, MidpointRounding.AwayFromZero);
-            area.Current = false;
-            return area;
-        }
-        public List<Scene> GetScenes(PointF currentPos = default(PointF))
-        {
-            IntPtr activeScenesHead = (IntPtr)ScenesManager.Read<uint>(Program, 0x0, 0x14);
-            int listSize = Program.Read<int>(activeScenesHead, 0x0c);
-
-            if (currentPos == default(PointF))
-            {
-                currentPos = GetCameraTargetPosition();
-            }
-            HitBox cameraBox = new HitBox(currentPos, 0f, 0f, true);
-            bool foundActive = false;
-
-            List<Scene> scenes = new List<Scene>();
-            for (int i = 0; i < listSize; i++)
-            {
-                IntPtr sceneManagerHead = (IntPtr)Program.Read<uint>(activeScenesHead, 0x08, 0x10 + (i * 4));
-                IntPtr runtimeSceneHead = (IntPtr)Program.Read<uint>(sceneManagerHead, 0x0c);
-
-                Scene scene = new Scene();
-                scene.Name = Program.Read((IntPtr)Program.Read<uint>(runtimeSceneHead, 0x08));
-                scene.State = (SceneState)Program.Read<int>(sceneManagerHead, 0x14);
-                bool dependantScene = Program.Read<bool>(runtimeSceneHead, 0x34);
-
-                if (!foundActive && !dependantScene)
-                {
-                    runtimeSceneHead = (IntPtr)Program.Read<uint>(runtimeSceneHead, 0x14);
-                    int boundaryCount = Program.Read<int>(runtimeSceneHead, 0x0c);
-                    for (int j = 0; j < boundaryCount; j++)
-                    {
-                        float bx = Program.Read<float>(runtimeSceneHead, 0x08, 0x10 + (j * 16));
-                        float by = Program.Read<float>(runtimeSceneHead, 0x08, 0x14 + (j * 16));
-                        float bw = Program.Read<float>(runtimeSceneHead, 0x08, 0x18 + (j * 16));
-                        float bh = Program.Read<float>(runtimeSceneHead, 0x08, 0x1c + (j * 16));
-                        HitBox rect = new HitBox(new PointF(bx, by + bh), bw, bh, false);
-                        if (rect.Intersects(cameraBox))
-                        {
-                            scene.Active = true;
-                            foundActive = true;
-                            break;
-                        }
-                    }
-                }
-
-                scenes.Add(scene);
-            }
-
-            return scenes;
-        }
         public bool IsEnteringGame()
         {
             return GameController.Read<bool>(Program, 0x0, 0x68) || GameController.Read<bool>(Program, 0x0, 0x69) || SeinCharacter.Read<uint>(Program) == 0 || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3);
@@ -339,17 +81,21 @@ namespace OriDE.Memory
         {
             return (GameState)GameStateMachine.Read<int>(Program, 0x0, 0x14);
         }
-        public int GetKeyStones()
-        {
-            return SeinCharacter.Read<int>(Program, 0x0, 0x2c, 0x1c);
-        }
-        public int GetMapStones()
-        {
-            return SeinCharacter.Read<int>(Program, 0x0, 0x2c, 0x20);
-        }
         public int GetAbilityCells()
         {
-            return SeinCharacter.Read<int>(Program, 0x0, 0x2c, 0x24);
+            return SeinCharacter.Read<int>(Program, 0x0, 0x2c, 0x2c);
+        }
+
+        public Dictionary<Skill, bool> GetTrees()
+        {
+            Skill[] skills = new Skill[] { Skill.Sein, Skill.WallJump, Skill.ChargeFlame, Skill.DoubleJump, Skill.Bash, Skill.Stomp, Skill.Glide, Skill.Climb, Skill.ChargeJump, Skill.Grenade, Skill.Dash };
+            Dictionary<Skill, bool> trees = new Dictionary<Skill, bool>();
+            int acs = GetAbilityCells();
+            for (int i = 0; i <= 10; i++)
+            {
+               trees.Add(skills[i], ((acs >> (i + 6)) % 2) == 1);
+            }
+            return trees;
         }
 
         /* Shards */
