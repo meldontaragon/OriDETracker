@@ -1,0 +1,13 @@
+diff --git a/OriDETracker/Memory/Memory.cs b/OriDETracker/Memory/Memory.cs
+index 696c2d2..fac1bfd 100644
+--- a/OriDETracker/Memory/Memory.cs
++++ b/OriDETracker/Memory/Memory.cs
+@@ -418,7 +418,7 @@ namespace OriDE.Memory
+                 if (dump == 0) { break; }
+ 
+                 long regionSize = (long)memInfo.RegionSize;
+-                if (regionSize <= 0 || (int)regionSize != regionSize) { break; }
++                if (regionSize <= 0 || regionSize > int.MaxValue) { break; }
+ 
+                 if (MemoryFilter(memInfo))
+                 {

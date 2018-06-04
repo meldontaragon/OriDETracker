@@ -908,8 +908,9 @@ namespace OriDETracker
 
                 g.DrawImage(imageSkillWheelDouble, drawRect);
             }
-            catch //(Exception exc)
+            catch (Exception exc)
             {
+                MessageBox.Show(exc.StackTrace.ToString());
                 /*
                 Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
                 Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
@@ -1103,8 +1104,9 @@ namespace OriDETracker
                     }
                     Thread.Sleep((int)refresh_time);
                 }
-                catch // (Exception exc)
+                catch (Exception exc)
                 {
+                    MessageBox.Show(exc.StackTrace.ToString());
                     /*
                     Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
                     Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
@@ -1138,9 +1140,20 @@ namespace OriDETracker
                 //the following works but is "incorrect"
                 try
                 {
-                    this.Refresh();
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(new MethodInvoker(delegate { this.Refresh(); }));
+                    }
+                    else
+                    {
+                        this.Refresh();
+                    }
                 }
-                catch { }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.StackTrace.ToString());
+                }
+
             }
         }
 

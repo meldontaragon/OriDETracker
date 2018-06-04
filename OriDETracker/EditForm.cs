@@ -263,16 +263,8 @@ namespace OriDETracker
 		}
 		protected void SendEventChange(String ev, bool b)
 		{
-			if (ev == "Clean Water" && rando)
-			{
-				parent.haveEvent["Warmth Returned"] = b;
-			}
-			else
-			{
-				parent.haveEvent[ev] = b;
-			}
+            parent.haveEvent[ev] = b;
 			parent.Refresh();
-
 		}
 		protected void SendShardChange(String ev, bool b)
 		{
