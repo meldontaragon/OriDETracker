@@ -14,19 +14,7 @@ namespace OriDETracker
         AllCells,
         ReverseEventOrder
     }
-    class MapstoneText
-    {
-        public int X;
-        public int Y;
-        public int TextSize;
 
-        public MapstoneText(int a, int b, int size)
-        {
-            X = a;
-            Y = b;
-            TextSize = size;
-        }
-    }
     public enum TrackerPixelSizes
     {
         size300px = 300,

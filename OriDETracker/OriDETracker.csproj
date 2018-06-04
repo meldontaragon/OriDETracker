@@ -99,7 +99,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OtherCode.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="EditForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +107,7 @@
       <DependentUpon>EditForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Logger.cs" />
+    <Compile Include="MapstoneText.cs" />
     <Compile Include="PercentNumericUpDown.cs">
       <SubType>Component</SubType>
     </Compile>

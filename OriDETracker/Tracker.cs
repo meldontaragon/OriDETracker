@@ -641,10 +641,6 @@ namespace OriDETracker
         {
             Application.Exit();
         }
-        protected void debugToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-                MessageBox.Show(started.ToString() + " " + paused.ToString());
-        }
 
         protected void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1029,7 +1025,7 @@ namespace OriDETracker
         #endregion
 
         #region AutoUpdate
-        //these features need to be added
+
         bool paused;
         bool started;
         protected void TurnOnAutoUpdate()

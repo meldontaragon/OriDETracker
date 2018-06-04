@@ -263,16 +263,8 @@ namespace OriDETracker
 		}
 		protected void SendEventChange(String ev, bool b)
 		{
-			if (ev == "Clean Water" && rando)
-			{
-				parent.haveEvent["Warmth Returned"] = b;
-			}
-			else
-			{
-				parent.haveEvent[ev] = b;
-			}
-			parent.Refresh();
-
+            parent.haveEvent[ev] = b;
+            parent.Refresh();
 		}
 		protected void SendShardChange(String ev, bool b)
 		{
@@ -424,7 +416,6 @@ namespace OriDETracker
 		private void cb_event_gumonseal_MouseClick(object sender, EventArgs e)
 		{
 			SendEventChange("Gumon Seal", cb_event_gumonseal.Checked);
-
 		}
 
 		private void cb_event_sunstone_MouseClick(object sender, EventArgs e)
@@ -436,19 +427,16 @@ namespace OriDETracker
 		private void cb_event_cleanwater_MouseClick(object sender, EventArgs e)
 		{
 			SendEventChange("Clean Water", cb_event_cleanwater.Checked);
-
 		}
 
 		private void cb_event_wind_MouseClick(object sender, EventArgs e)
 		{
 			SendEventChange("Wind Restored", cb_event_wind.Checked);
-
 		}
 
 		private void cb_event_warmth_MouseClick(object sender, EventArgs e)
 		{
 			SendEventChange("Warmth Returned", cb_event_warmth.Checked);
-
 		}
 		#endregion
 
