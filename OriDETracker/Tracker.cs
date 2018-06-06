@@ -22,18 +22,22 @@ namespace OriDETracker
             //Log important things
             //Log = new Logger("OriDETracker-v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
             //Log.WriteToLog("**INFO**  : Starting Tracker (v " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")");
-            
+
             //Form for quickly editting things
-            edit_form = new EditForm(this);
-            edit_form.Visible = false;           
+            edit_form = new EditForm(this)
+            {
+                Visible = false
+            };
 
             // Settings options for Refresh Rate and Tracker Size
             RefreshRate = TrackerSettings.Default.RefreshRate;
             TrackerSize = TrackerSettings.Default.Pixels;
 
             //Settings window display
-            settings = new SettingsLayout(this);
-            settings.Visible = false;
+            settings = new SettingsLayout(this)
+            {
+                Visible = false
+            };
 
             InitializeComponent();
 
@@ -63,10 +67,12 @@ namespace OriDETracker
             }
 
             //initialize the OriMemory module that Devil wrote
-            mem = new OriMemory();
+            Mem = new OriMemory();
             //start the background loop
-            th = new Thread(UpdateLoop);
-            th.IsBackground = true;
+            th = new Thread(UpdateLoop)
+            {
+                IsBackground = true
+            };
 
             scaledSize = new Size(image_pixel_size, image_pixel_size);
             this.UpdateImages();
@@ -109,16 +115,21 @@ namespace OriDETracker
             }
         }
 
-        protected OriMemory mem
+        protected OriMemory Mem
         {
             get;
             set;
         }
 
+        //threading and other forms used by the main tracker
         protected Thread th;
         protected SettingsLayout settings;
         protected EditForm edit_form;
+
+        //ability to log to file, currently disabled
         //public Logger Log;
+
+        //public properties used by external parts of the tracker
 
         public Color FontColor
         {
@@ -153,27 +164,20 @@ namespace OriDETracker
         {
             get { return refresh_rate; }
             set { refresh_rate = value; refresh_time = (int) (1000000.0f / ((float)value)); }
-        }        
+        }
+
+        protected Brush font_brush;        
 
         protected static int PIXEL_DEF = 640;
 
         protected int image_pixel_size = PIXEL_DEF;
         protected TrackerPixelSizes tracker_size;
 
-
-        private Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
-            { 300, new MapstoneText(140, 190, 14) },
-            { 420, new MapstoneText(195, 268, 18) },
-            { 640, new MapstoneText(304, 417, 24) },
-            { 720, new MapstoneText(342, 471, 28) }
-        };
-
         protected Size scaledSize;
         protected bool display_shards = false;
         protected TrackerLayout current_layout;
         protected Color font_color;
 
-        public Brush font_brush;
         protected const int TOL = 25;
         protected bool auto_update = false;
         protected bool draggable = false;
@@ -183,7 +187,20 @@ namespace OriDETracker
         protected AutoUpdateRefreshRates refresh_rate;
         protected int refresh_time;
 
+        private Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
+            { 300, new MapstoneText(140, 190, 14) },
+            { 420, new MapstoneText(195, 268, 18) },
+            { 640, new MapstoneText(304, 417, 24) },
+            { 720, new MapstoneText(342, 471, 28) }
+        };
         private int destroy = 1;
+
+        //points for mouse clicks (with certain tolerance defined by TOL)
+        private Dictionary<Skill, Point> skillMousePoint = new Dictionary<Skill, Point>();
+        private Dictionary<String, Point> eventMousePoint = new Dictionary<string, Point>();
+        private Dictionary<Skill, Point> treeMouseLocation = new Dictionary<Skill, Point>();
+        private Point mapstoneMousePoint = new Point(305, 343);
+        //private Dictionary<String, Point> eventMouseLocation;
 
         #region FrameMoving
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -383,13 +400,6 @@ namespace OriDETracker
             {"Warmth Returned", new HitBox( "0,0,1,1")},
         };
         #endregion
-
-        //points for mouse clicks (with certain tolerance defined by TOL)
-        private Dictionary<Skill, Point> skillMousePoint = new Dictionary<Skill, Point>();
-        private Dictionary<String, Point> eventMousePoint = new Dictionary<string, Point>();
-        private Dictionary<Skill, Point> treeMouseLocation = new Dictionary<Skill, Point>();
-        private Point mapstoneMousePoint = new Point(305, 343);
-        //private Dictionary<String, Point> eventMouseLocation;
 
         #region SetLayout
         public void ChangeLayout(TrackerLayout layout)
@@ -637,16 +647,16 @@ namespace OriDETracker
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
-        protected void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-        protected void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void ResetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.HardReset();
         }
 
-        protected void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void AutoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             auto_update = !(auto_update);
 
@@ -659,11 +669,11 @@ namespace OriDETracker
                 TurnOffAutoUpdate();
             }
         }
-        private void alwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AlwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.TopMost = alwaysOnTopToolStripMenuItem.Checked;
         }
-        protected void editToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void EditToolStripMenuItem_Click(object sender, EventArgs e)
         {
             draggable = !draggable;
         }
@@ -693,19 +703,33 @@ namespace OriDETracker
         {
             UpdateGraphics(e.Graphics);
         }
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             settings.Show();
         }
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ClearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearAll();
             Refresh();
         }
-        private void editToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void EditToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.edit_form.Show();
         }
+
+        private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            TrackerSettings.Default.FontColoring = font_color;
+            TrackerSettings.Default.Background = BackColor;
+            TrackerSettings.Default.RefreshRate = RefreshRate;
+            TrackerSettings.Default.Layout = current_layout;
+            TrackerSettings.Default.Opacity = Opacity;
+            TrackerSettings.Default.Shards = display_shards;
+            TrackerSettings.Default.Pixels = TrackerSize;
+
+            TrackerSettings.Default.Save();
+        }
+
         #endregion
 
         #region Graphics
@@ -1080,7 +1104,7 @@ namespace OriDETracker
 
         private bool CheckInGameWorld(GameState state)
         {
-            return CheckInGame(state) && state != GameState.Prologue && !mem.IsEnteringGame();
+            return CheckInGame(state) && state != GameState.Prologue && !Mem.IsEnteringGame();
         }
 
         private void UpdateLoop()
@@ -1091,7 +1115,7 @@ namespace OriDETracker
             {
                 try
                 {
-                    bool hooked = mem.HookProcess();
+                    bool hooked = Mem.HookProcess();
                     if (hooked)
                     {
                         UpdateValues();
@@ -1122,7 +1146,7 @@ namespace OriDETracker
 
         private void UpdateValues()
         {
-            if (CheckInGameWorld(mem.GetGameState()))
+            if (CheckInGameWorld(Mem.GetGameState()))
             {
                 UpdateSkills();
                 UpdateEvents();
@@ -1164,7 +1188,7 @@ namespace OriDETracker
             for (int i = 0; i < haveSkill.Count; i++)
             {
                 cur = haveSkill.ElementAt(i).Key;
-                haveSkill[cur] = mem.GetAbility(GetSkillName(cur));
+                haveSkill[cur] = Mem.GetAbility(GetSkillName(cur));
             }
         }
 
@@ -1180,12 +1204,12 @@ namespace OriDETracker
                     case "Water Vein":
                     case "Gumon Seal":
                     case "Sunstone":
-                        haveEvent[cur] = mem.GetKey(cur);
+                        haveEvent[cur] = Mem.GetKey(cur);
                         break;
                     case "Warmth Returned":
                     case "Wind Restored":
                     case "Clean Water":
-                        haveEvent[cur] = mem.GetEvent(cur);
+                        haveEvent[cur] = Mem.GetEvent(cur);
                         break;
                 }
             }
@@ -1193,24 +1217,24 @@ namespace OriDETracker
 
         private void UpdateShards()
         {
-            display_shards = mem.WaterVeinShards() > 0 || mem.GumonSealShards() > 0 || mem.SunstoneShards() > 0;
+            display_shards = Mem.WaterVeinShards() > 0 || Mem.GumonSealShards() > 0 || Mem.SunstoneShards() > 0;
             ChangeShards();
-            haveShards["Water Vein 1"] = mem.WaterVeinShards() > 0;
-            haveShards["Water Vein 2"] = mem.WaterVeinShards() > 1;
-            haveShards["Gumon Seal 1"] = mem.GumonSealShards() > 0;
-            haveShards["Gumon Seal 2"] = mem.GumonSealShards() > 1;
-            haveShards["Sunstone 1"] = mem.SunstoneShards() > 0;
-            haveShards["Sunstone 2"] = mem.SunstoneShards() > 1;
+            haveShards["Water Vein 1"] = Mem.WaterVeinShards() > 0;
+            haveShards["Water Vein 2"] = Mem.WaterVeinShards() > 1;
+            haveShards["Gumon Seal 1"] = Mem.GumonSealShards() > 0;
+            haveShards["Gumon Seal 2"] = Mem.GumonSealShards() > 1;
+            haveShards["Sunstone 1"] = Mem.SunstoneShards() > 0;
+            haveShards["Sunstone 2"] = Mem.SunstoneShards() > 1;
         }
 
         private void UpdateMapstoneProgression()
         {
-            mapstone_count = mem.MapStoneProgression();
+            mapstone_count = Mem.MapStoneProgression();
         }
 
         private void CheckTrees()
         {
-            HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
+            HitBox ori = new HitBox(Mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
 
             Skill tree_at = Skill.None;
 
@@ -1222,7 +1246,7 @@ namespace OriDETracker
                 if (tree.Value.Intersects(ori))
                 {
                     touchingAnyTree = true;
-                    if (!mem.CanMove())
+                    if (!Mem.CanMove())
                     {
                         tree_at = tree.Key;
                         touchingAnyTree = false;
@@ -1252,7 +1276,7 @@ namespace OriDETracker
         //this does nothing right now
         private void CheckEventLocations()
         {
-            HitBox ori = new HitBox(mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
+            HitBox ori = new HitBox(Mem.GetCameraTargetPosition(), 0.68f, 1.15f, true);
 
             String event_at = "";
             bool touchingAnyEvent = false;
@@ -1262,7 +1286,7 @@ namespace OriDETracker
                 if (loc.Value.Intersects(ori))
                 {
                     touchingAnyEvent = true;
-                    if (!mem.CanMove())
+                    if (!Mem.CanMove())
                     {
                         event_at = loc.Key;
                         touchingAnyEvent = false;
@@ -1318,22 +1342,6 @@ namespace OriDETracker
 
         #endregion
 
-        private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            TrackerSettings.Default.FontColoring = font_color;
-            TrackerSettings.Default.Background = BackColor;
-            TrackerSettings.Default.RefreshRate = RefreshRate;
-            TrackerSettings.Default.Layout = current_layout;
-            TrackerSettings.Default.Opacity = Opacity;
-            TrackerSettings.Default.Shards = display_shards;
-            TrackerSettings.Default.Pixels = TrackerSize;
 
-            TrackerSettings.Default.Save();
-        }
-
-        private void Tracker_Load(object sender, EventArgs e)
-        {
-            //MessageBox.Show(Application.LocalUserAppDataPath);
-        }
     }
 }
