@@ -356,9 +356,10 @@ namespace OriDETracker
 
         #region Hitbox
         //Game hitboxes for trees and events
-        private bool checkTreeHitbox = false;
-        private bool checkEventHitbox = false;
+        //private bool checkTreeHitbox = false;
+        //private bool checkEventHitbox = false;
 
+            /*
         private Dictionary<Skill, HitBox> treeHitboxes = new Dictionary<Skill, HitBox>(){
             {Skill.Sein,        new HitBox("-165,-262,1,2")},
             {Skill.WallJump,    new HitBox("-317,-301,5,6")},
@@ -382,6 +383,7 @@ namespace OriDETracker
             {"Wind Restored",   new HitBox( "0,0,1,1")},
             {"Warmth Returned", new HitBox( "0,0,1,1")},
         };
+        */
         #endregion
 
         //points for mouse clicks (with certain tolerance defined by TOL)
@@ -515,15 +517,15 @@ namespace OriDETracker
                 {"Clean Water", new Point(220, 360)}
             };
 
-            checkTreeHitbox = true;
-            checkEventHitbox = false;
+            //checkTreeHitbox = true;
+            //checkEventHitbox = false;
         }
 
         private void SetLayoutDefaults()
         {
             SetMouseLocations();
-            checkTreeHitbox = false;
-            checkEventHitbox = false;
+            //checkTreeHitbox = false;
+            //checkEventHitbox = false;
 
             #region Logic
             haveSkill = new Dictionary<Skill, bool>(){
@@ -1203,6 +1205,10 @@ namespace OriDETracker
             foreach (var tree in mem.GetTrees())
             {
                 haveTree[tree.Key] = tree.Value;
+                if (tree.Key == Skill.Sein)
+                {
+                    haveTree[tree.Key] = mem.GetAbility("Spirit Flame");
+                }
             }
         }
 
@@ -1254,11 +1260,6 @@ namespace OriDETracker
             TrackerSettings.Default.Pixels = TrackerSize;
 
             TrackerSettings.Default.Save();
-        }
-
-        private void Tracker_Load(object sender, EventArgs e)
-        {
-            //MessageBox.Show(Application.LocalUserAppDataPath);
         }
     }
 }

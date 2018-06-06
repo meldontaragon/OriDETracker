@@ -163,7 +163,6 @@
             this.Text = "Ori DE Tracker";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Tracker_FormClosing);
-            this.Load += new System.EventHandler(this.Tracker_Load);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Tracker_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Tracker_MouseDown);
             this.contextMenu_Tracker.ResumeLayout(false);
