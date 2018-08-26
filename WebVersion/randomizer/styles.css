@@ -8,6 +8,10 @@
     margin-right: 2px;
 }
 
+#view {
+    border: 0px;
+}
+
 .tracker-display img {
     position: absolute;
     display: none;

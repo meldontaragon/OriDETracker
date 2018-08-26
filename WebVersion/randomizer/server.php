@@ -6,7 +6,9 @@ function getMatch( $id ) {
 
 	if ( file_exists( $filename ) ) {
 		return json_decode( file_get_contents( $filename ), true );
-	}
+	} else {
+	       return json_decode( '{"mapstones":0}', true );
+	}		
 	return array();
 }
 
@@ -43,9 +45,6 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
 	echo json_encode( $state );
 } else {
-       // file_put_contents( 'asdf.txt', 'test' );
-       // $contents = file_get_contents( 'asdf.txt' );
-       // die( $contents );
        if ( !isset( $_GET['match'] ) ) {
 		// Reject the request
 		http_response_code( 400 );
