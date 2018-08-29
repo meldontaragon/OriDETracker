@@ -1,14 +1,11 @@
 .tracker-display {
     position: relative;
     background-image: url('Assets_420/tracker-bg.png');
+    background-color: black;
     border: 2px solid red;
     width: 420px;
     height: 420px;
     margin-right: 2px;
-}
-
-#view {
-    border: 0px;
 }
 
 .tracker-display img {
