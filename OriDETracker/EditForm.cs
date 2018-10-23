@@ -108,88 +108,88 @@ namespace OriDETracker
 			numeric_mapstone.Value = 0;
 		}
 
-		public void UpdateSkill(Skill sk, bool b)
+		public void UpdateSkill(String sk, bool b)
 		{
 			switch (sk)
 			{
-			case Skill.Sein:
+			case "Sein":
 				cb_skill_sein.Checked = b;
 				break;
-			case Skill.WallJump:
+			case "WallJump":
 				cb_skill_wj.Checked = b;
 				break;
-			case Skill.ChargeFlame:
+			case "ChargeFlame":
 				cb_skill_cflame.Checked = b;
 				break;
-			case Skill.DoubleJump:
+			case "DoubleJump":
 				cb_skill_djump.Checked = b;
 				break;
-			case Skill.Bash:
+			case "Bash":
 				cb_skill_bash.Checked = b;
 				break;
-			case Skill.Stomp:
+			case "Stomp":
 				cb_skill_stomp.Checked = b;
 				break;
-			case Skill.Glide:
+			case "Glide":
 				cb_skill_glide.Checked = b;
 				break;
-			case Skill.Climb:
+			case "Climb":
 				cb_skill_climb.Checked = b;
 				break;
-			case Skill.ChargeJump:
+			case "ChargeJump":
 				cb_skill_cjump.Checked = b;
 				break;
-			case Skill.Grenade:
+			case "Grenade":
 				cb_skill_grenade.Checked = b;
 				break;
-			case Skill.Dash:
+			case "Dash":
 				cb_skill_dash.Checked = b;
 				break;
-			case Skill.None:
+			default:
 				break;
 			}
 		}
-		public void UpdateTree(Skill sk, bool b)
+		public void UpdateTree(String sk, bool b)
 		{
 			switch (sk)
 			{
-			case Skill.Sein:
-				cb_tree_sein.Checked = b;
-				break;
-			case Skill.WallJump:
-				cb_tree_wj.Checked = b;
-				break;
-			case Skill.ChargeFlame:
-				cb_tree_cflame.Checked = b;
-				break;
-			case Skill.DoubleJump:
-				cb_tree_djump.Checked = b;
-				break;
-			case Skill.Bash:
-				cb_tree_bash.Checked = b;
-				break;
-			case Skill.Stomp:
-				cb_tree_stomp.Checked = b;
-				break;
-			case Skill.Glide:
-				cb_tree_glide.Checked = b;
-				break;
-			case Skill.Climb:
-				cb_tree_climb.Checked = b;
-				break;
-			case Skill.ChargeJump:
-				cb_tree_cjump.Checked = b;
-				break;
-			case Skill.Grenade:
-				cb_tree_grenade.Checked = b;
-				break;
-			case Skill.Dash:
-				cb_tree_dash.Checked = b;
-				break;
-			case Skill.None:
-				break;
-			}
-		}
+            case "Sein":
+                cb_tree_sein.Checked = b;
+                break;
+            case "WallJump":
+                cb_tree_wj.Checked = b;
+                break;
+            case "ChargeFlame":
+                cb_tree_cflame.Checked = b;
+                break;
+            case "DoubleJump":
+                cb_tree_djump.Checked = b;
+                break;
+            case "Bash":
+                cb_tree_bash.Checked = b;
+                break;
+            case "Stomp":
+                cb_tree_stomp.Checked = b;
+                break;
+            case "Glide":
+                cb_tree_glide.Checked = b;
+                break;
+            case "Climb":
+                cb_tree_climb.Checked = b;
+                break;
+            case "ChargeJump":
+                cb_tree_cjump.Checked = b;
+                break;
+            case "Grenade":
+                cb_tree_grenade.Checked = b;
+                break;
+            case "Dash":
+                cb_tree_dash.Checked = b;
+                break;
+            default:
+                break;
+            }
+        }
 		public void UpdateEvent(String ev, bool b)
 		{
 			switch (ev)
@@ -251,12 +251,12 @@ namespace OriDETracker
 			this.numeric_mapstone.Value = ms;
 		}
 
-		protected void SendSkillChange(Skill sk, bool b)
+		protected void SendSkillChange(String sk, bool b)
 		{
 			parent.haveSkill[sk] = b;
 			parent.Refresh();
 		}
-		protected void SendTreeChange(Skill sk, bool b)
+		protected void SendTreeChange(String sk, bool b)
 		{
 			parent.haveTree[sk] = b;
 			parent.Refresh();
@@ -282,63 +282,63 @@ namespace OriDETracker
 		#region Skills
 		private void cb_skill_sein_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.Sein, cb_skill_sein.Checked);
+			SendSkillChange("Sein", cb_skill_sein.Checked);
 		}
 
 		private void cb_skill_wj_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.WallJump, cb_skill_wj.Checked);
+			SendSkillChange("WallJump", cb_skill_wj.Checked);
 		}
 
 		private void cb_skill_cflame_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.ChargeFlame, cb_skill_cflame.Checked);
+			SendSkillChange("ChargeFlame", cb_skill_cflame.Checked);
 
 		}
 
 		private void cb_skill_djump_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.DoubleJump, cb_skill_djump.Checked);
+			SendSkillChange("DoubleJump", cb_skill_djump.Checked);
 		}
 
 		private void cb_skill_bash_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.Bash, cb_skill_bash.Checked);
+			SendSkillChange("Bash", cb_skill_bash.Checked);
 
 		}
 
 		private void cb_skill_stomp_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.Stomp, cb_skill_stomp.Checked);
+			SendSkillChange("Stomp", cb_skill_stomp.Checked);
 		}
 
 		private void cb_skill_glide_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.Glide, cb_skill_glide.Checked);
+			SendSkillChange("Glide", cb_skill_glide.Checked);
 
 		}
 
 		private void cb_skill_climb_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.Climb, cb_skill_climb.Checked);
+			SendSkillChange("Climb", cb_skill_climb.Checked);
 
 		}
 
 		private void cb_skill_cjump_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.ChargeJump, cb_skill_cjump.Checked);
+			SendSkillChange("ChargeJump", cb_skill_cjump.Checked);
 
 		}
 
 		private void cb_skill_grenade_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.Grenade, cb_skill_grenade.Checked);
+			SendSkillChange("Grenade", cb_skill_grenade.Checked);
 
 		}
 
 		private void cb_skill_dash_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange(Skill.Dash, cb_skill_dash.Checked);
+			SendSkillChange("Dash", cb_skill_dash.Checked);
 
 		}
 		#endregion
@@ -346,63 +346,63 @@ namespace OriDETracker
 		#region Trees
 		private void cb_tree_sein_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.Sein, cb_tree_sein.Checked);
+			SendTreeChange("Sein", cb_tree_sein.Checked);
 		}
 
 		private void cb_tree_wj_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.WallJump, cb_tree_wj.Checked);
+			SendTreeChange("WallJump", cb_tree_wj.Checked);
 		}
 
 		private void cb_tree_cflame_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.ChargeFlame, cb_tree_cflame.Checked);
+			SendTreeChange("ChargeFlame", cb_tree_cflame.Checked);
 
 		}
 
 		private void cb_tree_djump_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.DoubleJump, cb_tree_djump.Checked);
+			SendTreeChange("DoubleJump", cb_tree_djump.Checked);
 		}
 
 		private void cb_tree_bash_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.Bash, cb_tree_bash.Checked);
+			SendTreeChange("Bash", cb_tree_bash.Checked);
 
 		}
 
 		private void cb_tree_stomp_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.Stomp, cb_tree_stomp.Checked);
+			SendTreeChange("Stomp", cb_tree_stomp.Checked);
 		}
 
 		private void cb_tree_glide_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.Glide, cb_tree_glide.Checked);
+			SendTreeChange("Glide", cb_tree_glide.Checked);
 
 		}
 
 		private void cb_tree_climb_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.Climb, cb_tree_climb.Checked);
+			SendTreeChange("Climb", cb_tree_climb.Checked);
 
 		}
 
 		private void cb_tree_cjump_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.ChargeJump, cb_tree_cjump.Checked);
+			SendTreeChange("ChargeJump", cb_tree_cjump.Checked);
 
 		}
 
 		private void cb_tree_grenade_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.Grenade, cb_tree_grenade.Checked);
+			SendTreeChange("Grenade", cb_tree_grenade.Checked);
 
 		}
 
 		private void cb_tree_dash_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange(Skill.Dash, cb_tree_dash.Checked);
+			SendTreeChange("Dash", cb_tree_dash.Checked);
 
 		}
 		#endregion

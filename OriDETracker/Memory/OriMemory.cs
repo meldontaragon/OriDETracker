@@ -7,16 +7,7 @@ namespace OriDE.Memory
 {
     public partial class OriMemory
     {
-        private static ProgramPointer GameWorld = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC53575683EC0C8B7D08B8????????89388B47", 13));
-        private static ProgramPointer GameplayCamera = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "05480000008B08894DE88B4804894DEC8B40088945F08B05", -4));
-        private static ProgramPointer WorldEvents = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC5783EC048B7D0C83EC0868????????57393FE8????????83C41083EC0868", 33));
-        private static ProgramPointer SeinCharacter = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC5783EC048B7D08B8????????8938B8????????893883EC0C68", 11));
-        private static ProgramPointer ScenesManager = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC5783EC148B7D08B8????????893883EC0C57E8????????83C4108B05", 11));
-        private static ProgramPointer GameStateMachine = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC5783EC148B7D08B8????????8938E8????????83EC0868", 11));
-        private static ProgramPointer RainbowDash = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "EC535783EC108B7D08C687????????000FB605????????85C074", 19));
-        private static ProgramPointer GameController = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "8B05????????83EC086A0050E8????????83C41085C074208B450883EC0C50E8", 2));
-        private static ProgramPointer TAS = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC53575683EC0CD9EED95DF00FB73D????????83EC0C6A02E8????????83C410D95DF083EC086AFF6A05E8????????83C4108BD883EC0C6A05E8", 17));
-        private static ProgramPointer CoreInput = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "558BEC83EC488B05????????8B40188B40108945B8B8????????8B08894DC08B400489", 22));
+        private static ProgramPointer TrackerBitfields = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "B9EFBEADDEB8????????8908", 6));
         public Process Program { get; set; }
         public bool IsHooked { get; set; } = false;
         private DateTime lastHooked;
@@ -32,70 +23,63 @@ namespace OriDE.Memory
             Dictionary<string, bool> results = new Dictionary<string, bool>();
             foreach (var pair in events)
             {
-                results[pair.Key] = WorldEvents.Read<bool>(Program, pair.Value + 0x40);
+                // results[pair.Key] = WorldEvents.Read<bool>(Program, pair.Value + 0x40);
             }
             return results;
         }
         public bool GetEvent(string name)
         {
             int offset = events[name];
-            return WorldEvents.Read<bool>(Program, offset + 0x40);
+            return false;
+//            return WorldEvents.Read<bool>(Program, offset + 0x40);
         }
         public Dictionary<string, bool> GetKeys()
         {
             Dictionary<string, bool> results = new Dictionary<string, bool>();
             foreach (var pair in keys)
             {
-                results[pair.Key] = WorldEvents.Read<bool>(Program, pair.Value);
+              //  results[pair.Key] = WorldEvents.Read<bool>(Program, pair.Value);
             }
             return results;
         }
         public bool GetKey(string name)
         {
             int key = keys[name];
-            return WorldEvents.Read<bool>(Program, key);
+            return false;
+            //                        return WorldEvents.Read<bool>(Program, key);
         }
         public Dictionary<string, bool> GetAbilities()
         {
             Dictionary<string, bool> results = new Dictionary<string, bool>();
             foreach (var pair in abilities)
             {
-                results[pair.Key] = SeinCharacter.Read<bool>(Program, 0x0, 0x4c, pair.Value * 4, 0x08);
+//                results[pair.Key] = SeinCharacter.Read<bool>(Program, 0x0, 0x4c, pair.Value * 4, 0x08);
             }
             return results;
         }
-        public bool GetAbility(string name)
+
+        public int TreeBitfield;
+        public int RelicBitfield;
+        public int MapstoneBitfield;
+        public int TeleporterBitfield;
+        public int KeyEventBitfield;
+
+        public void GetBitfields()
         {
-            int ability = abilities[name];
-            return SeinCharacter.Read<bool>(Program, 0x0, 0x4c, ability * 4, 0x08);
+            TreeBitfield = TrackerBitfields.Read<int>(Program, 0x0);
+            RelicBitfield = TrackerBitfields.Read<int>(Program, 0x4);
+            MapstoneBitfield = TrackerBitfields.Read<int>(Program, 0x8);
+            TeleporterBitfield = TrackerBitfields.Read<int>(Program, 0xc);
+            KeyEventBitfield = TrackerBitfields.Read<int>(Program, 0x10);
         }
-        public bool IsEnteringGame()
+
+        public bool GetBit(int bitfield, int bit)
         {
-            return GameController.Read<bool>(Program, 0x0, 0x68) || GameController.Read<bool>(Program, 0x0, 0x69) || SeinCharacter.Read<uint>(Program) == 0 || (GetCurrentLevel() == 0 && GetCurrentENMax() == 3 && GetCurrentHPMax() == 3);
-        }
-        public bool CanMove()
-        {
-            return !GameController.Read<bool>(Program, 0x0, 0x7c) && !GameController.Read<bool>(Program, 0x0, 0x7b) && !SeinCharacter.Read<bool>(Program, 0x0, 0x18, 0x38) && !SeinCharacter.Read<bool>(Program, 0x0, 0x18, 0x40);
-        }
-        public GameState GetGameState()
-        {
-            return (GameState)GameStateMachine.Read<int>(Program, 0x0, 0x14);
+            return (bitfield >> bit) % 2 == 1;
         }
         public int GetAbilityCells()
         {
-            return SeinCharacter.Read<int>(Program, 0x0, 0x2c, 0x2c);
-        }
-
-        public Dictionary<Skill, bool> GetTrees()
-        {
-            Skill[] skills = new Skill[] { Skill.Sein, Skill.WallJump, Skill.ChargeFlame, Skill.DoubleJump, Skill.Bash, Skill.Stomp, Skill.Glide, Skill.Climb, Skill.ChargeJump, Skill.Grenade, Skill.Dash };
-            Dictionary<Skill, bool> trees = new Dictionary<Skill, bool>();
-            int acs = GetAbilityCells();
-            for (int i = 0; i <= 10; i++)
-            {
-               trees.Add(skills[i], ((acs >> (i + 6)) % 2) == 1);
-            }
-            return trees;
+            return 0;
         }
 
         /* Shards */
@@ -117,70 +101,6 @@ namespace OriDE.Memory
         {
             return (GetAbilityCells() & 0x07800000) >> 23;
         }
-
-        public int GetSkillPointsAvailable()
-        {
-            return SeinCharacter.Read<int>(Program, 0x0, 0x38, 0x24);
-        }
-        public int GetCurrentLevel()
-        {
-            return SeinCharacter.Read<int>(Program, 0x0, 0x38, 0x28);
-        }
-        public int GetExperience()
-        {
-            return SeinCharacter.Read<int>(Program, 0x0, 0x38, 0x2c);
-        }
-        public int GetCurrentHP()
-        {
-            return (int)SeinCharacter.Read<float>(Program, 0x0, 0x40, 0x0c, 0x1c);
-        }
-        public int GetCurrentHPMax()
-        {
-            return SeinCharacter.Read<int>(Program, 0x0, 0x40, 0x0c, 0x20) / 4;
-        }
-        public float GetCurrentEN()
-        {
-            return SeinCharacter.Read<float>(Program, 0x0, 0x3c, 0x20);
-        }
-        public float GetCurrentENMax()
-        {
-            return SeinCharacter.Read<float>(Program, 0x0, 0x3c, 0x24);
-        }
-        public void SetTASCharacter(byte keyCode)
-        {
-            if (TAS.GetPointer(Program) != IntPtr.Zero)
-            {
-                TAS.Write<byte>(Program, keyCode);
-            }
-        }
-        public int GetTASState()
-        {
-            return TAS.Read<int>(Program, -0x1c);
-        }
-        public string GetTASCurrentInput()
-        {
-            return TAS.Read(Program, 0x4);
-        }
-        public string GetTASNextInput()
-        {
-            return TAS.Read(Program, 0x8);
-        }
-        public string GetTASExtraInfo()
-        {
-            return TAS.Read(Program, 0xc);
-        }
-        public PointF GetTASOriPositon()
-        {
-            if (!IsHooked) { return new PointF(0, 0); }
-
-            float px = TAS.Read<float>(Program, 0x20);
-            float py = TAS.Read<float>(Program, 0x24);
-            return new PointF(px, py);
-        }
-        public bool HasTAS()
-        {
-            return TAS.GetPointer(Program) != IntPtr.Zero;
-        }
         public bool HookProcess()
         {
             IsHooked = Program != null && !Program.HasExited;
@@ -197,20 +117,6 @@ namespace OriDE.Memory
             }
 
             return IsHooked;
-        }
-        public string GetPointer(string name)
-        {
-            switch (name)
-            {
-                case "GameWorld": return GameWorld.Pointer.ToString("X");
-                case "GameplayCamera": return GameplayCamera.Pointer.ToString("X");
-                case "WorldEvents": return WorldEvents.Pointer.ToString("X");
-                case "SeinCharacter": return SeinCharacter.Pointer.ToString("X");
-                case "ScenesManager": return ScenesManager.Pointer.ToString("X");
-                case "GameStateMachine": return GameStateMachine.Pointer.ToString("X");
-                case "RainbowDash": return RainbowDash.Pointer.ToString("X");
-            }
-            return string.Empty;
         }
         public void AddLogItems(List<string> items)
         {

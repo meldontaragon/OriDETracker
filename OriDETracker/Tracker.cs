@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using OriDE.Memory;
 using System.Threading;
+using OriDE.Memory;
 
 namespace OriDETracker
 {
@@ -114,7 +110,6 @@ namespace OriDETracker
             get;
             set;
         }
-
         protected Thread th;
         protected SettingsLayout settings;
         protected EditForm edit_form;
@@ -198,16 +193,22 @@ namespace OriDETracker
 
         #region LogicDictionary
         //general: Skills and Events
-        public Dictionary<Skill, bool> haveSkill;
+        public Dictionary<String, bool> haveSkill;
         public Dictionary<String, bool> haveEvent;
 
         //All Trees
-        public Dictionary<Skill, bool> hitTree;
-        public Dictionary<Skill, bool> haveTree;
+        public Dictionary<String, bool> hitTree;
+        public Dictionary<String, bool> haveTree;
 
         //Shards
         public Dictionary<String, bool> haveShards;
-        
+
+        //Bits
+        private Dictionary<String, int> treeBits;
+        private Dictionary<String, int> skillBits;
+        private Dictionary<String, int> teleporterBits;
+        private Dictionary<String, int> mapstoneBits;
+        private Dictionary<String, int> relicBits;
         /*
 		   //All Events
 		   private Dictionary<String, bool> haveEventLocation;
@@ -344,8 +345,8 @@ namespace OriDETracker
 
         }
 
-        protected Dictionary<Skill, Image> skillImages = new Dictionary<Skill, Image>();
-        protected Dictionary<Skill, Image> treeImages = new Dictionary<Skill, Image>();
+        protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> treeImages = new Dictionary<String, Image>();
 
         protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
@@ -387,11 +388,8 @@ namespace OriDETracker
         #endregion
 
         //points for mouse clicks (with certain tolerance defined by TOL)
-        private Dictionary<Skill, Point> skillMousePoint = new Dictionary<Skill, Point>();
-        private Dictionary<String, Point> eventMousePoint = new Dictionary<string, Point>();
-        private Dictionary<Skill, Point> treeMouseLocation = new Dictionary<Skill, Point>();
         private Point mapstoneMousePoint = new Point(305, 343);
-        //private Dictionary<String, Point> eventMouseLocation;
+        private Dictionary<String, Point> eventMousePoint;
 
         #region SetLayout
         public void ChangeLayout(TrackerLayout layout)
@@ -425,32 +423,32 @@ namespace OriDETracker
             display_mapstone = true;
             ChangeMapstone();
 
-            hitTree = new Dictionary<Skill, bool>(){
-                {Skill.Sein,        false},
-                {Skill.WallJump,    false},
-                {Skill.ChargeFlame, false},
-                {Skill.DoubleJump,  false},
-                {Skill.Bash,        false},
-                {Skill.Stomp,       false},
-                {Skill.Glide,       false},
-                {Skill.Climb,       false},
-                {Skill.ChargeJump,  false},
-                {Skill.Grenade,     false},
-                {Skill.Dash,       false}
+            hitTree = new Dictionary<String, bool>(){
+                {"Spirit Flame",        false},
+                {"Wall Jump",    false},
+                {"Charge Flame", false},
+                {"Double Jump",  false},
+                {"Bash",        false},
+                {"Stomp",       false},
+                {"Glide",       false},
+                {"Climb",       false},
+                {"Charge Jump",  false},
+                {"Grenade",     false},
+                {"Dash",       false}
             };
 
-            haveTree = new Dictionary<Skill, bool>(){
-                {Skill.Sein,        false},
-                {Skill.WallJump,    false},
-                {Skill.ChargeFlame, false},
-                {Skill.DoubleJump,  false},
-                {Skill.Bash,        false},
-                {Skill.Stomp,       false},
-                {Skill.Glide,       false},
-                {Skill.Climb,       false},
-                {Skill.ChargeJump,  false},
-                {Skill.Grenade,     false},
-                {Skill.Dash,       false}
+            haveTree = new Dictionary<String, bool>(){
+                {"Spirit Flame",        false},
+                {"Wall Jump",    false},
+                {"Charge Flame", false},
+                {"Double Jump",  false},
+                {"Bash",        false},
+                {"Stomp",       false},
+                {"Glide",       false},
+                {"Climb",       false},
+                {"Charge Jump",  false},
+                {"Grenade",     false},
+                {"Dash",       false}
             };
             haveEvent = new Dictionary<String, bool>(){
                 {"Water Vein",      false},
@@ -494,18 +492,18 @@ namespace OriDETracker
                 {"Sunstone 2",      imageSunstoneShard2},
             };
 
-            treeImages = new Dictionary<Skill, Image>(){
-                {Skill.Sein,        imageTreeSpiritFlame},
-                {Skill.WallJump,    imageTreeWallJump},
-                {Skill.ChargeFlame, imageTreeChargeFlame},
-                {Skill.Dash,        imageTreeDash},
-                {Skill.DoubleJump,  imageTreeDoubleJump},
-                {Skill.Bash,        imageTreeBash},
-                {Skill.Stomp,       imageTreeStomp},
-                {Skill.Glide,       imageTreeGlide},
-                {Skill.Climb,       imageTreeClimb},
-                {Skill.ChargeJump,  imageTreeChargeJump},
-                {Skill.Grenade,     imageTreeLightGrenade}
+            treeImages = new Dictionary<String, Image>(){
+                {"Spirit Flame",        imageTreeSpiritFlame},
+                {"Wall Jump",    imageTreeWallJump},
+                {"Charge Flame", imageTreeChargeFlame},
+                {"Dash",        imageTreeDash},
+                {"Double Jump",  imageTreeDoubleJump},
+                {"Bash",        imageTreeBash},
+                {"Stomp",       imageTreeStomp},
+                {"Glide",       imageTreeGlide},
+                {"Climb",       imageTreeClimb},
+                {"Charge Jump",  imageTreeChargeJump},
+                {"Grenade",     imageTreeLightGrenade}
             };
 
 
@@ -528,18 +526,18 @@ namespace OriDETracker
             //checkEventHitbox = false;
 
             #region Logic
-            haveSkill = new Dictionary<Skill, bool>(){
-                {Skill.Sein,        false},
-                {Skill.WallJump,    false},
-                {Skill.Dash,       false},
-                {Skill.ChargeFlame, false},
-                {Skill.DoubleJump,  false},
-                {Skill.Bash,        false},
-                {Skill.Stomp,       false},
-                {Skill.Glide,       false},
-                {Skill.Climb,       false},
-                {Skill.ChargeJump,  false},
-                {Skill.Grenade,     false}
+            haveSkill = new Dictionary<String, bool>(){
+                {"Spirit Flame",        false},
+                {"Wall Jump",    false},
+                {"Dash",       false},
+                {"Charge Flame", false},
+                {"Double Jump",  false},
+                {"Bash",        false},
+                {"Stomp",       false},
+                {"Glide",       false},
+                {"Climb",       false},
+                {"Charge Jump",  false},
+                {"Grenade",     false}
             };
             haveEvent = new Dictionary<String, bool>(){
                 {"Water Vein",      false},
@@ -549,21 +547,85 @@ namespace OriDETracker
                 {"Warmth Returned", false},
                 {"Wind Restored",   false}
             };
+            treeBits = new Dictionary<string, int>() {
+                { "Spirit Flame", 0},
+                { "Wall Jump", 1},
+                { "Charge Flame", 2},
+                { "Double Jump", 3},
+                { "Bash", 4},
+                { "Stomp", 5},
+                { "Glide", 6},
+                { "Climb", 7},
+                { "Charge Jump", 8},
+                { "Grenade", 9},
+                { "Dash", 10}
+            };
+            skillBits = new Dictionary<string, int>() {
+                { "Spirit Flame", 11},
+                { "Wall Jump", 12},
+                { "Charge Flame", 13},
+                { "Double Jump", 14},
+                { "Bash", 15},
+                { "Stomp", 16},
+                { "Glide", 17},
+                { "Climb", 18},
+                { "Charge Jump", 19},
+                { "Grenade", 20},
+                { "Dash", 21}
+            };
+            relicBits = new Dictionary<string, int>() {
+                {"Glades", 0},
+                {"Grove", 1},
+                {"Grotto", 2},
+                {"Blackroot", 3},
+                {"Swamp", 4},
+                {"Ginso", 5},
+                {"Valley", 6},
+                {"Misty", 7},
+                {"Forlorn", 8},
+                {"Sorrow", 9},
+                {"Horu", 10}
+            };
+            mapstoneBits = new Dictionary<string, int>()
+            {
+                {"Glades", 0},
+                {"Blackroot", 1},
+                {"Grove", 2},
+                {"Grotto", 3},
+                {"Swamp", 4},
+                {"Valley", 5},
+                {"Forlorn", 6},
+                {"Sorrow", 7},
+                {"Horu", 8},
+            };
 
-            #endregion
+            teleporterBits = new Dictionary<string, int>()
+            {
+                {"Grove", 0},
+                {"Swamp", 1},
+                {"Grotto", 2},
+                {"Valley", 3},
+                {"Forlorn", 4},
+                {"Sorrow", 5},
+                {"Ginso", 6},
+                {"Horu", 7},
+            };
 
-            skillImages = new Dictionary<Skill, Image>(){
-                {Skill.Sein,        imageSpiritFlame},
-                {Skill.WallJump,    imageWallJump},
-                {Skill.ChargeFlame, imageChargeFlame},
-                {Skill.Dash,        imageDash},
-                {Skill.DoubleJump,  imageDoubleJump},
-                {Skill.Bash,        imageBash},
-                {Skill.Stomp,       imageStomp},
-                {Skill.Glide,       imageGlide},
-                {Skill.Climb,       imageClimb},
-                {Skill.ChargeJump,  imageChargeJump},
-                {Skill.Grenade,     imageLightGrenade}
+
+                #endregion
+
+                skillImages = new Dictionary<String, Image>(){
+                {"Spirit Flame",        imageSpiritFlame},
+                {"Wall Jump",    imageWallJump},
+                {"Charge Flame", imageChargeFlame},
+                {"Dash",        imageDash},
+                {"Double Jump",  imageDoubleJump},
+                {"Bash",        imageBash},
+                {"Stomp",       imageStomp},
+                {"Glide",       imageGlide},
+                {"Climb",       imageClimb},
+                {"Charge Jump",  imageChargeJump},
+                {"Grenade",     imageLightGrenade}
             };           
 
             eventImages = new Dictionary<String, Image>(){
@@ -601,20 +663,21 @@ namespace OriDETracker
         {
             SetLayoutDefaults();
         }
-
+        private Dictionary<String, Point> treeMouseLocation;
+        private Dictionary<String, Point> skillMousePoint;
         private void SetMouseLocations()
         {
-            skillMousePoint = new Dictionary<Skill, Point>();
-            treeMouseLocation = new Dictionary<Skill, Point>();
-
+            skillMousePoint = new Dictionary<String, Point>();
+            treeMouseLocation = new Dictionary<String, Point>();
+            string[] skills = new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
             for (int i = 0; i < 11; ++i)
             {
-                skillMousePoint.Add((Skill) i, new Point((int)(320 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
+                skillMousePoint.Add(skills[i], new Point((int)(320 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                          (int)(320 - 205 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
             for (int i = 0; i < 11; ++i)
             {
-                treeMouseLocation.Add((Skill) i, new Point((int)(320 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
+                treeMouseLocation.Add(skills[i], new Point((int)(320 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                            (int)(320 - 286 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
 
@@ -733,7 +796,7 @@ namespace OriDETracker
                 return true;
             }
 
-            foreach (KeyValuePair<Skill, Point> sk in skillMousePoint)
+            foreach (KeyValuePair<String, Point> sk in skillMousePoint)
             {
                 if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= 2 * CUR_TOL)
                 {
@@ -745,7 +808,7 @@ namespace OriDETracker
                 }
             }
 
-            foreach (KeyValuePair<Skill, Point> sk in treeMouseLocation)
+            foreach (KeyValuePair<String, Point> sk in treeMouseLocation)
             {
                 if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL)
                 {
@@ -838,7 +901,7 @@ namespace OriDETracker
                 #region Skills
 
                 g.DrawImage(imageGSkills, drawRect);
-                foreach (KeyValuePair<Skill, bool> sk in haveSkill)
+                foreach (KeyValuePair<String, bool> sk in haveSkill)
                 {
                     edit_form.UpdateSkill(sk.Key, sk.Value);
 
@@ -852,7 +915,7 @@ namespace OriDETracker
                 #region Tree
 
                 g.DrawImage(imageGTrees, drawRect);
-                foreach (KeyValuePair<Skill, bool> sk in haveTree)
+                foreach (KeyValuePair<String, bool> sk in haveTree)
                 {
                     edit_form.UpdateTree(sk.Key, sk.Value);
 
@@ -1032,8 +1095,10 @@ namespace OriDETracker
         bool started;
         protected void TurnOnAutoUpdate()
         {
+            Console.WriteLine("??");
             if (started && paused)
             {
+                Console.WriteLine("resume?");
                 //Log.WriteToLog("**DEBUG** : Resuming auto update thread.");
                 th.Resume();
                 started = true;
@@ -1042,6 +1107,7 @@ namespace OriDETracker
             else if (!(started))
             {
                 //Log.WriteToLog("**DEBUG** : Starting auto update thread.");
+                Console.WriteLine("start?");
                 th.Start();
                 started = true;
                 paused = false;
@@ -1075,40 +1141,31 @@ namespace OriDETracker
             }
         }
 
-        private bool CheckInGame(GameState state)
-        {
-            return state != GameState.Logos && state != GameState.StartScreen && state != GameState.TitleScreen;
-        }
-
-        private bool CheckInGameWorld(GameState state)
-        {
-            return CheckInGame(state) && state != GameState.Prologue && !mem.IsEnteringGame();
-        }
+        int DATA_SIZE = 10;
+        public byte[] data;
 
         private void UpdateLoop()
         {
             bool lastHooked = false;
-
             while (true)
             {
                 try
                 {
                     bool hooked = mem.HookProcess();
-                    if (hooked)
+                    if(hooked)
                     {
                         UpdateValues();
                     }
                     if (lastHooked != hooked)
                     {
                         lastHooked = hooked;
-//                        MessageBox.Show("Hooked: " + hooked.ToString());
                         this.Invoke((Action)delegate () { labelBlank.Visible = false; });
                     }
                     Thread.Sleep((int)refresh_time);
                 }
                 catch  (Exception exc)
                 {
-                    MessageBox.Show(exc.Message.ToString());
+                    Console.Out.WriteLine(exc);
                     /*
                     Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
                     Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
@@ -1124,127 +1181,82 @@ namespace OriDETracker
 
         private void UpdateValues()
         {
-            if (CheckInGameWorld(mem.GetGameState()))
+            mem.GetBitfields();
+            UpdateSkills();
+            CheckTrees();
+            UpdateKeysEvents();
+            UpdateMapstoneProgression();
+            //the following works but is "incorrect"
+            try
             {
-                UpdateSkills();
-                UpdateEvents();
-                UpdateShards();
-                UpdateMapstoneProgression();
-                CheckTrees();
-
-                //the following works but is "incorrect"
-                try
+                if(this.InvokeRequired)
                 {
-                    if(this.InvokeRequired)
-                    {
-                        this.Invoke(new MethodInvoker(delegate { this.Refresh(); }));
-                    }
-                    else
-                        this.Refresh();
+                    this.Invoke(new MethodInvoker(delegate { this.Refresh(); }));
                 }
-                catch (Exception err) {
-                    MessageBox.Show(err.StackTrace.ToString());
+                else
+                    this.Refresh();
+            }
+            catch (Exception err) {
+                MessageBox.Show(err.StackTrace.ToString());
 
-                }
             }
         }
 
         private void UpdateSkills()
         {
-            Skill cur;
-
-            for (int i = 0; i < haveSkill.Count; i++)
+            int bf = mem.TreeBitfield;
+            foreach(KeyValuePair<string,int> skill in skillBits)
             {
-                cur = haveSkill.ElementAt(i).Key;
-                haveSkill[cur] = mem.GetAbility(GetSkillName(cur));
+                haveSkill[skill.Key] = mem.GetBit(bf, skill.Value);
+            }
+        }
+        private void CheckTrees()
+        {
+            int bf = mem.TreeBitfield;
+            foreach (KeyValuePair<string, int> tree in treeBits)
+            {
+                haveTree[tree.Key] = mem.GetBit(bf, tree.Value);
             }
         }
 
-        private void UpdateEvents()
+        private void UpdateKeysEvents()
         {
-            String cur;
-
-            for (int i = 0; i < haveEvent.Count; i++)
-            {
-                cur = haveEvent.ElementAt(i).Key;
-                switch (cur)
-                {
-                    case "Water Vein":
-                    case "Gumon Seal":
-                    case "Sunstone":
-                        haveEvent[cur] = mem.GetKey(cur);
-                        break;
-                    case "Warmth Returned":
-                    case "Wind Restored":
-                    case "Clean Water":
-                        haveEvent[cur] = mem.GetEvent(cur);
-                        break;
-                }
-            }
+            int bf = mem.KeyEventBitfield;
+            haveShards["Water Vein 1"] = mem.GetBit(bf, 0);
+            haveShards["Water Vein 2"] = mem.GetBit(bf, 1);
+            haveShards["Gumon Seal 1"] = mem.GetBit(bf, 3);
+            haveShards["Gumon Seal 2"] = mem.GetBit(bf, 4);
+            haveShards["Sunstone 1"] = mem.GetBit(bf, 6);
+            haveShards["Sunstone 2"] = mem.GetBit(bf, 7);
+            display_shards = haveShards.ContainsValue(true);
+            haveEvent["Water Vein"] = mem.GetBit(bf, 2);
+            haveEvent["Gumon Seal"] = mem.GetBit(bf, 5);
+            haveEvent["Sunstone"] = mem.GetBit(bf, 8);
+            haveEvent["Clean Water"] = mem.GetBit(bf, 9);
+            haveEvent["Wind Restored"] = mem.GetBit(bf, 10);
         }
 
-        private void UpdateShards()
-        {
-            display_shards = mem.WaterVeinShards() > 0 || mem.GumonSealShards() > 0 || mem.SunstoneShards() > 0;
-            ChangeShards();
-            haveShards["Water Vein 1"] = mem.WaterVeinShards() > 0;
-            haveShards["Water Vein 2"] = mem.WaterVeinShards() > 1;
-            haveShards["Gumon Seal 1"] = mem.GumonSealShards() > 0;
-            haveShards["Gumon Seal 2"] = mem.GumonSealShards() > 1;
-            haveShards["Sunstone 1"] = mem.SunstoneShards() > 0;
-            haveShards["Sunstone 2"] = mem.SunstoneShards() > 1;
-        }
 
         private void UpdateMapstoneProgression()
         {
-            mapstone_count = mem.MapStoneProgression();
+            int ms = 0;
+            foreach(int bit in mapstoneBits.Values)
+            {
+                if (mem.GetBit(mem.MapstoneBitfield, bit))
+                    ms++;
+            }
+            mapstone_count = ms;
         }
 
-        private void CheckTrees()
-        {
-            foreach (var tree in mem.GetTrees())
-            {
-                haveTree[tree.Key] = tree.Value;
-                if (tree.Key == Skill.Sein)
-                {
-                    haveTree[tree.Key] = mem.GetAbility("Spirit Flame");
-                }
-            }
-        }
 
         //this does nothing right now
         private void CheckEventLocations()
         {
         }
 
-        private string GetSkillName(Skill sk)
+        private string GetSkillName(String sk)
         {
-            switch (sk)
-            {
-                case Skill.Sein:
-                    return "Spirit Flame";
-                case Skill.WallJump:
-                    return "Wall Jump";
-                case Skill.ChargeFlame:
-                    return "Charge Flame";
-                case Skill.Dash:
-                    return "Dash";
-                case Skill.DoubleJump:
-                    return "Double Jump";
-                case Skill.Bash:
-                    return "Bash";
-                case Skill.Stomp:
-                    return "Stomp";
-                case Skill.Glide:
-                    return "Glide";
-                case Skill.Climb:
-                    return "Climb";
-                case Skill.ChargeJump:
-                    return "Charge Jump";
-                case Skill.Grenade:
-                    return "Light Grenade";
-            }
-            return "N/A";
+            return sk.ToString();
         }
 
         #endregion
