@@ -1095,10 +1095,8 @@ namespace OriDETracker
         bool started;
         protected void TurnOnAutoUpdate()
         {
-            Console.WriteLine("??");
             if (started && paused)
             {
-                Console.WriteLine("resume?");
                 //Log.WriteToLog("**DEBUG** : Resuming auto update thread.");
                 th.Resume();
                 started = true;
@@ -1107,7 +1105,6 @@ namespace OriDETracker
             else if (!(started))
             {
                 //Log.WriteToLog("**DEBUG** : Starting auto update thread.");
-                Console.WriteLine("start?");
                 th.Start();
                 started = true;
                 paused = false;
@@ -1181,14 +1178,14 @@ namespace OriDETracker
 
         private void UpdateValues()
         {
-            mem.GetBitfields();
-            UpdateSkills();
-            CheckTrees();
-            UpdateKeysEvents();
-            UpdateMapstoneProgression();
-            //the following works but is "incorrect"
             try
             {
+                mem.GetBitfields();
+                UpdateSkills();
+                CheckTrees();
+                UpdateKeysEvents();
+                UpdateMapstoneProgression();
+            //the following works but is "incorrect"
                 if(this.InvokeRequired)
                 {
                     this.Invoke(new MethodInvoker(delegate { this.Refresh(); }));
@@ -1204,18 +1201,16 @@ namespace OriDETracker
 
         private void UpdateSkills()
         {
-            int bf = mem.TreeBitfield;
             foreach(KeyValuePair<string,int> skill in skillBits)
             {
-                haveSkill[skill.Key] = mem.GetBit(bf, skill.Value);
+                haveSkill[skill.Key] = mem.GetBit(mem.TreeBitfield, skill.Value);
             }
         }
         private void CheckTrees()
         {
-            int bf = mem.TreeBitfield;
             foreach (KeyValuePair<string, int> tree in treeBits)
             {
-                haveTree[tree.Key] = mem.GetBit(bf, tree.Value);
+                haveTree[tree.Key] = mem.GetBit(mem.TreeBitfield, tree.Value);
             }
         }
 

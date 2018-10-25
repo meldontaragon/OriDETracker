@@ -7,7 +7,10 @@ namespace OriDE.Memory
 {
     public partial class OriMemory
     {
-        private static ProgramPointer TrackerBitfields = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, "B9EFBEADDEB8????????8908", 6));
+        private static bool mono_debug = false;
+        private static string BitfieldPtrString = mono_debug ? "B9EFBEADDEB8????????8908" : "B8????????C700EFBEADDE";
+        private static int BitfieldsPtrOffset = BitfieldPtrString.IndexOf('?')/2;
+        private static ProgramPointer TrackerBitfields = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, BitfieldPtrString, BitfieldsPtrOffset));
         public Process Program { get; set; }
         public bool IsHooked { get; set; } = false;
         private DateTime lastHooked;
