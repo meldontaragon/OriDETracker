@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using OriDE.Memory;
 
 namespace OriDETracker
 {
@@ -112,16 +104,16 @@ namespace OriDETracker
 		{
 			switch (sk)
 			{
-			case "Sein":
+			case "Spirit Flame":
 				cb_skill_sein.Checked = b;
 				break;
-			case "WallJump":
+			case "Wall Jump":
 				cb_skill_wj.Checked = b;
 				break;
-			case "ChargeFlame":
+			case "Charge Flame":
 				cb_skill_cflame.Checked = b;
 				break;
-			case "DoubleJump":
+			case "Double Jump":
 				cb_skill_djump.Checked = b;
 				break;
 			case "Bash":
@@ -136,7 +128,7 @@ namespace OriDETracker
 			case "Climb":
 				cb_skill_climb.Checked = b;
 				break;
-			case "ChargeJump":
+			case "Charge Jump":
 				cb_skill_cjump.Checked = b;
 				break;
 			case "Grenade":
@@ -153,16 +145,16 @@ namespace OriDETracker
 		{
 			switch (sk)
 			{
-            case "Sein":
+            case "Spirit Flame":
                 cb_tree_sein.Checked = b;
                 break;
-            case "WallJump":
+            case "Wall Jump":
                 cb_tree_wj.Checked = b;
                 break;
-            case "ChargeFlame":
+            case "Charge Flame":
                 cb_tree_cflame.Checked = b;
                 break;
-            case "DoubleJump":
+            case "Double Jump":
                 cb_tree_djump.Checked = b;
                 break;
             case "Bash":
@@ -177,7 +169,7 @@ namespace OriDETracker
             case "Climb":
                 cb_tree_climb.Checked = b;
                 break;
-            case "ChargeJump":
+            case "Charge Jump":
                 cb_tree_cjump.Checked = b;
                 break;
             case "Grenade":
@@ -282,23 +274,23 @@ namespace OriDETracker
 		#region Skills
 		private void cb_skill_sein_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange("Sein", cb_skill_sein.Checked);
+			SendSkillChange("Spirit Flame", cb_skill_sein.Checked);
 		}
 
 		private void cb_skill_wj_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange("WallJump", cb_skill_wj.Checked);
+			SendSkillChange("Wall Jump", cb_skill_wj.Checked);
 		}
 
 		private void cb_skill_cflame_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange("ChargeFlame", cb_skill_cflame.Checked);
+			SendSkillChange("Charge Flame", cb_skill_cflame.Checked);
 
 		}
 
 		private void cb_skill_djump_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange("DoubleJump", cb_skill_djump.Checked);
+			SendSkillChange("Double Jump", cb_skill_djump.Checked);
 		}
 
 		private void cb_skill_bash_MouseClick(object sender, EventArgs e)
@@ -326,7 +318,7 @@ namespace OriDETracker
 
 		private void cb_skill_cjump_MouseClick(object sender, EventArgs e)
 		{
-			SendSkillChange("ChargeJump", cb_skill_cjump.Checked);
+			SendSkillChange("Charge Jump", cb_skill_cjump.Checked);
 
 		}
 
@@ -351,18 +343,18 @@ namespace OriDETracker
 
 		private void cb_tree_wj_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange("WallJump", cb_tree_wj.Checked);
+			SendTreeChange("Wall Jump", cb_tree_wj.Checked);
 		}
 
 		private void cb_tree_cflame_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange("ChargeFlame", cb_tree_cflame.Checked);
+			SendTreeChange("Charge Flame", cb_tree_cflame.Checked);
 
 		}
 
 		private void cb_tree_djump_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange("DoubleJump", cb_tree_djump.Checked);
+			SendTreeChange("Double Jump", cb_tree_djump.Checked);
 		}
 
 		private void cb_tree_bash_MouseClick(object sender, EventArgs e)
@@ -390,7 +382,7 @@ namespace OriDETracker
 
 		private void cb_tree_cjump_MouseClick(object sender, EventArgs e)
 		{
-			SendTreeChange("ChargeJump", cb_tree_cjump.Checked);
+			SendTreeChange("Charge Jump", cb_tree_cjump.Checked);
 
 		}
 
