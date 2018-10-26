@@ -70,9 +70,9 @@ namespace OriDE.Memory
         public void GetBitfields()
         {
             TreeBitfield = TrackerBitfields.Read<int>(Program, 0x0);
-            RelicBitfield = TrackerBitfields.Read<int>(Program, 0x4);
-            MapstoneBitfield = TrackerBitfields.Read<int>(Program, 0x8);
-            TeleporterBitfield = TrackerBitfields.Read<int>(Program, 0xc);
+            MapstoneBitfield = TrackerBitfields.Read<int>(Program, 0x4);
+            TeleporterBitfield = TrackerBitfields.Read<int>(Program, 0x8);
+            RelicBitfield = TrackerBitfields.Read<int>(Program, 0xc);
             KeyEventBitfield = TrackerBitfields.Read<int>(Program, 0x10);
         }
 
@@ -80,30 +80,7 @@ namespace OriDE.Memory
         {
             return (bitfield >> bit) % 2 == 1;
         }
-        public int GetAbilityCells()
-        {
-            return 0;
-        }
 
-        /* Shards */
-        public int WaterVeinShards()
-        {
-            return (GetAbilityCells() & 0x00060000) >> 17;
-        }
-        public int GumonSealShards()
-        {
-            return (GetAbilityCells() & 0x00180000) >> 19;
-        }
-        public int SunstoneShards()
-        {
-            return (GetAbilityCells() & 0x00600000) >> 21;
-        }
-
-        /* MapStone Progression */
-        public int MapStoneProgression()
-        {
-            return (GetAbilityCells() & 0x07800000) >> 23;
-        }
         public bool HookProcess()
         {
             IsHooked = Program != null && !Program.HasExited;

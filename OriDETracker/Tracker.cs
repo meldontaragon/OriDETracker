@@ -1181,6 +1181,11 @@ namespace OriDETracker
             try
             {
                 mem.GetBitfields();
+                /*
+                 * Console.WriteLine(String.Join("\n",
+                    new List<String> { "tree: " + mem.TreeBitfield.ToString(), "ms: " + mem.MapstoneBitfield.ToString(), "keyEV: " + mem.KeyEventBitfield.ToString(), "telep: " + mem.TeleporterBitfield.ToString(), "relic: " + mem.RelicBitfield.ToString() }
+                    ));
+                 */
                 UpdateSkills();
                 CheckTrees();
                 UpdateKeysEvents();
