@@ -18,10 +18,10 @@ namespace OriDETracker
             //Log important things
             //Log = new Logger("OriDETracker-v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
             //Log.WriteToLog("**INFO**  : Starting Tracker (v " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")");
-            
+
             //Form for quickly editting things
             edit_form = new EditForm(this);
-            edit_form.Visible = false;           
+            edit_form.Visible = false;
 
             // Settings options for Refresh Rate and Tracker Size
             RefreshRate = TrackerSettings.Default.RefreshRate;
@@ -38,12 +38,12 @@ namespace OriDETracker
             paused = false;
 
             //load settings (except for those needed to initialize the settings window)
-            display_shards  = TrackerSettings.Default.Shards;
-            current_layout  = TrackerSettings.Default.Layout;
-            display_shards  = TrackerSettings.Default.Shards;
-            font_color      = TrackerSettings.Default.FontColoring;
-            Opacity         = TrackerSettings.Default.Opacity;
-            BackColor       = TrackerSettings.Default.Background;
+            display_shards = TrackerSettings.Default.Shards;
+            current_layout = TrackerSettings.Default.Layout;
+            display_shards = TrackerSettings.Default.Shards;
+            font_color = TrackerSettings.Default.FontColoring;
+            Opacity = TrackerSettings.Default.Opacity;
+            BackColor = TrackerSettings.Default.Background;
 
             settings.RefreshOpacityBar();
 
@@ -147,8 +147,8 @@ namespace OriDETracker
         public AutoUpdateRefreshRates RefreshRate
         {
             get { return refresh_rate; }
-            set { refresh_rate = value; refresh_time = (int) (1000000.0f / ((float)value)); }
-        }        
+            set { refresh_rate = value; refresh_time = (int)(1000000.0f / ((float)value)); }
+        }
 
         protected static int PIXEL_DEF = 640;
 
@@ -177,6 +177,11 @@ namespace OriDETracker
         protected Font map_font;
         protected AutoUpdateRefreshRates refresh_rate;
         protected int refresh_time;
+        protected bool world_tour;
+        protected bool force_trees;
+        protected bool warmth_fragments;
+        protected int current_frags;
+        protected int max_frags;
 
         private int destroy = 1;
 
@@ -196,6 +201,10 @@ namespace OriDETracker
         public Dictionary<String, bool> haveSkill;
         public Dictionary<String, bool> haveEvent;
 
+        //Relics
+        public Dictionary<String, bool> relicExists;
+        public Dictionary<String, bool> relicFound;
+
         //All Trees
         public Dictionary<String, bool> hitTree;
         public Dictionary<String, bool> haveTree;
@@ -208,7 +217,9 @@ namespace OriDETracker
         private Dictionary<String, int> skillBits;
         private Dictionary<String, int> teleporterBits;
         private Dictionary<String, int> mapstoneBits;
-        private Dictionary<String, int> relicBits;
+        private Dictionary<String, int> relicExistsBits;
+        private Dictionary<String, int> relicFoundBits;
+
         /*
 		   //All Events
 		   private Dictionary<String, bool> haveEventLocation;
@@ -350,7 +361,7 @@ namespace OriDETracker
 
         protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
-        
+
         protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
 
         #endregion
@@ -360,31 +371,31 @@ namespace OriDETracker
         //private bool checkTreeHitbox = false;
         //private bool checkEventHitbox = false;
 
-            /*
-        private Dictionary<Skill, HitBox> treeHitboxes = new Dictionary<Skill, HitBox>(){
-            {Skill.Sein,        new HitBox("-165,-262,1,2")},
-            {Skill.WallJump,    new HitBox("-317,-301,5,6")},
-            {Skill.ChargeFlame, new HitBox("-53,-153,5,6")},
-            {Skill.Dash,        new HitBox("293,-251,5,6")},
-            {Skill.DoubleJump,  new HitBox("785,-404,5,6")},
-            {Skill.Bash,        new HitBox("532,334,5,6")},
-            {Skill.Stomp,       new HitBox("859,-88,5,6")},
-            {Skill.Glide,       new HitBox("-458,-13,5,6")},
-            {Skill.Climb,       new HitBox("-1189,-95,5,6")},
-            {Skill.ChargeJump,  new HitBox("-697,413,5,6")},
-            {Skill.Grenade,     new HitBox("69,-373,5,6")}
-        };
+        /*
+    private Dictionary<Skill, HitBox> treeHitboxes = new Dictionary<Skill, HitBox>(){
+        {Skill.Sein,        new HitBox("-165,-262,1,2")},
+        {Skill.WallJump,    new HitBox("-317,-301,5,6")},
+        {Skill.ChargeFlame, new HitBox("-53,-153,5,6")},
+        {Skill.Dash,        new HitBox("293,-251,5,6")},
+        {Skill.DoubleJump,  new HitBox("785,-404,5,6")},
+        {Skill.Bash,        new HitBox("532,334,5,6")},
+        {Skill.Stomp,       new HitBox("859,-88,5,6")},
+        {Skill.Glide,       new HitBox("-458,-13,5,6")},
+        {Skill.Climb,       new HitBox("-1189,-95,5,6")},
+        {Skill.ChargeJump,  new HitBox("-697,413,5,6")},
+        {Skill.Grenade,     new HitBox("69,-373,5,6")}
+    };
 
-        //placeholder until I get the actual coordinates
-        private Dictionary<String, HitBox> eventHitboxes = new Dictionary<String, HitBox>(){
-            {"Water Vein",      new HitBox( "0,0,1,1")},
-            {"Gumon Seal",      new HitBox( "0,0,1,1")},
-            {"Sunstone",        new HitBox( "0,0,1,1")},
-            {"Clean Water",     new HitBox( "0,0,1,1")},
-            {"Wind Restored",   new HitBox( "0,0,1,1")},
-            {"Warmth Returned", new HitBox( "0,0,1,1")},
-        };
-        */
+    //placeholder until I get the actual coordinates
+    private Dictionary<String, HitBox> eventHitboxes = new Dictionary<String, HitBox>(){
+        {"Water Vein",      new HitBox( "0,0,1,1")},
+        {"Gumon Seal",      new HitBox( "0,0,1,1")},
+        {"Sunstone",        new HitBox( "0,0,1,1")},
+        {"Clean Water",     new HitBox( "0,0,1,1")},
+        {"Wind Restored",   new HitBox( "0,0,1,1")},
+        {"Warmth Returned", new HitBox( "0,0,1,1")},
+    };
+    */
         #endregion
 
         //points for mouse clicks (with certain tolerance defined by TOL)
@@ -424,7 +435,7 @@ namespace OriDETracker
             ChangeMapstone();
 
             hitTree = new Dictionary<String, bool>(){
-                {"Spirit Flame",        false},
+                {"Spirit Flame", false},
                 {"Wall Jump",    false},
                 {"Charge Flame", false},
                 {"Double Jump",  false},
@@ -454,8 +465,8 @@ namespace OriDETracker
                 {"Water Vein",      false},
                 {"Gumon Seal",      false},
                 {"Sunstone",        false},
-                {"Clean Water",     false}, 
-				{"Wind Restored",   false}
+                {"Clean Water",     false},
+                {"Wind Restored",   false}
             };
 
             haveShards = new Dictionary<string, bool>(){
@@ -547,6 +558,34 @@ namespace OriDETracker
                 {"Warmth Returned", false},
                 {"Wind Restored",   false}
             };
+            relicExists = new Dictionary<string, bool>()
+            {
+                {"Glades", false},
+                {"Grove", false},
+                {"Grotto", false},
+                {"Blackroot", false},
+                {"Swamp", false},
+                {"Ginso", false},
+                {"Valley", false},
+                {"Misty", false},
+                {"Forlorn", false},
+                {"Sorrow", false},
+                {"Horu", false}
+            };
+            relicFound = new Dictionary<string, bool>()
+            {
+                {"Glades", false},
+                {"Grove", false},
+                {"Grotto", false},
+                {"Blackroot", false},
+                {"Swamp", false},
+                {"Ginso", false},
+                {"Valley", false},
+                {"Misty", false},
+                {"Forlorn", false},
+                {"Sorrow", false},
+                {"Horu", false}
+            };
             treeBits = new Dictionary<string, int>() {
                 { "Spirit Flame", 0},
                 { "Wall Jump", 1},
@@ -573,7 +612,7 @@ namespace OriDETracker
                 { "Grenade", 20},
                 { "Dash", 21}
             };
-            relicBits = new Dictionary<string, int>() {
+            relicFoundBits = new Dictionary<string, int>() {
                 {"Glades", 0},
                 {"Grove", 1},
                 {"Grotto", 2},
@@ -585,6 +624,19 @@ namespace OriDETracker
                 {"Forlorn", 8},
                 {"Sorrow", 9},
                 {"Horu", 10}
+            };
+            relicExistsBits = new Dictionary<string, int>() {
+                {"Glades", 11},
+                {"Grove", 12},
+                {"Grotto", 13},
+                {"Blackroot", 14},
+                {"Swamp", 15},
+                {"Ginso", 16},
+                {"Valley", 17},
+                {"Misty", 18},
+                {"Forlorn", 19},
+                {"Sorrow", 20},
+                {"Horu", 21}
             };
             mapstoneBits = new Dictionary<string, int>()
             {
@@ -612,9 +664,9 @@ namespace OriDETracker
             };
 
 
-                #endregion
+            #endregion
 
-                skillImages = new Dictionary<String, Image>(){
+            skillImages = new Dictionary<String, Image>(){
                 {"Spirit Flame",        imageSpiritFlame},
                 {"Wall Jump",    imageWallJump},
                 {"Charge Flame", imageChargeFlame},
@@ -626,7 +678,7 @@ namespace OriDETracker
                 {"Climb",       imageClimb},
                 {"Charge Jump",  imageChargeJump},
                 {"Grenade",     imageLightGrenade}
-            };           
+            };
 
             eventImages = new Dictionary<String, Image>(){
                 {"Water Vein",       imageWaterVein},
@@ -893,7 +945,7 @@ namespace OriDETracker
 				 * (5) Putting the skill wheel on top
 				 * */
 
-                scaledSize = new Size(image_pixel_size, image_pixel_size );
+                scaledSize = new Size(image_pixel_size, image_pixel_size);
                 this.Size = scaledSize;
                 Rectangle drawRect = new Rectangle(new Point(0, 0), scaledSize);
 
@@ -1058,9 +1110,9 @@ namespace OriDETracker
             TrackerSettings.Default.Reset();
 
             this.Opacity = 1.0;
-            this.TrackerSize = (TrackerPixelSizes) PIXEL_DEF;
+            this.TrackerSize = (TrackerPixelSizes)PIXEL_DEF;
 
-            this.RefreshRate = (AutoUpdateRefreshRates) 1000;
+            this.RefreshRate = (AutoUpdateRefreshRates)1000;
 
             current_layout = TrackerLayout.RandomizerAllTrees;
 
@@ -1149,7 +1201,7 @@ namespace OriDETracker
                 try
                 {
                     bool hooked = mem.HookProcess();
-                    if(hooked)
+                    if (hooked)
                     {
                         UpdateValues();
                     }
@@ -1160,7 +1212,7 @@ namespace OriDETracker
                     }
                     Thread.Sleep((int)refresh_time);
                 }
-                catch  (Exception exc)
+                catch (Exception exc)
                 {
                     Console.Out.WriteLine(exc);
                     /*
@@ -1181,17 +1233,15 @@ namespace OriDETracker
             try
             {
                 mem.GetBitfields();
-                /*
-                 * Console.WriteLine(String.Join("\n",
-                    new List<String> { "tree: " + mem.TreeBitfield.ToString(), "ms: " + mem.MapstoneBitfield.ToString(), "keyEV: " + mem.KeyEventBitfield.ToString(), "telep: " + mem.TeleporterBitfield.ToString(), "relic: " + mem.RelicBitfield.ToString() }
-                    ));
-                 */
                 UpdateSkills();
                 CheckTrees();
                 UpdateKeysEvents();
+                UpdateRelics();
+                UpdateWarmthFrags();
                 UpdateMapstoneProgression();
-            //the following works but is "incorrect"
-                if(this.InvokeRequired)
+
+                //the following works but is "incorrect"
+                if (this.InvokeRequired)
                 {
                     this.Invoke(new MethodInvoker(delegate { this.Refresh(); }));
                 }
@@ -1206,7 +1256,7 @@ namespace OriDETracker
 
         private void UpdateSkills()
         {
-            foreach(KeyValuePair<string,int> skill in skillBits)
+            foreach (KeyValuePair<string, int> skill in skillBits)
             {
                 haveSkill[skill.Key] = mem.GetBit(mem.TreeBitfield, skill.Value);
             }
@@ -1216,6 +1266,19 @@ namespace OriDETracker
             foreach (KeyValuePair<string, int> tree in treeBits)
             {
                 haveTree[tree.Key] = mem.GetBit(mem.TreeBitfield, tree.Value);
+            }
+        }
+        private void UpdateRelics()
+        {
+            if (!world_tour)
+                return;
+            foreach (KeyValuePair<string, int> relic in relicExistsBits)
+            {
+                relicExists[relic.Key] = mem.GetBit(mem.RelicBitfield, relic.Value);
+            }
+            foreach (KeyValuePair<string, int> relic in relicFoundBits)
+            {
+                relicFound[relic.Key] = mem.GetBit(mem.RelicBitfield, relic.Value);
             }
         }
 
@@ -1228,12 +1291,23 @@ namespace OriDETracker
             haveShards["Gumon Seal 2"] = mem.GetBit(bf, 4);
             haveShards["Sunstone 1"] = mem.GetBit(bf, 6);
             haveShards["Sunstone 2"] = mem.GetBit(bf, 7);
-            display_shards = haveShards.ContainsValue(true);
             haveEvent["Water Vein"] = mem.GetBit(bf, 2);
             haveEvent["Gumon Seal"] = mem.GetBit(bf, 5);
             haveEvent["Sunstone"] = mem.GetBit(bf, 8);
             haveEvent["Clean Water"] = mem.GetBit(bf, 9);
             haveEvent["Wind Restored"] = mem.GetBit(bf, 10);
+            force_trees = mem.GetBit(bf, 11);
+            display_shards = mem.GetBit(bf, 12);
+            warmth_fragments = mem.GetBit(bf, 13);
+            world_tour = mem.GetBit(bf, 14);
+        }
+
+        private void UpdateWarmthFrags()
+        {
+            if (!warmth_fragments)
+                return;
+            current_frags = mem.MapstoneBitfield >> 9;
+            max_frags = mem.TeleporterBitfield >> 8;
         }
 
 
@@ -1248,16 +1322,6 @@ namespace OriDETracker
             mapstone_count = ms;
         }
 
-
-        //this does nothing right now
-        private void CheckEventLocations()
-        {
-        }
-
-        private string GetSkillName(String sk)
-        {
-            return sk.ToString();
-        }
 
         #endregion
 

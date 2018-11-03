@@ -21,46 +21,6 @@ namespace OriDE.Memory
             lastHooked = DateTime.MinValue;
         }
 
-        public Dictionary<string, bool> GetEvents()
-        {
-            Dictionary<string, bool> results = new Dictionary<string, bool>();
-            foreach (var pair in events)
-            {
-                // results[pair.Key] = WorldEvents.Read<bool>(Program, pair.Value + 0x40);
-            }
-            return results;
-        }
-        public bool GetEvent(string name)
-        {
-            int offset = events[name];
-            return false;
-//            return WorldEvents.Read<bool>(Program, offset + 0x40);
-        }
-        public Dictionary<string, bool> GetKeys()
-        {
-            Dictionary<string, bool> results = new Dictionary<string, bool>();
-            foreach (var pair in keys)
-            {
-              //  results[pair.Key] = WorldEvents.Read<bool>(Program, pair.Value);
-            }
-            return results;
-        }
-        public bool GetKey(string name)
-        {
-            int key = keys[name];
-            return false;
-            //                        return WorldEvents.Read<bool>(Program, key);
-        }
-        public Dictionary<string, bool> GetAbilities()
-        {
-            Dictionary<string, bool> results = new Dictionary<string, bool>();
-            foreach (var pair in abilities)
-            {
-//                results[pair.Key] = SeinCharacter.Read<bool>(Program, 0x0, 0x4c, pair.Value * 4, 0x08);
-            }
-            return results;
-        }
-
         public int TreeBitfield;
         public int RelicBitfield;
         public int MapstoneBitfield;
@@ -98,89 +58,11 @@ namespace OriDE.Memory
 
             return IsHooked;
         }
-        public void AddLogItems(List<string> items)
-        {
-            foreach (string key in keys.Keys)
-            {
-                items.Add(key);
-            }
-            foreach (string key in events.Keys)
-            {
-                items.Add(key);
-            }
-            foreach (string key in abilities.Keys)
-            {
-                items.Add(key);
-            }
-        }
         public void Dispose()
         {
             if (Program != null) { this.Program.Dispose(); }
         }
 
-        public static Dictionary<string, int> keys = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-        {
-            {"Water Vein",   0},
-            {"Gumon Seal",   1},
-            {"Sunstone",     2},
-        };
-        public static Dictionary<string, int> events = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-        {
-            {"Ginso Tree Entered",   0},
-            {"Mist Lifted",          1},
-            {"Clean Water",          2},
-            {"Wind Restored",        3},
-            {"Gumo Free",            4},
-            {"Spirit Tree Reached",  5},
-            {"Warmth Returned",      6},
-            {"Darkness Lifted",      7}
-        };
-        public static Dictionary<string, int> abilities = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-        {
-            {"Bash",                     5},
-            {"Charge Flame",             6},
-            {"Wall Jump",                7},
-            {"Stomp",                    8},
-            {"Double Jump",              9},
-            {"Charge Jump",              10},
-            {"Magnet",                   11},
-            {"Ultra Magnet",             12},
-            {"Climb",                    13},
-            {"Glide",                    14},
-            {"Spirit Flame",             15},
-            {"Rapid Fire",               16},
-            {"Soul Efficiency",          17},
-            {"Water Breath",             18},
-            {"Charge Flame Blast",       19},
-            {"Charge Flame Burn",        20},
-            {"Double Jump Upgrade",      21},
-            {"Bash Upgrade",             22},
-            {"Ultra Defense",            23},
-            {"Health Efficiency",        24},
-            {"Sense",                    25},
-            {"Stomp Upgrade",            26},
-            {"Quick Flame",              27},
-            {"Map Markers",              28},
-            {"Energy Efficiency",        29},
-            {"Health Markers",           30},
-            {"Energy Markers",           31},
-            {"Ability Markers",          32},
-            {"Rekindle",                 33},
-            {"Regroup",                  34},
-            {"Charge Flame Efficiency",  35},
-            {"Ultra Soul Flame",         36},
-            {"Soul Flame Efficiency",    37},
-            {"Split Flame",              38},
-            {"Spark Flame",              39},
-            {"Cinder Flame",             40},
-            {"Ultra Split Flame",        41},
-            {"Light Grenade",            42},
-            {"Dash",                     43},
-            {"Grenade Upgrade",          44},
-            {"Charge Dash",              45},
-            {"Air Dash",                 46},
-            {"Grenade Efficiency",       47}
-        };
     }
     public enum PointerVersion
     {
