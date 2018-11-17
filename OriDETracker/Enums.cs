@@ -17,10 +17,10 @@ namespace OriDETracker
 
     public enum TrackerPixelSizes
     {
-        size300px = 300,
-        size420px = 420,
-        size640px = 640,
-        size720px = 720
+        size300px = 312,
+        size420px = 437,
+        size640px = 667,
+        size720px = 750
     }
     public enum AutoUpdateRefreshRates
     {

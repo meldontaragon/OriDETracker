@@ -101,10 +101,10 @@ namespace OriDETracker
             }
 
             this.cb_shards.Checked = parent.DisplayShards;
+            this.Text = "Tracker Layer v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-			this.Text = "Tracker Layer v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-			rbRandoTrees.Checked = true;
+            rbRandoTrees.Checked = true;
 
 			rbRandoEvents.Enabled = false;
 			rbRandoTrees.Enabled = false;
@@ -123,14 +123,15 @@ namespace OriDETracker
 
 		public void Reset()
 		{
-			numericUpDownOpacity.Value = 100;
-			trackBarOpacity.Value = 100;
+            numericUpDownOpacity.Value = 100;
+            trackBarOpacity.Value = 100;
             rb_300.Checked = false;
-			rb_420.Checked = false;
-			rb_640.Checked = true;
+            rb_420.Checked = false;
+            rb_640.Checked = true;
             rb_720.Checked = false;
-			cb_shards.Checked = false;
-		}
+            cb_shards.Checked = false;
+            cb_teleporters.Checked = false;
+       }
 
 		private void rbRandoTrees_CheckedChanged(object sender, EventArgs e)
 		{
@@ -206,6 +207,10 @@ namespace OriDETracker
 			parent.ChangeShards();
 		}
 
+        private void cb_teleporters_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackTeleporters = cb_teleporters.Checked;
+        }
 
         private void rb_720_CheckedChanged(object sender, EventArgs e)
         {
