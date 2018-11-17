@@ -68,7 +68,7 @@ namespace OriDETracker
         }
 
         [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("size640px")]
+        [DefaultSettingValueAttribute("size420px")]
         public TrackerPixelSizes Pixels
         {
             get

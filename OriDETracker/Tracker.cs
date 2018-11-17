@@ -133,6 +133,8 @@ namespace OriDETracker
             set { display_shards = value; }
         }
 
+        public bool TrackTeleporters = false;
+
         public Font MapFont
         {
             set { map_font = value; }
@@ -150,17 +152,17 @@ namespace OriDETracker
             set { refresh_rate = value; refresh_time = (int)(1000000.0f / ((float)value)); }
         }
 
-        protected static int PIXEL_DEF = 640;
+        protected static int PIXEL_DEF = (int) TrackerPixelSizes.size640px;
 
         protected int image_pixel_size = PIXEL_DEF;
         protected TrackerPixelSizes tracker_size;
 
 
         private Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
-            { 300, new MapstoneText(140, 190, 14) },
-            { 420, new MapstoneText(195, 268, 18) },
-            { 640, new MapstoneText(304, 417, 24) },
-            { 720, new MapstoneText(342, 471, 28) }
+            { (int) TrackerPixelSizes.size300px, new MapstoneText(140+6, 190+6, 14) },
+            { (int) TrackerPixelSizes.size420px, new MapstoneText(195+9, 268+9, 18) },
+            { (int) TrackerPixelSizes.size640px, new MapstoneText(304+13, 417+13, 24) },
+            { (int) TrackerPixelSizes.size720px, new MapstoneText(342+15, 471+15, 28) }
         };
 
         protected Size scaledSize;
@@ -205,6 +207,8 @@ namespace OriDETracker
         public Dictionary<String, bool> relicExists;
         public Dictionary<String, bool> relicFound;
 
+        public Dictionary<String, bool> teleportersActive;
+
         //All Trees
         public Dictionary<String, bool> hitTree;
         public Dictionary<String, bool> haveTree;
@@ -229,7 +233,7 @@ namespace OriDETracker
 
         #region Images
 
-        protected String DIR = @"Assets_640/";
+        protected String DIR = @"Assets_750/";
 
         protected Image imageSpiritFlame;
         protected Image imageWallJump;
@@ -353,9 +357,21 @@ namespace OriDETracker
 
             imageSunstoneShard1 = Image.FromFile(DIR + @"SunstoneShard1.png");
             imageSunstoneShard2 = Image.FromFile(DIR + @"SunstoneShard2.png");
+            foreach(string zone in new string[] { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu"} )
+            {
+                relicExistImages[zone] = Image.FromFile(DIR + "Relics/Exist/" + zone + ".png");
+                relicFoundImages[zone] = Image.FromFile(DIR + "Relics/Found/" + zone + ".png");
+                if(zone != "Misty" && zone != "Blackroot" && zone != "Glades")
+                {
+                    teleporterImages[zone] = Image.FromFile(DIR + zone + "TP.png");
+                }
+            }
 
         }
 
+        protected Dictionary<String, Image> teleporterImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> treeImages = new Dictionary<String, Image>();
 
@@ -519,11 +535,11 @@ namespace OriDETracker
 
 
             eventMousePoint = new Dictionary<string, Point>(){
-                {"Water Vein", new Point(221, 258)},
-                {"Gumon Seal", new Point(328, 215)},
-                {"Sunstone",   new Point(428, 257)},
-                {"Wind Restored", new Point(423, 365)},
-                {"Clean Water", new Point(220, 360)}
+                {"Water Vein", new Point(221+13, 258+13)},
+                {"Gumon Seal", new Point(328+13, 215+13)},
+                {"Sunstone",   new Point(428+13, 257+13)},
+                {"Wind Restored", new Point(423+13, 365+13)},
+                {"Clean Water", new Point(220+13, 360+13)}
             };
 
             //checkTreeHitbox = true;
@@ -585,6 +601,17 @@ namespace OriDETracker
                 {"Forlorn", false},
                 {"Sorrow", false},
                 {"Horu", false}
+            };
+            teleportersActive = new Dictionary<string, bool>()
+            {
+                {"Grove", false},
+                {"Swamp", false},
+                {"Grotto", false},
+                {"Valley", false},
+                {"Forlorn", false},
+                {"Sorrow", false},
+                {"Ginso", false},
+                {"Horu", false},
             };
             treeBits = new Dictionary<string, int>() {
                 { "Spirit Flame", 0},
@@ -724,22 +751,22 @@ namespace OriDETracker
             string[] skills = new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
             for (int i = 0; i < 11; ++i)
             {
-                skillMousePoint.Add(skills[i], new Point((int)(320 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
-                                                         (int)(320 - 205 * Math.Cos(2.0 * i * Math.PI / 11.0))));
+                skillMousePoint.Add(skills[i], new Point((int)(320 + 13 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
+                                                         (int)(320 + 13 - 205 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
             for (int i = 0; i < 11; ++i)
             {
-                treeMouseLocation.Add(skills[i], new Point((int)(320 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
-                                                           (int)(320 - 286 * Math.Cos(2.0 * i * Math.PI / 11.0))));
+                treeMouseLocation.Add(skills[i], new Point((int)(320 + 13 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
+                                                           (int)(320 + 13 - 286 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
 
             eventMousePoint = new Dictionary<string, Point>(){
-                {"Water Vein", new Point(206, 240)},
-                {"Gumon Seal", new Point(328, 215)},
-                {"Sunstone",   new Point(428, 257)},
-                {"Clean Water", new Point(205, 343)},
-                {"Wind Restored", new Point(300, 404)},
-                {"Warmth Returned", new Point(391, 342)}
+                {"Water Vein", new Point(206+13, 240+13)},
+                {"Gumon Seal", new Point(328+13, 215+13)},
+                {"Sunstone",   new Point(428+13, 257+13)},
+                {"Clean Water", new Point(205+13, 343+13)},
+                {"Wind Restored", new Point(300+13, 404+13)},
+                {"Warmth Returned", new Point(391+13, 342+13)}
             };
         }
 
@@ -964,6 +991,36 @@ namespace OriDETracker
                 }
                 #endregion
 
+                #region Relic
+                foreach (KeyValuePair<String, bool> relic in relicExists)
+                {
+                    if (relic.Value)
+                    {
+                        g.DrawImage(relicExistImages[relic.Key], drawRect);
+                    }
+                }
+                foreach (KeyValuePair<String, bool> relic in relicFound)
+                {
+                    if (relic.Value)
+                    {
+                        g.DrawImage(relicFoundImages[relic.Key], drawRect);
+                    }
+                }
+                #endregion
+
+                #region Teleporters
+                if(TrackTeleporters)
+                {
+                    foreach (KeyValuePair<String, bool> tp in teleportersActive)
+                    {
+                        if (tp.Value)
+                        {
+                            g.DrawImage(teleporterImages[tp.Key], drawRect);
+                        }
+                    }
+                }
+                #endregion
+
                 #region Tree
 
                 g.DrawImage(imageGTrees, drawRect);
@@ -1102,6 +1159,11 @@ namespace OriDETracker
 
         protected void HardReset()
         {
+            DialogResult res = MessageBox.Show("Your settings will be lost!", "Really reset?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, MessageBoxOptions.DefaultDesktopOnly);
+            if (res == DialogResult.Cancel)
+            {
+                return;
+            }
             this.SoftReset();
 
             settings.Reset();
@@ -1237,6 +1299,7 @@ namespace OriDETracker
                 CheckTrees();
                 UpdateKeysEvents();
                 UpdateRelics();
+                UpdateTeleporters();
                 UpdateWarmthFrags();
                 UpdateMapstoneProgression();
 
@@ -1308,6 +1371,14 @@ namespace OriDETracker
                 return;
             current_frags = mem.MapstoneBitfield >> 9;
             max_frags = mem.TeleporterBitfield >> 8;
+        }
+
+        private void UpdateTeleporters()
+        {
+            foreach (KeyValuePair<string, int> tp in teleporterBits)
+            {
+                teleportersActive[tp.Key] = mem.GetBit(mem.TeleporterBitfield, tp.Value);
+            }
         }
 
 
