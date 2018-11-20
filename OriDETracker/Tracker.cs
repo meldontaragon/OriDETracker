@@ -361,7 +361,7 @@ namespace OriDETracker
             {
                 relicExistImages[zone] = Image.FromFile(DIR + "Relics/Exist/" + zone + ".png");
                 relicFoundImages[zone] = Image.FromFile(DIR + "Relics/Found/" + zone + ".png");
-                if(zone != "Misty" && zone != "Blackroot" && zone != "Glades")
+                if(zone != "Misty")
                 {
                     teleporterImages[zone] = Image.FromFile(DIR + zone + "TP.png");
                 }
@@ -612,6 +612,8 @@ namespace OriDETracker
                 {"Sorrow", false},
                 {"Ginso", false},
                 {"Horu", false},
+                {"Blackroot", false},
+                {"Glades", false},
             };
             treeBits = new Dictionary<string, int>() {
                 { "Spirit Flame", 0},
@@ -688,6 +690,8 @@ namespace OriDETracker
                 {"Sorrow", 5},
                 {"Ginso", 6},
                 {"Horu", 7},
+                {"Blackroot", 8},
+                {"Glades", 9}
             };
 
 
@@ -1333,15 +1337,16 @@ namespace OriDETracker
         }
         private void UpdateRelics()
         {
-            if (!world_tour)
-                return;
+            int bf = 0;
+            if (world_tour)
+                bf = mem.RelicBitfield;
             foreach (KeyValuePair<string, int> relic in relicExistsBits)
             {
-                relicExists[relic.Key] = mem.GetBit(mem.RelicBitfield, relic.Value);
+                relicExists[relic.Key] = mem.GetBit(bf, relic.Value);
             }
             foreach (KeyValuePair<string, int> relic in relicFoundBits)
             {
-                relicFound[relic.Key] = mem.GetBit(mem.RelicBitfield, relic.Value);
+                relicFound[relic.Key] = mem.GetBit(bf, relic.Value);
             }
         }
 
@@ -1370,7 +1375,7 @@ namespace OriDETracker
             if (!warmth_fragments)
                 return;
             current_frags = mem.MapstoneBitfield >> 9;
-            max_frags = mem.TeleporterBitfield >> 8;
+            max_frags = mem.TeleporterBitfield >> 10;
         }
 
         private void UpdateTeleporters()
