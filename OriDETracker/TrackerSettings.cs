@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Configuration;
-using System.Drawing;
+﻿using System.Configuration;
 
 namespace OriDETracker
 {
@@ -66,6 +59,76 @@ namespace OriDETracker
                 this["Shards"] = value;
             }
         }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("false")]
+        public bool Teleporters
+        {
+            get
+            {
+                return ((bool)(this["Teleporters"]));
+            }
+            set
+            {
+                this["Teleporters"] = value;
+            }
+        }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool Trees
+        {
+            get
+            {
+                return ((bool)(this["Trees"]));
+            }
+            set
+            {
+                this["Trees"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool AlwaysOnTop
+        {
+            get
+            {
+                return ((bool)(this["AlwaysOnTop"]));
+            }
+            set
+            {
+                this["AlwaysOnTop"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("false")]
+        public bool AutoUpdate
+        {
+            get
+            {
+                return ((bool)(this["AutoUpdate"]));
+            }
+            set
+            {
+                this["AutoUpdate"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool Draggable
+        {
+            get
+            {
+                return ((bool)(this["Draggable"]));
+            }
+            set
+            {
+                this["Draggable"] = value;
+            }
+        }
+
 
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("size420px")]
