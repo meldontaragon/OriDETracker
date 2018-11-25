@@ -41,6 +41,8 @@ namespace OriDETracker
             display_shards = TrackerSettings.Default.Shards;
             current_layout = TrackerSettings.Default.Layout;
             display_shards = TrackerSettings.Default.Shards;
+            TrackTeleporters = TrackerSettings.Default.Teleporters;
+            TrackTrees = TrackerSettings.Default.Trees;
             font_color = TrackerSettings.Default.FontColoring;
             Opacity = TrackerSettings.Default.Opacity;
             BackColor = TrackerSettings.Default.Background;
@@ -133,7 +135,8 @@ namespace OriDETracker
             set { display_shards = value; }
         }
 
-        public bool TrackTeleporters = false;
+        public bool TrackTeleporters = TrackerSettings.Default.Teleporters;
+        public bool TrackTrees = TrackerSettings.Default.Trees;
 
         public Font MapFont
         {
@@ -166,14 +169,14 @@ namespace OriDETracker
         };
 
         protected Size scaledSize;
-        protected bool display_shards = false;
+        protected bool display_shards = TrackerSettings.Default.Shards;
         protected TrackerLayout current_layout;
         protected Color font_color;
 
         public Brush font_brush;
         protected const int TOL = 25;
-        protected bool auto_update = false;
-        protected bool draggable = false;
+        protected bool auto_update = TrackerSettings.Default.AutoUpdate;
+        protected bool draggable = TrackerSettings.Default.Draggable;
         protected int mapstone_count = 0;
         protected bool display_mapstone = false;
         protected Font map_font;
@@ -812,7 +815,7 @@ namespace OriDETracker
         {
             this.TopMost = alwaysOnTopToolStripMenuItem.Checked;
         }
-        protected void editToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void moveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             draggable = !draggable;
         }
@@ -1024,17 +1027,18 @@ namespace OriDETracker
                     }
                 }
                 #endregion
-
                 #region Tree
-
-                g.DrawImage(imageGTrees, drawRect);
-                foreach (KeyValuePair<String, bool> sk in haveTree)
+                if(TrackTrees)
                 {
-                    edit_form.UpdateTree(sk.Key, sk.Value);
-
-                    if (sk.Value)
+                    g.DrawImage(imageGTrees, drawRect);
+                    foreach (KeyValuePair<String, bool> sk in haveTree)
                     {
-                        g.DrawImage(treeImages[sk.Key], drawRect);
+                        edit_form.UpdateTree(sk.Key, sk.Value);
+
+                        if (sk.Value)
+                        {
+                            g.DrawImage(treeImages[sk.Key], drawRect);
+                        }
                     }
                 }
 
@@ -1151,14 +1155,16 @@ namespace OriDETracker
             this.settings.Visible = false;
 
             ChangeLayout(current_layout);
-            if (auto_update)
+            if (auto_update && !TrackerSettings.Default.AutoUpdate)
             {
                 TurnOffAutoUpdate();
             }
-            auto_update = false;
-            this.autoUpdateToolStripMenuItem.Checked = false;
+            auto_update = TrackerSettings.Default.AutoUpdate;
+            this.autoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
 
-            draggable = false;
+            draggable = TrackerSettings.Default.Draggable;
+            this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
+
         }
 
         protected void HardReset()
@@ -1182,12 +1188,12 @@ namespace OriDETracker
 
             current_layout = TrackerLayout.RandomizerAllTrees;
 
-            this.editToolStripMenuItem.Checked = false;
+            this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
 
-            this.TopMost = true;
-            this.alwaysOnTopToolStripMenuItem.Checked = true;
+            this.TopMost = TrackerSettings.Default.AlwaysOnTop;
+            this.alwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
 
-            this.display_shards = false;
+            this.display_shards = TrackerSettings.Default.Shards;
 
             this.BackColor = Color.Black;
             this.font_brush = new SolidBrush(Color.White);
@@ -1409,7 +1415,12 @@ namespace OriDETracker
             TrackerSettings.Default.Layout = current_layout;
             TrackerSettings.Default.Opacity = Opacity;
             TrackerSettings.Default.Shards = display_shards;
+            TrackerSettings.Default.Teleporters = TrackTeleporters;
+            TrackerSettings.Default.Trees = TrackTrees;
             TrackerSettings.Default.Pixels = TrackerSize;
+            TrackerSettings.Default.AlwaysOnTop = this.TopMost;
+            TrackerSettings.Default.Draggable = draggable;
+            TrackerSettings.Default.AutoUpdate = auto_update;
 
             TrackerSettings.Default.Save();
         }
