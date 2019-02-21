@@ -6,6 +6,10 @@ function getMatch( $id ) {
 	if ( file_exists( $filename ) ) {
 		return json_decode( file_get_contents( $filename ), true );
 	}
+	else {
+		file_put_contents( $filename, '{"playerLead":{"p1":"1","p2":"0"}}' );
+		return json_decode( file_get_contents( $filename ), true );
+	}
 	return array();
 }
 

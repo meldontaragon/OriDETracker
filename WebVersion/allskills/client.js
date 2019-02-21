@@ -1,4 +1,5 @@
-var matchId,
+var trackerId,
+    playerId,
     leadTracker = true,
     intervalHandle,
     leadT1 = 1,
@@ -33,7 +34,7 @@ function onRadioChange()
     $('input[type="radio"][value="t2"]').prop('checked', !leadTracker);
 
     $.post( 'server.php', {
-	match: matchId,
+	match: trackerId,
 	state: {
 	    playerLead:
 	    {
@@ -56,7 +57,7 @@ function onCheckboxChange() {
 	imgId = id.substr( 6 ),
 	state = this.checked,
 	data = {
-	    match: matchId,
+	    match: trackerId,
 	    state: {
 		playerLead:
 		{
@@ -106,6 +107,8 @@ function updateState( state ) {
 	    leadTracker = true;
 	}
     }
+    //check if only one player or the other should be displayed
+    playerId = getUrlParameter('player');
     
     if ( leadTracker )
     {
@@ -114,7 +117,6 @@ function updateState( state ) {
 
 	$( '#' + 't2-' + 'place-first' ).removeClass( 'lead' );
 	$( '#' + 't2-' + 'place-second' ).addClass( 'lead' );
-
     }
     else
     {
@@ -123,9 +125,19 @@ function updateState( state ) {
 
 	$( '#' + 't1-' + 'place-first' ).removeClass( 'lead' );
 	$( '#' + 't1-' + 'place-second' ).addClass( 'lead' );
-	
     }
-
+    
+    if ( playerId == '1' )
+    {
+	$( '#' + 't2-' + 'place-first' ).removeClass( 'lead' );
+	$( '#' + 't2-' + 'place-second' ).removeClass( 'lead' );
+    }
+    if ( playerId == '2' )
+    {
+	$( '#' + 't1-' + 'place-first' ).removeClass( 'lead' );
+	$( '#' + 't1-' + 'place-second' ).removeClass( 'lead' );
+    }
+        
     $('input[type="radio"][value="t1"]').prop('checked', leadTracker);
     $('input[type="radio"][value="t2"]').prop('checked', !leadTracker);
 
@@ -147,9 +159,11 @@ function updateState( state ) {
 
     // Light up everything sent by the server, even if we just turned it off
     ids.forEach( function ( id ) {
-	$( '#' + id ).addClass( 'show' );
-	$( '#' + id + '-g' ).removeClass( 'show' );
-	$( '#check-' + id ).prop( 'checked', true );
+	if (playerId == null || id.substring(1,2) == playerId) {
+	    $( '#' + id ).addClass( 'show' );
+	    $( '#' + id + '-g' ).removeClass( 'show' );
+	    $( '#check-' + id ).prop( 'checked', true );
+	}
     } );
 }
 
@@ -157,40 +171,42 @@ function linkMatch( e ) {
     if ( intervalHandle ) {
 	clearInterval( intervalHandle );
 	intervalHandle = undefined;
-	$( 'form input[type="submit"]' ).val( 'Link' );
 	return false;
     }
 
-    matchId = $( '#match' ).val();
+    trackerId = getUrlParameter('tracker');
     
-    $.get( 'server.php', { match: matchId }, function ( res ) {
-	if ( Array.isArray( res ) && !res.length ) {
-	    $( '#sync-message' )
-		.text( 'Match not found. New match created.' )
-		.css( 'color', 'black' )
-		.fadeIn( 50 );
-	    //this should also "link" it now
-	    return;
-	}
+    $.get( 'server.php', { match: trackerId }, function ( res ) {
 	updateState( res );
 	intervalHandle = setInterval( function () {
-	    $.get( 'server.php', { match: matchId }, function ( res ) {
+	    $.get( 'server.php', { match: trackerId }, function ( res ) {
 		updateState( res );
 	    } );
 	}, 250 );
 
-	$( 'form input[type="submit"]' ).val( 'End link' );
 	$( '#sync-message' )
-	    .text( 'Link established successfully. Now updating every 250ms.' )
+	    .text( 'Link established for "' + trackerId + '" successfully. Now updating every 250ms.' )
 	    .fadeIn( 50 )
 	    .delay( 3000 )
 	    .fadeOut( 1000 );
     } );
+}
 
-    e.preventDefault();
+function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+	sURLVariables = sPageURL.split('&'),
+	sParameterName,
+	i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+	sParameterName = sURLVariables[i].split('=');
+
+	if (sParameterName[0] === sParam) {
+	    return sParameterName[1] === undefined ? true : sParameterName[1];
+	}
+    }
 }
 
 $( 'body' ).on( 'change', 'input[type="checkbox"]', onCheckboxChange );
-$( '#matchForm' ).on( 'submit', linkMatch );
 $( 'body' ).on( 'change', 'input[type="radio"]', onRadioChange );
-//$( 'body' ).on( 'clicked', 'input[type="radio"]', onRadioChange );
+$( linkMatch );
