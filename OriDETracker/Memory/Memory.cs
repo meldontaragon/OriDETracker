@@ -337,20 +337,32 @@ namespace OriDE.Memory
     [StructLayout(LayoutKind.Sequential)]
     public struct ModuleInfo
     {
-        public IntPtr BaseAddress;
-        public uint ModuleSize;
-        public IntPtr EntryPoint;
+        public IntPtr BaseAddress { get { return baseaddress; } set { baseaddress = value; } }
+        public uint ModuleSize { get { return modulesize; } set { modulesize = value; } }
+        public IntPtr EntryPoint { get { return entrypoint; } set { entrypoint = value; } }
+
+        private IntPtr baseaddress;
+        private uint modulesize;
+        private IntPtr entrypoint;
     }
     [StructLayout(LayoutKind.Sequential)]
     public struct MemInfo
     {
-        public IntPtr BaseAddress;
-        public IntPtr AllocationBase;
-        public uint AllocationProtect;
-        public IntPtr RegionSize;
-        public uint State;
-        public uint Protect;
-        public uint Type;
+        public IntPtr BaseAddress { get { return baseaddress; } set { baseaddress = value; } }
+        public IntPtr AllocationBase { get { return allocationbase; } set { allocationbase = value; } }
+        public uint AllocationProtect { get { return allocationprotect; } set { allocationprotect = value; } }
+        public IntPtr RegionSize { get { return regionsize; } set { regionsize = value; } }
+        public uint State { get { return state; } set { state = value; } }
+        public uint Protect { get { return protect; } set { protect = value; } }
+        public uint Type { get { return type; } set { type = value; } }
+
+        private IntPtr baseaddress;
+        private IntPtr allocationbase;
+        private uint allocationprotect;
+        private IntPtr regionsize;
+        private uint state;
+        private uint protect;
+        private uint type;
     }
     public class MemorySearcher
     {

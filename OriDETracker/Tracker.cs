@@ -28,7 +28,7 @@ namespace OriDETracker
             TrackerSize = TrackerSettings.Default.Pixels;
 
             //Settings window display
-            settings = new SettingsLayout(this);
+            settings = new SettingsLayout(this, true);
             settings.Visible = false;
 
             InitializeComponent();
@@ -67,7 +67,7 @@ namespace OriDETracker
             th.IsBackground = true;
 
             scaledSize = new Size(image_pixel_size, image_pixel_size);
-            this.UpdateImages();
+            this.UpdateImages(false);
             this.ChangeLayout(current_layout);
             font_brush = new SolidBrush(font_color);
 
@@ -155,7 +155,7 @@ namespace OriDETracker
             set { refresh_rate = value; refresh_time = (int)(1000000.0f / ((float)value)); }
         }
 
-        protected static int PIXEL_DEF = (int) TrackerPixelSizes.size640px;
+        protected static int PIXEL_DEF = (int)TrackerPixelSizes.size640px;
 
         protected int image_pixel_size = PIXEL_DEF;
         protected TrackerPixelSizes tracker_size;
@@ -238,56 +238,6 @@ namespace OriDETracker
 
         protected String DIR = @"Assets_750/";
 
-        protected Image imageSpiritFlame;
-        protected Image imageWallJump;
-        protected Image imageChargeFlame;
-        protected Image imageDoubleJump;
-        protected Image imageBash;
-        protected Image imageStomp;
-        protected Image imageGlide;
-        protected Image imageClimb;
-        protected Image imageChargeJump;
-        protected Image imageLightGrenade;
-        protected Image imageDash;
-
-        protected Image imageTreeSpiritFlame;
-        protected Image imageTreeWallJump;
-        protected Image imageTreeChargeFlame;
-        protected Image imageTreeDoubleJump;
-        protected Image imageTreeBash;
-        protected Image imageTreeStomp;
-        protected Image imageTreeChargeJump;
-        protected Image imageTreeGlide;
-        protected Image imageTreeClimb;
-        protected Image imageTreeLightGrenade;
-        protected Image imageTreeDash;
-
-        protected Image imageWaterVein;
-        protected Image imageGumonSeal;
-        protected Image imageSunstone;
-        protected Image imageCleanWater;
-        protected Image imageWindRestored;
-        protected Image imageWarmthReturned;
-
-        protected Image imageGWaterVein;
-        protected Image imageGGumonSeal;
-        protected Image imageGSunstone;
-        protected Image imageGCleanWater;
-        protected Image imageGWindRestored;
-        protected Image imageGWarmthReturned;
-
-        protected Image imageWindRestoredRando;
-        protected Image imageGWindRestoredRando;
-
-        protected Image imageWaterVeinShard1;
-        protected Image imageWaterVeinShard2;
-
-        protected Image imageGumonSealShard1;
-        protected Image imageGumonSealShard2;
-
-        protected Image imageSunstoneShard1;
-        protected Image imageSunstoneShard2;
-
         protected Image imageSkillWheel;
         protected Image imageSkillWheelDouble;
         protected Image imageSkillWheelTriple;
@@ -297,47 +247,36 @@ namespace OriDETracker
 
         protected Image imageMapStone;
 
-        public void UpdateImages()
+        public void UpdateImages(bool Initialize)
         {
             DIR = "Assets_" + image_pixel_size.ToString() + @"/";
 
-            imageSpiritFlame = Image.FromFile(DIR + @"SpiritFlame.png");
-            imageWallJump = Image.FromFile(DIR + @"WallJump.png");
-            imageChargeFlame = Image.FromFile(DIR + @"ChargeFlame.png");
-            imageDoubleJump = Image.FromFile(DIR + @"DoubleJump.png");
-            imageBash = Image.FromFile(DIR + @"Bash.png");
-            imageStomp = Image.FromFile(DIR + @"Stomp.png");
-            imageGlide = Image.FromFile(DIR + @"Glide.png");
-            imageClimb = Image.FromFile(DIR + @"Climb.png");
-            imageChargeJump = Image.FromFile(DIR + @"ChargeJump.png");
-            imageLightGrenade = Image.FromFile(DIR + @"LightGrenade.png");
-            imageDash = Image.FromFile(DIR + @"Dash.png");
+            //Initialize = true;
+            /*
+             * protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
+             * protected Dictionary<String, Image> treeImages = new Dictionary<String, Image>();
+             * protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
+             * protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
+             * protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
+             */
+            //load new images
+            foreach (string skill in new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Light Grenade", "Dash" })
+            {
+                skillImages[skill] = Image.FromFile(DIR + skill.Replace(" ", String.Empty) + @".png");
+                treeImages[skill] = Image.FromFile(DIR + "T" + skill.Replace(" ", String.Empty) + @".png");
+            }
 
-            imageTreeSpiritFlame = Image.FromFile(DIR + @"TSpiritFlame.png");
-            imageTreeWallJump = Image.FromFile(DIR + @"TWallJump.png");
-            imageTreeChargeFlame = Image.FromFile(DIR + @"TChargeFlame.png");
-            imageTreeDoubleJump = Image.FromFile(DIR + @"TDoubleJump.png");
-            imageTreeBash = Image.FromFile(DIR + @"TBash.png");
-            imageTreeStomp = Image.FromFile(DIR + @"TStomp.png");
-            imageTreeChargeJump = Image.FromFile(DIR + @"TChargeJump.png");
-            imageTreeGlide = Image.FromFile(DIR + @"TGlide.png");
-            imageTreeClimb = Image.FromFile(DIR + @"TClimb.png");
-            imageTreeLightGrenade = Image.FromFile(DIR + @"TLightGrenade.png");
-            imageTreeDash = Image.FromFile(DIR + @"TDash.png");
+            foreach (string ev in new string[] { "Water Vein", "Gumon Seal", "Sunstone", "Clean Water", "Wind Restored" })
+            {
+                eventImages[ev] = Image.FromFile(DIR + ev.Replace(" ", String.Empty) + @".png");
+                eventGreyImages[ev] = Image.FromFile(DIR + "G" + ev.Replace(" ", String.Empty) + @".png");
 
-            imageWaterVein = Image.FromFile(DIR + @"WaterVein.png");
-            imageGumonSeal = Image.FromFile(DIR + @"GumonSeal.png");
-            imageSunstone = Image.FromFile(DIR + @"Sunstone.png");
-            imageCleanWater = Image.FromFile(DIR + @"CleanWater.png");
-            imageWindRestored = Image.FromFile(DIR + @"WindRestored.png");
-            imageWarmthReturned = Image.FromFile(DIR + @"WarmthReturned.png");
-
-            imageGWaterVein = Image.FromFile(DIR + @"GWaterVein.png");
-            imageGGumonSeal = Image.FromFile(DIR + @"GGumonSeal.png");
-            imageGSunstone = Image.FromFile(DIR + @"GSunstone.png");
-            imageGCleanWater = Image.FromFile(DIR + @"GCleanWater.png");
-            imageGWindRestored = Image.FromFile(DIR + @"GWindRestored.png");
-            imageGWarmthReturned = Image.FromFile(DIR + @"GWarmthReturned.png");
+                if (ev == "Water Vein" || ev == "Gumon Seal" || ev == "Sunstone")
+                {
+                    shardImages[ev + " 1"] = Image.FromFile(DIR + ev.Replace(" ", String.Empty) + @"Shard1.png");
+                    shardImages[ev + " 2"] = Image.FromFile(DIR + ev.Replace(" ", String.Empty) + @"Shard2.png");
+                }
+            }
 
             imageSkillWheel = Image.FromFile(DIR + @"SkillRing_Single.png");
             imageSkillWheelDouble = Image.FromFile(DIR + @"SkillRing_Double.png");
@@ -349,38 +288,39 @@ namespace OriDETracker
 
             imageMapStone = Image.FromFile(DIR + @"MapStone.png");
 
-            imageWindRestoredRando = Image.FromFile(DIR + @"WindRestoredRando.png");
-            imageGWindRestoredRando = Image.FromFile(DIR + @"GWindRestoredRando.png");
-
-            imageWaterVeinShard1 = Image.FromFile(DIR + @"WaterVeinShard1.png");
-            imageWaterVeinShard2 = Image.FromFile(DIR + @"WaterVeinShard2.png");
-
-            imageGumonSealShard1 = Image.FromFile(DIR + @"GumonSealShard1.png");
-            imageGumonSealShard2 = Image.FromFile(DIR + @"GumonSealShard2.png");
-
-            imageSunstoneShard1 = Image.FromFile(DIR + @"SunstoneShard1.png");
-            imageSunstoneShard2 = Image.FromFile(DIR + @"SunstoneShard2.png");
-            foreach(string zone in new string[] { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu"} )
+            foreach (string zone in new string[] { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu"} )
             {
                 relicExistImages[zone] = Image.FromFile(DIR + "Relics/Exist/" + zone + ".png");
                 relicFoundImages[zone] = Image.FromFile(DIR + "Relics/Found/" + zone + ".png");
-                if(zone != "Misty")
+                if (Initialize)
+                {
+                    relicExistImages[zone].Dispose();
+                    relicFoundImages[zone].Dispose();
+                }
+
+
+                if (zone != "Misty")
                 {
                     teleporterImages[zone] = Image.FromFile(DIR + zone + "TP.png");
+                    if (Initialize)
+                    {
+                        teleporterImages[zone].Dispose();
+                    }
+
                 }
             }
 
+            //GC.Collect();
         }
 
         protected Dictionary<String, Image> teleporterImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
+
         protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> treeImages = new Dictionary<String, Image>();
-
         protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
-
         protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
 
         #endregion
@@ -497,6 +437,7 @@ namespace OriDETracker
                 {"Sunstone 2",      false},
             };
 
+            /*
             eventImages = new Dictionary<String, Image>(){
                 {"Water Vein",       imageWaterVein},
                 {"Gumon Seal",       imageGumonSeal},
@@ -514,12 +455,12 @@ namespace OriDETracker
             };
 
             shardImages = new Dictionary<string, Image>(){
-                {"Water Vein 1",     imageWaterVeinShard1},
-                {"Water Vein 2",     imageWaterVeinShard2},
-                {"Gumon Seal 1",     imageGumonSealShard1},
-                {"Gumon Seal 2",     imageGumonSealShard2},
-                {"Sunstone 1",      imageSunstoneShard1},
-                {"Sunstone 2",      imageSunstoneShard2},
+                {"WaterVein1",     imageWaterVeinShard1},
+                {"WaterVein2",     imageWaterVeinShard2},
+                {"GumonSeal1",     imageGumonSealShard1},
+                {"GumonSeal2",     imageGumonSealShard2},
+                {"Sunstone1",      imageSunstoneShard1},
+                {"Sunstone2",      imageSunstoneShard2},
             };
 
             treeImages = new Dictionary<String, Image>(){
@@ -535,7 +476,7 @@ namespace OriDETracker
                 {"Charge Jump",  imageTreeChargeJump},
                 {"Grenade",     imageTreeLightGrenade}
             };
-
+            */
 
             eventMousePoint = new Dictionary<string, Point>(){
                 {"Water Vein", new Point(221+13, 258+13)},
@@ -682,7 +623,6 @@ namespace OriDETracker
                 {"Sorrow", 7},
                 {"Horu", 8},
             };
-
             teleporterBits = new Dictionary<string, int>()
             {
                 {"Grove", 0},
@@ -695,11 +635,10 @@ namespace OriDETracker
                 {"Horu", 7},
                 {"Blackroot", 8},
                 {"Glades", 9}
-            };
-
-
+            };            
             #endregion
 
+            /*
             skillImages = new Dictionary<String, Image>(){
                 {"Spirit Flame",        imageSpiritFlame},
                 {"Wall Jump",    imageWallJump},
@@ -731,6 +670,7 @@ namespace OriDETracker
                 {"Wind Restored",   imageGWindRestored},
                 {"Warmth Returned", imageGWarmthReturned}
             };
+            */
         }
 
         private void SetLayoutRandomizerAllEvents()
@@ -749,6 +689,7 @@ namespace OriDETracker
         {
             SetLayoutDefaults();
         }
+
         private Dictionary<String, Point> treeMouseLocation;
         private Dictionary<String, Point> skillMousePoint;
         private void SetMouseLocations()
@@ -1262,8 +1203,8 @@ namespace OriDETracker
             }
         }
 
-        int DATA_SIZE = 10;
-        public byte[] data;
+        //int DATA_SIZE = 10;
+        //public byte[] data;
 
         private void UpdateLoop()
         {
@@ -1392,7 +1333,6 @@ namespace OriDETracker
             }
         }
 
-
         private void UpdateMapstoneProgression()
         {
             int ms = 0;
@@ -1403,8 +1343,6 @@ namespace OriDETracker
             }
             mapstone_count = ms;
         }
-
-
         #endregion
 
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
