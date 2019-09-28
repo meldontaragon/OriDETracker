@@ -239,18 +239,12 @@
     <Content Include="Assets_312\GumonSealShard2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_312\GWarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_312\GWarmthReturnedBase.png" />
     <Content Include="Assets_312\GWaterVein.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_312\GWindRestored.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets_312\GWindRestoredRando.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_312\GWindRestored.png" />
+    <Content Include="Assets_312\GWindRestoredBase.png" />
     <Content Include="Assets_312\HoruTP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -398,9 +392,7 @@
     <Content Include="Assets_312\WallJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_312\WarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_312\WarmthReturnedBase.png" />
     <Content Include="Assets_312\WaterVein.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -416,9 +408,7 @@
     <Content Include="Assets_312\WindRestored.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_312\WindRestoredRando.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_312\WindRestoredBase.png" />
     <Content Include="Assets_437\Bash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -488,18 +478,12 @@
     <Content Include="Assets_437\GumonSealShard2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_437\GWarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_437\GWarmthReturnedBase.png" />
     <Content Include="Assets_437\GWaterVein.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_437\GWindRestored.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets_437\GWindRestoredRando.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_437\GWindRestored.png" />
+    <Content Include="Assets_437\GWindRestoredBase.png" />
     <Content Include="Assets_437\HoruTP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -647,9 +631,7 @@
     <Content Include="Assets_437\WallJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_437\WarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_437\WarmthReturnedBase.png" />
     <Content Include="Assets_437\WaterVein.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -665,9 +647,7 @@
     <Content Include="Assets_437\WindRestored.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_437\WindRestoredRando.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_437\WindRestoredBase.png" />
     <Content Include="Assets_667\Bash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -737,18 +717,14 @@
     <Content Include="Assets_667\GumonSealShard2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_667\GWarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_667\GWarmthReturnedBase.png" />
     <Content Include="Assets_667\GWaterVein.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_667\GWindRestored.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_667\GWindRestoredRando.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_667\GWindRestoredBase.png" />
     <Content Include="Assets_667\HoruTP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -893,9 +869,7 @@
     <Content Include="Assets_667\WallJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_667\WarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_667\WarmthReturnedBase.png" />
     <Content Include="Assets_667\WaterVein.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -911,9 +885,7 @@
     <Content Include="Assets_667\WindRestored.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_667\WindRestoredRando.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets_667\WindRestoredBase.png" />
     <Content Include="Assets_750\Bash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1001,16 +973,7 @@
     <Content Include="Assets_750\GumonSealShard2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_750\GWarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets_750\GWaterVein.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets_750\GWindRestored.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets_750\GWindRestoredRando.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_750\Horu.png">
@@ -1172,9 +1135,6 @@
     <Content Include="Assets_750\WallJump.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_750\WarmthReturned.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets_750\WaterVein.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1185,12 +1145,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_750\WhiteBackground.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets_750\WindRestored.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets_750\WindRestoredRando.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ori_red.ico">
