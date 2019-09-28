@@ -238,13 +238,10 @@ namespace OriDETracker
 
         protected String DIR = @"Assets_750/";
 
-        protected Image imageSkillWheel;
         protected Image imageSkillWheelDouble;
-        protected Image imageSkillWheelTriple;
         protected Image imageBlackBackground;
         protected Image imageGSkills;
         protected Image imageGTrees;
-
         protected Image imageMapStone;
 
         public void UpdateImages(bool Initialize)
@@ -252,14 +249,14 @@ namespace OriDETracker
             DIR = "Assets_" + image_pixel_size.ToString() + @"/";
 
             //Initialize = true;
-            /*
-             * protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
-             * protected Dictionary<String, Image> treeImages = new Dictionary<String, Image>();
-             * protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
-             * protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
-             * protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
-             */
-            //load new images
+
+            imageSkillWheelDouble = Image.FromFile(DIR + @"SkillRing_Double.png");
+            imageBlackBackground = Image.FromFile(DIR + @"BlackBackground.png");
+            imageGSkills = Image.FromFile(DIR + @"GreySkillTree.png");
+            imageGTrees = Image.FromFile(DIR + @"GreyTrees.png");
+
+            imageMapStone = Image.FromFile(DIR + @"MapStone.png");
+
             foreach (string skill in new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Light Grenade", "Dash" })
             {
                 skillImages[skill] = Image.FromFile(DIR + skill.Replace(" ", String.Empty) + @".png");
@@ -277,16 +274,6 @@ namespace OriDETracker
                     shardImages[ev + " 2"] = Image.FromFile(DIR + ev.Replace(" ", String.Empty) + @"Shard2.png");
                 }
             }
-
-            imageSkillWheel = Image.FromFile(DIR + @"SkillRing_Single.png");
-            imageSkillWheelDouble = Image.FromFile(DIR + @"SkillRing_Double.png");
-            imageSkillWheelTriple = Image.FromFile(DIR + @"SkillRing_Triple.png");
-
-            imageBlackBackground = Image.FromFile(DIR + @"BlackBackground.png");
-            imageGSkills = Image.FromFile(DIR + @"GreySkillTree.png");
-            imageGTrees = Image.FromFile(DIR + @"GreyTrees.png");
-
-            imageMapStone = Image.FromFile(DIR + @"MapStone.png");
 
             foreach (string zone in new string[] { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu"} )
             {
