@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 using System.Threading;
 using OriDE.Memory;
+using System.Reflection;
 
 namespace OriDETracker
 {
@@ -246,6 +247,13 @@ namespace OriDETracker
 
         public void UpdateImages(bool Initialize)
         {
+            var image_collection = typeof(Tracker).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.FieldType == typeof(Image));
+            foreach (var img in image_collection)
+            {
+                var v = (Image)img.GetValue(this);
+                v?.Dispose();
+            }
+
             DIR = "Assets_" + image_pixel_size.ToString() + @"/";
 
             //Initialize = true;
@@ -279,21 +287,10 @@ namespace OriDETracker
             {
                 relicExistImages[zone] = Image.FromFile(DIR + "Relics/Exist/" + zone + ".png");
                 relicFoundImages[zone] = Image.FromFile(DIR + "Relics/Found/" + zone + ".png");
-                if (Initialize)
-                {
-                    relicExistImages[zone].Dispose();
-                    relicFoundImages[zone].Dispose();
-                }
-
 
                 if (zone != "Misty")
                 {
                     teleporterImages[zone] = Image.FromFile(DIR + zone + "TP.png");
-                    if (Initialize)
-                    {
-                        teleporterImages[zone].Dispose();
-                    }
-
                 }
             }
 
@@ -395,7 +392,7 @@ namespace OriDETracker
             };
 
             haveTree = new Dictionary<String, bool>(){
-                {"Spirit Flame",        false},
+                {"Spirit Flame", false},
                 {"Wall Jump",    false},
                 {"Charge Flame", false},
                 {"Double Jump",  false},
@@ -423,48 +420,7 @@ namespace OriDETracker
                 {"Sunstone 1",      false},
                 {"Sunstone 2",      false},
             };
-
-            /*
-            eventImages = new Dictionary<String, Image>(){
-                {"Water Vein",       imageWaterVein},
-                {"Gumon Seal",       imageGumonSeal},
-                {"Sunstone",         imageSunstone},
-                {"Wind Restored",    imageWindRestoredRando},
-                {"Clean Water",      imageCleanWater}
-            };
-
-            eventGreyImages = new Dictionary<String, Image>(){
-                {"Water Vein",      imageGWaterVein},
-                {"Gumon Seal",      imageGGumonSeal},
-                {"Sunstone",        imageGSunstone},
-                {"Wind Restored",   imageGWindRestoredRando},
-                {"Clean Water",     imageGCleanWater}
-            };
-
-            shardImages = new Dictionary<string, Image>(){
-                {"WaterVein1",     imageWaterVeinShard1},
-                {"WaterVein2",     imageWaterVeinShard2},
-                {"GumonSeal1",     imageGumonSealShard1},
-                {"GumonSeal2",     imageGumonSealShard2},
-                {"Sunstone1",      imageSunstoneShard1},
-                {"Sunstone2",      imageSunstoneShard2},
-            };
-
-            treeImages = new Dictionary<String, Image>(){
-                {"Spirit Flame",        imageTreeSpiritFlame},
-                {"Wall Jump",    imageTreeWallJump},
-                {"Charge Flame", imageTreeChargeFlame},
-                {"Dash",        imageTreeDash},
-                {"Double Jump",  imageTreeDoubleJump},
-                {"Bash",        imageTreeBash},
-                {"Stomp",       imageTreeStomp},
-                {"Glide",       imageTreeGlide},
-                {"Climb",       imageTreeClimb},
-                {"Charge Jump",  imageTreeChargeJump},
-                {"Grenade",     imageTreeLightGrenade}
-            };
-            */
-
+            
             eventMousePoint = new Dictionary<string, Point>(){
                 {"Water Vein", new Point(221+13, 258+13)},
                 {"Gumon Seal", new Point(328+13, 215+13)},
@@ -624,40 +580,6 @@ namespace OriDETracker
                 {"Glades", 9}
             };            
             #endregion
-
-            /*
-            skillImages = new Dictionary<String, Image>(){
-                {"Spirit Flame",        imageSpiritFlame},
-                {"Wall Jump",    imageWallJump},
-                {"Charge Flame", imageChargeFlame},
-                {"Dash",        imageDash},
-                {"Double Jump",  imageDoubleJump},
-                {"Bash",        imageBash},
-                {"Stomp",       imageStomp},
-                {"Glide",       imageGlide},
-                {"Climb",       imageClimb},
-                {"Charge Jump",  imageChargeJump},
-                {"Grenade",     imageLightGrenade}
-            };
-
-            eventImages = new Dictionary<String, Image>(){
-                {"Water Vein",       imageWaterVein},
-                {"Gumon Seal",      imageGumonSeal},
-                {"Sunstone",        imageSunstone},
-                {"Clean Water",     imageCleanWater},
-                {"Wind Restored",    imageWindRestored},
-                {"Warmth Returned", imageWarmthReturned}
-            };
-
-            eventGreyImages = new Dictionary<String, Image>(){
-                {"Water Vein",      imageGWaterVein},
-                {"Gumon Seal",      imageGGumonSeal},
-                {"Sunstone",        imageGSunstone},
-                { "Clean Water",     imageGCleanWater},
-                {"Wind Restored",   imageGWindRestored},
-                {"Warmth Returned", imageGWarmthReturned}
-            };
-            */
         }
 
         private void SetLayoutRandomizerAllEvents()
