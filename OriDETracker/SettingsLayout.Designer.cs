@@ -56,6 +56,8 @@
             this.rb_60_hz = new System.Windows.Forms.RadioButton();
             this.rb_10_hz = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
+            this.cb_teleporters = new System.Windows.Forms.CheckBox();
+            this.cb_trees = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarOpacity)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -163,12 +165,13 @@
             // 
             // cb_shards
             // 
+            this.cb_shards.Checked = TrackerSettings.Default.Shards;
             this.cb_shards.AutoSize = true;
-            this.cb_shards.Location = new System.Drawing.Point(12, 130);
+            this.cb_shards.Location = new System.Drawing.Point(6, 128);
             this.cb_shards.Name = "cb_shards";
-            this.cb_shards.Size = new System.Drawing.Size(118, 17);
+            this.cb_shards.Size = new System.Drawing.Size(59, 17);
             this.cb_shards.TabIndex = 14;
-            this.cb_shards.Text = "Randomizer Shards";
+            this.cb_shards.Text = "Shards";
             this.cb_shards.UseVisualStyleBackColor = true;
             this.cb_shards.CheckedChanged += new System.EventHandler(this.cb_shards_CheckedChanged);
             // 
@@ -177,9 +180,9 @@
             this.rb_420.AutoSize = true;
             this.rb_420.Location = new System.Drawing.Point(66, 5);
             this.rb_420.Name = "rb_420";
-            this.rb_420.Size = new System.Drawing.Size(57, 17);
+            this.rb_420.Size = new System.Drawing.Size(62, 17);
             this.rb_420.TabIndex = 15;
-            this.rb_420.Text = "420 px";
+            this.rb_420.Text = "Medium";
             this.rb_420.UseVisualStyleBackColor = true;
             this.rb_420.CheckedChanged += new System.EventHandler(this.rb_400_CheckedChanged);
             // 
@@ -189,10 +192,10 @@
             this.rb_640.Checked = true;
             this.rb_640.Location = new System.Drawing.Point(129, 5);
             this.rb_640.Name = "rb_640";
-            this.rb_640.Size = new System.Drawing.Size(57, 17);
+            this.rb_640.Size = new System.Drawing.Size(52, 17);
             this.rb_640.TabIndex = 16;
             this.rb_640.TabStop = true;
-            this.rb_640.Text = "640 px";
+            this.rb_640.Text = "Large";
             this.rb_640.UseVisualStyleBackColor = true;
             this.rb_640.CheckedChanged += new System.EventHandler(this.rb_600_CheckedChanged);
             // 
@@ -212,9 +215,9 @@
             this.rb_720.AutoSize = true;
             this.rb_720.Location = new System.Drawing.Point(192, 5);
             this.rb_720.Name = "rb_720";
-            this.rb_720.Size = new System.Drawing.Size(57, 17);
+            this.rb_720.Size = new System.Drawing.Size(38, 17);
             this.rb_720.TabIndex = 18;
-            this.rb_720.Text = "720 px";
+            this.rb_720.Text = "XL";
             this.rb_720.UseVisualStyleBackColor = true;
             this.rb_720.CheckedChanged += new System.EventHandler(this.rb_720_CheckedChanged);
             // 
@@ -223,9 +226,9 @@
             this.rb_300.AutoSize = true;
             this.rb_300.Location = new System.Drawing.Point(3, 5);
             this.rb_300.Name = "rb_300";
-            this.rb_300.Size = new System.Drawing.Size(57, 17);
+            this.rb_300.Size = new System.Drawing.Size(50, 17);
             this.rb_300.TabIndex = 17;
-            this.rb_300.Text = "300 px";
+            this.rb_300.Text = "Small";
             this.rb_300.CheckedChanged += new System.EventHandler(this.rb_300_CheckedChanged);
             // 
             // panel2
@@ -328,11 +331,38 @@
             this.label2.TabIndex = 20;
             this.label2.Text = "Update Rate";
             // 
+            // cb_teleporters
+            // 
+            this.cb_teleporters.AutoSize = true;
+            this.cb_teleporters.Checked = TrackerSettings.Default.Teleporters;
+            this.cb_teleporters.Location = new System.Drawing.Point(67, 128);
+            this.cb_teleporters.Name = "cb_teleporters";
+            this.cb_teleporters.Size = new System.Drawing.Size(79, 17);
+            this.cb_teleporters.TabIndex = 22;
+            this.cb_teleporters.Text = "Teleporters";
+            this.cb_teleporters.UseVisualStyleBackColor = true;
+            this.cb_teleporters.CheckedChanged += new System.EventHandler(this.cb_teleporters_CheckedChanged);
+            // 
+            // cb_trees
+            // 
+            this.cb_trees.AutoSize = true;
+            this.cb_trees.Checked = TrackerSettings.Default.Trees;
+            this.cb_trees.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_trees.Location = new System.Drawing.Point(150, 128);
+            this.cb_trees.Name = "cb_trees";
+            this.cb_trees.Size = new System.Drawing.Size(53, 17);
+            this.cb_trees.TabIndex = 23;
+            this.cb_trees.Text = "Trees";
+            this.cb_trees.UseVisualStyleBackColor = true;
+            this.cb_trees.CheckedChanged += new System.EventHandler(this.cb_trees_CheckedChanged);
+            // 
             // SettingsLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(478, 159);
+            this.ClientSize = new System.Drawing.Size(478, 158);
+            this.Controls.Add(this.cb_trees);
+            this.Controls.Add(this.cb_teleporters);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button_mapstone_font);
@@ -346,9 +376,9 @@
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(494, 198);
+            this.MaximumSize = new System.Drawing.Size(494, 197);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(494, 198);
+            this.MinimumSize = new System.Drawing.Size(494, 197);
             this.Name = "SettingsLayout";
             this.Text = "Tracker Layout";
             this.TopMost = true;
@@ -394,5 +424,7 @@
         private System.Windows.Forms.RadioButton rb_60_hz;
         private System.Windows.Forms.RadioButton rb_10_hz;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox cb_teleporters;
+        private System.Windows.Forms.CheckBox cb_trees;
     }
 }
