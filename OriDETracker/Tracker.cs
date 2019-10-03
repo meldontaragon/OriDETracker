@@ -298,15 +298,14 @@ namespace OriDETracker
             }
         }
         #endregion
-
+        
+        #region SetLayout
         //points for mouse clicks (with certain tolerance defined by TOL)
         private const int TOL = 25;
         private Point mapstoneMousePoint = new Point(305, 343);
         private Dictionary<String, Point> eventMousePoint;
         private Dictionary<String, Point> treeMouseLocation;
         private Dictionary<String, Point> skillMousePoint;
-
-        #region SetLayout
 
         private void SetDefaults()
         {
@@ -426,7 +425,6 @@ namespace OriDETracker
             };
             #endregion
         }
-
         private void SetMouseLocations()
         {
             skillMousePoint = new Dictionary<String, Point>();
