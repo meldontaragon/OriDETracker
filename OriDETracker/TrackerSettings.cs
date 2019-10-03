@@ -55,6 +55,19 @@ namespace OriDETracker
                 this["Shards"] = value;
             }
         }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool Mapstones
+        {
+            get
+            {
+                return ((bool)(this["Mapstones"]));
+            }
+            set
+            {
+                this["Mapstones"] = value;
+            }
+        }
 
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("false")]
@@ -80,6 +93,20 @@ namespace OriDETracker
             set
             {
                 this["Trees"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("false")]
+        public bool Relics
+        {
+            get
+            {
+                return ((bool)(this["Relics"]));
+            }
+            set
+            {
+                this["Relics"] = value;
             }
         }
 

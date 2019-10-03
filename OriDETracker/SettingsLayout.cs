@@ -5,127 +5,110 @@ namespace OriDETracker
 {
     public partial class SettingsLayout : Form
     {
-        readonly Tracker parent;
+        private readonly Tracker parent;
         public SettingsLayout(Tracker par)
         {
             InitializeComponent();
 
             parent = par;
 
-            numericUpDownOpacity.Value = (int)(100 * par.Opacity);
-            trackBarOpacity.Value = (int)(100 * par.Opacity);
+            OpacityTrackBar.Value = (int)(100 * par.Opacity);
 
             if (parent.TrackerSize == TrackerPixelSizes.size420px)
             {
-                this.rb_420.Checked = true;
-                this.rb_640.Checked = false;
-                this.rb_300.Checked = false;
-                this.rb_720.Checked = false;
+                this.MediumSizeRadioButton.Checked = true;
+                this.LargeSizeRadioButton.Checked = false;
+                this.SmallSizeRadioButton.Checked = false;
+                this.XLSizeRadioButton.Checked = false;
             }
             else if (parent.TrackerSize == TrackerPixelSizes.size640px)
             {
-                this.rb_420.Checked = false;
-                this.rb_640.Checked = true;
-                this.rb_300.Checked = false;
-                this.rb_720.Checked = false;
+                this.MediumSizeRadioButton.Checked = false;
+                this.LargeSizeRadioButton.Checked = true;
+                this.SmallSizeRadioButton.Checked = false;
+                this.XLSizeRadioButton.Checked = false;
             }
             else if (parent.TrackerSize == TrackerPixelSizes.size300px)
             {
-                this.rb_420.Checked = false;
-                this.rb_640.Checked = false;
-                this.rb_300.Checked = true;
-                this.rb_720.Checked = false;
+                this.MediumSizeRadioButton.Checked = false;
+                this.LargeSizeRadioButton.Checked = false;
+                this.SmallSizeRadioButton.Checked = true;
+                this.XLSizeRadioButton.Checked = false;
             }
             else if (parent.TrackerSize == TrackerPixelSizes.size720px)
             {
-                this.rb_420.Checked = false;
-                this.rb_640.Checked = false;
-                this.rb_300.Checked = false;
-                this.rb_720.Checked = true;
+                this.MediumSizeRadioButton.Checked = false;
+                this.LargeSizeRadioButton.Checked = false;
+                this.SmallSizeRadioButton.Checked = false;
+                this.XLSizeRadioButton.Checked = true;
             }
             else
             {
-                //parent.Log.WriteToLog("**ERROR** : Invalid Size (" + parent.TrackerSize + ")");
                 parent.TrackerSize = TrackerPixelSizes.size640px;
 
-                this.rb_420.Checked = false;
-                this.rb_640.Checked = true;
-                this.rb_300.Checked = false;
-                this.rb_720.Checked = false;
+                this.MediumSizeRadioButton.Checked = false;
+                this.LargeSizeRadioButton.Checked = true;
+                this.SmallSizeRadioButton.Checked = false;
+                this.XLSizeRadioButton.Checked = false;
             }
 
             if (parent.RefreshRate == (AutoUpdateRefreshRates)500)
             {
-                this.rb_500_mHz.Checked = true;
-                this.rb_10_hz.Checked = false;
-                this.rb_1_hz.Checked = false;
-                this.rb_60_hz.Checked = false;
+                this.SlowUpdateRadioButton.Checked = true;
+                this.NormalUpdateRadioButton.Checked = false;
+                this.ModerateUpdateRadioButton.Checked = false;
+                this.FastUpdateRadioButton.Checked = false;
             }
             else if (parent.RefreshRate == (AutoUpdateRefreshRates)1000)
             {
-                this.rb_500_mHz.Checked = false;
-                this.rb_10_hz.Checked = false;
-                this.rb_1_hz.Checked = true;
-                this.rb_60_hz.Checked = false;
+                this.SlowUpdateRadioButton.Checked = false;
+                this.NormalUpdateRadioButton.Checked = false;
+                this.ModerateUpdateRadioButton.Checked = true;
+                this.FastUpdateRadioButton.Checked = false;
             }
             else if (parent.RefreshRate == (AutoUpdateRefreshRates)10000)
             {
-                this.rb_500_mHz.Checked = false;
-                this.rb_10_hz.Checked = true;
-                this.rb_1_hz.Checked = false;
-                this.rb_60_hz.Checked = false;
+                this.SlowUpdateRadioButton.Checked = false;
+                this.NormalUpdateRadioButton.Checked = true;
+                this.ModerateUpdateRadioButton.Checked = false;
+                this.FastUpdateRadioButton.Checked = false;
             }
             else if (parent.RefreshRate == (AutoUpdateRefreshRates)60000)
             {
-                this.rb_500_mHz.Checked = false;
-                this.rb_10_hz.Checked = false;
-                this.rb_1_hz.Checked = false;
-                this.rb_60_hz.Checked = true;
+                this.SlowUpdateRadioButton.Checked = false;
+                this.NormalUpdateRadioButton.Checked = false;
+                this.ModerateUpdateRadioButton.Checked = false;
+                this.FastUpdateRadioButton.Checked = true;
             }
             else
             {
-                //parent.Log.WriteToLog("**ERROR** : Invalid Refresh Rate (" + parent.RefreshRate + ")");
                 parent.RefreshRate = (AutoUpdateRefreshRates)10000;
 
-                this.rb_500_mHz.Checked = false;
-                this.rb_10_hz.Checked = true;
-                this.rb_1_hz.Checked = false;
-                this.rb_60_hz.Checked = false;
+                this.SlowUpdateRadioButton.Checked = false;
+                this.NormalUpdateRadioButton.Checked = true;
+                this.ModerateUpdateRadioButton.Checked = false;
+                this.FastUpdateRadioButton.Checked = false;
             }
 
-            this.cb_shards.Checked = parent.TrackShards;
-            this.cb_teleporters.Checked = parent.TrackTeleporters;
-            this.cb_trees.Checked = parent.TrackTrees;
+            this.TrackShardsCheckbox.Checked = parent.TrackShards;
+            this.TrackTeleportersCheckbox.Checked = parent.TrackTeleporters;
+            this.TrackTreesCheckbox.Checked = parent.TrackTrees;
+            this.TrackRelicsCheckbox.Checked = parent.TrackRelics;
+
             this.Text = "Tracker Layer v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
-
-            rbRandoTrees.Checked = true;
-
-            rbRandoEvents.Enabled = false;
-            rbRandoTrees.Enabled = false;
-            rbOriAllSkills.Enabled = false;
-            rbOriAllCells.Enabled = false;
-            rbReverseEventOrder.Enabled = false;
 
             Refresh();
         }
 
-        public void RefreshOpacityBar()
-        {
-            numericUpDownOpacity.Value = (int)(100 * parent.Opacity);
-            trackBarOpacity.Value = (int)(100 * parent.Opacity);
-        }
-
         public void Reset()
         {
-            numericUpDownOpacity.Value = 100;
-            trackBarOpacity.Value = 100;
-            rb_300.Checked = false;
-            rb_420.Checked = false;
-            rb_640.Checked = true;
-            rb_720.Checked = false;
-            cb_shards.Checked = false;
-            cb_teleporters.Checked = false;
+            OpacityTrackBar.Value = 100;
+            SmallSizeRadioButton.Checked = false;
+            MediumSizeRadioButton.Checked = false;
+            LargeSizeRadioButton.Checked = true;
+            XLSizeRadioButton.Checked = false;
+            TrackShardsCheckbox.Checked = false;
+            TrackTeleportersCheckbox.Checked = false;
         }
         
         private void SettingsLayout_FormClosing(object sender, FormClosingEventArgs e)
@@ -137,22 +120,8 @@ namespace OriDETracker
             }
         }
 
-        private void numericUpDownScaling_ValueChanged(object sender, EventArgs e)
-        {
-            parent.Refresh();
-        }
-
-        private void percentNumericUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            parent.Opacity = (double)(numericUpDownOpacity.Value / (decimal)100.0);
-            parent.Refresh();
-
-            int tmp = (int)numericUpDownOpacity.Value;
-            trackBarOpacity.Value = tmp;
-            numericUpDownOpacity.Value = tmp;
-        }
-
-        private void buttonBackgroundColor_Click(object sender, EventArgs e)
+        #region ColorButtons
+        private void BackgroundColorButton_Click(object sender, EventArgs e)
         {
             if (colorDialogBackground.ShowDialog() == DialogResult.OK)
             {
@@ -160,59 +129,7 @@ namespace OriDETracker
             }
             parent.Refresh();
         }
-
-        private void trackBarOpacity_Scroll(object sender, EventArgs e)
-        {
-            parent.Opacity = (double)(trackBarOpacity.Value / (decimal)100.0);
-            parent.Refresh();
-
-            int tmp = trackBarOpacity.Value;
-            trackBarOpacity.Value = tmp;
-            numericUpDownOpacity.Value = tmp;
-        }
-
-        private void cb_shards_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.TrackShards = cb_shards.Checked;
-            parent.ChangeShards();
-        }
-
-        private void cb_teleporters_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.TrackTeleporters = cb_teleporters.Checked;
-        }
-
-        private void cb_trees_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.TrackTrees = cb_trees.Checked;
-        }
-
-        private void rb_720_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.TrackerSize = TrackerPixelSizes.size720px;
-            parent.UpdateImages();
-            parent.Refresh();
-        }
-        private void rb_600_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.TrackerSize = TrackerPixelSizes.size640px;
-            parent.UpdateImages();
-            parent.Refresh();
-        }
-        private void rb_400_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.TrackerSize = TrackerPixelSizes.size420px;
-            parent.UpdateImages();
-            parent.Refresh();
-        }
-        private void rb_300_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.TrackerSize = TrackerPixelSizes.size300px;
-            parent.UpdateImages();
-            parent.Refresh();
-        }
-
-        private void button_mapstone_font_Click(object sender, EventArgs e)
+        private void MapstoneFontButton_Click(object sender, EventArgs e)
         {
             if (colorDialogFont.ShowDialog() == DialogResult.OK)
             {
@@ -220,32 +137,112 @@ namespace OriDETracker
             }
             parent.Refresh();
         }
+        #endregion
 
-        internal void ChangeShards(bool display_shards)
+        #region Opacity
+        private void OpacityTrackBarScroll_Scroll(object sender, EventArgs e)
         {
-            cb_shards.Checked = display_shards;
+            parent.Opacity = (double)(OpacityTrackBar.Value / (decimal)100.0);
+            parent.Refresh();
+
+            int tmp = OpacityTrackBar.Value;
+            OpacityTrackBar.Value = tmp;
         }
+        public void RefreshOpacityBar()
+        {
+            OpacityTrackBar.Value = (int)(100 * parent.Opacity);
+        }
+        #endregion
 
+        #region TrackingOptionsButtons
+        private void TrackShardsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackShards = TrackShardsCheckbox.Checked;
+        }
+        private void TrackTeleportersCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackTeleporters = TrackTeleportersCheckbox.Checked;
+        }
+        private void TrackTreesCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackTrees = TrackTreesCheckbox.Checked;
+        }
+        private void TrackMapstonesCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackMapstones = TrackMapstonesCheckbox.Checked;
+        }
+        private void TrackRelicsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackRelics = TrackRelicsCheckbox.Checked;
+        }
+        internal void ChangeShards()
+        {
+            TrackShardsCheckbox.Checked = parent.TrackShards;
+        }
+        internal void ChangeTrees()
+        {
+            TrackShardsCheckbox.Checked = parent.TrackShards;
+        }
+        internal void ChangeRelics()
+        {
+            TrackShardsCheckbox.Checked = parent.TrackShards;
+        }
+        internal void ChangeTeleporters()
+        {
+            TrackShardsCheckbox.Checked = parent.TrackShards;
+        }
+        internal void ChangeMapstones()
+        {
+            TrackMapstonesCheckbox.Checked = parent.TrackMapstones;
+        }
+        #endregion
 
-        private void rb_1_hz_CheckedChanged(object sender, EventArgs e)
+        #region ImageSizeRadioButtons
+        private void XLSizeRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackerSize = TrackerPixelSizes.size720px;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+        private void LargeSizeRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackerSize = TrackerPixelSizes.size640px;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+        private void MediumSizeRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackerSize = TrackerPixelSizes.size420px;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+        private void SmallSizeRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.TrackerSize = TrackerPixelSizes.size300px;
+            parent.UpdateImages();
+            parent.Refresh();
+        }
+        #endregion
+
+        #region RefreshRateRadioButtons
+        private void ModerateUpdateRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             parent.RefreshRate = (AutoUpdateRefreshRates)1000;
         }
-
-        private void rb_10_hz_CheckedChanged(object sender, EventArgs e)
+        private void NormalUpdateRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             parent.RefreshRate = (AutoUpdateRefreshRates)10000;
         }
-
-        private void rb_60_hz_CheckedChanged(object sender, EventArgs e)
+        private void FastUpdateRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             parent.RefreshRate = (AutoUpdateRefreshRates)60000;
         }
-
-        private void rb_500_mHz_CheckedChanged(object sender, EventArgs e)
+        private void SlowUpdateRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             parent.RefreshRate = (AutoUpdateRefreshRates)500;
         }
-    }
+        #endregion
 
+
+    }
 }

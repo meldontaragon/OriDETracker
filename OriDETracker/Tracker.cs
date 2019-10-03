@@ -18,6 +18,11 @@ namespace OriDETracker
             // Settings options for Refresh Rate and Tracker Size
             RefreshRate = TrackerSettings.Default.RefreshRate;
             TrackerSize = TrackerSettings.Default.Pixels;
+            // Settings options for what to track
+            track_shards = TrackerSettings.Default.Shards;
+            track_relics = TrackerSettings.Default.Relics;
+            track_teleporters = TrackerSettings.Default.Teleporters;
+            track_trees = TrackerSettings.Default.Trees;
 
             //Settings window display
             settings = new SettingsLayout(this)
@@ -25,13 +30,19 @@ namespace OriDETracker
                 Visible = false
             };
 
+            settings.ChangeShards();
+            settings.ChangeTeleporters();
+            settings.ChangeRelics();
+            settings.ChangeTrees();
+            settings.ChangeMapstones();
+
             InitializeComponent();
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
-            this.moveToolStripMenuItem.CheckState = TrackerSettings.Default.Draggable ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
+            //this.moveToolStripMenuItem.CheckState = TrackerSettings.Default.Draggable ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
             this.autoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
-            this.autoUpdateToolStripMenuItem.CheckState = TrackerSettings.Default.AutoUpdate ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
+            //this.autoUpdateToolStripMenuItem.CheckState = TrackerSettings.Default.AutoUpdate ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
             this.alwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
-            this.alwaysOnTopToolStripMenuItem.CheckState = TrackerSettings.Default.AlwaysOnTop ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
+            //this.alwaysOnTopToolStripMenuItem.CheckState = TrackerSettings.Default.AlwaysOnTop ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
             this.TopMost = TrackerSettings.Default.AlwaysOnTop;
 
             //auto update boolean values
@@ -39,11 +50,8 @@ namespace OriDETracker
             paused = false;
 
             //load settings (except for those needed to initialize the settings window)
-            track_shards = TrackerSettings.Default.Shards;
-            track_shards = TrackerSettings.Default.Shards;
-            TrackTeleporters = TrackerSettings.Default.Teleporters;
-            TrackTrees = TrackerSettings.Default.Trees;
             font_color = TrackerSettings.Default.FontColoring;
+
             Opacity = TrackerSettings.Default.Opacity;
             BackColor = TrackerSettings.Default.Background;
 
@@ -71,9 +79,6 @@ namespace OriDETracker
             SetDefaults();
 
             font_brush = new SolidBrush(font_color);
-
-            this.ChangeShards();
-            this.ChangeMapstone();
 
             //handles weird exceptions and lets me know if there are potential problems
             if (destroy == 1)
@@ -123,9 +128,11 @@ namespace OriDETracker
         protected bool display_mapstone = false;
         protected int mapstone_count = 0;
 
-        protected bool world_tour;
-        protected bool force_trees;
-        protected bool warmth_fragments;
+        protected bool mode_shards;
+        protected bool mode_force_trees;
+        protected bool mode_world_tour;
+        protected bool mode_warmth_fragments;
+
         protected int current_frags;
         protected int max_frags;
 
@@ -135,6 +142,9 @@ namespace OriDETracker
         protected bool track_teleporters = TrackerSettings.Default.Teleporters;
         protected bool track_trees = TrackerSettings.Default.Trees;
         protected bool track_shards = TrackerSettings.Default.Shards;
+        protected bool track_relics = TrackerSettings.Default.Relics;
+        protected bool track_mapstones = TrackerSettings.Default.Mapstones;
+
 
         protected OriMemory Mem
         {
@@ -184,19 +194,28 @@ namespace OriDETracker
         public bool TrackShards
         {
             get { return track_shards; }
-            set { track_shards = value; }
+            set { track_shards = value; this.Refresh(); }
         }
         public bool TrackTeleporters
         {
             get { return track_teleporters; }
-            set { track_teleporters = value; }
+            set { track_teleporters = value; this.Refresh(); }
         }
         public bool TrackTrees
         {
             get { return track_trees; }
-            set { track_trees = value; }
+            set { track_trees = value; this.Refresh(); }
         }
-
+        public bool TrackRelics
+        {
+            get { return track_relics; }
+            set { track_relics = value; this.SetRelicDefaults(); this.Refresh(); }
+        }
+        public bool TrackMapstones
+        {
+            get { return track_mapstones; }
+            set { track_mapstones = value; this.Refresh(); }
+        }
         public int MapstoneCount
         {
             get { return mapstone_count; }
@@ -298,7 +317,7 @@ namespace OriDETracker
             }
         }
         #endregion
-        
+
         #region SetLayout
         //points for mouse clicks (with certain tolerance defined by TOL)
         private const int TOL = 25;
@@ -309,18 +328,24 @@ namespace OriDETracker
 
         private void SetDefaults()
         {
+            display_mapstone = true;
             SetMouseLocations();
             SetBitDefaults();
-
-            display_mapstone = true;
-            ChangeMapstone();
-
+            SetSkillDefaults();
+            SetEventDefaults();
+            SetRelicDefaults();
+        }
+        private void SetSkillDefaults()
+        {
             //haveTree and haveSkill Dictionaries
             foreach (var sk in skill_list)
             {
                 haveTree[sk] = false;
                 haveSkill[sk] = false;
             }
+        }
+        private void SetEventDefaults()
+        {
             //haveEvent and haveShard Dictionaries
             foreach (var ev in event_list)
             {
@@ -331,17 +356,19 @@ namespace OriDETracker
                     haveShards[ev + " 2"] = false;
                 }
             }
+        }
+        private void SetRelicDefaults()
+        {
             //relicExists, relicFound, and teleporterActive Dictionaries
             foreach (var zn in zone_list)
             {
-                relicExists[zn] = false;
+                relicExists[zn] = !auto_update;
                 relicFound[zn] = false;
                 if (zn != "Misty")
                 {
                     teleportersActive[zn] = false;
                 }
             }
-
         }
         private void SetBitDefaults()
         {
@@ -648,24 +675,27 @@ namespace OriDETracker
                 #endregion
 
                 #region Relic
-                foreach (KeyValuePair<String, bool> relic in relicExists)
+                if (track_relics)
                 {
-                    if (relic.Value)
+                    foreach (KeyValuePair<String, bool> relic in relicExists)
                     {
-                        g.DrawImage(relicExistImages[relic.Key], drawRect);
+                        if (relic.Value)
+                        {
+                            g.DrawImage(relicExistImages[relic.Key], drawRect);
+                        }
                     }
-                }
-                foreach (KeyValuePair<String, bool> relic in relicFound)
-                {
-                    if (relic.Value)
+                    foreach (KeyValuePair<String, bool> relic in relicFound)
                     {
-                        g.DrawImage(relicFoundImages[relic.Key], drawRect);
+                        if (relic.Value)
+                        {
+                            g.DrawImage(relicFoundImages[relic.Key], drawRect);
+                        }
                     }
                 }
                 #endregion
 
                 #region Teleporters
-                if (TrackTeleporters)
+                if (track_teleporters)
                 {
                     foreach (KeyValuePair<String, bool> tp in teleportersActive)
                     {
@@ -678,7 +708,7 @@ namespace OriDETracker
                 #endregion
 
                 #region Tree
-                if (TrackTrees)
+                if (track_trees)
                 {
                     g.DrawImage(imageGTrees, drawRect);
                     foreach (KeyValuePair<String, bool> sk in haveTree)
@@ -791,13 +821,6 @@ namespace OriDETracker
             draggable = TrackerSettings.Default.Draggable;
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
         }
-        public void ChangeMapstone()
-        {
-        }
-        public void ChangeShards()
-        {
-            settings.ChangeShards(track_shards);
-        }
 
         #endregion
 
@@ -909,10 +932,10 @@ namespace OriDETracker
             haveEvent["Sunstone"] = Mem.GetBit(bf, 8);
             haveEvent["Clean Water"] = Mem.GetBit(bf, 9);
             haveEvent["Wind Restored"] = Mem.GetBit(bf, 10);
-            force_trees = Mem.GetBit(bf, 11);
-            track_shards = Mem.GetBit(bf, 12);
-            warmth_fragments = Mem.GetBit(bf, 13);
-            world_tour = Mem.GetBit(bf, 14);
+            mode_force_trees = Mem.GetBit(bf, 11);
+            mode_shards = Mem.GetBit(bf, 12);
+            mode_warmth_fragments = Mem.GetBit(bf, 13);
+            mode_world_tour = Mem.GetBit(bf, 14);
         }
         private void UpdateTeleporters()
         {
@@ -924,7 +947,7 @@ namespace OriDETracker
         private void UpdateRelics()
         {
             int bf = 0;
-            if (world_tour)
+            if (mode_world_tour)
                 bf = Mem.RelicBitfield;
             foreach (KeyValuePair<string, int> relic in relicExistsBits)
             {
@@ -937,7 +960,7 @@ namespace OriDETracker
         }
         private void UpdateWarmthFrags()
         {
-            if (!warmth_fragments)
+            if (!mode_warmth_fragments)
                 return;
             current_frags = Mem.MapstoneBitfield >> 9;
             max_frags = Mem.TeleporterBitfield >> 10;
@@ -960,9 +983,13 @@ namespace OriDETracker
             TrackerSettings.Default.Background = BackColor;
             TrackerSettings.Default.RefreshRate = RefreshRate;
             TrackerSettings.Default.Opacity = Opacity;
+
             TrackerSettings.Default.Shards = track_shards;
-            TrackerSettings.Default.Teleporters = TrackTeleporters;
-            TrackerSettings.Default.Trees = TrackTrees;
+            TrackerSettings.Default.Teleporters = track_teleporters;
+            TrackerSettings.Default.Trees = track_trees;
+            TrackerSettings.Default.Relics = track_relics;
+            TrackerSettings.Default.Mapstones = track_mapstones;
+
             TrackerSettings.Default.Pixels = TrackerSize;
             TrackerSettings.Default.AlwaysOnTop = this.TopMost;
             TrackerSettings.Default.Draggable = draggable;
