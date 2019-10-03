@@ -253,7 +253,7 @@
     <Content Include="Assets_312\HoruTP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_312\LightGrenade.png">
+    <Content Include="Assets_312\Grenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_312\MapStone.png">
@@ -379,7 +379,7 @@
     <Content Include="Assets_312\TGlide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_312\TLightGrenade.png">
+    <Content Include="Assets_312\TGrenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_312\TSpiritFlame.png">
@@ -502,7 +502,7 @@
     <Content Include="Assets_437\HoruTP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_437\LightGrenade.png">
+    <Content Include="Assets_437\Grenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_437\MapStone.png">
@@ -628,7 +628,7 @@
     <Content Include="Assets_437\TGlide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_437\TLightGrenade.png">
+    <Content Include="Assets_437\TGrenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_437\TSpiritFlame.png">
@@ -749,7 +749,7 @@
     <Content Include="Assets_667\HoruTP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_667\LightGrenade.png">
+    <Content Include="Assets_667\Grenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_667\MapStone.png">
@@ -872,7 +872,7 @@
     <Content Include="Assets_667\TGlide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_667\TLightGrenade.png">
+    <Content Include="Assets_667\TGrenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_667\TSpiritFlame.png">
@@ -1016,7 +1016,7 @@
     <Content Include="Assets_750\HoruTP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_750\LightGrenade.png">
+    <Content Include="Assets_750\Grenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_750\MapStone.png">
@@ -1148,7 +1148,7 @@
     <Content Include="Assets_750\TGlide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_750\TLightGrenade.png">
+    <Content Include="Assets_750\TGrenade.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_750\TSpiritFlame.png">
