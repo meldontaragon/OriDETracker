@@ -50,7 +50,7 @@ namespace OriDETracker
             {
                 k.Value?.Dispose();
             }
-            foreach (KeyValuePair<String, Image> k in teleporterImages)
+            foreach (KeyValuePair<String, Image> k in teleporterActiveImages)
             {
                 k.Value?.Dispose();
             }

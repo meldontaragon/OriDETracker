@@ -1,20 +1,11 @@
 ﻿namespace OriDETracker
-{
-    public enum TrackerLayout
-    {
-        RandomizerAllTrees,
-        RandomizerAllEvents,
-        AllSkills,
-        AllCells,
-        ReverseEventOrder
-    }
-
+{    
     public enum TrackerPixelSizes
     {
-        size300px = 312,
-        size420px = 437,
-        size640px = 667,
-        size720px = 750
+        Small = 312,
+        Medium = 437,
+        Large = 667,
+        XL = 750
     }
     public enum AutoUpdateRefreshRates
     {

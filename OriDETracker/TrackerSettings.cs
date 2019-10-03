@@ -153,7 +153,7 @@ namespace OriDETracker
         }
 
         [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("size420px")]
+        [DefaultSettingValueAttribute("Medium")]
         public TrackerPixelSizes Pixels
         {
             get
@@ -163,20 +163,6 @@ namespace OriDETracker
             set
             {
                 this["Pixels"] = value;
-            }
-        }
-
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("RandomizerAllTrees")]
-        public TrackerLayout Layout
-        {
-            get
-            {
-                return ((TrackerLayout)(this["Layout"]));
-            }
-            set
-            {
-                this["Layout"] = value;
             }
         }
 

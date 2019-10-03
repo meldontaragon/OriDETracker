@@ -16,13 +16,20 @@ namespace OriDETracker
             DoubleBuffered = true;
 
             // Settings options for Refresh Rate and Tracker Size
-            RefreshRate = TrackerSettings.Default.RefreshRate;
-            TrackerSize = TrackerSettings.Default.Pixels;
+            refresh_rate = TrackerSettings.Default.RefreshRate;
+            tracker_size = TrackerSettings.Default.Pixels;
+
+            image_pixel_size = (int) tracker_size;
+            scaled_size = new Size(image_pixel_size, image_pixel_size);
+            UpdateImages();
+            SetDefaults();
+
             // Settings options for what to track
             track_shards = TrackerSettings.Default.Shards;
             track_relics = TrackerSettings.Default.Relics;
             track_teleporters = TrackerSettings.Default.Teleporters;
             track_trees = TrackerSettings.Default.Trees;
+            track_mapstones = TrackerSettings.Default.Mapstones;
 
             //Settings window display
             settings = new SettingsLayout(this)
@@ -30,11 +37,12 @@ namespace OriDETracker
                 Visible = false
             };
 
+            //this should be unnecessary now
             settings.ChangeShards();
             settings.ChangeTeleporters();
             settings.ChangeRelics();
             settings.ChangeTrees();
-            settings.ChangeMapstones();
+            settings.ChangeMapstones();            
 
             InitializeComponent();
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
@@ -45,15 +53,14 @@ namespace OriDETracker
             //this.alwaysOnTopToolStripMenuItem.CheckState = TrackerSettings.Default.AlwaysOnTop ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
             this.TopMost = TrackerSettings.Default.AlwaysOnTop;
 
+            // Other Settings
+            font_color = TrackerSettings.Default.FontColoring;
+            Opacity = TrackerSettings.Default.Opacity;
+            BackColor = TrackerSettings.Default.Background;
+
             //auto update boolean values
             started = false;
             paused = false;
-
-            //load settings (except for those needed to initialize the settings window)
-            font_color = TrackerSettings.Default.FontColoring;
-
-            Opacity = TrackerSettings.Default.Opacity;
-            BackColor = TrackerSettings.Default.Background;
 
             settings.RefreshOpacityBar();
 
@@ -74,9 +81,11 @@ namespace OriDETracker
                 IsBackground = true
             };
 
+            /*
             scaled_size = new Size(image_pixel_size, image_pixel_size);
-            this.UpdateImages();
+            UpdateImages();
             SetDefaults();
+            */
 
             font_brush = new SolidBrush(font_color);
 
@@ -112,8 +121,8 @@ namespace OriDETracker
         }
 
         #region PrivateVariables
-        protected static int PIXEL_DEF = (int)TrackerPixelSizes.size640px;
-        protected int image_pixel_size = PIXEL_DEF;
+        protected static int PIXEL_DEF = 667;
+        protected int image_pixel_size;
 
         protected Size scaled_size;
         protected TrackerPixelSizes tracker_size;
@@ -125,13 +134,12 @@ namespace OriDETracker
         protected AutoUpdateRefreshRates refresh_rate;
         protected int refresh_time;
 
-        protected bool display_mapstone = false;
-        protected int mapstone_count = 0;
 
         protected bool mode_shards;
         protected bool mode_force_trees;
         protected bool mode_world_tour;
         protected bool mode_warmth_fragments;
+        protected bool mode_force_maps;
 
         protected int current_frags;
         protected int max_frags;
@@ -145,6 +153,9 @@ namespace OriDETracker
         protected bool track_relics = TrackerSettings.Default.Relics;
         protected bool track_mapstones = TrackerSettings.Default.Mapstones;
 
+        protected bool display_empty_relics = false;
+        protected bool display_emptry_trees = true;
+        protected bool display_emptry_teleporters = false;
 
         protected OriMemory Mem
         {
@@ -156,10 +167,10 @@ namespace OriDETracker
         protected SettingsLayout settings;
 
         private readonly Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
-            { (int) TrackerPixelSizes.size300px, new MapstoneText(140+6, 190+6, 14) },
-            { (int) TrackerPixelSizes.size420px, new MapstoneText(195+9, 268+9, 18) },
-            { (int) TrackerPixelSizes.size640px, new MapstoneText(304+13, 417+13, 24) },
-            { (int) TrackerPixelSizes.size720px, new MapstoneText(342+15, 471+15, 28) }
+            { (int) TrackerPixelSizes.Small, new MapstoneText(140+6, 190+6, 14) },
+            { (int) TrackerPixelSizes.Medium, new MapstoneText(195+9, 268+9, 18) },
+            { (int) TrackerPixelSizes.Large, new MapstoneText(304+13, 417+13, 24) },
+            { (int) TrackerPixelSizes.XL, new MapstoneText(342+15, 471+15, 28) }
         };
 
         private readonly int destroy = 1;
@@ -234,12 +245,16 @@ namespace OriDETracker
         #endregion
 
         #region LogicDictionary
+        // not a dictionary but "logic"
+        protected int mapstone_count = 0;
+
         //Skills, Trees, Events, Shards, Teleporters, and Relics
         protected Dictionary<String, bool> haveSkill = new Dictionary<string, bool>();
         protected Dictionary<String, bool> haveTree = new Dictionary<string, bool>();
         protected Dictionary<String, bool> haveEvent = new Dictionary<string, bool>();
         protected Dictionary<String, bool> haveShards = new Dictionary<string, bool>();
         protected Dictionary<String, bool> teleportersActive = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> teleportersInactive = new Dictionary<string, bool>();
         protected Dictionary<String, bool> relicExists = new Dictionary<string, bool>();
         protected Dictionary<String, bool> relicFound = new Dictionary<string, bool>();
 
@@ -266,7 +281,8 @@ namespace OriDETracker
         protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
-        protected Dictionary<String, Image> teleporterImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> teleporterActiveImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> teleporterInactiveImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
 
@@ -312,7 +328,7 @@ namespace OriDETracker
 
                 if (zone != "Misty")
                 {
-                    teleporterImages[zone] = Image.FromFile(DIR + zone + "TP.png");
+                    teleporterActiveImages[zone] = Image.FromFile(DIR + zone + "TP.png");
                 }
             }
         }
@@ -328,7 +344,6 @@ namespace OriDETracker
 
         private void SetDefaults()
         {
-            display_mapstone = true;
             SetMouseLocations();
             SetBitDefaults();
             SetSkillDefaults();
@@ -555,7 +570,7 @@ namespace OriDETracker
             double mouse_scaling = ((image_pixel_size * 1.0) / PIXEL_DEF);
             int CUR_TOL = (int)(TOL * mouse_scaling);
 
-            if (display_mapstone && (Math.Sqrt(Square(x - (int)(mapstoneMousePoint.X * mouse_scaling)) + Square(y - (int)(mapstoneMousePoint.Y * mouse_scaling))) <= 2 * CUR_TOL))
+            if (track_mapstones && (Math.Sqrt(Square(x - (int)(mapstoneMousePoint.X * mouse_scaling)) + Square(y - (int)(mapstoneMousePoint.Y * mouse_scaling))) <= 2 * CUR_TOL))
             {
                 mapstone_count += 1;
                 if (mapstone_count > 9)
@@ -675,7 +690,11 @@ namespace OriDETracker
                 #endregion
 
                 #region Relic
-                if (track_relics)
+                /* Relics are drawn if:
+                 * (a) auto_update and world tour are on
+                 * (b) track_relics is on and display_emptry_relics is on
+                 */
+                if ( (auto_update && mode_world_tour) || (track_relics && display_empty_relics) )
                 {
                     foreach (KeyValuePair<String, bool> relic in relicExists)
                     {
@@ -695,22 +714,45 @@ namespace OriDETracker
                 #endregion
 
                 #region Teleporters
+                /* Teleporters are drawn if:
+                 * (a) track_teleporters is on
+                 * (*) only drawn grey teleporters if display_emptry_teleporters is set
+                 */
                 if (track_teleporters)
                 {
                     foreach (KeyValuePair<String, bool> tp in teleportersActive)
                     {
                         if (tp.Value)
                         {
-                            g.DrawImage(teleporterImages[tp.Key], drawRect);
+                            g.DrawImage(teleporterActiveImages[tp.Key], drawRect);
                         }
                     }
+                    if (display_emptry_teleporters)
+                    {
+                        foreach (KeyValuePair<String, bool> tp in teleportersInactive)
+                        {
+                            if (tp.Value)
+                            {
+                                g.DrawImage(teleporterInactiveImages[tp.Key], drawRect);
+                            }
+                        }
+                    }
+
                 }
                 #endregion
 
                 #region Tree
-                if (track_trees)
+                /* Trees are drawn if:
+                 * (a) track_trees is on
+                 * (b) mode_force_trees is on
+                 * (*) only draw grey trees if display_empty_trees is on                 * 
+                 */
+                if (track_trees || mode_force_trees)
                 {
-                    g.DrawImage(imageGTrees, drawRect);
+                    if (display_emptry_trees)
+                    {
+                        g.DrawImage(imageGTrees, drawRect);
+                    }
                     foreach (KeyValuePair<String, bool> sk in haveTree)
                     {
                         if (sk.Value)
@@ -719,11 +761,9 @@ namespace OriDETracker
                         }
                     }
                 }
-
                 #endregion
 
                 #region Events
-
                 foreach (KeyValuePair<String, bool> ev in haveEvent)
                 {
                     if (ev.Value)
@@ -738,7 +778,11 @@ namespace OriDETracker
                 #endregion
 
                 #region Shards
-                if (track_shards)
+                /* Shards are drawn if
+                 * (a) Shards mode is active
+                 * (b) track_shards is on (manual only)
+                 */
+                if (track_shards || mode_shards)
                 {
                     foreach (KeyValuePair<String, bool> ev in haveShards)
                     {
@@ -751,7 +795,11 @@ namespace OriDETracker
                 #endregion
 
                 #region Mapstone
-                if (display_mapstone)
+                /* Mapstone count is displayed if
+                 * (a) track_mapstones is on
+                 * (b) mode all maps is on
+                 */
+                if (track_mapstones || mode_force_maps)
                 {
                     g.DrawImage(imageMapStone, drawRect);
                     if (font_brush == null)
@@ -809,6 +857,7 @@ namespace OriDETracker
             ClearAll();
 
             this.settings.Visible = false;
+            this.settings.Reset();
 
             SetDefaults();
             if (auto_update && !TrackerSettings.Default.AutoUpdate)
@@ -873,7 +922,8 @@ namespace OriDETracker
                 }
                 catch (Exception exc)
                 {
-                    MessageBox.Show(exc.StackTrace.ToString());
+                    if (MessageBox.Show(exc.StackTrace.ToString() + "\nWould you like to abort and soft reset the tracker?", "Exception Occured", MessageBoxButtons.AbortRetryIgnore) == DialogResult.Abort)
+                        SoftReset();
                 }
             }
         }
@@ -900,7 +950,8 @@ namespace OriDETracker
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.StackTrace.ToString());
+                if (MessageBox.Show(exc.StackTrace.ToString() + "\nWould you like to abort and soft reset the tracker?", "Exception Occured", MessageBoxButtons.AbortRetryIgnore) == DialogResult.Abort)
+                    SoftReset();
             }
         }
 
