@@ -68,7 +68,7 @@ namespace OriDETracker
 
             scaled_size = new Size(image_pixel_size, image_pixel_size);
             this.UpdateImages();
-            SetLayoutRandomizerAllTrees();
+            SetDefaults();
 
             font_brush = new SolidBrush(font_color);
 
@@ -116,7 +116,6 @@ namespace OriDETracker
         protected Color font_color;
         protected Brush font_brush;
         protected Font map_font;
-
 
         protected AutoUpdateRefreshRates refresh_rate;
         protected int refresh_time;
@@ -217,13 +216,13 @@ namespace OriDETracker
 
         #region LogicDictionary
         //Skills, Trees, Events, Shards, Teleporters, and Relics
-        protected Dictionary<String, bool> haveSkill;
-        protected Dictionary<String, bool> haveTree;
-        protected Dictionary<String, bool> haveEvent;
-        protected Dictionary<String, bool> haveShards;
-        protected Dictionary<String, bool> teleportersActive;
-        protected Dictionary<String, bool> relicExists;
-        protected Dictionary<String, bool> relicFound;
+        protected Dictionary<String, bool> haveSkill = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> haveTree = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> haveEvent = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> haveShards = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> teleportersActive = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> relicExists = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> relicFound = new Dictionary<string, bool>();
 
         //Bits
         private Dictionary<String, int> treeBits;
@@ -309,123 +308,45 @@ namespace OriDETracker
 
         #region SetLayout
 
-        private void SetLayoutRandomizerAllTrees()
+        private void SetDefaults()
         {
-            SetLayoutDefaults();
+            SetMouseLocations();
+            SetBitDefaults();
 
             display_mapstone = true;
             ChangeMapstone();
 
-            haveTree = new Dictionary<String, bool>(){
-                {"Spirit Flame", false},
-                {"Wall Jump",    false},
-                {"Charge Flame", false},
-                {"Double Jump",  false},
-                {"Bash",        false},
-                {"Stomp",       false},
-                {"Glide",       false},
-                {"Climb",       false},
-                {"Charge Jump",  false},
-                {"Grenade",     false},
-                {"Dash",       false}
-            };
-            haveEvent = new Dictionary<String, bool>(){
-                {"Water Vein",      false},
-                {"Gumon Seal",      false},
-                {"Sunstone",        false},
-                {"Clean Water",     false},
-                {"Wind Restored",   false}
-            };
+            //haveTree and haveSkill Dictionaries
+            foreach (var sk in skill_list)
+            {
+                haveTree[sk] = false;
+                haveSkill[sk] = false;
+            }
+            //haveEvent and haveShard Dictionaries
+            foreach (var ev in event_list)
+            {
+                haveEvent[ev] = false;
+                if (ev == "Water Vein" || ev == "Gumon Seal" || ev == "Sunstone")
+                {
+                    haveShards[ev + " 1"] = false;
+                    haveShards[ev + " 2"] = false;
+                }
+            }
+            //relicExists, relicFound, and teleporterActive Dictionaries
+            foreach (var zn in zone_list)
+            {
+                relicExists[zn] = false;
+                relicFound[zn] = false;
+                if (zn != "Misty")
+                {
+                    teleportersActive[zn] = false;
+                }
+            }
 
-            haveShards = new Dictionary<string, bool>(){
-                {"Water Vein 1",     false},
-                {"Water Vein 2",     false},
-                {"Gumon Seal 1",     false},
-                {"Gumon Seal 2",     false},
-                {"Sunstone 1",      false},
-                {"Sunstone 2",      false},
-            };
-
-            eventMousePoint = new Dictionary<string, Point>(){
-                {"Water Vein", new Point(221+13, 258+13)},
-                {"Gumon Seal", new Point(328+13, 215+13)},
-                {"Sunstone",   new Point(428+13, 257+13)},
-                {"Wind Restored", new Point(423+13, 365+13)},
-                {"Clean Water", new Point(220+13, 360+13)}
-            };
-
-            //checkTreeHitbox = true;
-            //checkEventHitbox = false;
         }
-        private void SetLayoutDefaults()
+        private void SetBitDefaults()
         {
-            SetMouseLocations();
-            //checkTreeHitbox = false;
-            //checkEventHitbox = false;
-
-            #region Logic
-            haveSkill = new Dictionary<String, bool>(){
-                {"Spirit Flame",        false},
-                {"Wall Jump",    false},
-                {"Dash",       false},
-                {"Charge Flame", false},
-                {"Double Jump",  false},
-                {"Bash",        false},
-                {"Stomp",       false},
-                {"Glide",       false},
-                {"Climb",       false},
-                {"Charge Jump",  false},
-                {"Grenade",     false}
-            };
-            haveEvent = new Dictionary<String, bool>(){
-                {"Water Vein",      false},
-                {"Gumon Seal",      false},
-                {"Sunstone",        false},
-                {"Clean Water",     false},
-                {"Warmth Returned", false},
-                {"Wind Restored",   false}
-            };
-            relicExists = new Dictionary<string, bool>()
-            {
-                {"Glades", false},
-                {"Grove", false},
-                {"Grotto", false},
-                {"Blackroot", false},
-                {"Swamp", false},
-                {"Ginso", false},
-                {"Valley", false},
-                {"Misty", false},
-                {"Forlorn", false},
-                {"Sorrow", false},
-                {"Horu", false}
-            };
-            relicFound = new Dictionary<string, bool>()
-            {
-                {"Glades", false},
-                {"Grove", false},
-                {"Grotto", false},
-                {"Blackroot", false},
-                {"Swamp", false},
-                {"Ginso", false},
-                {"Valley", false},
-                {"Misty", false},
-                {"Forlorn", false},
-                {"Sorrow", false},
-                {"Horu", false}
-            };
-            teleportersActive = new Dictionary<string, bool>()
-            {
-                {"Grove", false},
-                {"Swamp", false},
-                {"Grotto", false},
-                {"Valley", false},
-                {"Forlorn", false},
-                {"Sorrow", false},
-                {"Ginso", false},
-                {"Horu", false},
-                {"Blackroot", false},
-                {"Glades", false},
-            };
+            #region Bits
             treeBits = new Dictionary<string, int>() {
                 { "Spirit Flame", 0},
                 { "Wall Jump", 1},
@@ -510,25 +431,24 @@ namespace OriDETracker
         {
             skillMousePoint = new Dictionary<String, Point>();
             treeMouseLocation = new Dictionary<String, Point>();
-            string[] skills = new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
+
             for (int i = 0; i < 11; ++i)
             {
-                skillMousePoint.Add(skills[i], new Point((int)(320 + 13 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
+                skillMousePoint.Add(skill_list[i], new Point((int)(320 + 13 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                          (int)(320 + 13 - 205 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
             for (int i = 0; i < 11; ++i)
             {
-                treeMouseLocation.Add(skills[i], new Point((int)(320 + 13 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
+                treeMouseLocation.Add(skill_list[i], new Point((int)(320 + 13 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                            (int)(320 + 13 - 286 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
 
             eventMousePoint = new Dictionary<string, Point>(){
-                {"Water Vein", new Point(206+13, 240+13)},
+                {"Water Vein", new Point(221+13, 258+13)},
                 {"Gumon Seal", new Point(328+13, 215+13)},
                 {"Sunstone",   new Point(428+13, 257+13)},
-                {"Clean Water", new Point(205+13, 343+13)},
-                {"Wind Restored", new Point(300+13, 404+13)},
-                {"Warmth Returned", new Point(391+13, 342+13)}
+                {"Wind Restored", new Point(423+13, 365+13)},
+                {"Clean Water", new Point(220+13, 360+13)}
             };
         }
         #endregion
@@ -862,7 +782,7 @@ namespace OriDETracker
 
             this.settings.Visible = false;
 
-            SetLayoutRandomizerAllTrees();
+            SetDefaults();
             if (auto_update && !TrackerSettings.Default.AutoUpdate)
             {
                 TurnOffAutoUpdate();
