@@ -265,7 +265,7 @@ namespace OriDETracker
 
             imageMapStone = Image.FromFile(DIR + @"MapStone.png");
 
-            foreach (string skill in new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Light Grenade", "Dash" })
+            foreach (string skill in new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" })
             {
                 skillImages[skill] = Image.FromFile(DIR + skill.Replace(" ", String.Empty) + @".png");
                 treeImages[skill] = Image.FromFile(DIR + "T" + skill.Replace(" ", String.Empty) + @".png");
