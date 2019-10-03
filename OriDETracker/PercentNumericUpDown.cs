@@ -1,8 +1,7 @@
 ﻿using System.Windows.Forms;
 
 namespace OriDETracker
-{
-    public class PercentNumericUpDown : NumericUpDown
+{    public class PercentNumericUpDown : NumericUpDown
     {
         protected override void UpdateEditText()
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace OriDETracker
 {
@@ -17,10 +19,52 @@ namespace OriDETracker
         {
             if (disposing && (components != null))
             {
-                this.font_brush.Dispose();
-                this.map_font.Dispose();
                 components.Dispose();
             }
+            this.font_brush?.Dispose();
+            this.map_font?.Dispose();
+
+            this.imageSkillWheelDouble?.Dispose();
+            this.imageBlackBackground?.Dispose();
+            this.imageGSkills?.Dispose();
+            this.imageGTrees?.Dispose();
+            this.imageMapStone?.Dispose();
+
+            foreach (KeyValuePair<String, Image> k in skillImages)
+            {
+                k.Value?.Dispose();
+            }
+            foreach (KeyValuePair<String, Image> k in treeImages)
+            {
+                k.Value?.Dispose();
+            }
+            foreach (KeyValuePair<String, Image> k in eventImages)
+            {
+                k.Value?.Dispose();
+            }
+            foreach (KeyValuePair<String, Image> k in eventGreyImages)
+            {
+                k.Value?.Dispose();
+            }
+            foreach (KeyValuePair<String, Image> k in shardImages)
+            {
+                k.Value?.Dispose();
+            }
+            foreach (KeyValuePair<String, Image> k in teleporterImages)
+            {
+                k.Value?.Dispose();
+            }
+            foreach (KeyValuePair<String, Image> k in relicExistImages)
+            {
+                k.Value?.Dispose();
+            }
+            foreach (KeyValuePair<String, Image> k in relicFoundImages)
+            {
+                k.Value?.Dispose();
+            }
+
+            this.settings?.Dispose();
+
             base.Dispose(disposing);
         }
 

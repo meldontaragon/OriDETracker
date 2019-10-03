@@ -1,7 +1,5 @@
 ﻿namespace OriDETracker
 {
-
-
     partial class SettingsLayout
     {
         /// <summary>
