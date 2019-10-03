@@ -4,9 +4,7 @@ namespace OriDETracker
 {
     public class TrackerSettings : ApplicationSettingsBase
     {
-
         private static readonly TrackerSettings MainSettings = (TrackerSettings)ApplicationSettingsBase.Synchronized(new TrackerSettings());
-
 
         public static TrackerSettings Default
         {
@@ -15,7 +13,6 @@ namespace OriDETracker
                 return MainSettings;
             }
         }
-
 
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("rate10Hz")]
@@ -44,7 +41,6 @@ namespace OriDETracker
                 this["Opacity"] = value;
             }
         }
-
 
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("false")]
@@ -128,7 +124,6 @@ namespace OriDETracker
                 this["Draggable"] = value;
             }
         }
-
 
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("size420px")]
