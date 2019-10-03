@@ -39,7 +39,7 @@
             this.ImageSizePanel = new System.Windows.Forms.Panel();
             this.XLSizeRadioButton = new System.Windows.Forms.RadioButton();
             this.SmallSizeRadioButton = new System.Windows.Forms.RadioButton();
-            this.MapstoneFontButton = new System.Windows.Forms.Button();
+            this.MapstoneFontColorButton = new System.Windows.Forms.Button();
             this.MapstoneFontColorDialog = new System.Windows.Forms.ColorDialog();
             this.UpdateRatePanel = new System.Windows.Forms.Panel();
             this.SlowUpdateRadioButton = new System.Windows.Forms.RadioButton();
@@ -52,7 +52,7 @@
             this.TrackRelicsCheckbox = new System.Windows.Forms.CheckBox();
             this.TrackingOptionsLabel = new System.Windows.Forms.Label();
             this.TrackMapstonesCheckbox = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.MapstoneFontButton = new System.Windows.Forms.Button();
             this.MapstoneFontDialog = new System.Windows.Forms.FontDialog();
             this.TrackingOptionsPanel = new System.Windows.Forms.Panel();
             this.DisplayOptionsPanel = new System.Windows.Forms.Panel();
@@ -172,15 +172,15 @@
             this.SmallSizeRadioButton.Text = "Small";
             this.SmallSizeRadioButton.Click += new System.EventHandler(this.SmallSizeRadioButton_Click);
             // 
-            // MapstoneFontButton
+            // MapstoneFontColorButton
             // 
-            this.MapstoneFontButton.Location = new System.Drawing.Point(128, 311);
-            this.MapstoneFontButton.Name = "MapstoneFontButton";
-            this.MapstoneFontButton.Size = new System.Drawing.Size(128, 23);
-            this.MapstoneFontButton.TabIndex = 19;
-            this.MapstoneFontButton.Text = "Mapstone Font Color";
-            this.MapstoneFontButton.UseVisualStyleBackColor = true;
-            this.MapstoneFontButton.Click += new System.EventHandler(this.MapstoneFontButton_Click);
+            this.MapstoneFontColorButton.Location = new System.Drawing.Point(128, 311);
+            this.MapstoneFontColorButton.Name = "MapstoneFontColorButton";
+            this.MapstoneFontColorButton.Size = new System.Drawing.Size(128, 23);
+            this.MapstoneFontColorButton.TabIndex = 19;
+            this.MapstoneFontColorButton.Text = "Mapstone Font Color";
+            this.MapstoneFontColorButton.UseVisualStyleBackColor = true;
+            this.MapstoneFontColorButton.Click += new System.EventHandler(this.MapstoneFontColorButton_Click);
             // 
             // UpdateRatePanel
             // 
@@ -306,14 +306,15 @@
             this.TrackMapstonesCheckbox.UseVisualStyleBackColor = true;
             this.TrackMapstonesCheckbox.Click += new System.EventHandler(this.TrackMapstonesCheckbox_Click);
             // 
-            // button1
+            // MapstoneFontButton
             // 
-            this.button1.Location = new System.Drawing.Point(11, 311);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 23);
-            this.button1.TabIndex = 28;
-            this.button1.Text = "Mapstone Font";
-            this.button1.UseVisualStyleBackColor = true;
+            this.MapstoneFontButton.Location = new System.Drawing.Point(11, 311);
+            this.MapstoneFontButton.Name = "MapstoneFontButton";
+            this.MapstoneFontButton.Size = new System.Drawing.Size(111, 23);
+            this.MapstoneFontButton.TabIndex = 28;
+            this.MapstoneFontButton.Text = "Mapstone Font";
+            this.MapstoneFontButton.UseVisualStyleBackColor = true;
+            this.MapstoneFontButton.Click += new System.EventHandler(this.MapstoneFontButton_Click);
             // 
             // TrackingOptionsPanel
             // 
@@ -346,6 +347,7 @@
             this.DisplayExistingRelicsCheckbox.TabIndex = 26;
             this.DisplayExistingRelicsCheckbox.Text = "Existing Relics";
             this.DisplayExistingRelicsCheckbox.UseVisualStyleBackColor = true;
+            this.DisplayExistingRelicsCheckbox.CheckedChanged += new System.EventHandler(this.DisplayExistingRelicsCheckbox_CheckedChanged);
             // 
             // DisplayInactiveTeleportersCheckbox
             // 
@@ -357,6 +359,7 @@
             this.DisplayInactiveTeleportersCheckbox.TabIndex = 25;
             this.DisplayInactiveTeleportersCheckbox.Text = "Inactive Teleporters";
             this.DisplayInactiveTeleportersCheckbox.UseVisualStyleBackColor = true;
+            this.DisplayInactiveTeleportersCheckbox.CheckedChanged += new System.EventHandler(this.DisplayInactiveTeleportersCheckbox_CheckedChanged);
             // 
             // DisplayGreyTreesCheckbox
             // 
@@ -369,6 +372,7 @@
             this.DisplayGreyTreesCheckbox.TabIndex = 24;
             this.DisplayGreyTreesCheckbox.Text = "Grey Trees";
             this.DisplayGreyTreesCheckbox.UseVisualStyleBackColor = true;
+            this.DisplayGreyTreesCheckbox.CheckedChanged += new System.EventHandler(this.DisplayGreyTreesCheckbox_CheckedChanged);
             // 
             // DisplayOptionsLabel
             // 
@@ -388,11 +392,11 @@
             this.Controls.Add(this.DisplayOptionsLabel);
             this.Controls.Add(this.DisplayOptionsPanel);
             this.Controls.Add(this.TrackingOptionsPanel);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.MapstoneFontButton);
             this.Controls.Add(this.TrackingOptionsLabel);
             this.Controls.Add(this.UpdateRatePanel);
             this.Controls.Add(this.UpdateRateLabel);
-            this.Controls.Add(this.MapstoneFontButton);
+            this.Controls.Add(this.MapstoneFontColorButton);
             this.Controls.Add(this.ImageSizePanel);
             this.Controls.Add(this.ImageSizeLabel);
             this.Controls.Add(this.OpacityTrackBar);
@@ -431,7 +435,7 @@
         private System.Windows.Forms.RadioButton MediumSizeRadioButton;
         private System.Windows.Forms.RadioButton LargeSizeRadioButton;
         private System.Windows.Forms.Panel ImageSizePanel;
-        private System.Windows.Forms.Button MapstoneFontButton;
+        private System.Windows.Forms.Button MapstoneFontColorButton;
         private System.Windows.Forms.ColorDialog MapstoneFontColorDialog;
         private System.Windows.Forms.RadioButton SmallSizeRadioButton;
         private System.Windows.Forms.RadioButton XLSizeRadioButton;
@@ -446,7 +450,7 @@
         private System.Windows.Forms.CheckBox TrackRelicsCheckbox;
         private System.Windows.Forms.Label TrackingOptionsLabel;
         private System.Windows.Forms.CheckBox TrackMapstonesCheckbox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button MapstoneFontButton;
         private System.Windows.Forms.FontDialog MapstoneFontDialog;
         private System.Windows.Forms.Panel TrackingOptionsPanel;
         private System.Windows.Forms.Panel DisplayOptionsPanel;

@@ -104,7 +104,7 @@ namespace OriDETracker
             }
             parent.Refresh();
         }
-        private void MapstoneFontButton_Click(object sender, EventArgs e)
+        private void MapstoneFontColorButton_Click(object sender, EventArgs e)
         {
             if (MapstoneFontColorDialog.ShowDialog() == DialogResult.OK)
             {
@@ -225,5 +225,29 @@ namespace OriDETracker
         }
 
         #endregion
+
+        private void DisplayGreyTreesCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.DisplayEmptyTrees = DisplayGreyTreesCheckbox.Checked;
+        }
+
+        private void DisplayInactiveTeleportersCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.DisplayEmptyTeleporters = DisplayInactiveTeleportersCheckbox.Checked;
+        }
+
+        private void DisplayExistingRelicsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.DisplayEmptyRelics = DisplayExistingRelicsCheckbox.Checked;
+        }
+
+        private void MapstoneFontButton_Click(object sender, EventArgs e)
+        {
+            if (MapstoneFontDialog.ShowDialog() == DialogResult.OK)
+            {
+                parent.MapFont = MapstoneFontDialog.Font;
+            }
+            parent.Refresh();
+        }
     }
 }

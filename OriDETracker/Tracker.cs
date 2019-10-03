@@ -19,7 +19,7 @@ namespace OriDETracker
             refresh_rate = TrackerSettings.Default.RefreshRate;
             tracker_size = TrackerSettings.Default.Pixels;
 
-            image_pixel_size = (int) tracker_size;
+            image_pixel_size = (int)tracker_size;
             scaled_size = new Size(image_pixel_size, image_pixel_size);
             UpdateImages();
             SetDefaults();
@@ -42,7 +42,7 @@ namespace OriDETracker
             settings.ChangeTeleporters();
             settings.ChangeRelics();
             settings.ChangeTrees();
-            settings.ChangeMapstones();            
+            settings.ChangeMapstones();
 
             InitializeComponent();
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
@@ -231,6 +231,22 @@ namespace OriDETracker
         {
             get { return mapstone_count; }
             set { mapstone_count = value; }
+        }
+
+        public bool DisplayEmptyRelics
+        {
+            get { return display_empty_relics; }
+            set { display_empty_relics = value; this.Refresh(); }
+        }
+        public bool DisplayEmptyTrees
+        {
+            get { return display_emptry_trees; }
+            set { display_emptry_trees = value; this.Refresh(); }
+        }
+        public bool DisplayEmptyTeleporters
+        {
+            get { return display_emptry_teleporters; }
+            set { display_emptry_teleporters = value; this.Refresh(); }
         }
         #endregion
 
@@ -694,7 +710,7 @@ namespace OriDETracker
                  * (a) auto_update and world tour are on
                  * (b) track_relics is on and display_emptry_relics is on
                  */
-                if ( (auto_update && mode_world_tour) || (track_relics && display_empty_relics) )
+                if ((auto_update && mode_world_tour) || (track_relics && display_empty_relics))
                 {
                     foreach (KeyValuePair<String, bool> relic in relicExists)
                     {
