@@ -15,10 +15,6 @@ namespace OriDETracker
         {
             DoubleBuffered = true;
 
-            //Form for quickly editting things
-            edit_form = new EditForm(this);
-            edit_form.Visible = false;
-
             // Settings options for Refresh Rate and Tracker Size
             RefreshRate = TrackerSettings.Default.RefreshRate;
             TrackerSize = TrackerSettings.Default.Pixels;
@@ -111,9 +107,9 @@ namespace OriDETracker
             get;
             set;
         }
+
         protected Thread th;
         protected SettingsLayout settings;
-        protected EditForm edit_form;
 
         public Color FontColor
         {
@@ -699,7 +695,6 @@ namespace OriDETracker
         }
         private void editToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            this.edit_form.Show();
         }
         #endregion
 
@@ -832,8 +827,6 @@ namespace OriDETracker
                 g.DrawImage(imageGSkills, drawRect);
                 foreach (KeyValuePair<String, bool> sk in haveSkill)
                 {
-                    edit_form.UpdateSkill(sk.Key, sk.Value);
-
                     if (sk.Value)
                     {
                         g.DrawImage(skillImages[sk.Key], drawRect);
@@ -876,8 +869,6 @@ namespace OriDETracker
                     g.DrawImage(imageGTrees, drawRect);
                     foreach (KeyValuePair<String, bool> sk in haveTree)
                     {
-                        edit_form.UpdateTree(sk.Key, sk.Value);
-
                         if (sk.Value)
                         {
                             g.DrawImage(treeImages[sk.Key], drawRect);
@@ -891,8 +882,6 @@ namespace OriDETracker
 
                 foreach (KeyValuePair<String, bool> ev in haveEvent)
                 {
-                    edit_form.UpdateEvent(ev.Key, ev.Value);
-
                     if (ev.Value)
                     {
                         g.DrawImage(eventImages[ev.Key], drawRect);
@@ -909,8 +898,6 @@ namespace OriDETracker
                 {
                     foreach (KeyValuePair<String, bool> ev in haveShards)
                     {
-                        edit_form.UpdateShard(ev.Key, ev.Value);
-
                         if (ev.Value)
                         {
                             g.DrawImage(shardImages[ev.Key], drawRect);
@@ -920,8 +907,6 @@ namespace OriDETracker
                 #endregion
                 if (display_mapstone)
                 {
-                    edit_form.UpdateMapstones(mapstone_count);
-
                     g.DrawImage(imageMapStone, drawRect);
                     if (font_brush == null)
                     {
@@ -970,7 +955,6 @@ namespace OriDETracker
                 haveShards[haveShards.ElementAt(i).Key] = false;
             }
             mapstone_count = 0;
-            edit_form.Clear();
 
             if (tmp_auto_update)
             {
@@ -1009,7 +993,6 @@ namespace OriDETracker
             this.SoftReset();
 
             settings.Reset();
-            edit_form.Reset();
 
             TrackerSettings.Default.Reset();
 
@@ -1035,12 +1018,10 @@ namespace OriDETracker
 
         public void ChangeMapstone()
         {
-            edit_form.ChangeMapstone(display_mapstone);
         }
         public void ChangeShards()
         {
             settings.ChangeShards(display_shards);
-            edit_form.ChangeShards(display_shards);
         }
 
         #endregion
