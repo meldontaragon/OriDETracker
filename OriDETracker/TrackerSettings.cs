@@ -4,10 +4,10 @@ namespace OriDETracker
 {
     public class TrackerSettings : ApplicationSettingsBase
     {
-      
-        private static TrackerSettings MainSettings = (TrackerSettings) ApplicationSettingsBase.Synchronized(new TrackerSettings());
 
-        
+        private static readonly TrackerSettings MainSettings = (TrackerSettings)ApplicationSettingsBase.Synchronized(new TrackerSettings());
+
+
         public static TrackerSettings Default
         {
             get
@@ -15,7 +15,7 @@ namespace OriDETracker
                 return MainSettings;
             }
         }
-        
+
 
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("rate10Hz")]

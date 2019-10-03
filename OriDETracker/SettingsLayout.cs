@@ -1,40 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OriDETracker
 {
-	public partial class SettingsLayout : Form
-	{
-		Tracker parent;
-        bool InitializeImages;
-		public SettingsLayout(Tracker par, bool initImages)
-		{
-			InitializeComponent();
+    public partial class SettingsLayout : Form
+    {
+        readonly Tracker parent;
+        readonly bool InitializeImages;
+        public SettingsLayout(Tracker par, bool initImages)
+        {
+            InitializeComponent();
 
-			parent = par;
+            parent = par;
             InitializeImages = initImages;
 
-			numericUpDownOpacity.Value = (int) (100 * par.Opacity);
-			trackBarOpacity.Value = (int) (100 * par.Opacity);
+            numericUpDownOpacity.Value = (int)(100 * par.Opacity);
+            trackBarOpacity.Value = (int)(100 * par.Opacity);
 
-			if (parent.TrackerSize == TrackerPixelSizes.size420px)
-			{
-				this.rb_420.Checked = true;
-				this.rb_640.Checked = false;
+            if (parent.TrackerSize == TrackerPixelSizes.size420px)
+            {
+                this.rb_420.Checked = true;
+                this.rb_640.Checked = false;
                 this.rb_300.Checked = false;
                 this.rb_720.Checked = false;
             }
             else if (parent.TrackerSize == TrackerPixelSizes.size640px)
-			{
-				this.rb_420.Checked = false;
-				this.rb_640.Checked = true;
+            {
+                this.rb_420.Checked = false;
+                this.rb_640.Checked = true;
                 this.rb_300.Checked = false;
                 this.rb_720.Checked = false;
             }
@@ -53,7 +46,7 @@ namespace OriDETracker
                 this.rb_720.Checked = true;
             }
             else
-			{
+            {
                 //parent.Log.WriteToLog("**ERROR** : Invalid Size (" + parent.TrackerSize + ")");
                 parent.TrackerSize = TrackerPixelSizes.size640px;
 
@@ -93,7 +86,7 @@ namespace OriDETracker
             }
             else
             {
-               //parent.Log.WriteToLog("**ERROR** : Invalid Refresh Rate (" + parent.RefreshRate + ")");
+                //parent.Log.WriteToLog("**ERROR** : Invalid Refresh Rate (" + parent.RefreshRate + ")");
                 parent.RefreshRate = (AutoUpdateRefreshRates)10000;
 
                 this.rb_500_mHz.Checked = false;
@@ -110,16 +103,16 @@ namespace OriDETracker
 
             rbRandoTrees.Checked = true;
 
-			rbRandoEvents.Enabled = false;
-			rbRandoTrees.Enabled = false;
-			rbOriAllSkills.Enabled = false;
-			rbOriAllCells.Enabled = false;
-			rbReverseEventOrder.Enabled = false;
+            rbRandoEvents.Enabled = false;
+            rbRandoTrees.Enabled = false;
+            rbOriAllSkills.Enabled = false;
+            rbOriAllCells.Enabled = false;
+            rbReverseEventOrder.Enabled = false;
 
             InitializeImages = false;
 
-			Refresh();
-		}
+            Refresh();
+        }
 
         public void RefreshOpacityBar()
         {
@@ -127,8 +120,8 @@ namespace OriDETracker
             trackBarOpacity.Value = (int)(100 * parent.Opacity);
         }
 
-		public void Reset()
-		{
+        public void Reset()
+        {
             numericUpDownOpacity.Value = 100;
             trackBarOpacity.Value = 100;
             rb_300.Checked = false;
@@ -137,81 +130,81 @@ namespace OriDETracker
             rb_720.Checked = false;
             cb_shards.Checked = false;
             cb_teleporters.Checked = false;
-       }
-
-		private void rbRandoTrees_CheckedChanged(object sender, EventArgs e)
-		{
-			parent.ChangeLayout(TrackerLayout.RandomizerAllTrees);
-		}
-
-		private void rbRandoEvents_CheckedChanged(object sender, EventArgs e)
-		{
-			parent.ChangeLayout(TrackerLayout.RandomizerAllEvents);
-		}
-
-		private void rbOriAllSkills_CheckedChanged(object sender, EventArgs e)
-		{
-			parent.ChangeLayout(TrackerLayout.AllSkills);
-		}
-
-		private void rbOriAllCells_CheckedChanged(object sender, EventArgs e)
-		{
-			parent.ChangeLayout(TrackerLayout.AllCells);
-		}
-
-		private void rbReverseEventOrder_CheckedChanged(object sender, EventArgs e)
-		{
-			parent.ChangeLayout(TrackerLayout.ReverseEventOrder);
-		}
-
-		private void SettingsLayout_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			if (!(e.CloseReason == CloseReason.ApplicationExitCall || e.CloseReason == CloseReason.FormOwnerClosing))
-			{
-				this.Visible = false;
-				e.Cancel = true;
-			}
-		}
-
-		private void numericUpDownScaling_ValueChanged(object sender, EventArgs e)
-		{
-			parent.Refresh();
         }
 
-		private void percentNumericUpDown_ValueChanged(object sender, EventArgs e)
-		{
-			parent.Opacity = (double) (numericUpDownOpacity.Value / (decimal) 100.0);
-			parent.Refresh();
+        private void rbRandoTrees_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.ChangeLayout(TrackerLayout.RandomizerAllTrees);
+        }
 
-			int tmp = (int) numericUpDownOpacity.Value;
-			trackBarOpacity.Value = tmp;
-			numericUpDownOpacity.Value = tmp;
-		}
+        private void rbRandoEvents_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.ChangeLayout(TrackerLayout.RandomizerAllEvents);
+        }
 
-		private void buttonBackgroundColor_Click(object sender, EventArgs e)
-		{
-			if (colorDialogBackground.ShowDialog() == DialogResult.OK)
-			{
-				parent.BackColor = colorDialogBackground.Color;
-			}
-			parent.Refresh();
-		}
+        private void rbOriAllSkills_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.ChangeLayout(TrackerLayout.AllSkills);
+        }
 
-		private void trackBarOpacity_Scroll(object sender, EventArgs e)
-		{
-			parent.Opacity = (double) (trackBarOpacity.Value / (decimal) 100.0);
-			parent.Refresh();
+        private void rbOriAllCells_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.ChangeLayout(TrackerLayout.AllCells);
+        }
 
-			int tmp = trackBarOpacity.Value;
-			trackBarOpacity.Value = tmp;
-			numericUpDownOpacity.Value = tmp;
-		}
+        private void rbReverseEventOrder_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.ChangeLayout(TrackerLayout.ReverseEventOrder);
+        }
 
-		private void cb_shards_CheckedChanged(object sender, EventArgs e)
-		{
-			parent.DisplayShards = cb_shards.Checked;
-			parent.ChangeShards();
-		}
+        private void SettingsLayout_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!(e.CloseReason == CloseReason.ApplicationExitCall || e.CloseReason == CloseReason.FormOwnerClosing))
+            {
+                this.Visible = false;
+                e.Cancel = true;
+            }
+        }
+
+        private void numericUpDownScaling_ValueChanged(object sender, EventArgs e)
+        {
+            parent.Refresh();
+        }
+
+        private void percentNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            parent.Opacity = (double)(numericUpDownOpacity.Value / (decimal)100.0);
+            parent.Refresh();
+
+            int tmp = (int)numericUpDownOpacity.Value;
+            trackBarOpacity.Value = tmp;
+            numericUpDownOpacity.Value = tmp;
+        }
+
+        private void buttonBackgroundColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialogBackground.ShowDialog() == DialogResult.OK)
+            {
+                parent.BackColor = colorDialogBackground.Color;
+            }
+            parent.Refresh();
+        }
+
+        private void trackBarOpacity_Scroll(object sender, EventArgs e)
+        {
+            parent.Opacity = (double)(trackBarOpacity.Value / (decimal)100.0);
+            parent.Refresh();
+
+            int tmp = trackBarOpacity.Value;
+            trackBarOpacity.Value = tmp;
+            numericUpDownOpacity.Value = tmp;
+        }
+
+        private void cb_shards_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.DisplayShards = cb_shards.Checked;
+            parent.ChangeShards();
+        }
 
         private void cb_teleporters_CheckedChanged(object sender, EventArgs e)
         {
@@ -236,11 +229,11 @@ namespace OriDETracker
             parent.Refresh();
         }
         private void rb_400_CheckedChanged(object sender, EventArgs e)
-		{
-			parent.TrackerSize = TrackerPixelSizes.size420px;
-			parent.UpdateImages(InitializeImages);
-			parent.Refresh();
-		}
+        {
+            parent.TrackerSize = TrackerPixelSizes.size420px;
+            parent.UpdateImages(InitializeImages);
+            parent.Refresh();
+        }
         private void rb_300_CheckedChanged(object sender, EventArgs e)
         {
             parent.TrackerSize = TrackerPixelSizes.size300px;
@@ -249,18 +242,18 @@ namespace OriDETracker
         }
 
         private void button_mapstone_font_Click(object sender, EventArgs e)
-		{
-			if (colorDialogFont.ShowDialog() == DialogResult.OK)
-			{
+        {
+            if (colorDialogFont.ShowDialog() == DialogResult.OK)
+            {
                 parent.FontColor = colorDialogFont.Color;
-			}
-			parent.Refresh();
-		}
+            }
+            parent.Refresh();
+        }
 
-		internal void ChangeShards(bool display_shards)
-		{
-			cb_shards.Checked = display_shards;
-		}
+        internal void ChangeShards(bool display_shards)
+        {
+            cb_shards.Checked = display_shards;
+        }
 
 
         private void rb_1_hz_CheckedChanged(object sender, EventArgs e)

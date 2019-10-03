@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OriDETracker
+﻿namespace OriDETracker
 {
     public enum TrackerLayout
     {
@@ -27,6 +21,6 @@ namespace OriDETracker
         rate500mHz = 500,
         rate1Hz = 1000,
         rate10Hz = 10000,
-        rate60Hz = 60000  
+        rate60Hz = 60000
     }
 }

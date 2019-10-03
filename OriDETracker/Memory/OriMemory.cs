@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 
 namespace OriDE.Memory
 {
     public partial class OriMemory
     {
-        private static bool mono_debug = false;
-        private static string BitfieldPtrString = mono_debug ? "B9EFBEADDEB8????????8908" : "B8????????C700EFBEADDE";
-        private static int BitfieldsPtrOffset = BitfieldPtrString.IndexOf('?')/2;
-        private static ProgramPointer TrackerBitfields = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, BitfieldPtrString, BitfieldsPtrOffset));
+        private static readonly bool mono_debug = false;
+        private static readonly string BitfieldPtrString = mono_debug ? "B9EFBEADDEB8????????8908" : "B8????????C700EFBEADDE";
+        private static readonly int BitfieldsPtrOffset = BitfieldPtrString.IndexOf('?') / 2;
+        private static readonly ProgramPointer TrackerBitfields = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, BitfieldPtrString, BitfieldsPtrOffset));
         public Process Program { get; set; }
         public bool IsHooked { get; set; } = false;
         private DateTime lastHooked;
-        private static Skill[] AllSkills = new Skill[] { Skill.Sein, Skill.WallJump, Skill.ChargeFlame, Skill.Dash, Skill.DoubleJump, Skill.Bash, Skill.Stomp, Skill.Glide, Skill.Climb, Skill.ChargeJump, Skill.Grenade };
+        private static readonly Skill[] AllSkills = new Skill[] { Skill.Sein, Skill.WallJump, Skill.ChargeFlame, Skill.Dash, Skill.DoubleJump, Skill.Bash, Skill.Stomp, Skill.Glide, Skill.Climb, Skill.ChargeJump, Skill.Grenade };
 
         public OriMemory()
         {
@@ -94,8 +92,8 @@ namespace OriDE.Memory
     {
         private int lastID;
         private DateTime lastTry;
-        private ProgramSignature[] signatures;
-        private int[] offsets;
+        private readonly ProgramSignature[] signatures;
+        private readonly int[] offsets;
         public IntPtr Pointer { get; private set; }
         public PointerVersion Version { get; private set; }
         public AutoDeref AutoDeref { get; private set; }
@@ -185,7 +183,8 @@ namespace OriDE.Memory
             if (signatures != null)
             {
                 MemorySearcher searcher = new MemorySearcher();
-                searcher.MemoryFilter = delegate (MemInfo info) {
+                searcher.MemoryFilter = delegate (MemInfo info)
+                {
                     return (info.State & 0x1000) != 0 && (info.Protect & 0x40) != 0 && (info.Protect & 0x100) == 0;
                 };
                 for (int i = 0; i < signatures.Length; i++)

@@ -1,12 +1,11 @@
-﻿using System;
+﻿using OriDE.Memory;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
-
-using System.Threading;
-using OriDE.Memory;
 using System.Reflection;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace OriDETracker
 {
@@ -169,7 +168,7 @@ namespace OriDETracker
         protected TrackerPixelSizes tracker_size;
 
 
-        private Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
+        private readonly Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
             { (int) TrackerPixelSizes.size300px, new MapstoneText(140+6, 190+6, 14) },
             { (int) TrackerPixelSizes.size420px, new MapstoneText(195+9, 268+9, 18) },
             { (int) TrackerPixelSizes.size640px, new MapstoneText(304+13, 417+13, 24) },
@@ -196,7 +195,7 @@ namespace OriDETracker
         protected int current_frags;
         protected int max_frags;
 
-        private int destroy = 1;
+        private readonly int destroy = 1;
 
         #region FrameMoving
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -290,7 +289,7 @@ namespace OriDETracker
                 }
             }
 
-            foreach (string zone in new string[] { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu"} )
+            foreach (string zone in new string[] { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu" })
             {
                 relicExistImages[zone] = Image.FromFile(DIR + "Relics/Exist/" + zone + ".png");
                 relicFoundImages[zone] = Image.FromFile(DIR + "Relics/Found/" + zone + ".png");
@@ -427,7 +426,7 @@ namespace OriDETracker
                 {"Sunstone 1",      false},
                 {"Sunstone 2",      false},
             };
-            
+
             eventMousePoint = new Dictionary<string, Point>(){
                 {"Water Vein", new Point(221+13, 258+13)},
                 {"Gumon Seal", new Point(328+13, 215+13)},
@@ -585,7 +584,7 @@ namespace OriDETracker
                 {"Horu", 7},
                 {"Blackroot", 8},
                 {"Glades", 9}
-            };            
+            };
             #endregion
         }
 
@@ -873,7 +872,7 @@ namespace OriDETracker
                 #endregion
 
                 #region Teleporters
-                if(TrackTeleporters)
+                if (TrackTeleporters)
                 {
                     foreach (KeyValuePair<String, bool> tp in teleportersActive)
                     {
@@ -885,7 +884,7 @@ namespace OriDETracker
                 }
                 #endregion
                 #region Tree
-                if(TrackTrees)
+                if (TrackTrees)
                 {
                     g.DrawImage(imageGTrees, drawRect);
                     foreach (KeyValuePair<String, bool> sk in haveTree)
@@ -1178,7 +1177,8 @@ namespace OriDETracker
                 else
                     this.Refresh();
             }
-            catch (Exception err) {
+            catch (Exception err)
+            {
                 MessageBox.Show(err.StackTrace.ToString());
 
             }
@@ -1252,7 +1252,7 @@ namespace OriDETracker
         private void UpdateMapstoneProgression()
         {
             int ms = 0;
-            foreach(int bit in mapstoneBits.Values)
+            foreach (int bit in mapstoneBits.Values)
             {
                 if (mem.GetBit(mem.MapstoneBitfield, bit))
                     ms++;
