@@ -33,6 +33,13 @@ namespace OriDETracker
             settings.Visible = false;
 
             InitializeComponent();
+            this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
+            this.moveToolStripMenuItem.CheckState = TrackerSettings.Default.Draggable ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
+            this.autoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
+            this.autoUpdateToolStripMenuItem.CheckState = TrackerSettings.Default.AutoUpdate ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
+            this.alwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
+            this.alwaysOnTopToolStripMenuItem.CheckState = TrackerSettings.Default.AlwaysOnTop ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
+            this.TopMost = TrackerSettings.Default.AlwaysOnTop;
 
             //auto update boolean values
             started = false;
