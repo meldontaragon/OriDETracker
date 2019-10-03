@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OriDETracker", "OriDETracker.csproj", "{9842A25C-2239-4F32-B0AD-6DE1C1346615}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{670F13BA-EBAF-40B2-BEE0-A576EB63020C}"
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
-		ToDo.txt = ToDo.txt
+		..\TODO.txt = ..\TODO.txt
 	EndProjectSection
 EndProject
 Global
