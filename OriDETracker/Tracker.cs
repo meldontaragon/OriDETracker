@@ -40,7 +40,6 @@ namespace OriDETracker
 
             //load settings (except for those needed to initialize the settings window)
             track_shards = TrackerSettings.Default.Shards;
-            current_layout = TrackerSettings.Default.Layout;
             track_shards = TrackerSettings.Default.Shards;
             TrackTeleporters = TrackerSettings.Default.Teleporters;
             TrackTrees = TrackerSettings.Default.Trees;
@@ -69,7 +68,8 @@ namespace OriDETracker
 
             scaled_size = new Size(image_pixel_size, image_pixel_size);
             this.UpdateImages();
-            this.ChangeLayout();
+            SetLayoutRandomizerAllTrees();
+
             font_brush = new SolidBrush(font_color);
 
             this.ChangeShards();
@@ -112,8 +112,6 @@ namespace OriDETracker
 
         protected Size scaled_size;
         protected TrackerPixelSizes tracker_size;
-
-        protected TrackerLayout current_layout;
 
         protected Color font_color;
         protected Brush font_brush;
@@ -237,7 +235,7 @@ namespace OriDETracker
         #endregion
 
         #region Images
-        protected String DIR = @"Assets_750/";
+        protected String DIR = @"Assets_667/";
 
         protected Image imageSkillWheelDouble;
         protected Image imageBlackBackground;
@@ -253,7 +251,7 @@ namespace OriDETracker
         protected Dictionary<String, Image> teleporterImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
-        
+
         public void UpdateImages()
         {
             var image_collection = typeof(Tracker).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.FieldType == typeof(Image));
@@ -310,11 +308,7 @@ namespace OriDETracker
         private Dictionary<String, Point> skillMousePoint;
 
         #region SetLayout
-        public void ChangeLayout()
-        {
-            this.current_layout = TrackerLayout.RandomizerAllTrees;
-            SetLayoutRandomizerAllTrees();                 
-        }
+
         private void SetLayoutRandomizerAllTrees()
         {
             SetLayoutDefaults();
@@ -868,7 +862,7 @@ namespace OriDETracker
 
             this.settings.Visible = false;
 
-            ChangeLayout();
+            SetLayoutRandomizerAllTrees();
             if (auto_update && !TrackerSettings.Default.AutoUpdate)
             {
                 TurnOffAutoUpdate();
@@ -1047,7 +1041,6 @@ namespace OriDETracker
             TrackerSettings.Default.FontColoring = font_color;
             TrackerSettings.Default.Background = BackColor;
             TrackerSettings.Default.RefreshRate = RefreshRate;
-            TrackerSettings.Default.Layout = current_layout;
             TrackerSettings.Default.Opacity = Opacity;
             TrackerSettings.Default.Shards = track_shards;
             TrackerSettings.Default.Teleporters = TrackTeleporters;
