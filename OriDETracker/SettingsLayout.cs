@@ -6,13 +6,11 @@ namespace OriDETracker
     public partial class SettingsLayout : Form
     {
         readonly Tracker parent;
-        readonly bool InitializeImages;
-        public SettingsLayout(Tracker par, bool initImages)
+        public SettingsLayout(Tracker par)
         {
             InitializeComponent();
 
             parent = par;
-            InitializeImages = initImages;
 
             numericUpDownOpacity.Value = (int)(100 * par.Opacity);
             trackBarOpacity.Value = (int)(100 * par.Opacity);
@@ -108,8 +106,6 @@ namespace OriDETracker
             rbOriAllSkills.Enabled = false;
             rbOriAllCells.Enabled = false;
             rbReverseEventOrder.Enabled = false;
-
-            InitializeImages = false;
 
             Refresh();
         }
@@ -219,25 +215,25 @@ namespace OriDETracker
         private void rb_720_CheckedChanged(object sender, EventArgs e)
         {
             parent.TrackerSize = TrackerPixelSizes.size720px;
-            parent.UpdateImages(InitializeImages);
+            parent.UpdateImages();
             parent.Refresh();
         }
         private void rb_600_CheckedChanged(object sender, EventArgs e)
         {
             parent.TrackerSize = TrackerPixelSizes.size640px;
-            parent.UpdateImages(InitializeImages);
+            parent.UpdateImages();
             parent.Refresh();
         }
         private void rb_400_CheckedChanged(object sender, EventArgs e)
         {
             parent.TrackerSize = TrackerPixelSizes.size420px;
-            parent.UpdateImages(InitializeImages);
+            parent.UpdateImages();
             parent.Refresh();
         }
         private void rb_300_CheckedChanged(object sender, EventArgs e)
         {
             parent.TrackerSize = TrackerPixelSizes.size300px;
-            parent.UpdateImages(InitializeImages);
+            parent.UpdateImages();
             parent.Refresh();
         }
 

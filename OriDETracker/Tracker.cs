@@ -20,7 +20,7 @@ namespace OriDETracker
             TrackerSize = TrackerSettings.Default.Pixels;
 
             //Settings window display
-            settings = new SettingsLayout(this, true);
+            settings = new SettingsLayout(this);
             settings.Visible = false;
 
             InitializeComponent();
@@ -64,7 +64,7 @@ namespace OriDETracker
             th.IsBackground = true;
 
             scaled_size = new Size(image_pixel_size, image_pixel_size);
-            this.UpdateImages(false);
+            this.UpdateImages();
             this.ChangeLayout(current_layout);
             font_brush = new SolidBrush(font_color);
 
@@ -152,8 +152,8 @@ namespace OriDETracker
         };
 
         private readonly int destroy = 1;
-#endregion
-        
+        #endregion
+
         #region PublicProperties
         public Color FontColor
         {
@@ -218,7 +218,7 @@ namespace OriDETracker
         protected Dictionary<String, bool> haveShards;
         protected Dictionary<String, bool> teleportersActive;
         protected Dictionary<String, bool> relicExists;
-        protected Dictionary<String, bool> relicFound; 
+        protected Dictionary<String, bool> relicFound;
 
         //Bits
         private Dictionary<String, int> treeBits;
@@ -238,16 +238,16 @@ namespace OriDETracker
         protected Image imageGTrees;
         protected Image imageMapStone;
 
-        protected Dictionary<String, Image> skillImages         = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> treeImages          = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> eventImages         = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> eventGreyImages     = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> shardImages         = new Dictionary<string, Image>();
-        protected Dictionary<String, Image> teleporterImages    = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> relicExistImages    = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> relicFoundImages    = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> treeImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
+        protected Dictionary<String, Image> teleporterImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
 
-        public void UpdateImages(bool Initialize)
+        public void UpdateImages()
         {
             var image_collection = typeof(Tracker).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.FieldType == typeof(Image));
             foreach (var img in image_collection)
