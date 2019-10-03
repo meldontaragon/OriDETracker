@@ -15,10 +15,6 @@ namespace OriDETracker
         {
             DoubleBuffered = true;
 
-            //Log important things
-            //Log = new Logger("OriDETracker-v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            //Log.WriteToLog("**INFO**  : Starting Tracker (v " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")");
-
             //Form for quickly editting things
             edit_form = new EditForm(this);
             edit_form.Visible = false;
@@ -58,12 +54,10 @@ namespace OriDETracker
 
             if (font_color == null)
             {
-                //Log.WriteToLog("**INFO**  : Font Color is null, loading default font color instead");
                 font_color = Color.White;
             }
             if (BackColor == null)
             {
-                //Log.WriteToLog("**INFO**  : BackColor is null, loading default background color instead");
                 BackColor = Color.Black;
             }
 
@@ -84,7 +78,6 @@ namespace OriDETracker
             //handles weird exceptions and lets me know if there are potential problems
             if (destroy == 1)
             {
-                //Log.WriteToLog("**DEBUG** : Settings may need to be reset.");
                 this.SoftReset();
             }
 
@@ -101,7 +94,6 @@ namespace OriDETracker
             if (needFont == 1)
             {
                 MessageBox.Show("Please install the included fonts: Amatic SC and Amatic SC Bold");
-                //Log.WriteToLog("**DEBUG** : Don't have preferred font so checking with user.");
                 if (this.fontDialog_mapstone.ShowDialog() == DialogResult.OK)
                 {
                     map_font = fontDialog_mapstone.Font;
@@ -122,7 +114,6 @@ namespace OriDETracker
         protected Thread th;
         protected SettingsLayout settings;
         protected EditForm edit_form;
-        //public Logger Log;
 
         public Color FontColor
         {
@@ -682,11 +673,8 @@ namespace OriDETracker
             x = e.X;
             y = e.Y;
 
-            //MessageBox.Show("X: " + x + "   Y: " + y);
             if (ToggleMouseClick(x, y))
             {
-                //Log.WriteToLog("**INFO**  : Mouse Click at X: " + x + "   Y: " + y);
-
                 bool tmp_auto_update = auto_update;
                 //try turning off auto update for a moment
                 if (tmp_auto_update)
@@ -695,7 +683,6 @@ namespace OriDETracker
                 if (tmp_auto_update)
                     this.TurnOnAutoUpdate();
             }
-            //this.Invalidate();
         }
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -947,24 +934,15 @@ namespace OriDETracker
 
                 g.DrawImage(imageSkillWheelDouble, drawRect);
             }
-            catch //(Exception exc)
+            catch (Exception exc)
             {
-                /*
-                Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
-                Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
-                Log.WriteToLog("**INFO**  : Source = " + exc.Source.ToString());
-                Log.WriteToLog("**INFO**  : Stack Trace = " + exc.StackTrace.ToString());
-                Log.WriteToLog("**INFO**  : Target Site = " + exc.TargetSite.ToString());
-                Log.WriteToLog("**INFO**  : Data = " + exc.Data.ToString());
-                Log.WriteToLog("**INFO**  : " + exc.ToString());
-                */
+
             }
             //Refresh();
         }
 
         protected void ClearAll()
         {
-            //Log.WriteToLog("**INFO**  : Clearing the tracker.");
             bool tmp_auto_update = this.auto_update;
             if (tmp_auto_update)
             {
@@ -1005,8 +983,6 @@ namespace OriDETracker
         protected void SoftReset()
         {
             ClearAll();
-
-            //Log.WriteToLog("**INFO**  : Performing soft reset.");
 
             this.settings.Visible = false;
 
@@ -1077,25 +1053,15 @@ namespace OriDETracker
         {
             if (started && paused)
             {
-                //Log.WriteToLog("**DEBUG** : Resuming auto update thread.");
                 th.Resume();
                 started = true;
                 paused = false;
             }
             else if (!(started))
             {
-                //Log.WriteToLog("**DEBUG** : Starting auto update thread.");
                 th.Start();
                 started = true;
                 paused = false;
-            }
-            else
-            {
-                /*
-                Log.WriteToLog("**ERROR** : Cannot start Auto Update if it is already running");
-                Log.WriteToLog("**INFO**  : `paused` = " + paused.ToString());
-                Log.WriteToLog("**INFO**  : `started` = " + started.ToString());
-                */
             }
         }
 
@@ -1103,18 +1069,9 @@ namespace OriDETracker
         {
             if (!(paused) && started)
             {
-                //Log.WriteToLog("**DEBUG** : Suspending auto update thread.");
                 th.Suspend();
                 started = true;
                 paused = true;
-            }
-            else if (!(started) || paused)
-            {
-                /*
-                Log.WriteToLog("**ERROR** : Cannot pause Auto Update if it is not running");
-                Log.WriteToLog("**INFO**  : `paused` = " + paused.ToString());
-                Log.WriteToLog("**INFO**  : `started` = " + started.ToString());
-                */
             }
         }
 
@@ -1142,16 +1099,7 @@ namespace OriDETracker
                 }
                 catch (Exception exc)
                 {
-                    Console.Out.WriteLine(exc);
-                    /*
-                    Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
-                    Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
-                    Log.WriteToLog("**INFO**  : Source = " + exc.Source.ToString());
-                    Log.WriteToLog("**INFO**  : Stack Trace = " + exc.StackTrace.ToString());
-                    Log.WriteToLog("**INFO**  : Target Site = " + exc.TargetSite.ToString());
-                    Log.WriteToLog("**INFO**  : Data = " + exc.Data.ToString());
-                    Log.WriteToLog("**INFO**  : " + exc.ToString());
-                    */
+                    MessageBox.Show(exc.StackTrace.ToString());
                 }
             }
         }
@@ -1177,10 +1125,9 @@ namespace OriDETracker
                 else
                     this.Refresh();
             }
-            catch (Exception err)
+            catch (Exception exc)
             {
-                MessageBox.Show(err.StackTrace.ToString());
-
+                MessageBox.Show(exc.StackTrace.ToString());
             }
         }
 
