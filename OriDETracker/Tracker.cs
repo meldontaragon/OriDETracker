@@ -37,9 +37,9 @@ namespace OriDETracker
             paused = false;
 
             //load settings (except for those needed to initialize the settings window)
-            display_shards = TrackerSettings.Default.Shards;
+            track_shards = TrackerSettings.Default.Shards;
             current_layout = TrackerSettings.Default.Layout;
-            display_shards = TrackerSettings.Default.Shards;
+            track_shards = TrackerSettings.Default.Shards;
             TrackTeleporters = TrackerSettings.Default.Teleporters;
             TrackTrees = TrackerSettings.Default.Trees;
             font_color = TrackerSettings.Default.FontColoring;
@@ -63,7 +63,7 @@ namespace OriDETracker
             th = new Thread(UpdateLoop);
             th.IsBackground = true;
 
-            scaledSize = new Size(image_pixel_size, image_pixel_size);
+            scaled_size = new Size(image_pixel_size, image_pixel_size);
             this.UpdateImages(false);
             this.ChangeLayout(current_layout);
             font_brush = new SolidBrush(font_color);
@@ -102,6 +102,39 @@ namespace OriDETracker
             }
         }
 
+        #region PrivateVariables
+        protected static int PIXEL_DEF = (int)TrackerPixelSizes.size640px;
+        protected int image_pixel_size = PIXEL_DEF;
+
+        protected Size scaled_size;
+        protected TrackerPixelSizes tracker_size;
+
+        protected TrackerLayout current_layout;
+
+        protected Color font_color;
+        protected Brush font_brush;
+        protected Font map_font;
+
+
+        protected AutoUpdateRefreshRates refresh_rate;
+        protected int refresh_time;
+
+        protected bool display_mapstone = false;
+        protected int mapstone_count = 0;
+
+        protected bool world_tour;
+        protected bool force_trees;
+        protected bool warmth_fragments;
+        protected int current_frags;
+        protected int max_frags;
+
+        protected bool draggable = TrackerSettings.Default.Draggable;
+        protected bool auto_update = TrackerSettings.Default.AutoUpdate;
+
+        protected bool track_teleporters = TrackerSettings.Default.Teleporters;
+        protected bool track_trees = TrackerSettings.Default.Trees;
+        protected bool track_shards = TrackerSettings.Default.Shards;
+
         protected OriMemory mem
         {
             get;
@@ -111,36 +144,30 @@ namespace OriDETracker
         protected Thread th;
         protected SettingsLayout settings;
 
+        private readonly Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
+            { (int) TrackerPixelSizes.size300px, new MapstoneText(140+6, 190+6, 14) },
+            { (int) TrackerPixelSizes.size420px, new MapstoneText(195+9, 268+9, 18) },
+            { (int) TrackerPixelSizes.size640px, new MapstoneText(304+13, 417+13, 24) },
+            { (int) TrackerPixelSizes.size720px, new MapstoneText(342+15, 471+15, 28) }
+        };
+
+        private readonly int destroy = 1;
+#endregion
+        
+        #region PublicProperties
         public Color FontColor
         {
             get { return font_color; }
             set { font_color = value; font_brush = new SolidBrush(value); }
         }
-
-        public TrackerPixelSizes TrackerSize
-        {
-            get { return tracker_size; }
-            set { tracker_size = value; image_pixel_size = (int)value; }
-        }
-
-        public bool DisplayShards
-        {
-            get { return display_shards; }
-            set { display_shards = value; }
-        }
-
-        public bool TrackTeleporters = TrackerSettings.Default.Teleporters;
-        public bool TrackTrees = TrackerSettings.Default.Trees;
-
         public Font MapFont
         {
             set { map_font = value; }
         }
-
-        public int MapstoneCount
+        public TrackerPixelSizes TrackerSize
         {
-            get { return mapstone_count; }
-            set { mapstone_count = value; }
+            get { return tracker_size; }
+            set { tracker_size = value; image_pixel_size = (int)value; }
         }
 
         public AutoUpdateRefreshRates RefreshRate
@@ -149,40 +176,28 @@ namespace OriDETracker
             set { refresh_rate = value; refresh_time = (int)(1000000.0f / ((float)value)); }
         }
 
-        protected static int PIXEL_DEF = (int)TrackerPixelSizes.size640px;
+        public bool TrackShards
+        {
+            get { return track_shards; }
+            set { track_shards = value; }
+        }
+        public bool TrackTeleporters
+        {
+            get { return track_teleporters; }
+            set { track_teleporters = value; }
+        }
+        public bool TrackTrees
+        {
+            get { return track_trees; }
+            set { track_trees = value; }
+        }
 
-        protected int image_pixel_size = PIXEL_DEF;
-        protected TrackerPixelSizes tracker_size;
-
-
-        private readonly Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
-            { (int) TrackerPixelSizes.size300px, new MapstoneText(140+6, 190+6, 14) },
-            { (int) TrackerPixelSizes.size420px, new MapstoneText(195+9, 268+9, 18) },
-            { (int) TrackerPixelSizes.size640px, new MapstoneText(304+13, 417+13, 24) },
-            { (int) TrackerPixelSizes.size720px, new MapstoneText(342+15, 471+15, 28) }
-        };
-
-        protected Size scaledSize;
-        protected bool display_shards = TrackerSettings.Default.Shards;
-        protected TrackerLayout current_layout;
-        protected Color font_color;
-
-        public Brush font_brush;
-        protected const int TOL = 25;
-        protected bool auto_update = TrackerSettings.Default.AutoUpdate;
-        protected bool draggable = TrackerSettings.Default.Draggable;
-        protected int mapstone_count = 0;
-        protected bool display_mapstone = false;
-        protected Font map_font;
-        protected AutoUpdateRefreshRates refresh_rate;
-        protected int refresh_time;
-        protected bool world_tour;
-        protected bool force_trees;
-        protected bool warmth_fragments;
-        protected int current_frags;
-        protected int max_frags;
-
-        private readonly int destroy = 1;
+        public int MapstoneCount
+        {
+            get { return mapstone_count; }
+            set { mapstone_count = value; }
+        }
+        #endregion
 
         #region FrameMoving
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -196,22 +211,14 @@ namespace OriDETracker
         #endregion
 
         #region LogicDictionary
-        //general: Skills and Events
-        public Dictionary<String, bool> haveSkill;
-        public Dictionary<String, bool> haveEvent;
-
-        //Relics
-        public Dictionary<String, bool> relicExists;
-        public Dictionary<String, bool> relicFound;
-
-        public Dictionary<String, bool> teleportersActive;
-
-        //All Trees
-        public Dictionary<String, bool> hitTree;
-        public Dictionary<String, bool> haveTree;
-
-        //Shards
-        public Dictionary<String, bool> haveShards;
+        //Skills, Trees, Events, Shards, Teleporters, and Relics
+        protected Dictionary<String, bool> haveSkill;
+        protected Dictionary<String, bool> haveTree;
+        protected Dictionary<String, bool> haveEvent;
+        protected Dictionary<String, bool> haveShards;
+        protected Dictionary<String, bool> teleportersActive;
+        protected Dictionary<String, bool> relicExists;
+        protected Dictionary<String, bool> relicFound; 
 
         //Bits
         private Dictionary<String, int> treeBits;
@@ -220,16 +227,9 @@ namespace OriDETracker
         private Dictionary<String, int> mapstoneBits;
         private Dictionary<String, int> relicExistsBits;
         private Dictionary<String, int> relicFoundBits;
-
-        /*
-		   //All Events
-		   private Dictionary<String, bool> haveEventLocation;
-		   private Dictionary<String, bool> hitEventLocation;
-		 */
         #endregion
 
         #region Images
-
         protected String DIR = @"Assets_750/";
 
         protected Image imageSkillWheelDouble;
@@ -237,6 +237,15 @@ namespace OriDETracker
         protected Image imageGSkills;
         protected Image imageGTrees;
         protected Image imageMapStone;
+
+        protected Dictionary<String, Image> skillImages         = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> treeImages          = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> eventImages         = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> eventGreyImages     = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> shardImages         = new Dictionary<string, Image>();
+        protected Dictionary<String, Image> teleporterImages    = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> relicExistImages    = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> relicFoundImages    = new Dictionary<String, Image>();
 
         public void UpdateImages(bool Initialize)
         {
@@ -289,54 +298,14 @@ namespace OriDETracker
 
             //GC.Collect();
         }
-
-        protected Dictionary<String, Image> teleporterImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
-
-        protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> treeImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
-
-        #endregion
-
-        #region Hitbox
-        //Game hitboxes for trees and events
-        //private bool checkTreeHitbox = false;
-        //private bool checkEventHitbox = false;
-
-        /*
-    private Dictionary<Skill, HitBox> treeHitboxes = new Dictionary<Skill, HitBox>(){
-        {Skill.Sein,        new HitBox("-165,-262,1,2")},
-        {Skill.WallJump,    new HitBox("-317,-301,5,6")},
-        {Skill.ChargeFlame, new HitBox("-53,-153,5,6")},
-        {Skill.Dash,        new HitBox("293,-251,5,6")},
-        {Skill.DoubleJump,  new HitBox("785,-404,5,6")},
-        {Skill.Bash,        new HitBox("532,334,5,6")},
-        {Skill.Stomp,       new HitBox("859,-88,5,6")},
-        {Skill.Glide,       new HitBox("-458,-13,5,6")},
-        {Skill.Climb,       new HitBox("-1189,-95,5,6")},
-        {Skill.ChargeJump,  new HitBox("-697,413,5,6")},
-        {Skill.Grenade,     new HitBox("69,-373,5,6")}
-    };
-
-    //placeholder until I get the actual coordinates
-    private Dictionary<String, HitBox> eventHitboxes = new Dictionary<String, HitBox>(){
-        {"Water Vein",      new HitBox( "0,0,1,1")},
-        {"Gumon Seal",      new HitBox( "0,0,1,1")},
-        {"Sunstone",        new HitBox( "0,0,1,1")},
-        {"Clean Water",     new HitBox( "0,0,1,1")},
-        {"Wind Restored",   new HitBox( "0,0,1,1")},
-        {"Warmth Returned", new HitBox( "0,0,1,1")},
-    };
-    */
         #endregion
 
         //points for mouse clicks (with certain tolerance defined by TOL)
+        private const int TOL = 25;
         private Point mapstoneMousePoint = new Point(305, 343);
         private Dictionary<String, Point> eventMousePoint;
+        private Dictionary<String, Point> treeMouseLocation;
+        private Dictionary<String, Point> skillMousePoint;
 
         #region SetLayout
         public void ChangeLayout(TrackerLayout layout)
@@ -369,20 +338,6 @@ namespace OriDETracker
 
             display_mapstone = true;
             ChangeMapstone();
-
-            hitTree = new Dictionary<String, bool>(){
-                {"Spirit Flame", false},
-                {"Wall Jump",    false},
-                {"Charge Flame", false},
-                {"Double Jump",  false},
-                {"Bash",        false},
-                {"Stomp",       false},
-                {"Glide",       false},
-                {"Climb",       false},
-                {"Charge Jump",  false},
-                {"Grenade",     false},
-                {"Dash",       false}
-            };
 
             haveTree = new Dictionary<String, bool>(){
                 {"Spirit Flame", false},
@@ -425,7 +380,6 @@ namespace OriDETracker
             //checkTreeHitbox = true;
             //checkEventHitbox = false;
         }
-
         private void SetLayoutDefaults()
         {
             SetMouseLocations();
@@ -574,7 +528,6 @@ namespace OriDETracker
             };
             #endregion
         }
-
         private void SetLayoutRandomizerAllEvents()
         {
             SetLayoutDefaults();
@@ -592,8 +545,6 @@ namespace OriDETracker
             SetLayoutDefaults();
         }
 
-        private Dictionary<String, Point> treeMouseLocation;
-        private Dictionary<String, Point> skillMousePoint;
         private void SetMouseLocations()
         {
             skillMousePoint = new Dictionary<String, Point>();
@@ -619,7 +570,6 @@ namespace OriDETracker
                 {"Warmth Returned", new Point(391+13, 342+13)}
             };
         }
-
         #endregion
 
         #region EventHandlers
@@ -635,12 +585,10 @@ namespace OriDETracker
         {
             Application.Exit();
         }
-
         protected void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.HardReset();
         }
-
         protected void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             auto_update = !(auto_update);
@@ -699,12 +647,10 @@ namespace OriDETracker
         #endregion
 
         #region Graphics
-
         protected int Square(int a)
         {
             return a * a;
         }
-
         protected bool ToggleMouseClick(int x, int y)
         {
             double mouse_scaling = ((image_pixel_size * 1.0) / PIXEL_DEF);
@@ -739,10 +685,6 @@ namespace OriDETracker
                     if (haveTree.ContainsKey(sk.Key))
                     {
                         haveTree[sk.Key] = !haveTree[sk.Key];
-                        if (hitTree.ContainsKey(sk.Key))
-                        {
-                            hitTree[sk.Key] = haveTree[sk.Key];
-                        }
                         return true;
                     }
                 }
@@ -759,7 +701,7 @@ namespace OriDETracker
                             case "Water Vein":
                             case "Gumon Seal":
                             case "Sunstone":
-                                if (display_shards)
+                                if (track_shards)
                                 {
                                     if (haveEvent[sk.Key])
                                     {
@@ -803,7 +745,6 @@ namespace OriDETracker
             }
             return false;
         }
-
         protected void UpdateGraphics(Graphics g)
         {
             try
@@ -817,9 +758,9 @@ namespace OriDETracker
 				 * (5) Putting the skill wheel on top
 				 * */
 
-                scaledSize = new Size(image_pixel_size, image_pixel_size);
-                this.Size = scaledSize;
-                Rectangle drawRect = new Rectangle(new Point(0, 0), scaledSize);
+                scaled_size = new Size(image_pixel_size, image_pixel_size);
+                this.Size = scaled_size;
+                Rectangle drawRect = new Rectangle(new Point(0, 0), scaled_size);
 
                 #region Draw
                 #region Skills
@@ -894,7 +835,7 @@ namespace OriDETracker
                 #endregion
 
                 #region Shards
-                if (display_shards)
+                if (track_shards)
                 {
                     foreach (KeyValuePair<String, bool> ev in haveShards)
                     {
@@ -925,7 +866,6 @@ namespace OriDETracker
             }
             //Refresh();
         }
-
         protected void ClearAll()
         {
             bool tmp_auto_update = this.auto_update;
@@ -941,10 +881,6 @@ namespace OriDETracker
             for (int i = 0; i < haveTree.Count; i++)
             {
                 haveTree[haveTree.ElementAt(i).Key] = false;
-            }
-            for (int i = 0; i < hitTree.Count; i++)
-            {
-                hitTree[hitTree.ElementAt(i).Key] = false;
             }
             for (int i = 0; i < haveEvent.Count; i++)
             {
@@ -963,7 +899,6 @@ namespace OriDETracker
 
             Refresh();
         }
-
         protected void SoftReset()
         {
             ClearAll();
@@ -982,7 +917,6 @@ namespace OriDETracker
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
 
         }
-
         protected void HardReset()
         {
             DialogResult res = MessageBox.Show("Your settings will be lost!", "Really reset?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, MessageBoxOptions.DefaultDesktopOnly);
@@ -1008,26 +942,24 @@ namespace OriDETracker
             this.TopMost = TrackerSettings.Default.AlwaysOnTop;
             this.alwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
 
-            this.display_shards = TrackerSettings.Default.Shards;
+            this.track_shards = TrackerSettings.Default.Shards;
 
             this.BackColor = Color.Black;
             this.font_brush = new SolidBrush(Color.White);
 
             Refresh();
         }
-
         public void ChangeMapstone()
         {
         }
         public void ChangeShards()
         {
-            settings.ChangeShards(display_shards);
+            settings.ChangeShards(track_shards);
         }
 
         #endregion
 
         #region AutoUpdate
-
         bool paused;
         bool started;
         protected void TurnOnAutoUpdate()
@@ -1045,7 +977,6 @@ namespace OriDETracker
                 paused = false;
             }
         }
-
         protected void TurnOffAutoUpdate()
         {
             if (!(paused) && started)
@@ -1055,9 +986,6 @@ namespace OriDETracker
                 paused = true;
             }
         }
-
-        //int DATA_SIZE = 10;
-        //public byte[] data;
 
         private void UpdateLoop()
         {
@@ -1084,15 +1012,14 @@ namespace OriDETracker
                 }
             }
         }
-
         private void UpdateValues()
         {
             try
             {
                 mem.GetBitfields();
                 UpdateSkills();
-                CheckTrees();
-                UpdateKeysEvents();
+                UpdateTrees();
+                UpdateEvents();
                 UpdateRelics();
                 UpdateTeleporters();
                 UpdateWarmthFrags();
@@ -1119,11 +1046,37 @@ namespace OriDETracker
                 haveSkill[skill.Key] = mem.GetBit(mem.TreeBitfield, skill.Value);
             }
         }
-        private void CheckTrees()
+        private void UpdateTrees()
         {
             foreach (KeyValuePair<string, int> tree in treeBits)
             {
                 haveTree[tree.Key] = mem.GetBit(mem.TreeBitfield, tree.Value);
+            }
+        }
+        private void UpdateEvents()
+        {
+            int bf = mem.KeyEventBitfield;
+            haveShards["Water Vein 1"] = mem.GetBit(bf, 0);
+            haveShards["Water Vein 2"] = mem.GetBit(bf, 1);
+            haveShards["Gumon Seal 1"] = mem.GetBit(bf, 3);
+            haveShards["Gumon Seal 2"] = mem.GetBit(bf, 4);
+            haveShards["Sunstone 1"] = mem.GetBit(bf, 6);
+            haveShards["Sunstone 2"] = mem.GetBit(bf, 7);
+            haveEvent["Water Vein"] = mem.GetBit(bf, 2);
+            haveEvent["Gumon Seal"] = mem.GetBit(bf, 5);
+            haveEvent["Sunstone"] = mem.GetBit(bf, 8);
+            haveEvent["Clean Water"] = mem.GetBit(bf, 9);
+            haveEvent["Wind Restored"] = mem.GetBit(bf, 10);
+            force_trees = mem.GetBit(bf, 11);
+            track_shards = mem.GetBit(bf, 12);
+            warmth_fragments = mem.GetBit(bf, 13);
+            world_tour = mem.GetBit(bf, 14);
+        }
+        private void UpdateTeleporters()
+        {
+            foreach (KeyValuePair<string, int> tp in teleporterBits)
+            {
+                teleportersActive[tp.Key] = mem.GetBit(mem.TeleporterBitfield, tp.Value);
             }
         }
         private void UpdateRelics()
@@ -1140,27 +1093,6 @@ namespace OriDETracker
                 relicFound[relic.Key] = mem.GetBit(bf, relic.Value);
             }
         }
-
-        private void UpdateKeysEvents()
-        {
-            int bf = mem.KeyEventBitfield;
-            haveShards["Water Vein 1"] = mem.GetBit(bf, 0);
-            haveShards["Water Vein 2"] = mem.GetBit(bf, 1);
-            haveShards["Gumon Seal 1"] = mem.GetBit(bf, 3);
-            haveShards["Gumon Seal 2"] = mem.GetBit(bf, 4);
-            haveShards["Sunstone 1"] = mem.GetBit(bf, 6);
-            haveShards["Sunstone 2"] = mem.GetBit(bf, 7);
-            haveEvent["Water Vein"] = mem.GetBit(bf, 2);
-            haveEvent["Gumon Seal"] = mem.GetBit(bf, 5);
-            haveEvent["Sunstone"] = mem.GetBit(bf, 8);
-            haveEvent["Clean Water"] = mem.GetBit(bf, 9);
-            haveEvent["Wind Restored"] = mem.GetBit(bf, 10);
-            force_trees = mem.GetBit(bf, 11);
-            display_shards = mem.GetBit(bf, 12);
-            warmth_fragments = mem.GetBit(bf, 13);
-            world_tour = mem.GetBit(bf, 14);
-        }
-
         private void UpdateWarmthFrags()
         {
             if (!warmth_fragments)
@@ -1168,15 +1100,6 @@ namespace OriDETracker
             current_frags = mem.MapstoneBitfield >> 9;
             max_frags = mem.TeleporterBitfield >> 10;
         }
-
-        private void UpdateTeleporters()
-        {
-            foreach (KeyValuePair<string, int> tp in teleporterBits)
-            {
-                teleportersActive[tp.Key] = mem.GetBit(mem.TeleporterBitfield, tp.Value);
-            }
-        }
-
         private void UpdateMapstoneProgression()
         {
             int ms = 0;
@@ -1196,7 +1119,7 @@ namespace OriDETracker
             TrackerSettings.Default.RefreshRate = RefreshRate;
             TrackerSettings.Default.Layout = current_layout;
             TrackerSettings.Default.Opacity = Opacity;
-            TrackerSettings.Default.Shards = display_shards;
+            TrackerSettings.Default.Shards = track_shards;
             TrackerSettings.Default.Teleporters = TrackTeleporters;
             TrackerSettings.Default.Trees = TrackTrees;
             TrackerSettings.Default.Pixels = TrackerSize;

@@ -245,28 +245,28 @@ namespace OriDETracker
 
         protected void SendSkillChange(String sk, bool b)
         {
-            parent.haveSkill[sk] = b;
+            //parent.haveSkill[sk] = b;
             parent.Refresh();
         }
         protected void SendTreeChange(String sk, bool b)
         {
-            parent.haveTree[sk] = b;
+            //parent.haveTree[sk] = b;
             parent.Refresh();
         }
         protected void SendEventChange(String ev, bool b)
         {
-            parent.haveEvent[ev] = b;
+            //parent.haveEvent[ev] = b;
             parent.Refresh();
         }
         protected void SendShardChange(String ev, bool b)
         {
-            parent.haveShards[ev] = b;
+            //parent.haveShards[ev] = b;
             parent.Refresh();
 
         }
         protected void SendMapstoneChange(int ms)
         {
-            parent.MapstoneCount = ms;
+            //parent.MapstoneCount = ms;
             parent.Refresh();
         }
 
@@ -505,7 +505,7 @@ namespace OriDETracker
 
         private void cb_shards_MouseClick(object sender, EventArgs e)
         {
-            parent.DisplayShards = cb_shards.Checked;
+            parent.TrackShards = cb_shards.Checked;
             parent.ChangeShards();
             parent.Refresh();
         }

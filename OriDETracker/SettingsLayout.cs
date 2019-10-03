@@ -95,7 +95,7 @@ namespace OriDETracker
                 this.rb_60_hz.Checked = false;
             }
 
-            this.cb_shards.Checked = parent.DisplayShards;
+            this.cb_shards.Checked = parent.TrackShards;
             this.cb_teleporters.Checked = parent.TrackTeleporters;
             this.cb_trees.Checked = parent.TrackTrees;
             this.Text = "Tracker Layer v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -202,7 +202,7 @@ namespace OriDETracker
 
         private void cb_shards_CheckedChanged(object sender, EventArgs e)
         {
-            parent.DisplayShards = cb_shards.Checked;
+            parent.TrackShards = cb_shards.Checked;
             parent.ChangeShards();
         }
 
