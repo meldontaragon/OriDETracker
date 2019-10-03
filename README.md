@@ -1,8 +1,7 @@
 ﻿# Ori DE: Randomizer Tracker
 
 ## Description
-This is a tracker for Ori DE. This tracker is intended for use in
-All Trees NMG runs with the Ori DE Randomizer (https://github.com/sigmasin/OriDERandomizer). Currently, it features the ability to auto update skill, event, and tree pickups.
+This is a tracker for Ori DE. This tracker is intended for use with the Ori DE Randomizer (https://orirando.com). Currently, it features the ability to auto update skill, event, tree, teleporter, and relic pickups.
 
 ## Prerequisites
 + .NET Framework 4.5.2 (https://www.microsoft.com/en-us/download/details.aspx?id=40779)
@@ -51,4 +50,9 @@ There are some known issues with the tracker using a lot of CPU time. I recommen
 Additionally, some people have had problems with the auto update feature but have found that running the tracker as Administrator can fix this.
 
 ## Thanks
-Thanks to SigmaSin for creating the Ori DE Randomizer and his assistance in getting the shards and map stone auto update features working! Additionally, thanks to DevilSquirrel for help with setting up the auto updating component and for writing the memory related classes. Thanks to ViresMajores and Hydra for their work in designing the visual components of the tracker.
+Thanks to SigmaSin for creating the Ori DE Randomizer and his assistance in getting the shards and map stone auto update features working! Additionally, thanks to DevilSquirrel for help with setting up the auto updating component and for writing the memory related classes. Thanks to ViresMajores and Hydra for their work in designing the visual components of the tracker. Thanks to Eiko for their continued work on the randomizer, the randomizer website, and assistance with coding up parts of this project.
+
+## Related Projects 
+* [OriDE Randomizer](https://github.com/sigmasin/OriDERandomizer)
+* [ori_rando_server](https://github.com/turntekGodhead/ori_rando_server)
+* [Autosplitter for Ori DE](https://github.com/ShootMe/LiveSplit.OriDE)
