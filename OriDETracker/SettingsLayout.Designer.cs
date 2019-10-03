@@ -75,7 +75,6 @@
             this.rbRandoTrees.TabStop = true;
             this.rbRandoTrees.Text = "Randomizer All Trees";
             this.rbRandoTrees.UseVisualStyleBackColor = true;
-            this.rbRandoTrees.CheckedChanged += new System.EventHandler(this.rbRandoTrees_CheckedChanged);
             // 
             // rbRandoEvents
             // 
@@ -87,7 +86,6 @@
             this.rbRandoEvents.TabStop = true;
             this.rbRandoEvents.Text = "Randomizer All Events";
             this.rbRandoEvents.UseVisualStyleBackColor = true;
-            this.rbRandoEvents.CheckedChanged += new System.EventHandler(this.rbRandoEvents_CheckedChanged);
             // 
             // rbOriAllSkills
             // 
@@ -99,7 +97,6 @@
             this.rbOriAllSkills.TabStop = true;
             this.rbOriAllSkills.Text = "All Skills";
             this.rbOriAllSkills.UseVisualStyleBackColor = true;
-            this.rbOriAllSkills.CheckedChanged += new System.EventHandler(this.rbOriAllSkills_CheckedChanged);
             // 
             // rbOriAllCells
             // 
@@ -111,7 +108,6 @@
             this.rbOriAllCells.TabStop = true;
             this.rbOriAllCells.Text = "All Cells";
             this.rbOriAllCells.UseVisualStyleBackColor = true;
-            this.rbOriAllCells.CheckedChanged += new System.EventHandler(this.rbOriAllCells_CheckedChanged);
             // 
             // rbReverseEventOrder
             // 
@@ -123,7 +119,6 @@
             this.rbReverseEventOrder.TabStop = true;
             this.rbReverseEventOrder.Text = "Reverse Event Order";
             this.rbReverseEventOrder.UseVisualStyleBackColor = true;
-            this.rbReverseEventOrder.CheckedChanged += new System.EventHandler(this.rbReverseEventOrder_CheckedChanged);
             // 
             // labelOpacity
             // 

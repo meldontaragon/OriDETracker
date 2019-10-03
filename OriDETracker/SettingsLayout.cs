@@ -127,32 +127,7 @@ namespace OriDETracker
             cb_shards.Checked = false;
             cb_teleporters.Checked = false;
         }
-
-        private void rbRandoTrees_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.ChangeLayout(TrackerLayout.RandomizerAllTrees);
-        }
-
-        private void rbRandoEvents_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.ChangeLayout(TrackerLayout.RandomizerAllEvents);
-        }
-
-        private void rbOriAllSkills_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.ChangeLayout(TrackerLayout.AllSkills);
-        }
-
-        private void rbOriAllCells_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.ChangeLayout(TrackerLayout.AllCells);
-        }
-
-        private void rbReverseEventOrder_CheckedChanged(object sender, EventArgs e)
-        {
-            parent.ChangeLayout(TrackerLayout.ReverseEventOrder);
-        }
-
+        
         private void SettingsLayout_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!(e.CloseReason == CloseReason.ApplicationExitCall || e.CloseReason == CloseReason.FormOwnerClosing))

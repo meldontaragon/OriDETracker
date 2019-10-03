@@ -69,7 +69,7 @@ namespace OriDETracker
 
             scaled_size = new Size(image_pixel_size, image_pixel_size);
             this.UpdateImages();
-            this.ChangeLayout(current_layout);
+            this.ChangeLayout();
             font_brush = new SolidBrush(font_color);
 
             this.ChangeShards();
@@ -156,6 +156,10 @@ namespace OriDETracker
         };
 
         private readonly int destroy = 1;
+
+        private readonly string[] skill_list = { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
+        private readonly string[] event_list = { "Water Vein", "Gumon Seal", "Sunstone", "Clean Water", "Wind Restored" };
+        private readonly string[] zone_list = { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu" };
         #endregion
 
         #region PublicProperties
@@ -211,7 +215,6 @@ namespace OriDETracker
         private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool ReleaseCapture();
-
         #endregion
 
         #region LogicDictionary
@@ -250,7 +253,7 @@ namespace OriDETracker
         protected Dictionary<String, Image> teleporterImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
-
+        
         public void UpdateImages()
         {
             var image_collection = typeof(Tracker).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.FieldType == typeof(Image));
@@ -262,22 +265,19 @@ namespace OriDETracker
 
             DIR = "Assets_" + image_pixel_size.ToString() + @"/";
 
-            //Initialize = true;
-
             imageSkillWheelDouble = Image.FromFile(DIR + @"SkillRing_Double.png");
             imageBlackBackground = Image.FromFile(DIR + @"BlackBackground.png");
             imageGSkills = Image.FromFile(DIR + @"GreySkillTree.png");
             imageGTrees = Image.FromFile(DIR + @"GreyTrees.png");
-
             imageMapStone = Image.FromFile(DIR + @"MapStone.png");
 
-            foreach (string skill in new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" })
+            foreach (string skill in skill_list)
             {
                 skillImages[skill] = Image.FromFile(DIR + skill.Replace(" ", String.Empty) + @".png");
                 treeImages[skill] = Image.FromFile(DIR + "T" + skill.Replace(" ", String.Empty) + @".png");
             }
 
-            foreach (string ev in new string[] { "Water Vein", "Gumon Seal", "Sunstone", "Clean Water", "Wind Restored" })
+            foreach (string ev in event_list)
             {
                 eventImages[ev] = Image.FromFile(DIR + ev.Replace(" ", String.Empty) + @".png");
                 eventGreyImages[ev] = Image.FromFile(DIR + "G" + ev.Replace(" ", String.Empty) + @".png");
@@ -289,7 +289,7 @@ namespace OriDETracker
                 }
             }
 
-            foreach (string zone in new string[] { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu" })
+            foreach (string zone in zone_list)
             {
                 relicExistImages[zone] = Image.FromFile(DIR + "Relics/Exist/" + zone + ".png");
                 relicFoundImages[zone] = Image.FromFile(DIR + "Relics/Found/" + zone + ".png");
@@ -299,8 +299,6 @@ namespace OriDETracker
                     teleporterImages[zone] = Image.FromFile(DIR + zone + "TP.png");
                 }
             }
-
-            //GC.Collect();
         }
         #endregion
 
@@ -312,29 +310,10 @@ namespace OriDETracker
         private Dictionary<String, Point> skillMousePoint;
 
         #region SetLayout
-        public void ChangeLayout(TrackerLayout layout)
+        public void ChangeLayout()
         {
-            this.current_layout = layout;
-            switch (layout)
-            {
-                case TrackerLayout.AllCells:
-                    SetLayoutAllCells();
-                    break;
-                case TrackerLayout.AllSkills:
-                    SetLayoutAllSkills();
-                    break;
-                case TrackerLayout.ReverseEventOrder:
-                    SetLayoutReverseEventOrder();
-                    break;
-                case TrackerLayout.RandomizerAllTrees:
-                    SetLayoutRandomizerAllTrees();
-                    break;
-                case TrackerLayout.RandomizerAllEvents:
-                    SetLayoutRandomizerAllEvents();
-                    break;
-                default:
-                    break;
-            }
+            this.current_layout = TrackerLayout.RandomizerAllTrees;
+            SetLayoutRandomizerAllTrees();                 
         }
         private void SetLayoutRandomizerAllTrees()
         {
@@ -531,22 +510,6 @@ namespace OriDETracker
                 {"Glades", 9}
             };
             #endregion
-        }
-        private void SetLayoutRandomizerAllEvents()
-        {
-            SetLayoutDefaults();
-        }
-        private void SetLayoutAllSkills()
-        {
-            SetLayoutDefaults();
-        }
-        private void SetLayoutAllCells()
-        {
-            SetLayoutDefaults();
-        }
-        private void SetLayoutReverseEventOrder()
-        {
-            SetLayoutDefaults();
         }
 
         private void SetMouseLocations()
@@ -902,7 +865,7 @@ namespace OriDETracker
 
             this.settings.Visible = false;
 
-            ChangeLayout(current_layout);
+            ChangeLayout();
             if (auto_update && !TrackerSettings.Default.AutoUpdate)
             {
                 TurnOffAutoUpdate();
@@ -912,7 +875,6 @@ namespace OriDETracker
 
             draggable = TrackerSettings.Default.Draggable;
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
-
         }
         public void ChangeMapstone()
         {
@@ -1079,6 +1041,13 @@ namespace OriDETracker
 
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
+            imageBlackBackground.Dispose();
+            imageGSkills.Dispose();
+            imageGTrees.Dispose();
+            imageMapStone.Dispose();
+            imageSkillWheelDouble.Dispose();
+            settings.Dispose();
+
             TrackerSettings.Default.FontColoring = font_color;
             TrackerSettings.Default.Background = BackColor;
             TrackerSettings.Default.RefreshRate = RefreshRate;
