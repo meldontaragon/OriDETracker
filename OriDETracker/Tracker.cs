@@ -764,6 +764,7 @@ namespace OriDETracker
                     }
                 }
                 #endregion
+
                 #region Tree
                 if (TrackTrees)
                 {
@@ -806,6 +807,8 @@ namespace OriDETracker
                     }
                 }
                 #endregion
+
+                #region Mapstone
                 if (display_mapstone)
                 {
                     g.DrawImage(imageMapStone, drawRect);
@@ -817,6 +820,7 @@ namespace OriDETracker
                     g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new Point(mapstone_text_parameters[image_pixel_size].X, mapstone_text_parameters[image_pixel_size].Y));
                 }
                 #endregion
+                #endregion
 
                 g.DrawImage(imageSkillWheelDouble, drawRect);
             }
@@ -824,7 +828,6 @@ namespace OriDETracker
             {
 
             }
-            //Refresh();
         }
         protected void ClearAll()
         {
@@ -1041,13 +1044,6 @@ namespace OriDETracker
 
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
-            imageBlackBackground.Dispose();
-            imageGSkills.Dispose();
-            imageGTrees.Dispose();
-            imageMapStone.Dispose();
-            imageSkillWheelDouble.Dispose();
-            settings.Dispose();
-
             TrackerSettings.Default.FontColoring = font_color;
             TrackerSettings.Default.Background = BackColor;
             TrackerSettings.Default.RefreshRate = RefreshRate;
