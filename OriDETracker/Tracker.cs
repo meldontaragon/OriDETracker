@@ -20,8 +20,10 @@ namespace OriDETracker
             TrackerSize = TrackerSettings.Default.Pixels;
 
             //Settings window display
-            settings = new SettingsLayout(this);
-            settings.Visible = false;
+            settings = new SettingsLayout(this)
+            {
+                Visible = false
+            };
 
             InitializeComponent();
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
@@ -58,10 +60,12 @@ namespace OriDETracker
             }
 
             //initialize the OriMemory module that Devil wrote
-            mem = new OriMemory();
+            Mem = new OriMemory();
             //start the background loop
-            th = new Thread(UpdateLoop);
-            th.IsBackground = true;
+            th = new Thread(UpdateLoop)
+            {
+                IsBackground = true
+            };
 
             scaled_size = new Size(image_pixel_size, image_pixel_size);
             this.UpdateImages();
@@ -135,7 +139,7 @@ namespace OriDETracker
         protected bool track_trees = TrackerSettings.Default.Trees;
         protected bool track_shards = TrackerSettings.Default.Shards;
 
-        protected OriMemory mem
+        protected OriMemory Mem
         {
             get;
             set;
@@ -585,10 +589,6 @@ namespace OriDETracker
         {
             Application.Exit();
         }
-        protected void resetToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.HardReset();
-        }
         protected void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             auto_update = !(auto_update);
@@ -640,9 +640,6 @@ namespace OriDETracker
         {
             ClearAll();
             Refresh();
-        }
-        private void editToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
         }
         #endregion
 
@@ -917,38 +914,6 @@ namespace OriDETracker
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
 
         }
-        protected void HardReset()
-        {
-            DialogResult res = MessageBox.Show("Your settings will be lost!", "Really reset?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, MessageBoxOptions.DefaultDesktopOnly);
-            if (res == DialogResult.Cancel)
-            {
-                return;
-            }
-            this.SoftReset();
-
-            settings.Reset();
-
-            TrackerSettings.Default.Reset();
-
-            this.Opacity = 1.0;
-            this.TrackerSize = (TrackerPixelSizes)PIXEL_DEF;
-
-            this.RefreshRate = (AutoUpdateRefreshRates)1000;
-
-            current_layout = TrackerLayout.RandomizerAllTrees;
-
-            this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
-
-            this.TopMost = TrackerSettings.Default.AlwaysOnTop;
-            this.alwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
-
-            this.track_shards = TrackerSettings.Default.Shards;
-
-            this.BackColor = Color.Black;
-            this.font_brush = new SolidBrush(Color.White);
-
-            Refresh();
-        }
         public void ChangeMapstone()
         {
         }
@@ -994,7 +959,7 @@ namespace OriDETracker
             {
                 try
                 {
-                    bool hooked = mem.HookProcess();
+                    bool hooked = Mem.HookProcess();
                     if (hooked)
                     {
                         UpdateValues();
@@ -1016,7 +981,7 @@ namespace OriDETracker
         {
             try
             {
-                mem.GetBitfields();
+                Mem.GetBitfields();
                 UpdateSkills();
                 UpdateTrees();
                 UpdateEvents();
@@ -1043,69 +1008,69 @@ namespace OriDETracker
         {
             foreach (KeyValuePair<string, int> skill in skillBits)
             {
-                haveSkill[skill.Key] = mem.GetBit(mem.TreeBitfield, skill.Value);
+                haveSkill[skill.Key] = Mem.GetBit(Mem.TreeBitfield, skill.Value);
             }
         }
         private void UpdateTrees()
         {
             foreach (KeyValuePair<string, int> tree in treeBits)
             {
-                haveTree[tree.Key] = mem.GetBit(mem.TreeBitfield, tree.Value);
+                haveTree[tree.Key] = Mem.GetBit(Mem.TreeBitfield, tree.Value);
             }
         }
         private void UpdateEvents()
         {
-            int bf = mem.KeyEventBitfield;
-            haveShards["Water Vein 1"] = mem.GetBit(bf, 0);
-            haveShards["Water Vein 2"] = mem.GetBit(bf, 1);
-            haveShards["Gumon Seal 1"] = mem.GetBit(bf, 3);
-            haveShards["Gumon Seal 2"] = mem.GetBit(bf, 4);
-            haveShards["Sunstone 1"] = mem.GetBit(bf, 6);
-            haveShards["Sunstone 2"] = mem.GetBit(bf, 7);
-            haveEvent["Water Vein"] = mem.GetBit(bf, 2);
-            haveEvent["Gumon Seal"] = mem.GetBit(bf, 5);
-            haveEvent["Sunstone"] = mem.GetBit(bf, 8);
-            haveEvent["Clean Water"] = mem.GetBit(bf, 9);
-            haveEvent["Wind Restored"] = mem.GetBit(bf, 10);
-            force_trees = mem.GetBit(bf, 11);
-            track_shards = mem.GetBit(bf, 12);
-            warmth_fragments = mem.GetBit(bf, 13);
-            world_tour = mem.GetBit(bf, 14);
+            int bf = Mem.KeyEventBitfield;
+            haveShards["Water Vein 1"] = Mem.GetBit(bf, 0);
+            haveShards["Water Vein 2"] = Mem.GetBit(bf, 1);
+            haveShards["Gumon Seal 1"] = Mem.GetBit(bf, 3);
+            haveShards["Gumon Seal 2"] = Mem.GetBit(bf, 4);
+            haveShards["Sunstone 1"] = Mem.GetBit(bf, 6);
+            haveShards["Sunstone 2"] = Mem.GetBit(bf, 7);
+            haveEvent["Water Vein"] = Mem.GetBit(bf, 2);
+            haveEvent["Gumon Seal"] = Mem.GetBit(bf, 5);
+            haveEvent["Sunstone"] = Mem.GetBit(bf, 8);
+            haveEvent["Clean Water"] = Mem.GetBit(bf, 9);
+            haveEvent["Wind Restored"] = Mem.GetBit(bf, 10);
+            force_trees = Mem.GetBit(bf, 11);
+            track_shards = Mem.GetBit(bf, 12);
+            warmth_fragments = Mem.GetBit(bf, 13);
+            world_tour = Mem.GetBit(bf, 14);
         }
         private void UpdateTeleporters()
         {
             foreach (KeyValuePair<string, int> tp in teleporterBits)
             {
-                teleportersActive[tp.Key] = mem.GetBit(mem.TeleporterBitfield, tp.Value);
+                teleportersActive[tp.Key] = Mem.GetBit(Mem.TeleporterBitfield, tp.Value);
             }
         }
         private void UpdateRelics()
         {
             int bf = 0;
             if (world_tour)
-                bf = mem.RelicBitfield;
+                bf = Mem.RelicBitfield;
             foreach (KeyValuePair<string, int> relic in relicExistsBits)
             {
-                relicExists[relic.Key] = mem.GetBit(bf, relic.Value);
+                relicExists[relic.Key] = Mem.GetBit(bf, relic.Value);
             }
             foreach (KeyValuePair<string, int> relic in relicFoundBits)
             {
-                relicFound[relic.Key] = mem.GetBit(bf, relic.Value);
+                relicFound[relic.Key] = Mem.GetBit(bf, relic.Value);
             }
         }
         private void UpdateWarmthFrags()
         {
             if (!warmth_fragments)
                 return;
-            current_frags = mem.MapstoneBitfield >> 9;
-            max_frags = mem.TeleporterBitfield >> 10;
+            current_frags = Mem.MapstoneBitfield >> 9;
+            max_frags = Mem.TeleporterBitfield >> 10;
         }
         private void UpdateMapstoneProgression()
         {
             int ms = 0;
             foreach (int bit in mapstoneBits.Values)
             {
-                if (mem.GetBit(mem.MapstoneBitfield, bit))
+                if (Mem.GetBit(Mem.MapstoneBitfield, bit))
                     ms++;
             }
             mapstone_count = ms;

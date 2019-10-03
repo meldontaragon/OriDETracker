@@ -39,14 +39,11 @@ namespace OriDETracker
             this.alwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelBlank = new System.Windows.Forms.Label();
             this.fontDialog_mapstone = new System.Windows.Forms.FontDialog();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenu_Tracker.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,22 +57,19 @@ namespace OriDETracker
             this.settingsToolStripMenuItem,
             this.toolStripSeparator2,
             this.clearToolStripMenuItem,
-            this.closeToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.editToolStripMenuItem,
-            this.resetToolStripMenuItem});
+            this.closeToolStripMenuItem});
             this.contextMenu_Tracker.Name = "contextMenu_Tracker";
             this.contextMenu_Tracker.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.contextMenu_Tracker.ShowCheckMargin = true;
             this.contextMenu_Tracker.ShowImageMargin = false;
-            this.contextMenu_Tracker.Size = new System.Drawing.Size(181, 220);
+            this.contextMenu_Tracker.Size = new System.Drawing.Size(181, 170);
             // 
             // moveToolStripMenuItem
             // 
             this.moveToolStripMenuItem.CheckOnClick = true;
             this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
             this.moveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.moveToolStripMenuItem.Text = "Move";
+            this.moveToolStripMenuItem.Text = "Draggable";
             this.moveToolStripMenuItem.ToolTipText = "Allows the form to be moved";
             this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
             // 
@@ -107,28 +101,17 @@ namespace OriDETracker
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
-            // editToolStripMenuItem
+            // toolStripSeparator2
             // 
-            this.editToolStripMenuItem.Enabled = false;
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem1_Click);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
             this.clearToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Text = "Clear Tracker";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
-            // 
-            // resetToolStripMenuItem
-            // 
-            this.resetToolStripMenuItem.Enabled = false;
-            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            this.resetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.resetToolStripMenuItem.Text = "Reset";
-            this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
@@ -144,16 +127,6 @@ namespace OriDETracker
             this.labelBlank.Name = "labelBlank";
             this.labelBlank.Size = new System.Drawing.Size(0, 13);
             this.labelBlank.TabIndex = 1;
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // Tracker
             // 
@@ -187,7 +160,6 @@ namespace OriDETracker
         #endregion
         private System.Windows.Forms.ContextMenuStrip contextMenu_Tracker;
         private System.Windows.Forms.ToolStripMenuItem autoUpdateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveToolStripMenuItem;
@@ -196,9 +168,7 @@ namespace OriDETracker
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.Label labelBlank;
         private System.Windows.Forms.FontDialog fontDialog_mapstone;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
