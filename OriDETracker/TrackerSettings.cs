@@ -70,7 +70,7 @@ namespace OriDETracker
         }
 
         [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("false")]
+        [DefaultSettingValueAttribute("true")]
         public bool Teleporters
         {
             get
@@ -107,6 +107,48 @@ namespace OriDETracker
             set
             {
                 this["Relics"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool DisplayEmptyRelics
+        {
+            get
+            {
+                return ((bool)(this["DisplayEmptyRelics"]));
+            }
+            set
+            {
+                this["DisplayEmptyRelics"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("false")]
+        public bool DisplayEmptyTeleporters
+        {
+            get
+            {
+                return ((bool)(this["DisplayEmptyTeleporters"]));
+            }
+            set
+            {
+                this["DisplayEmptyTeleporters"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool DisplayEmptyTrees
+        {
+            get
+            {
+                return ((bool)(this["DisplayEmptyTrees"]));
+            }
+            set
+            {
+                this["DisplayEmptyTrees"] = value;
             }
         }
 
@@ -163,6 +205,20 @@ namespace OriDETracker
             set
             {
                 this["Pixels"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("")]
+        public System.Drawing.FontFamily MapFont
+        {
+            get
+            {
+                return ((System.Drawing.FontFamily)(this["MapFont"]));
+            }
+            set
+            {
+                this["MapFont"] = value;
             }
         }
 

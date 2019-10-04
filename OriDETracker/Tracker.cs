@@ -22,7 +22,6 @@ namespace OriDETracker
             image_pixel_size = (int)tracker_size;
             scaled_size = new Size(image_pixel_size, image_pixel_size);
             UpdateImages();
-            SetDefaults();
 
             // Settings options for what to track
             track_shards = TrackerSettings.Default.Shards;
@@ -31,57 +30,57 @@ namespace OriDETracker
             track_trees = TrackerSettings.Default.Trees;
             track_mapstones = TrackerSettings.Default.Mapstones;
 
-            //Settings window display
+            // Settings for what to display
+            display_empty_relics = TrackerSettings.Default.DisplayEmptyRelics;
+            display_empty_trees = TrackerSettings.Default.DisplayEmptyTrees;
+            display_empty_teleporters = TrackerSettings.Default.DisplayEmptyTeleporters;
+
+            // Load the default logic options, bitfields, and mouse mappings
+            SetDefaults();
+
+            // Settings window display
             settings = new SettingsLayout(this)
             {
                 Visible = false
             };
 
-            //this should be unnecessary now
-            settings.ChangeShards();
-            settings.ChangeTeleporters();
-            settings.ChangeRelics();
-            settings.ChangeTrees();
-            settings.ChangeMapstones();
-
             InitializeComponent();
+
+            // Load settings for this form
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
-            //this.moveToolStripMenuItem.CheckState = TrackerSettings.Default.Draggable ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
             this.autoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
-            //this.autoUpdateToolStripMenuItem.CheckState = TrackerSettings.Default.AutoUpdate ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
             this.alwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
-            //this.alwaysOnTopToolStripMenuItem.CheckState = TrackerSettings.Default.AlwaysOnTop ? System.Windows.Forms.CheckState.Checked : System.Windows.Forms.CheckState.Unchecked;
             this.TopMost = TrackerSettings.Default.AlwaysOnTop;
 
             // Other Settings
             font_color = TrackerSettings.Default.FontColoring;
+            map_font = new Font(TrackerSettings.Default.MapFont, 24f, FontStyle.Bold);
             Opacity = TrackerSettings.Default.Opacity;
             BackColor = TrackerSettings.Default.Background;
 
-            //auto update boolean values
+            // Auto update boolean values
+            auto_update = TrackerSettings.Default.AutoUpdate;
             started = false;
             paused = false;
 
             settings.RefreshOpacityBar();
 
             if (font_color == null)
-            {
                 font_color = Color.White;
-            }
             if (BackColor == null)
-            {
                 BackColor = Color.Black;
-            }
 
-            //initialize the OriMemory module that Devil wrote
+            //initialize the OriMemory module that Devil/Eiko/Sigma wrote
             Mem = new OriMemory();
             //start the background loop
             th = new Thread(UpdateLoop)
             {
                 IsBackground = true
             };
+            if (auto_update)
+                TurnOnAutoUpdate();
 
-            /*
+            /* moved elsewhere in this load
             scaled_size = new Size(image_pixel_size, image_pixel_size);
             UpdateImages();
             SetDefaults();
@@ -91,23 +90,28 @@ namespace OriDETracker
 
             //handles weird exceptions and lets me know if there are potential problems
             if (destroy == 1)
-            {
                 this.SoftReset();
-            }
 
-            int needFont = 1;
-            foreach (FontFamily ff in FontFamily.Families)
-            {
-                if (ff.Name.ToLower() == "amatic sc")
+            bool need_font, found_fount = false;
+
+            if (map_font == null)
+                need_font = true;
+            else
+                need_font = false;
+
+            if (need_font)
+                foreach (FontFamily ff in FontFamily.Families)
                 {
-                    map_font = new Font(new FontFamily("Amatic SC"), 24f, FontStyle.Bold);
-                    needFont = 0;
-                    break;
+                    if (ff.Name.ToLower() == "amatic sc")
+                    {
+                        map_font = new Font(new FontFamily("Amatic SC"), 24f, FontStyle.Bold);
+                        found_fount = true;
+                        break;
+                    }
                 }
-            }
-            if (needFont == 1)
+            if (need_font && !found_fount)
             {
-                MessageBox.Show("Please install the included fonts: Amatic SC and Amatic SC Bold");
+                MessageBox.Show("It is recommended to install and use the included fonts: Amatic SC and Amatic SC Bold");
                 if (this.fontDialog_mapstone.ShowDialog() == DialogResult.OK)
                 {
                     map_font = fontDialog_mapstone.Font;
@@ -117,6 +121,11 @@ namespace OriDETracker
                 {
                     map_font = new Font(FontFamily.GenericSansSerif, 24f, FontStyle.Bold);
                 }
+            }
+            if (!need_font)
+            {
+                //this shouldn't be needed but I'm keeping it for the moment
+                map_font = new Font(map_font.FontFamily, 24f, FontStyle.Bold);
             }
         }
 
@@ -133,7 +142,6 @@ namespace OriDETracker
 
         protected AutoUpdateRefreshRates refresh_rate;
         protected int refresh_time;
-
 
         protected bool mode_shards;
         protected bool mode_force_trees;
@@ -153,9 +161,9 @@ namespace OriDETracker
         protected bool track_relics = TrackerSettings.Default.Relics;
         protected bool track_mapstones = TrackerSettings.Default.Mapstones;
 
-        protected bool display_empty_relics = false;
-        protected bool display_emptry_trees = true;
-        protected bool display_emptry_teleporters = false;
+        protected bool display_empty_relics = TrackerSettings.Default.DisplayEmptyRelics;
+        protected bool display_empty_trees = TrackerSettings.Default.DisplayEmptyTrees;
+        protected bool display_empty_teleporters = TrackerSettings.Default.DisplayEmptyTeleporters;
 
         protected OriMemory Mem
         {
@@ -183,12 +191,11 @@ namespace OriDETracker
         #region PublicProperties
         public Color FontColor
         {
-            get { return font_color; }
             set { font_color = value; font_brush = new SolidBrush(value); }
         }
         public Font MapFont
         {
-            set { map_font = value; }
+            set { map_font = new Font(value.FontFamily, 24f, FontStyle.Bold); }
         }
         public TrackerPixelSizes TrackerSize
         {
@@ -240,13 +247,13 @@ namespace OriDETracker
         }
         public bool DisplayEmptyTrees
         {
-            get { return display_emptry_trees; }
-            set { display_emptry_trees = value; this.Refresh(); }
+            get { return display_empty_trees; }
+            set { display_empty_trees = value; this.Refresh(); }
         }
         public bool DisplayEmptyTeleporters
         {
-            get { return display_emptry_teleporters; }
-            set { display_emptry_teleporters = value; this.Refresh(); }
+            get { return display_empty_teleporters; }
+            set { display_empty_teleporters = value; this.Refresh(); }
         }
         #endregion
 
@@ -743,7 +750,7 @@ namespace OriDETracker
                             g.DrawImage(teleporterActiveImages[tp.Key], drawRect);
                         }
                     }
-                    if (display_emptry_teleporters)
+                    if (display_empty_teleporters)
                     {
                         foreach (KeyValuePair<String, bool> tp in teleportersInactive)
                         {
@@ -761,11 +768,11 @@ namespace OriDETracker
                 /* Trees are drawn if:
                  * (a) track_trees is on
                  * (b) mode_force_trees is on
-                 * (*) only draw grey trees if display_empty_trees is on                 * 
+                 * (*) only draw grey trees if display_empty_trees is on
                  */
                 if (track_trees || mode_force_trees)
                 {
-                    if (display_emptry_trees)
+                    if (display_empty_trees)
                     {
                         g.DrawImage(imageGTrees, drawRect);
                     }
@@ -886,7 +893,6 @@ namespace OriDETracker
             draggable = TrackerSettings.Default.Draggable;
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
         }
-
         #endregion
 
         #region AutoUpdate
@@ -1047,8 +1053,9 @@ namespace OriDETracker
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
             TrackerSettings.Default.FontColoring = font_color;
+            TrackerSettings.Default.MapFont = map_font.FontFamily;
             TrackerSettings.Default.Background = BackColor;
-            TrackerSettings.Default.RefreshRate = RefreshRate;
+            TrackerSettings.Default.RefreshRate = refresh_rate;
             TrackerSettings.Default.Opacity = Opacity;
 
             TrackerSettings.Default.Shards = track_shards;
@@ -1057,7 +1064,11 @@ namespace OriDETracker
             TrackerSettings.Default.Relics = track_relics;
             TrackerSettings.Default.Mapstones = track_mapstones;
 
-            TrackerSettings.Default.Pixels = TrackerSize;
+            TrackerSettings.Default.DisplayEmptyRelics = display_empty_relics;
+            TrackerSettings.Default.DisplayEmptyTrees = display_empty_trees;
+            TrackerSettings.Default.DisplayEmptyTeleporters = display_empty_teleporters;
+
+            TrackerSettings.Default.Pixels = tracker_size;
             TrackerSettings.Default.AlwaysOnTop = this.TopMost;
             TrackerSettings.Default.Draggable = draggable;
             TrackerSettings.Default.AutoUpdate = auto_update;
