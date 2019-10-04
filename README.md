@@ -44,7 +44,7 @@ By default the tracker comes with four sizes of assets.
 
 ## Help
 For any questions or issues please post here:
-https://github.com/david-c-miller/OriDETracker/issues
+https://github.com/meldontaragon/OriDETracker/issues
 
 There are some known issues with the tracker using a lot of CPU time. I recommend setting the affinity to only 1 or 2 CPU cores to help alleviate this negatively affecting performance in Ori.
 
