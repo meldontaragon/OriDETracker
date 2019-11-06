@@ -28,8 +28,9 @@
     <ErrorReportUrl>https://github.com/meldontaragon/OriDETracker/issues</ErrorReportUrl>
     <ProductName>OriDETracker</ProductName>
     <PublisherName>MeldonTaragon</PublisherName>
+    <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>3.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>

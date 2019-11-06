@@ -54,9 +54,12 @@ namespace OriDETracker
 
             // Other Settings
             font_color = TrackerSettings.Default.FontColoring;
-            map_font = new Font(TrackerSettings.Default.MapFont, 24f, FontStyle.Bold);
+            font_family = TrackerSettings.Default.MapFont;
             Opacity = TrackerSettings.Default.Opacity;
             BackColor = TrackerSettings.Default.Background;
+
+
+
 
             // Auto update boolean values
             auto_update = TrackerSettings.Default.AutoUpdate;
@@ -94,39 +97,37 @@ namespace OriDETracker
 
             bool need_font, found_fount = false;
 
-            if (map_font == null)
+            if (font_family == null)
                 need_font = true;
             else
                 need_font = false;
 
             if (need_font)
+                // first looks for amatic sc
                 foreach (FontFamily ff in FontFamily.Families)
                 {
                     if (ff.Name.ToLower() == "amatic sc")
                     {
-                        map_font = new Font(new FontFamily("Amatic SC"), 24f, FontStyle.Bold);
+                        font_family = new FontFamily("Amatic SC");
                         found_fount = true;
                         break;
                     }
                 }
+            // if not found then ask for a font
             if (need_font && !found_fount)
             {
                 MessageBox.Show("It is recommended to install and use the included fonts: Amatic SC and Amatic SC Bold");
                 if (this.fontDialog_mapstone.ShowDialog() == DialogResult.OK)
                 {
-                    map_font = fontDialog_mapstone.Font;
-                    map_font = new Font(fontDialog_mapstone.Font.FontFamily, 24f, FontStyle.Bold);
+                    font_family = fontDialog_mapstone.Font.FontFamily;
                 }
                 else
                 {
-                    map_font = new Font(FontFamily.GenericSansSerif, 24f, FontStyle.Bold);
+                    font_family = FontFamily.GenericSansSerif;
                 }
             }
-            if (!need_font)
-            {
-                //this shouldn't be needed but I'm keeping it for the moment
-                map_font = new Font(map_font.FontFamily, 24f, FontStyle.Bold);
-            }
+            // finally load font
+            map_font = new Font(font_family, 24f, FontStyle.Bold);
         }
 
         #region PrivateVariables
@@ -137,6 +138,7 @@ namespace OriDETracker
         protected TrackerPixelSizes tracker_size;
 
         protected Color font_color;
+        protected FontFamily font_family;
         protected Brush font_brush;
         protected Font map_font;
 
@@ -195,7 +197,8 @@ namespace OriDETracker
         }
         public Font MapFont
         {
-            set { map_font = new Font(value.FontFamily, 24f, FontStyle.Bold); }
+            set { font_family = value.FontFamily;
+                map_font = new Font(font_family, 24f, FontStyle.Bold); }
         }
         public TrackerPixelSizes TrackerSize
         {
@@ -829,7 +832,7 @@ namespace OriDETracker
                     {
                         font_brush = new SolidBrush(Color.White);
                     }
-                    map_font = new Font(map_font.FontFamily, mapstone_text_parameters[image_pixel_size].TextSize, FontStyle.Bold);
+                    map_font = new Font(font_family, mapstone_text_parameters[image_pixel_size].TextSize, FontStyle.Bold);
                     g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new Point(mapstone_text_parameters[image_pixel_size].X, mapstone_text_parameters[image_pixel_size].Y));
                 }
                 #endregion
@@ -1053,7 +1056,7 @@ namespace OriDETracker
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
             TrackerSettings.Default.FontColoring = font_color;
-            TrackerSettings.Default.MapFont = map_font.FontFamily;
+            TrackerSettings.Default.MapFont = font_family;
             TrackerSettings.Default.Background = BackColor;
             TrackerSettings.Default.RefreshRate = refresh_rate;
             TrackerSettings.Default.Opacity = Opacity;
