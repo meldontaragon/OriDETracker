@@ -56,3 +56,6 @@ Thanks to SigmaSin for creating the Ori DE Randomizer and his assistance in gett
 * [OriDE Randomizer](https://github.com/sigmasin/OriDERandomizer)
 * [ori_rando_server](https://github.com/turntekGodhead/ori_rando_server)
 * [Autosplitter for Ori DE](https://github.com/ShootMe/LiveSplit.OriDE)
+
+## License
+The website code is licensed under the MIT license and is free for use.
