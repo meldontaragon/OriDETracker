@@ -114,3 +114,6 @@ you can ask in the Ori Runs Discord).
 * [ori_rando_server](https://github.com/turntekGodhead/ori_rando_server)
 * [Autosplitter for Ori DE](https://github.com/ShootMe/LiveSplit.OriDE)
 * [OriDETAS](https://github.com/ShootMe/OriDETAS)
+
+## License
+The website code is licensed under the MIT license and is free for use.
