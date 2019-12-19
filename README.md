@@ -1,8 +1,8 @@
 # Ori DE: Randomizer Tracker
 
 ## Description
-This is a tracker for Ori DE. This tracker is intended for use with the Ori DE 
-Randomizer (https://orirando.com). Currently, it features the ability to auto 
+This is a tracker for Ori DE. This tracker is intended for use with the [Ori DE 
+Randomizer](https://orirando.com). Currently, it features the ability to auto 
 update skill, event, tree, teleporter, and relic pickups. This code is maintained
 primarily by Mel Miller (`taragon.meldon at gmail dot com`).
 
@@ -24,7 +24,7 @@ the first version of shard and mapstone tracking with auto update
 * ViresMajores: for work on graphical design of the tracker
 
 ## Prerequisites
-* .NET Framework 4.5.2 (https://www.microsoft.com/en-us/download/details.aspx?id=40779)
+* [.NET Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=40779)
 
 ## Features
 The tracker has the ability to update either manually or through a memory hook 
@@ -98,8 +98,7 @@ will result in proper spacing and formatting of the tracker. If you want to chan
 the font anyways, you can select a new font in 'Settings' menu.
 
 ## Help
-If you run into any issues you can post them here:
-https://github.com/meldontaragon/OriDETracker/issues
+If you run into any issues you can post them [here](https://github.com/meldontaragon/OriDETracker/issues)
 
 There are some known issues with the tracker using a lot of CPU time. I recommend 
 setting the affinity to only 1 or 2 CPU cores to help alleviate this negatively 
@@ -108,9 +107,9 @@ auto update feature but have found that running the tracker as Administrator can
 fix this.
 
 Problems can also be reported to myself on Discord (Meldon#1653) through either the
-Ori Runs Discord (invite is available at https://orirando.com/) or the Ori 
-Randomizer Development Discord if you are a member (if you wish to join that Discord
-you can ask in the Ori Runs Discord).
+[Ori Runs Discord](https://orirando.com/discord) or the Ori Randomizer Development 
+Discord if you are a member (if you wish to join that Discord you can ask in the Ori
+Runs Discord).
 
 ## Related Projects 
 * [OriDE Randomizer - Current Fork](https://github.com/sparkle-preference/OriDERandomizer)
