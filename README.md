@@ -1,29 +1,30 @@
-﻿# Ori DE: Randomizer Tracker
+# Ori DE: Randomizer Tracker
 
 ## Description
 This is a tracker for Ori DE. This tracker is intended for use with the Ori DE 
 Randomizer (https://orirando.com). Currently, it features the ability to auto 
 update skill, event, tree, teleporter, and relic pickups. This code is maintained
-primarily by Mel Miller (<taragon.meldon at gmail dot com>).
+primarily by Mel Miller (`taragon.meldon at gmail dot com`).
 
 ## Contributions
 I'm thankful for the following people who have made contributions as well (in 
 alphabetical order):
-+ DevilSquirrel: for incredible work in implementing the base for the memory hook 
+
+* DevilSquirrel: for incredible work in implementing the base for the memory hook 
 which is pulled and modified from the auto splitter DevilSquirrel wrote for 
 LiveSplit
-+ Eiko: current maintainer of the randomizer and the randomizer web server, also
+* Eiko: current maintainer of the randomizer and the randomizer web server, also
 was fundamental in implementing the new auto update system using the new randomizer
 bitfields
-+ Hydra: for the majority of the graphical design of the tracker
-+ JHobz: for the core code for the web tracker and for helping to keep that working
+* Hydra: for the majority of the graphical design of the tracker
+* JHobz: for the core code for the web tracker and for helping to keep that working
 through all the changes I have made that tried to break it
-+ SigmaSin: for creating the Randomizer and for vital assistance in implmenting 
+* SigmaSin: for creating the Randomizer and for vital assistance in implmenting 
 the first version of shard and mapstone tracking with auto update
-+ ViresMajores: for work on graphical design of the tracker
+* ViresMajores: for work on graphical design of the tracker
 
 ## Prerequisites
-+ .NET Framework 4.5.2 (https://www.microsoft.com/en-us/download/details.aspx?id=40779)
+* .NET Framework 4.5.2 (https://www.microsoft.com/en-us/download/details.aspx?id=40779)
 
 ## Features
 The tracker has the ability to update either manually or through a memory hook 
@@ -31,6 +32,7 @@ on the Ori and the Blind Forest DE executable running the Randomizer DLL.
 Currently there are some limitations to the manual tracking. 
 
 The following are the only types of pickups which can be tracked manually:
+
 + Skills (always on)
 + Trees (requires `Track Trees` setting)
 + Events (always on)
@@ -38,23 +40,25 @@ The following are the only types of pickups which can be tracked manually:
 + Mapsontes (always on)
 
 The following can be tracked with `Auto Update` with the game running:
-+ Skills (always on)
-+ Trees (if playing with ForceTrees or if `Track Trees` is on)
-+ Events (always on)
-+ Shards (if playing with Shards option)
-+ Teleporters (if `Track Teleporters` is on)
-+ Relics (if playing with World Tour)
-+ Mapstones (always on)
+
+* Skills (always on)
+* Trees (if playing with ForceTrees or if `Track Trees` is on)
+* Events (always on)
+* Shards (if playing with Shards option)
+* Teleporters (if `Track Teleporters` is on)
+* Relics (if playing with World Tour)
+* Mapstones (always on)
 
 ## Settings
 
 ### Sizes
 There are four available sizes for the tracker display which can be changed
 in the Settings menu:
-+ Small (312 px)
-+ Medium (437 px)
-+ Large (667 px)
-+ XL (750 px)
+
+* Small (312 px)
+* Medium (437 px)
+* Large (667 px)
+* XL (750 px)
 
 ### Moving
 To move the tracker around the screen right click and select `Draggable`. This 
