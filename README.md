@@ -109,9 +109,9 @@ Randomizer Development Discord if you are a member (if you wish to join that Dis
 you can ask in the Ori Runs Discord).
 
 ## Related Projects 
-* [OriDE Randomizer - Current Fork](https://github.com/turntekGodhead/OriDERandomizer)
+* [OriDE Randomizer - Current Fork](https://github.com/sparkle-preference/OriDERandomizer)
 * [OriDE Randomizer - OLD](https://github.com/sigmasin/OriDERandomizer)
-* [ori_rando_server](https://github.com/turntekGodhead/ori_rando_server)
+* [ori_rando_server](https://github.com/sparkle-preference/ori_rando_server)
 * [Autosplitter for Ori DE](https://github.com/ShootMe/LiveSplit.OriDE)
 * [OriDETAS](https://github.com/ShootMe/OriDETAS)
 
