@@ -1,12 +1,11 @@
-﻿using System;
+﻿using OriDE.Memory;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
-
-using System.Threading;
-using OriDE.Memory;
 using System.Reflection;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace OriDETracker
 {
@@ -16,138 +15,195 @@ namespace OriDETracker
         {
             DoubleBuffered = true;
 
-            //Log important things
-            //Log = new Logger("OriDETracker-v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            //Log.WriteToLog("**INFO**  : Starting Tracker (v " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")");
-
-            //Form for quickly editting things
-            edit_form = new EditForm(this);
-            edit_form.Visible = false;
-
             // Settings options for Refresh Rate and Tracker Size
-            RefreshRate = TrackerSettings.Default.RefreshRate;
-            TrackerSize = TrackerSettings.Default.Pixels;
+            refresh_rate = TrackerSettings.Default.RefreshRate;
+            tracker_size = TrackerSettings.Default.Pixels;
 
-            //Settings window display
-            settings = new SettingsLayout(this, true);
-            settings.Visible = false;
+            image_pixel_size = (int)tracker_size;
+            scaled_size = new Size(image_pixel_size, image_pixel_size);
+            UpdateImages();
+
+            // Settings options for what to track
+            track_shards = TrackerSettings.Default.Shards;
+            track_relics = TrackerSettings.Default.Relics;
+            track_teleporters = TrackerSettings.Default.Teleporters;
+            track_trees = TrackerSettings.Default.Trees;
+            track_mapstones = TrackerSettings.Default.Mapstones;
+
+            // Settings for what to display
+            display_empty_relics = TrackerSettings.Default.DisplayEmptyRelics;
+            display_empty_trees = TrackerSettings.Default.DisplayEmptyTrees;
+            display_empty_teleporters = TrackerSettings.Default.DisplayEmptyTeleporters;
+
+            // Load the default logic options, bitfields, and mouse mappings
+            SetDefaults();
+
+            // Settings window display
+            settings = new SettingsLayout(this)
+            {
+                Visible = false
+            };
 
             InitializeComponent();
 
-            //auto update boolean values
-            started = false;
-            paused = false;
+            // Load settings for this form
+            this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
+            this.autoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
+            this.alwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
+            this.TopMost = TrackerSettings.Default.AlwaysOnTop;
 
-            //load settings (except for those needed to initialize the settings window)
-            display_shards = TrackerSettings.Default.Shards;
-            current_layout = TrackerSettings.Default.Layout;
-            display_shards = TrackerSettings.Default.Shards;
-            TrackTeleporters = TrackerSettings.Default.Teleporters;
-            TrackTrees = TrackerSettings.Default.Trees;
+            // Other Settings
             font_color = TrackerSettings.Default.FontColoring;
+            font_family = TrackerSettings.Default.MapFont;
             Opacity = TrackerSettings.Default.Opacity;
             BackColor = TrackerSettings.Default.Background;
+
+
+
+
+            // Auto update boolean values
+            auto_update = TrackerSettings.Default.AutoUpdate;
+            started = false;
+            paused = false;
 
             settings.RefreshOpacityBar();
 
             if (font_color == null)
-            {
-                //Log.WriteToLog("**INFO**  : Font Color is null, loading default font color instead");
                 font_color = Color.White;
-            }
             if (BackColor == null)
-            {
-                //Log.WriteToLog("**INFO**  : BackColor is null, loading default background color instead");
                 BackColor = Color.Black;
-            }
 
-            //initialize the OriMemory module that Devil wrote
-            mem = new OriMemory();
+            //initialize the OriMemory module that Devil/Eiko/Sigma wrote
+            Mem = new OriMemory();
             //start the background loop
-            th = new Thread(UpdateLoop);
-            th.IsBackground = true;
+            th = new Thread(UpdateLoop)
+            {
+                IsBackground = true
+            };
+            if (auto_update)
+                TurnOnAutoUpdate();
 
-            scaledSize = new Size(image_pixel_size, image_pixel_size);
-            this.UpdateImages(false);
-            this.ChangeLayout(current_layout);
+            /* moved elsewhere in this load
+            scaled_size = new Size(image_pixel_size, image_pixel_size);
+            UpdateImages();
+            SetDefaults();
+            */
+
             font_brush = new SolidBrush(font_color);
-
-            this.ChangeShards();
-            this.ChangeMapstone();
 
             //handles weird exceptions and lets me know if there are potential problems
             if (destroy == 1)
-            {
-                //Log.WriteToLog("**DEBUG** : Settings may need to be reset.");
                 this.SoftReset();
-            }
 
-            int needFont = 1;
-            foreach (FontFamily ff in FontFamily.Families)
-            {
-                if (ff.Name.ToLower() == "amatic sc")
+            bool need_font, found_fount = false;
+
+            if (font_family == null)
+                need_font = true;
+            else
+                need_font = false;
+
+            if (need_font)
+                // first looks for amatic sc
+                foreach (FontFamily ff in FontFamily.Families)
                 {
-                    map_font = new Font(new FontFamily("Amatic SC"), 24f, FontStyle.Bold);
-                    needFont = 0;
-                    break;
+                    if (ff.Name.ToLower() == "amatic sc")
+                    {
+                        font_family = new FontFamily("Amatic SC");
+                        found_fount = true;
+                        break;
+                    }
                 }
-            }
-            if (needFont == 1)
+            // if not found then ask for a font
+            if (need_font && !found_fount)
             {
-                MessageBox.Show("Please install the included fonts: Amatic SC and Amatic SC Bold");
-                //Log.WriteToLog("**DEBUG** : Don't have preferred font so checking with user.");
+                MessageBox.Show("It is recommended to install and use the included fonts: Amatic SC and Amatic SC Bold");
                 if (this.fontDialog_mapstone.ShowDialog() == DialogResult.OK)
                 {
-                    map_font = fontDialog_mapstone.Font;
-                    map_font = new Font(fontDialog_mapstone.Font.FontFamily, 24f, FontStyle.Bold);
+                    font_family = fontDialog_mapstone.Font.FontFamily;
                 }
                 else
                 {
-                    map_font = new Font(FontFamily.GenericSansSerif, 24f, FontStyle.Bold);
+                    font_family = FontFamily.GenericSansSerif;
                 }
             }
+            // finally load font
+            map_font = new Font(font_family, 24f, FontStyle.Bold);
         }
 
-        protected OriMemory mem
+        #region PrivateVariables
+        protected static int PIXEL_DEF = 667;
+        protected int image_pixel_size;
+
+        protected Size scaled_size;
+        protected TrackerPixelSizes tracker_size;
+
+        protected Color font_color;
+        protected FontFamily font_family;
+        protected Brush font_brush;
+        protected Font map_font;
+
+        protected AutoUpdateRefreshRates refresh_rate;
+        protected int refresh_time;
+
+        protected bool mode_shards;
+        protected bool mode_force_trees;
+        protected bool mode_world_tour;
+        protected bool mode_warmth_fragments;
+        protected bool mode_force_maps;
+
+        protected int current_frags;
+        protected int max_frags;
+
+        protected bool draggable = TrackerSettings.Default.Draggable;
+        protected bool auto_update = TrackerSettings.Default.AutoUpdate;
+
+        protected bool track_teleporters = TrackerSettings.Default.Teleporters;
+        protected bool track_trees = TrackerSettings.Default.Trees;
+        protected bool track_shards = TrackerSettings.Default.Shards;
+        protected bool track_relics = TrackerSettings.Default.Relics;
+        protected bool track_mapstones = TrackerSettings.Default.Mapstones;
+
+        protected bool display_empty_relics = TrackerSettings.Default.DisplayEmptyRelics;
+        protected bool display_empty_trees = TrackerSettings.Default.DisplayEmptyTrees;
+        protected bool display_empty_teleporters = TrackerSettings.Default.DisplayEmptyTeleporters;
+
+        protected OriMemory Mem
         {
             get;
             set;
         }
+
         protected Thread th;
         protected SettingsLayout settings;
-        protected EditForm edit_form;
-        //public Logger Log;
 
+        private readonly Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
+            { (int) TrackerPixelSizes.Small, new MapstoneText(140+6, 190+6, 14) },
+            { (int) TrackerPixelSizes.Medium, new MapstoneText(195+9, 268+9, 18) },
+            { (int) TrackerPixelSizes.Large, new MapstoneText(304+13, 417+13, 24) },
+            { (int) TrackerPixelSizes.XL, new MapstoneText(342+15, 471+15, 28) }
+        };
+
+        private readonly int destroy = 1;
+
+        private readonly string[] skill_list = { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
+        private readonly string[] event_list = { "Water Vein", "Gumon Seal", "Sunstone", "Clean Water", "Wind Restored" };
+        private readonly string[] zone_list = { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu" };
+        #endregion
+
+        #region PublicProperties
         public Color FontColor
         {
-            get { return font_color; }
             set { font_color = value; font_brush = new SolidBrush(value); }
         }
-
+        public Font MapFont
+        {
+            set { font_family = value.FontFamily;
+                map_font = new Font(font_family, 24f, FontStyle.Bold); }
+        }
         public TrackerPixelSizes TrackerSize
         {
             get { return tracker_size; }
             set { tracker_size = value; image_pixel_size = (int)value; }
-        }
-
-        public bool DisplayShards
-        {
-            get { return display_shards; }
-            set { display_shards = value; }
-        }
-
-        public bool TrackTeleporters = TrackerSettings.Default.Teleporters;
-        public bool TrackTrees = TrackerSettings.Default.Trees;
-
-        public Font MapFont
-        {
-            set { map_font = value; }
-        }
-
-        public int MapstoneCount
-        {
-            get { return mapstone_count; }
-            set { mapstone_count = value; }
         }
 
         public AutoUpdateRefreshRates RefreshRate
@@ -156,40 +212,53 @@ namespace OriDETracker
             set { refresh_rate = value; refresh_time = (int)(1000000.0f / ((float)value)); }
         }
 
-        protected static int PIXEL_DEF = (int)TrackerPixelSizes.size640px;
+        public bool TrackShards
+        {
+            get { return track_shards; }
+            set { track_shards = value; this.Refresh(); }
+        }
+        public bool TrackTeleporters
+        {
+            get { return track_teleporters; }
+            set { track_teleporters = value; this.Refresh(); }
+        }
+        public bool TrackTrees
+        {
+            get { return track_trees; }
+            set { track_trees = value; this.Refresh(); }
+        }
+        public bool TrackRelics
+        {
+            get { return track_relics; }
+            set { track_relics = value; this.SetRelicDefaults(); this.Refresh(); }
+        }
+        public bool TrackMapstones
+        {
+            get { return track_mapstones; }
+            set { track_mapstones = value; this.Refresh(); }
+        }
+        public int MapstoneCount
+        {
+            get { return mapstone_count; }
+            set { mapstone_count = value; }
+        }
 
-        protected int image_pixel_size = PIXEL_DEF;
-        protected TrackerPixelSizes tracker_size;
-
-
-        private Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
-            { (int) TrackerPixelSizes.size300px, new MapstoneText(140+6, 190+6, 14) },
-            { (int) TrackerPixelSizes.size420px, new MapstoneText(195+9, 268+9, 18) },
-            { (int) TrackerPixelSizes.size640px, new MapstoneText(304+13, 417+13, 24) },
-            { (int) TrackerPixelSizes.size720px, new MapstoneText(342+15, 471+15, 28) }
-        };
-
-        protected Size scaledSize;
-        protected bool display_shards = TrackerSettings.Default.Shards;
-        protected TrackerLayout current_layout;
-        protected Color font_color;
-
-        public Brush font_brush;
-        protected const int TOL = 25;
-        protected bool auto_update = TrackerSettings.Default.AutoUpdate;
-        protected bool draggable = TrackerSettings.Default.Draggable;
-        protected int mapstone_count = 0;
-        protected bool display_mapstone = false;
-        protected Font map_font;
-        protected AutoUpdateRefreshRates refresh_rate;
-        protected int refresh_time;
-        protected bool world_tour;
-        protected bool force_trees;
-        protected bool warmth_fragments;
-        protected int current_frags;
-        protected int max_frags;
-
-        private int destroy = 1;
+        public bool DisplayEmptyRelics
+        {
+            get { return display_empty_relics; }
+            set { display_empty_relics = value; this.Refresh(); }
+        }
+        public bool DisplayEmptyTrees
+        {
+            get { return display_empty_trees; }
+            set { display_empty_trees = value; this.Refresh(); }
+        }
+        public bool DisplayEmptyTeleporters
+        {
+            get { return display_empty_teleporters; }
+            set { display_empty_teleporters = value; this.Refresh(); }
+        }
+        #endregion
 
         #region FrameMoving
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -199,26 +268,21 @@ namespace OriDETracker
         private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool ReleaseCapture();
-
         #endregion
 
         #region LogicDictionary
-        //general: Skills and Events
-        public Dictionary<String, bool> haveSkill;
-        public Dictionary<String, bool> haveEvent;
+        // not a dictionary but "logic"
+        protected int mapstone_count = 0;
 
-        //Relics
-        public Dictionary<String, bool> relicExists;
-        public Dictionary<String, bool> relicFound;
-
-        public Dictionary<String, bool> teleportersActive;
-
-        //All Trees
-        public Dictionary<String, bool> hitTree;
-        public Dictionary<String, bool> haveTree;
-
-        //Shards
-        public Dictionary<String, bool> haveShards;
+        //Skills, Trees, Events, Shards, Teleporters, and Relics
+        protected Dictionary<String, bool> haveSkill = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> haveTree = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> haveEvent = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> haveShards = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> teleportersActive = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> teleportersInactive = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> relicExists = new Dictionary<string, bool>();
+        protected Dictionary<String, bool> relicFound = new Dictionary<string, bool>();
 
         //Bits
         private Dictionary<String, int> treeBits;
@@ -227,17 +291,10 @@ namespace OriDETracker
         private Dictionary<String, int> mapstoneBits;
         private Dictionary<String, int> relicExistsBits;
         private Dictionary<String, int> relicFoundBits;
-
-        /*
-		   //All Events
-		   private Dictionary<String, bool> haveEventLocation;
-		   private Dictionary<String, bool> hitEventLocation;
-		 */
         #endregion
 
         #region Images
-
-        protected String DIR = @"Assets_750/";
+        protected String DIR = @"Assets_667/";
 
         protected Image imageSkillWheelDouble;
         protected Image imageBlackBackground;
@@ -245,7 +302,17 @@ namespace OriDETracker
         protected Image imageGTrees;
         protected Image imageMapStone;
 
-        public void UpdateImages(bool Initialize)
+        protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> treeImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
+        protected Dictionary<String, Image> teleporterActiveImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> teleporterInactiveImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
+
+        public void UpdateImages()
         {
             var image_collection = typeof(Tracker).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.FieldType == typeof(Image));
             foreach (var img in image_collection)
@@ -256,22 +323,19 @@ namespace OriDETracker
 
             DIR = "Assets_" + image_pixel_size.ToString() + @"/";
 
-            //Initialize = true;
-
             imageSkillWheelDouble = Image.FromFile(DIR + @"SkillRing_Double.png");
             imageBlackBackground = Image.FromFile(DIR + @"BlackBackground.png");
             imageGSkills = Image.FromFile(DIR + @"GreySkillTree.png");
             imageGTrees = Image.FromFile(DIR + @"GreyTrees.png");
-
             imageMapStone = Image.FromFile(DIR + @"MapStone.png");
 
-            foreach (string skill in new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" })
+            foreach (string skill in skill_list)
             {
                 skillImages[skill] = Image.FromFile(DIR + skill.Replace(" ", String.Empty) + @".png");
                 treeImages[skill] = Image.FromFile(DIR + "T" + skill.Replace(" ", String.Empty) + @".png");
             }
 
-            foreach (string ev in new string[] { "Water Vein", "Gumon Seal", "Sunstone", "Clean Water", "Wind Restored" })
+            foreach (string ev in event_list)
             {
                 eventImages[ev] = Image.FromFile(DIR + ev.Replace(" ", String.Empty) + @".png");
                 eventGreyImages[ev] = Image.FromFile(DIR + "G" + ev.Replace(" ", String.Empty) + @".png");
@@ -283,225 +347,73 @@ namespace OriDETracker
                 }
             }
 
-            foreach (string zone in new string[] { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu"} )
+            foreach (string zone in zone_list)
             {
                 relicExistImages[zone] = Image.FromFile(DIR + "Relics/Exist/" + zone + ".png");
                 relicFoundImages[zone] = Image.FromFile(DIR + "Relics/Found/" + zone + ".png");
 
                 if (zone != "Misty")
                 {
-                    teleporterImages[zone] = Image.FromFile(DIR + zone + "TP.png");
+                    teleporterActiveImages[zone] = Image.FromFile(DIR + zone + "TP.png");
                 }
             }
-
-            //GC.Collect();
         }
-
-        protected Dictionary<String, Image> teleporterImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
-
-        protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> treeImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
-
         #endregion
-
-        #region Hitbox
-        //Game hitboxes for trees and events
-        //private bool checkTreeHitbox = false;
-        //private bool checkEventHitbox = false;
-
-        /*
-    private Dictionary<Skill, HitBox> treeHitboxes = new Dictionary<Skill, HitBox>(){
-        {Skill.Sein,        new HitBox("-165,-262,1,2")},
-        {Skill.WallJump,    new HitBox("-317,-301,5,6")},
-        {Skill.ChargeFlame, new HitBox("-53,-153,5,6")},
-        {Skill.Dash,        new HitBox("293,-251,5,6")},
-        {Skill.DoubleJump,  new HitBox("785,-404,5,6")},
-        {Skill.Bash,        new HitBox("532,334,5,6")},
-        {Skill.Stomp,       new HitBox("859,-88,5,6")},
-        {Skill.Glide,       new HitBox("-458,-13,5,6")},
-        {Skill.Climb,       new HitBox("-1189,-95,5,6")},
-        {Skill.ChargeJump,  new HitBox("-697,413,5,6")},
-        {Skill.Grenade,     new HitBox("69,-373,5,6")}
-    };
-
-    //placeholder until I get the actual coordinates
-    private Dictionary<String, HitBox> eventHitboxes = new Dictionary<String, HitBox>(){
-        {"Water Vein",      new HitBox( "0,0,1,1")},
-        {"Gumon Seal",      new HitBox( "0,0,1,1")},
-        {"Sunstone",        new HitBox( "0,0,1,1")},
-        {"Clean Water",     new HitBox( "0,0,1,1")},
-        {"Wind Restored",   new HitBox( "0,0,1,1")},
-        {"Warmth Returned", new HitBox( "0,0,1,1")},
-    };
-    */
-        #endregion
-
-        //points for mouse clicks (with certain tolerance defined by TOL)
-        private Point mapstoneMousePoint = new Point(305, 343);
-        private Dictionary<String, Point> eventMousePoint;
 
         #region SetLayout
-        public void ChangeLayout(TrackerLayout layout)
-        {
-            this.current_layout = layout;
-            switch (layout)
-            {
-                case TrackerLayout.AllCells:
-                    SetLayoutAllCells();
-                    break;
-                case TrackerLayout.AllSkills:
-                    SetLayoutAllSkills();
-                    break;
-                case TrackerLayout.ReverseEventOrder:
-                    SetLayoutReverseEventOrder();
-                    break;
-                case TrackerLayout.RandomizerAllTrees:
-                    SetLayoutRandomizerAllTrees();
-                    break;
-                case TrackerLayout.RandomizerAllEvents:
-                    SetLayoutRandomizerAllEvents();
-                    break;
-                default:
-                    break;
-            }
-        }
-        private void SetLayoutRandomizerAllTrees()
-        {
-            SetLayoutDefaults();
+        //points for mouse clicks (with certain tolerance defined by TOL)
+        private const int TOL = 25;
+        private Point mapstoneMousePoint = new Point(305, 343);
+        private Dictionary<String, Point> eventMousePoint;
+        private Dictionary<String, Point> treeMouseLocation;
+        private Dictionary<String, Point> skillMousePoint;
 
-            display_mapstone = true;
-            ChangeMapstone();
-
-            hitTree = new Dictionary<String, bool>(){
-                {"Spirit Flame", false},
-                {"Wall Jump",    false},
-                {"Charge Flame", false},
-                {"Double Jump",  false},
-                {"Bash",        false},
-                {"Stomp",       false},
-                {"Glide",       false},
-                {"Climb",       false},
-                {"Charge Jump",  false},
-                {"Grenade",     false},
-                {"Dash",       false}
-            };
-
-            haveTree = new Dictionary<String, bool>(){
-                {"Spirit Flame", false},
-                {"Wall Jump",    false},
-                {"Charge Flame", false},
-                {"Double Jump",  false},
-                {"Bash",        false},
-                {"Stomp",       false},
-                {"Glide",       false},
-                {"Climb",       false},
-                {"Charge Jump",  false},
-                {"Grenade",     false},
-                {"Dash",       false}
-            };
-            haveEvent = new Dictionary<String, bool>(){
-                {"Water Vein",      false},
-                {"Gumon Seal",      false},
-                {"Sunstone",        false},
-                {"Clean Water",     false},
-                {"Wind Restored",   false}
-            };
-
-            haveShards = new Dictionary<string, bool>(){
-                {"Water Vein 1",     false},
-                {"Water Vein 2",     false},
-                {"Gumon Seal 1",     false},
-                {"Gumon Seal 2",     false},
-                {"Sunstone 1",      false},
-                {"Sunstone 2",      false},
-            };
-            
-            eventMousePoint = new Dictionary<string, Point>(){
-                {"Water Vein", new Point(221+13, 258+13)},
-                {"Gumon Seal", new Point(328+13, 215+13)},
-                {"Sunstone",   new Point(428+13, 257+13)},
-                {"Wind Restored", new Point(423+13, 365+13)},
-                {"Clean Water", new Point(220+13, 360+13)}
-            };
-
-            //checkTreeHitbox = true;
-            //checkEventHitbox = false;
-        }
-
-        private void SetLayoutDefaults()
+        private void SetDefaults()
         {
             SetMouseLocations();
-            //checkTreeHitbox = false;
-            //checkEventHitbox = false;
-
-            #region Logic
-            haveSkill = new Dictionary<String, bool>(){
-                {"Spirit Flame",        false},
-                {"Wall Jump",    false},
-                {"Dash",       false},
-                {"Charge Flame", false},
-                {"Double Jump",  false},
-                {"Bash",        false},
-                {"Stomp",       false},
-                {"Glide",       false},
-                {"Climb",       false},
-                {"Charge Jump",  false},
-                {"Grenade",     false}
-            };
-            haveEvent = new Dictionary<String, bool>(){
-                {"Water Vein",      false},
-                {"Gumon Seal",      false},
-                {"Sunstone",        false},
-                {"Clean Water",     false},
-                {"Warmth Returned", false},
-                {"Wind Restored",   false}
-            };
-            relicExists = new Dictionary<string, bool>()
+            SetBitDefaults();
+            SetSkillDefaults();
+            SetEventDefaults();
+            SetRelicDefaults();
+        }
+        private void SetSkillDefaults()
+        {
+            //haveTree and haveSkill Dictionaries
+            foreach (var sk in skill_list)
             {
-                {"Glades", false},
-                {"Grove", false},
-                {"Grotto", false},
-                {"Blackroot", false},
-                {"Swamp", false},
-                {"Ginso", false},
-                {"Valley", false},
-                {"Misty", false},
-                {"Forlorn", false},
-                {"Sorrow", false},
-                {"Horu", false}
-            };
-            relicFound = new Dictionary<string, bool>()
+                haveTree[sk] = false;
+                haveSkill[sk] = false;
+            }
+        }
+        private void SetEventDefaults()
+        {
+            //haveEvent and haveShard Dictionaries
+            foreach (var ev in event_list)
             {
-                {"Glades", false},
-                {"Grove", false},
-                {"Grotto", false},
-                {"Blackroot", false},
-                {"Swamp", false},
-                {"Ginso", false},
-                {"Valley", false},
-                {"Misty", false},
-                {"Forlorn", false},
-                {"Sorrow", false},
-                {"Horu", false}
-            };
-            teleportersActive = new Dictionary<string, bool>()
+                haveEvent[ev] = false;
+                if (ev == "Water Vein" || ev == "Gumon Seal" || ev == "Sunstone")
+                {
+                    haveShards[ev + " 1"] = false;
+                    haveShards[ev + " 2"] = false;
+                }
+            }
+        }
+        private void SetRelicDefaults()
+        {
+            //relicExists, relicFound, and teleporterActive Dictionaries
+            foreach (var zn in zone_list)
             {
-                {"Grove", false},
-                {"Swamp", false},
-                {"Grotto", false},
-                {"Valley", false},
-                {"Forlorn", false},
-                {"Sorrow", false},
-                {"Ginso", false},
-                {"Horu", false},
-                {"Blackroot", false},
-                {"Glades", false},
-            };
+                relicExists[zn] = !auto_update;
+                relicFound[zn] = false;
+                if (zn != "Misty")
+                {
+                    teleportersActive[zn] = false;
+                }
+            }
+        }
+        private void SetBitDefaults()
+        {
+            #region Bits
             treeBits = new Dictionary<string, int>() {
                 { "Spirit Flame", 0},
                 { "Wall Jump", 1},
@@ -578,55 +490,33 @@ namespace OriDETracker
                 {"Horu", 7},
                 {"Blackroot", 8},
                 {"Glades", 9}
-            };            
+            };
             #endregion
         }
-
-        private void SetLayoutRandomizerAllEvents()
-        {
-            SetLayoutDefaults();
-        }
-        private void SetLayoutAllSkills()
-        {
-            SetLayoutDefaults();
-        }
-        private void SetLayoutAllCells()
-        {
-            SetLayoutDefaults();
-        }
-        private void SetLayoutReverseEventOrder()
-        {
-            SetLayoutDefaults();
-        }
-
-        private Dictionary<String, Point> treeMouseLocation;
-        private Dictionary<String, Point> skillMousePoint;
         private void SetMouseLocations()
         {
             skillMousePoint = new Dictionary<String, Point>();
             treeMouseLocation = new Dictionary<String, Point>();
-            string[] skills = new string[] { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
+
             for (int i = 0; i < 11; ++i)
             {
-                skillMousePoint.Add(skills[i], new Point((int)(320 + 13 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
+                skillMousePoint.Add(skill_list[i], new Point((int)(320 + 13 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                          (int)(320 + 13 - 205 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
             for (int i = 0; i < 11; ++i)
             {
-                treeMouseLocation.Add(skills[i], new Point((int)(320 + 13 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
+                treeMouseLocation.Add(skill_list[i], new Point((int)(320 + 13 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                            (int)(320 + 13 - 286 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
 
             eventMousePoint = new Dictionary<string, Point>(){
-                {"Water Vein", new Point(206+13, 240+13)},
+                {"Water Vein", new Point(221+13, 258+13)},
                 {"Gumon Seal", new Point(328+13, 215+13)},
                 {"Sunstone",   new Point(428+13, 257+13)},
-                {"Clean Water", new Point(205+13, 343+13)},
-                {"Wind Restored", new Point(300+13, 404+13)},
-                {"Warmth Returned", new Point(391+13, 342+13)}
+                {"Wind Restored", new Point(423+13, 365+13)},
+                {"Clean Water", new Point(220+13, 360+13)}
             };
         }
-
         #endregion
 
         #region EventHandlers
@@ -642,12 +532,6 @@ namespace OriDETracker
         {
             Application.Exit();
         }
-
-        protected void resetToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.HardReset();
-        }
-
         protected void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             auto_update = !(auto_update);
@@ -676,11 +560,8 @@ namespace OriDETracker
             x = e.X;
             y = e.Y;
 
-            //MessageBox.Show("X: " + x + "   Y: " + y);
             if (ToggleMouseClick(x, y))
             {
-                //Log.WriteToLog("**INFO**  : Mouse Click at X: " + x + "   Y: " + y);
-
                 bool tmp_auto_update = auto_update;
                 //try turning off auto update for a moment
                 if (tmp_auto_update)
@@ -689,7 +570,6 @@ namespace OriDETracker
                 if (tmp_auto_update)
                     this.TurnOnAutoUpdate();
             }
-            //this.Invalidate();
         }
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -704,25 +584,19 @@ namespace OriDETracker
             ClearAll();
             Refresh();
         }
-        private void editToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            this.edit_form.Show();
-        }
         #endregion
 
         #region Graphics
-
         protected int Square(int a)
         {
             return a * a;
         }
-
         protected bool ToggleMouseClick(int x, int y)
         {
             double mouse_scaling = ((image_pixel_size * 1.0) / PIXEL_DEF);
             int CUR_TOL = (int)(TOL * mouse_scaling);
 
-            if (display_mapstone && (Math.Sqrt(Square(x - (int)(mapstoneMousePoint.X * mouse_scaling)) + Square(y - (int)(mapstoneMousePoint.Y * mouse_scaling))) <= 2 * CUR_TOL))
+            if (track_mapstones && (Math.Sqrt(Square(x - (int)(mapstoneMousePoint.X * mouse_scaling)) + Square(y - (int)(mapstoneMousePoint.Y * mouse_scaling))) <= 2 * CUR_TOL))
             {
                 mapstone_count += 1;
                 if (mapstone_count > 9)
@@ -751,10 +625,6 @@ namespace OriDETracker
                     if (haveTree.ContainsKey(sk.Key))
                     {
                         haveTree[sk.Key] = !haveTree[sk.Key];
-                        if (hitTree.ContainsKey(sk.Key))
-                        {
-                            hitTree[sk.Key] = haveTree[sk.Key];
-                        }
                         return true;
                     }
                 }
@@ -771,7 +641,7 @@ namespace OriDETracker
                             case "Water Vein":
                             case "Gumon Seal":
                             case "Sunstone":
-                                if (display_shards)
+                                if (track_shards)
                                 {
                                     if (haveEvent[sk.Key])
                                     {
@@ -815,7 +685,6 @@ namespace OriDETracker
             }
             return false;
         }
-
         protected void UpdateGraphics(Graphics g)
         {
             try
@@ -829,9 +698,9 @@ namespace OriDETracker
 				 * (5) Putting the skill wheel on top
 				 * */
 
-                scaledSize = new Size(image_pixel_size, image_pixel_size);
-                this.Size = scaledSize;
-                Rectangle drawRect = new Rectangle(new Point(0, 0), scaledSize);
+                scaled_size = new Size(image_pixel_size, image_pixel_size);
+                this.Size = scaled_size;
+                Rectangle drawRect = new Rectangle(new Point(0, 0), scaled_size);
 
                 #region Draw
                 #region Skills
@@ -839,8 +708,6 @@ namespace OriDETracker
                 g.DrawImage(imageGSkills, drawRect);
                 foreach (KeyValuePair<String, bool> sk in haveSkill)
                 {
-                    edit_form.UpdateSkill(sk.Key, sk.Value);
-
                     if (sk.Value)
                     {
                         g.DrawImage(skillImages[sk.Key], drawRect);
@@ -849,57 +716,82 @@ namespace OriDETracker
                 #endregion
 
                 #region Relic
-                foreach (KeyValuePair<String, bool> relic in relicExists)
+                /* Relics are drawn if:
+                 * (a) auto_update and world tour are on
+                 * (b) track_relics is on and display_emptry_relics is on
+                 */
+                if ((auto_update && mode_world_tour) || (track_relics && display_empty_relics))
                 {
-                    if (relic.Value)
+                    foreach (KeyValuePair<String, bool> relic in relicExists)
                     {
-                        g.DrawImage(relicExistImages[relic.Key], drawRect);
+                        if (relic.Value)
+                        {
+                            g.DrawImage(relicExistImages[relic.Key], drawRect);
+                        }
                     }
-                }
-                foreach (KeyValuePair<String, bool> relic in relicFound)
-                {
-                    if (relic.Value)
+                    foreach (KeyValuePair<String, bool> relic in relicFound)
                     {
-                        g.DrawImage(relicFoundImages[relic.Key], drawRect);
+                        if (relic.Value)
+                        {
+                            g.DrawImage(relicFoundImages[relic.Key], drawRect);
+                        }
                     }
                 }
                 #endregion
 
                 #region Teleporters
-                if(TrackTeleporters)
+                /* Teleporters are drawn if:
+                 * (a) track_teleporters is on
+                 * (*) only drawn grey teleporters if display_emptry_teleporters is set
+                 */
+                if (track_teleporters)
                 {
                     foreach (KeyValuePair<String, bool> tp in teleportersActive)
                     {
                         if (tp.Value)
                         {
-                            g.DrawImage(teleporterImages[tp.Key], drawRect);
+                            g.DrawImage(teleporterActiveImages[tp.Key], drawRect);
                         }
                     }
+                    if (display_empty_teleporters)
+                    {
+                        foreach (KeyValuePair<String, bool> tp in teleportersInactive)
+                        {
+                            if (tp.Value)
+                            {
+                                g.DrawImage(teleporterInactiveImages[tp.Key], drawRect);
+                            }
+                        }
+                    }
+
                 }
                 #endregion
+
                 #region Tree
-                if(TrackTrees)
+                /* Trees are drawn if:
+                 * (a) track_trees is on
+                 * (b) mode_force_trees is on
+                 * (*) only draw grey trees if display_empty_trees is on
+                 */
+                if (track_trees || mode_force_trees)
                 {
-                    g.DrawImage(imageGTrees, drawRect);
+                    if (display_empty_trees)
+                    {
+                        g.DrawImage(imageGTrees, drawRect);
+                    }
                     foreach (KeyValuePair<String, bool> sk in haveTree)
                     {
-                        edit_form.UpdateTree(sk.Key, sk.Value);
-
                         if (sk.Value)
                         {
                             g.DrawImage(treeImages[sk.Key], drawRect);
                         }
                     }
                 }
-
                 #endregion
 
                 #region Events
-
                 foreach (KeyValuePair<String, bool> ev in haveEvent)
                 {
-                    edit_form.UpdateEvent(ev.Key, ev.Value);
-
                     if (ev.Value)
                     {
                         g.DrawImage(eventImages[ev.Key], drawRect);
@@ -912,12 +804,14 @@ namespace OriDETracker
                 #endregion
 
                 #region Shards
-                if (display_shards)
+                /* Shards are drawn if
+                 * (a) Shards mode is active
+                 * (b) track_shards is on (manual only)
+                 */
+                if (track_shards || mode_shards)
                 {
                     foreach (KeyValuePair<String, bool> ev in haveShards)
                     {
-                        edit_form.UpdateShard(ev.Key, ev.Value);
-
                         if (ev.Value)
                         {
                             g.DrawImage(shardImages[ev.Key], drawRect);
@@ -925,40 +819,34 @@ namespace OriDETracker
                     }
                 }
                 #endregion
-                if (display_mapstone)
-                {
-                    edit_form.UpdateMapstones(mapstone_count);
 
+                #region Mapstone
+                /* Mapstone count is displayed if
+                 * (a) track_mapstones is on
+                 * (b) mode all maps is on
+                 */
+                if (track_mapstones || mode_force_maps)
+                {
                     g.DrawImage(imageMapStone, drawRect);
                     if (font_brush == null)
                     {
                         font_brush = new SolidBrush(Color.White);
                     }
-                    map_font = new Font(map_font.FontFamily, mapstone_text_parameters[image_pixel_size].TextSize, FontStyle.Bold);
+                    map_font = new Font(font_family, mapstone_text_parameters[image_pixel_size].TextSize, FontStyle.Bold);
                     g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new Point(mapstone_text_parameters[image_pixel_size].X, mapstone_text_parameters[image_pixel_size].Y));
                 }
+                #endregion
                 #endregion
 
                 g.DrawImage(imageSkillWheelDouble, drawRect);
             }
-            catch //(Exception exc)
+            catch (Exception exc)
             {
-                /*
-                Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
-                Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
-                Log.WriteToLog("**INFO**  : Source = " + exc.Source.ToString());
-                Log.WriteToLog("**INFO**  : Stack Trace = " + exc.StackTrace.ToString());
-                Log.WriteToLog("**INFO**  : Target Site = " + exc.TargetSite.ToString());
-                Log.WriteToLog("**INFO**  : Data = " + exc.Data.ToString());
-                Log.WriteToLog("**INFO**  : " + exc.ToString());
-                */
-            }
-            //Refresh();
-        }
 
+            }
+        }
         protected void ClearAll()
         {
-            //Log.WriteToLog("**INFO**  : Clearing the tracker.");
             bool tmp_auto_update = this.auto_update;
             if (tmp_auto_update)
             {
@@ -973,10 +861,6 @@ namespace OriDETracker
             {
                 haveTree[haveTree.ElementAt(i).Key] = false;
             }
-            for (int i = 0; i < hitTree.Count; i++)
-            {
-                hitTree[hitTree.ElementAt(i).Key] = false;
-            }
             for (int i = 0; i < haveEvent.Count; i++)
             {
                 haveEvent[haveEvent.ElementAt(i).Key] = false;
@@ -986,7 +870,6 @@ namespace OriDETracker
                 haveShards[haveShards.ElementAt(i).Key] = false;
             }
             mapstone_count = 0;
-            edit_form.Clear();
 
             if (tmp_auto_update)
             {
@@ -995,16 +878,14 @@ namespace OriDETracker
 
             Refresh();
         }
-
         protected void SoftReset()
         {
             ClearAll();
 
-            //Log.WriteToLog("**INFO**  : Performing soft reset.");
-
             this.settings.Visible = false;
+            this.settings.Reset();
 
-            ChangeLayout(current_layout);
+            SetDefaults();
             if (auto_update && !TrackerSettings.Default.AutoUpdate)
             {
                 TurnOffAutoUpdate();
@@ -1014,106 +895,36 @@ namespace OriDETracker
 
             draggable = TrackerSettings.Default.Draggable;
             this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
-
         }
-
-        protected void HardReset()
-        {
-            DialogResult res = MessageBox.Show("Your settings will be lost!", "Really reset?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, MessageBoxOptions.DefaultDesktopOnly);
-            if (res == DialogResult.Cancel)
-            {
-                return;
-            }
-            this.SoftReset();
-
-            settings.Reset();
-            edit_form.Reset();
-
-            TrackerSettings.Default.Reset();
-
-            this.Opacity = 1.0;
-            this.TrackerSize = (TrackerPixelSizes)PIXEL_DEF;
-
-            this.RefreshRate = (AutoUpdateRefreshRates)1000;
-
-            current_layout = TrackerLayout.RandomizerAllTrees;
-
-            this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
-
-            this.TopMost = TrackerSettings.Default.AlwaysOnTop;
-            this.alwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
-
-            this.display_shards = TrackerSettings.Default.Shards;
-
-            this.BackColor = Color.Black;
-            this.font_brush = new SolidBrush(Color.White);
-
-            Refresh();
-        }
-
-        public void ChangeMapstone()
-        {
-            edit_form.ChangeMapstone(display_mapstone);
-        }
-        public void ChangeShards()
-        {
-            settings.ChangeShards(display_shards);
-            edit_form.ChangeShards(display_shards);
-        }
-
         #endregion
 
         #region AutoUpdate
-
         bool paused;
         bool started;
         protected void TurnOnAutoUpdate()
         {
             if (started && paused)
             {
-                //Log.WriteToLog("**DEBUG** : Resuming auto update thread.");
                 th.Resume();
                 started = true;
                 paused = false;
             }
             else if (!(started))
             {
-                //Log.WriteToLog("**DEBUG** : Starting auto update thread.");
                 th.Start();
                 started = true;
                 paused = false;
             }
-            else
-            {
-                /*
-                Log.WriteToLog("**ERROR** : Cannot start Auto Update if it is already running");
-                Log.WriteToLog("**INFO**  : `paused` = " + paused.ToString());
-                Log.WriteToLog("**INFO**  : `started` = " + started.ToString());
-                */
-            }
         }
-
         protected void TurnOffAutoUpdate()
         {
             if (!(paused) && started)
             {
-                //Log.WriteToLog("**DEBUG** : Suspending auto update thread.");
                 th.Suspend();
                 started = true;
                 paused = true;
             }
-            else if (!(started) || paused)
-            {
-                /*
-                Log.WriteToLog("**ERROR** : Cannot pause Auto Update if it is not running");
-                Log.WriteToLog("**INFO**  : `paused` = " + paused.ToString());
-                Log.WriteToLog("**INFO**  : `started` = " + started.ToString());
-                */
-            }
         }
-
-        //int DATA_SIZE = 10;
-        //public byte[] data;
 
         private void UpdateLoop()
         {
@@ -1122,7 +933,7 @@ namespace OriDETracker
             {
                 try
                 {
-                    bool hooked = mem.HookProcess();
+                    bool hooked = Mem.HookProcess();
                     if (hooked)
                     {
                         UpdateValues();
@@ -1136,28 +947,19 @@ namespace OriDETracker
                 }
                 catch (Exception exc)
                 {
-                    Console.Out.WriteLine(exc);
-                    /*
-                    Log.WriteToLog("**ERROR** : Exception thrown, details follow below.");
-                    Log.WriteToLog("**INFO**  : Message = " + exc.Message.ToString());
-                    Log.WriteToLog("**INFO**  : Source = " + exc.Source.ToString());
-                    Log.WriteToLog("**INFO**  : Stack Trace = " + exc.StackTrace.ToString());
-                    Log.WriteToLog("**INFO**  : Target Site = " + exc.TargetSite.ToString());
-                    Log.WriteToLog("**INFO**  : Data = " + exc.Data.ToString());
-                    Log.WriteToLog("**INFO**  : " + exc.ToString());
-                    */
+                    if (MessageBox.Show(exc.StackTrace.ToString() + "\nWould you like to abort and soft reset the tracker?", "Exception Occured", MessageBoxButtons.AbortRetryIgnore) == DialogResult.Abort)
+                        SoftReset();
                 }
             }
         }
-
         private void UpdateValues()
         {
             try
             {
-                mem.GetBitfields();
+                Mem.GetBitfields();
                 UpdateSkills();
-                CheckTrees();
-                UpdateKeysEvents();
+                UpdateTrees();
+                UpdateEvents();
                 UpdateRelics();
                 UpdateTeleporters();
                 UpdateWarmthFrags();
@@ -1171,9 +973,10 @@ namespace OriDETracker
                 else
                     this.Refresh();
             }
-            catch (Exception err) {
-                MessageBox.Show(err.StackTrace.ToString());
-
+            catch (Exception exc)
+            {
+                if (MessageBox.Show(exc.StackTrace.ToString() + "\nWould you like to abort and soft reset the tracker?", "Exception Occured", MessageBoxButtons.AbortRetryIgnore) == DialogResult.Abort)
+                    SoftReset();
             }
         }
 
@@ -1181,73 +984,69 @@ namespace OriDETracker
         {
             foreach (KeyValuePair<string, int> skill in skillBits)
             {
-                haveSkill[skill.Key] = mem.GetBit(mem.TreeBitfield, skill.Value);
+                haveSkill[skill.Key] = Mem.GetBit(Mem.TreeBitfield, skill.Value);
             }
         }
-        private void CheckTrees()
+        private void UpdateTrees()
         {
             foreach (KeyValuePair<string, int> tree in treeBits)
             {
-                haveTree[tree.Key] = mem.GetBit(mem.TreeBitfield, tree.Value);
+                haveTree[tree.Key] = Mem.GetBit(Mem.TreeBitfield, tree.Value);
+            }
+        }
+        private void UpdateEvents()
+        {
+            int bf = Mem.KeyEventBitfield;
+            haveShards["Water Vein 1"] = Mem.GetBit(bf, 0);
+            haveShards["Water Vein 2"] = Mem.GetBit(bf, 1);
+            haveShards["Gumon Seal 1"] = Mem.GetBit(bf, 3);
+            haveShards["Gumon Seal 2"] = Mem.GetBit(bf, 4);
+            haveShards["Sunstone 1"] = Mem.GetBit(bf, 6);
+            haveShards["Sunstone 2"] = Mem.GetBit(bf, 7);
+            haveEvent["Water Vein"] = Mem.GetBit(bf, 2);
+            haveEvent["Gumon Seal"] = Mem.GetBit(bf, 5);
+            haveEvent["Sunstone"] = Mem.GetBit(bf, 8);
+            haveEvent["Clean Water"] = Mem.GetBit(bf, 9);
+            haveEvent["Wind Restored"] = Mem.GetBit(bf, 10);
+            mode_force_trees = Mem.GetBit(bf, 11);
+            mode_shards = Mem.GetBit(bf, 12);
+            mode_warmth_fragments = Mem.GetBit(bf, 13);
+            mode_world_tour = Mem.GetBit(bf, 14);
+        }
+        private void UpdateTeleporters()
+        {
+            foreach (KeyValuePair<string, int> tp in teleporterBits)
+            {
+                teleportersActive[tp.Key] = Mem.GetBit(Mem.TeleporterBitfield, tp.Value);
             }
         }
         private void UpdateRelics()
         {
             int bf = 0;
-            if (world_tour)
-                bf = mem.RelicBitfield;
+            if (mode_world_tour)
+                bf = Mem.RelicBitfield;
             foreach (KeyValuePair<string, int> relic in relicExistsBits)
             {
-                relicExists[relic.Key] = mem.GetBit(bf, relic.Value);
+                relicExists[relic.Key] = Mem.GetBit(bf, relic.Value);
             }
             foreach (KeyValuePair<string, int> relic in relicFoundBits)
             {
-                relicFound[relic.Key] = mem.GetBit(bf, relic.Value);
+                relicFound[relic.Key] = Mem.GetBit(bf, relic.Value);
             }
         }
-
-        private void UpdateKeysEvents()
-        {
-            int bf = mem.KeyEventBitfield;
-            haveShards["Water Vein 1"] = mem.GetBit(bf, 0);
-            haveShards["Water Vein 2"] = mem.GetBit(bf, 1);
-            haveShards["Gumon Seal 1"] = mem.GetBit(bf, 3);
-            haveShards["Gumon Seal 2"] = mem.GetBit(bf, 4);
-            haveShards["Sunstone 1"] = mem.GetBit(bf, 6);
-            haveShards["Sunstone 2"] = mem.GetBit(bf, 7);
-            haveEvent["Water Vein"] = mem.GetBit(bf, 2);
-            haveEvent["Gumon Seal"] = mem.GetBit(bf, 5);
-            haveEvent["Sunstone"] = mem.GetBit(bf, 8);
-            haveEvent["Clean Water"] = mem.GetBit(bf, 9);
-            haveEvent["Wind Restored"] = mem.GetBit(bf, 10);
-            force_trees = mem.GetBit(bf, 11);
-            display_shards = mem.GetBit(bf, 12);
-            warmth_fragments = mem.GetBit(bf, 13);
-            world_tour = mem.GetBit(bf, 14);
-        }
-
         private void UpdateWarmthFrags()
         {
-            if (!warmth_fragments)
+            if (!mode_warmth_fragments)
                 return;
-            current_frags = mem.MapstoneBitfield >> 9;
-            max_frags = mem.TeleporterBitfield >> 10;
+            current_frags = Mem.MapstoneBitfield >> 9;
+            max_frags = Mem.TeleporterBitfield >> 10;
         }
-
-        private void UpdateTeleporters()
-        {
-            foreach (KeyValuePair<string, int> tp in teleporterBits)
-            {
-                teleportersActive[tp.Key] = mem.GetBit(mem.TeleporterBitfield, tp.Value);
-            }
-        }
-
         private void UpdateMapstoneProgression()
         {
             int ms = 0;
-            foreach(int bit in mapstoneBits.Values)
+            foreach (int bit in mapstoneBits.Values)
             {
-                if (mem.GetBit(mem.MapstoneBitfield, bit))
+                if (Mem.GetBit(Mem.MapstoneBitfield, bit))
                     ms++;
             }
             mapstone_count = ms;
@@ -1257,14 +1056,22 @@ namespace OriDETracker
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
             TrackerSettings.Default.FontColoring = font_color;
+            TrackerSettings.Default.MapFont = font_family;
             TrackerSettings.Default.Background = BackColor;
-            TrackerSettings.Default.RefreshRate = RefreshRate;
-            TrackerSettings.Default.Layout = current_layout;
+            TrackerSettings.Default.RefreshRate = refresh_rate;
             TrackerSettings.Default.Opacity = Opacity;
-            TrackerSettings.Default.Shards = display_shards;
-            TrackerSettings.Default.Teleporters = TrackTeleporters;
-            TrackerSettings.Default.Trees = TrackTrees;
-            TrackerSettings.Default.Pixels = TrackerSize;
+
+            TrackerSettings.Default.Shards = track_shards;
+            TrackerSettings.Default.Teleporters = track_teleporters;
+            TrackerSettings.Default.Trees = track_trees;
+            TrackerSettings.Default.Relics = track_relics;
+            TrackerSettings.Default.Mapstones = track_mapstones;
+
+            TrackerSettings.Default.DisplayEmptyRelics = display_empty_relics;
+            TrackerSettings.Default.DisplayEmptyTrees = display_empty_trees;
+            TrackerSettings.Default.DisplayEmptyTeleporters = display_empty_teleporters;
+
+            TrackerSettings.Default.Pixels = tracker_size;
             TrackerSettings.Default.AlwaysOnTop = this.TopMost;
             TrackerSettings.Default.Draggable = draggable;
             TrackerSettings.Default.AutoUpdate = auto_update;

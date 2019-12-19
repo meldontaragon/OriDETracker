@@ -8,7 +8,7 @@ namespace OriDE.Memory
 {
     public static class MemoryReader
     {
-        private static Dictionary<int, Module64[]> ModuleCache = new Dictionary<int, Module64[]>();
+        private static readonly Dictionary<int, Module64[]> ModuleCache = new Dictionary<int, Module64[]>();
         public static bool is64Bit;
         public static void Update64Bit(Process program)
         {
@@ -372,7 +372,8 @@ namespace OriDE.Memory
         private static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MemInfo lpBuffer, int dwLength);
 
         private List<MemInfo> memoryInfo;
-        public Func<MemInfo, bool> MemoryFilter = delegate (MemInfo info) {
+        public Func<MemInfo, bool> MemoryFilter = delegate (MemInfo info)
+        {
             return (info.State & 0x1000) != 0 && (info.Protect & 0x100) == 0;
         };
 

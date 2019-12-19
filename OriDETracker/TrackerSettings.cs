@@ -4,10 +4,8 @@ namespace OriDETracker
 {
     public class TrackerSettings : ApplicationSettingsBase
     {
-      
-        private static TrackerSettings MainSettings = (TrackerSettings) ApplicationSettingsBase.Synchronized(new TrackerSettings());
+        private static readonly TrackerSettings MainSettings = (TrackerSettings)ApplicationSettingsBase.Synchronized(new TrackerSettings());
 
-        
         public static TrackerSettings Default
         {
             get
@@ -15,7 +13,6 @@ namespace OriDETracker
                 return MainSettings;
             }
         }
-        
 
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("rate10Hz")]
@@ -45,7 +42,6 @@ namespace OriDETracker
             }
         }
 
-
         [UserScopedSettingAttribute()]
         [DefaultSettingValueAttribute("false")]
         public bool Shards
@@ -59,9 +55,22 @@ namespace OriDETracker
                 this["Shards"] = value;
             }
         }
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool Mapstones
+        {
+            get
+            {
+                return ((bool)(this["Mapstones"]));
+            }
+            set
+            {
+                this["Mapstones"] = value;
+            }
+        }
 
         [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("false")]
+        [DefaultSettingValueAttribute("true")]
         public bool Teleporters
         {
             get
@@ -84,6 +93,62 @@ namespace OriDETracker
             set
             {
                 this["Trees"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("false")]
+        public bool Relics
+        {
+            get
+            {
+                return ((bool)(this["Relics"]));
+            }
+            set
+            {
+                this["Relics"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool DisplayEmptyRelics
+        {
+            get
+            {
+                return ((bool)(this["DisplayEmptyRelics"]));
+            }
+            set
+            {
+                this["DisplayEmptyRelics"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("false")]
+        public bool DisplayEmptyTeleporters
+        {
+            get
+            {
+                return ((bool)(this["DisplayEmptyTeleporters"]));
+            }
+            set
+            {
+                this["DisplayEmptyTeleporters"] = value;
+            }
+        }
+
+        [UserScopedSettingAttribute()]
+        [DefaultSettingValueAttribute("true")]
+        public bool DisplayEmptyTrees
+        {
+            get
+            {
+                return ((bool)(this["DisplayEmptyTrees"]));
+            }
+            set
+            {
+                this["DisplayEmptyTrees"] = value;
             }
         }
 
@@ -129,9 +194,8 @@ namespace OriDETracker
             }
         }
 
-
         [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("size420px")]
+        [DefaultSettingValueAttribute("Medium")]
         public TrackerPixelSizes Pixels
         {
             get
@@ -145,16 +209,16 @@ namespace OriDETracker
         }
 
         [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("RandomizerAllTrees")]
-        public TrackerLayout Layout
+        [DefaultSettingValueAttribute("")]
+        public System.Drawing.FontFamily MapFont
         {
             get
             {
-                return ((TrackerLayout)(this["Layout"]));
+                return ((System.Drawing.FontFamily)(this["MapFont"]));
             }
             set
             {
-                this["Layout"] = value;
+                this["MapFont"] = value;
             }
         }
 
