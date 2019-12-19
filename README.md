@@ -10,18 +10,18 @@ primarily by Mel Miller (`taragon.meldon at gmail dot com`).
 I'm thankful for the following people who have made contributions as well (in 
 alphabetical order):
 
-* DevilSquirrel: for incredible work in implementing the base for the memory hook 
+* __DevilSquirrel__: for incredible work in implementing the base for the memory hook 
 which is pulled and modified from the auto splitter DevilSquirrel wrote for 
 LiveSplit
-* Eiko: current maintainer of the randomizer and the randomizer web server, also
+* __Eiko__: current maintainer of the randomizer and the randomizer web server, also
 was fundamental in implementing the new auto update system using the new randomizer
 bitfields
-* Hydra: for the majority of the graphical design of the tracker
-* JHobz: for the core code for the web tracker and for helping to keep that working
+* __Hydra__: for the majority of the graphical design of the tracker
+* __JHobz__: for the core code for the web tracker and for helping to keep that working
 through all the changes I have made that tried to break it
-* SigmaSin: for creating the Randomizer and for vital assistance in implmenting 
+* __SigmaSin__: for creating the Randomizer and for vital assistance in implmenting 
 the first version of shard and mapstone tracking with auto update
-* ViresMajores: for work on graphical design of the tracker
+* __ViresMajores__: for work on graphical design of the tracker
 
 ## Prerequisites
 * [.NET Framework 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=40779)
