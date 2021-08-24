@@ -19,18 +19,14 @@ namespace OriDE.Memory
         public int TeleporterBitfield { get; private set; }
         public int KeyEventBitfield { get; private set; }
 
-        public OriMemory()
-        {
-            lastHooked = DateTime.MinValue;
-        }
-
         public void GetBitfields()
         {
-            TreeBitfield = TrackerBitfields.Read<int>(Program, 0x0);
-            MapstoneBitfield = TrackerBitfields.Read<int>(Program, 0x4);
-            TeleporterBitfield = TrackerBitfields.Read<int>(Program, 0x8);
-            RelicBitfield = TrackerBitfields.Read<int>(Program, 0xc);
-            KeyEventBitfield = TrackerBitfields.Read<int>(Program, 0x10);
+            var bitfields = TrackerBitfields.ReadBytes(Program, 20);
+            TreeBitfield = BitConverter.ToInt32(bitfields, 0);
+            MapstoneBitfield = BitConverter.ToInt32(bitfields, 4);
+            TeleporterBitfield = BitConverter.ToInt32(bitfields, 8);
+            RelicBitfield = BitConverter.ToInt32(bitfields, 12);
+            KeyEventBitfield = BitConverter.ToInt32(bitfields, 16);
         }
 
         public bool GetBit(int bitfield, int bit)
@@ -111,16 +107,10 @@ namespace OriDE.Memory
             lastTry = DateTime.MinValue;
         }
 
-        public T Read<T>(Process program, params int[] offsets) where T : struct
+        public byte[] ReadBytes(Process program, int length)
         {
             GetPointer(program);
-            return program.Read<T>(Pointer, offsets);
-        }
-
-        public byte[] ReadBytes(Process program, int length, params int[] offsets)
-        {
-            GetPointer(program);
-            return program.Read(Pointer, length, offsets);
+            return program.Read(Pointer, length);
         }
 
         public IntPtr GetPointer(Process program)
@@ -157,6 +147,7 @@ namespace OriDE.Memory
                     }
                 }
             }
+
             return Pointer;
         }
 
