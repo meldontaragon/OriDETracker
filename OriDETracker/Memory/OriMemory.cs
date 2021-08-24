@@ -3,27 +3,26 @@ using System.Diagnostics;
 
 namespace OriDE.Memory
 {
-    public partial class OriMemory
+    public class OriMemory : IDisposable
     {
         private static readonly bool mono_debug = false;
         private static readonly string BitfieldPtrString = mono_debug ? "B9EFBEADDEB8????????8908" : "B8????????C700EFBEADDE";
         private static readonly int BitfieldsPtrOffset = BitfieldPtrString.IndexOf('?') / 2;
         private static readonly ProgramPointer TrackerBitfields = new ProgramPointer(AutoDeref.Single, new ProgramSignature(PointerVersion.V1, BitfieldPtrString, BitfieldsPtrOffset));
-        public Process Program { get; set; }
-        public bool IsHooked { get; set; } = false;
+        private Process Program;
+        private bool IsHooked;
         private DateTime lastHooked;
-        private static readonly Skill[] AllSkills = new Skill[] { Skill.Sein, Skill.WallJump, Skill.ChargeFlame, Skill.Dash, Skill.DoubleJump, Skill.Bash, Skill.Stomp, Skill.Glide, Skill.Climb, Skill.ChargeJump, Skill.Grenade };
+
+        public int TreeBitfield { get; private set; }
+        public int RelicBitfield { get; private set; }
+        public int MapstoneBitfield { get; private set; }
+        public int TeleporterBitfield { get; private set; }
+        public int KeyEventBitfield { get; private set; }
 
         public OriMemory()
         {
             lastHooked = DateTime.MinValue;
         }
-
-        public int TreeBitfield;
-        public int RelicBitfield;
-        public int MapstoneBitfield;
-        public int TeleporterBitfield;
-        public int KeyEventBitfield;
 
         public void GetBitfields()
         {
@@ -56,44 +55,50 @@ namespace OriDE.Memory
 
             return IsHooked;
         }
+
         public void Dispose()
         {
-            if (Program != null) { this.Program.Dispose(); }
+            Program?.Dispose();
         }
-
     }
+
     public enum PointerVersion
     {
         V1
     }
+    
     public enum AutoDeref
     {
         None,
         Single,
         Double
     }
+
     public class ProgramSignature
     {
-        public PointerVersion Version { get; set; }
-        public string Signature { get; set; }
-        public int Offset { get; set; }
+        public PointerVersion Version { get; private set; }
+        public string Signature { get; private set; }
+        public int Offset { get; private set; }
+
         public ProgramSignature(PointerVersion version, string signature, int offset)
         {
             Version = version;
             Signature = signature;
             Offset = offset;
         }
+
         public override string ToString()
         {
             return Version.ToString() + " - " + Signature;
         }
     }
+
     public class ProgramPointer
     {
         private int lastID;
         private DateTime lastTry;
         private readonly ProgramSignature[] signatures;
-        private readonly int[] offsets;
+
         public IntPtr Pointer { get; private set; }
         public PointerVersion Version { get; private set; }
         public AutoDeref AutoDeref { get; private set; }
@@ -105,39 +110,19 @@ namespace OriDE.Memory
             lastID = -1;
             lastTry = DateTime.MinValue;
         }
-        public ProgramPointer(AutoDeref autoDeref, params int[] offsets)
-        {
-            AutoDeref = autoDeref;
-            this.offsets = offsets;
-            lastID = -1;
-            lastTry = DateTime.MinValue;
-        }
 
         public T Read<T>(Process program, params int[] offsets) where T : struct
         {
             GetPointer(program);
             return program.Read<T>(Pointer, offsets);
         }
-        public string Read(Process program, params int[] offsets)
-        {
-            GetPointer(program);
-            return program.Read((IntPtr)program.Read<uint>(Pointer, offsets));
-        }
+
         public byte[] ReadBytes(Process program, int length, params int[] offsets)
         {
             GetPointer(program);
             return program.Read(Pointer, length, offsets);
         }
-        public void Write<T>(Process program, T value, params int[] offsets) where T : struct
-        {
-            GetPointer(program);
-            program.Write<T>(Pointer, value, offsets);
-        }
-        public void Write(Process program, byte[] value, params int[] offsets)
-        {
-            GetPointer(program);
-            program.Write(Pointer, value, offsets);
-        }
+
         public IntPtr GetPointer(Process program)
         {
             if (program == null)
@@ -168,25 +153,25 @@ namespace OriDE.Memory
                             {
                                 Pointer = (IntPtr)program.Read<ulong>(Pointer);
                             }
-                            else
-                            {
-                                Pointer = (IntPtr)program.Read<uint>(Pointer);
-                            }
                         }
                     }
                 }
             }
             return Pointer;
         }
+
         private IntPtr GetVersionedFunctionPointer(Process program)
         {
             if (signatures != null)
             {
-                MemorySearcher searcher = new MemorySearcher();
-                searcher.MemoryFilter = delegate (MemInfo info)
+                MemorySearcher searcher = new MemorySearcher
                 {
-                    return (info.State & 0x1000) != 0 && (info.Protect & 0x40) != 0 && (info.Protect & 0x100) == 0;
+                    MemoryFilter = delegate (MemInfo info)
+                    {
+                        return (info.State & 0x1000) != 0 && (info.Protect & 0x40) != 0 && (info.Protect & 0x100) == 0;
+                    }
                 };
+
                 for (int i = 0; i < signatures.Length; i++)
                 {
                     ProgramSignature signature = signatures[i];
@@ -197,14 +182,6 @@ namespace OriDE.Memory
                         Version = signature.Version;
                         return ptr + signature.Offset;
                     }
-                }
-            }
-            else
-            {
-                IntPtr ptr = (IntPtr)program.Read<uint>(program.MainModule.BaseAddress, offsets);
-                if (ptr != IntPtr.Zero)
-                {
-                    return ptr;
                 }
             }
 
