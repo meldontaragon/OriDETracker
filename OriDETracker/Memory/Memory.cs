@@ -27,7 +27,7 @@ namespace OriDE.Memory
             byte[] buffer = Read(targetProcess, address + last, count);
 
             object obj = ResolveToType(buffer, type);
-            return (T)((object)obj);
+            return (T)obj;
         }
         private static object ResolveToType(byte[] bytes, Type type)
         {
@@ -249,7 +249,6 @@ namespace OriDE.Memory
             Module64[] modules = p.Modules64();
             return modules == null || modules.Length == 0 ? null : modules[0];
         }
-
         public static Module64[] Modules64(this Process p)
         {
             if (ModuleCache.Count > 100) { ModuleCache.Clear(); }
