@@ -127,7 +127,6 @@
     <Compile Include="SettingsLayout.Designer.cs">
       <DependentUpon>SettingsLayout.cs</DependentUpon>
     </Compile>
-    <Compile Include="Memory\Entities.cs" />
     <Compile Include="Memory\Memory.cs" />
     <Compile Include="Memory\OriMemory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

@@ -840,7 +840,7 @@ namespace OriDETracker
 
                 g.DrawImage(imageSkillWheelDouble, drawRect);
             }
-            catch (Exception exc)
+            catch
             {
 
             }
