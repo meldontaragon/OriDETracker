@@ -77,100 +77,100 @@ namespace OriDETracker
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.contextMenu_Tracker = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.alwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.labelBlank = new System.Windows.Forms.Label();
-            this.fontDialog_mapstone = new System.Windows.Forms.FontDialog();
-            this.contextMenu_Tracker.SuspendLayout();
+            this.TrackerContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.MoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AutoUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AlwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.SettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.ClearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LabelBlank = new System.Windows.Forms.Label();
+            this.MapStoneFontDialog = new System.Windows.Forms.FontDialog();
+            this.TrackerContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // contextMenu_Tracker
+            // TrackerContextMenu
             // 
-            this.contextMenu_Tracker.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.moveToolStripMenuItem,
-            this.autoUpdateToolStripMenuItem,
-            this.alwaysOnTopToolStripMenuItem,
-            this.toolStripSeparator,
-            this.settingsToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.clearToolStripMenuItem,
-            this.closeToolStripMenuItem});
-            this.contextMenu_Tracker.Name = "contextMenu_Tracker";
-            this.contextMenu_Tracker.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.contextMenu_Tracker.ShowCheckMargin = true;
-            this.contextMenu_Tracker.ShowImageMargin = false;
-            this.contextMenu_Tracker.Size = new System.Drawing.Size(181, 170);
+            this.TrackerContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MoveToolStripMenuItem,
+            this.AutoUpdateToolStripMenuItem,
+            this.AlwaysOnTopToolStripMenuItem,
+            this.ToolStripSeparator,
+            this.SettingsToolStripMenuItem,
+            this.ToolStripSeparator2,
+            this.ClearToolStripMenuItem,
+            this.CloseToolStripMenuItem});
+            this.TrackerContextMenu.Name = "contextMenu_Tracker";
+            this.TrackerContextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.TrackerContextMenu.ShowCheckMargin = true;
+            this.TrackerContextMenu.ShowImageMargin = false;
+            this.TrackerContextMenu.Size = new System.Drawing.Size(151, 148);
             // 
-            // moveToolStripMenuItem
+            // MoveToolStripMenuItem
             // 
-            this.moveToolStripMenuItem.CheckOnClick = true;
-            this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
-            this.moveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.moveToolStripMenuItem.Text = "Draggable";
-            this.moveToolStripMenuItem.ToolTipText = "Allows the form to be moved";
-            this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
+            this.MoveToolStripMenuItem.CheckOnClick = true;
+            this.MoveToolStripMenuItem.Name = "MoveToolStripMenuItem";
+            this.MoveToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.MoveToolStripMenuItem.Text = "Draggable";
+            this.MoveToolStripMenuItem.ToolTipText = "Allows the form to be moved";
+            this.MoveToolStripMenuItem.Click += new System.EventHandler(this.OnClickMoveToolStripMenuItem);
             // 
-            // autoUpdateToolStripMenuItem
+            // AutoUpdateToolStripMenuItem
             // 
-            this.autoUpdateToolStripMenuItem.CheckOnClick = true;
-            this.autoUpdateToolStripMenuItem.Name = "autoUpdateToolStripMenuItem";
-            this.autoUpdateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.autoUpdateToolStripMenuItem.Text = "Auto Update";
-            this.autoUpdateToolStripMenuItem.Click += new System.EventHandler(this.autoUpdateToolStripMenuItem_Click);
+            this.AutoUpdateToolStripMenuItem.CheckOnClick = true;
+            this.AutoUpdateToolStripMenuItem.Name = "AutoUpdateToolStripMenuItem";
+            this.AutoUpdateToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.AutoUpdateToolStripMenuItem.Text = "Auto Update";
+            this.AutoUpdateToolStripMenuItem.Click += new System.EventHandler(this.OnClickAutoUpdateToolStripMenuItem);
             // 
-            // alwaysOnTopToolStripMenuItem
+            // AlwaysOnTopToolStripMenuItem
             // 
-            this.alwaysOnTopToolStripMenuItem.CheckOnClick = true;
-            this.alwaysOnTopToolStripMenuItem.Name = "alwaysOnTopToolStripMenuItem";
-            this.alwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.alwaysOnTopToolStripMenuItem.Text = "Always on Top";
-            this.alwaysOnTopToolStripMenuItem.Click += new System.EventHandler(this.alwaysOnTopToolStripMenuItem_Click);
+            this.AlwaysOnTopToolStripMenuItem.CheckOnClick = true;
+            this.AlwaysOnTopToolStripMenuItem.Name = "AlwaysOnTopToolStripMenuItem";
+            this.AlwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.AlwaysOnTopToolStripMenuItem.Text = "Always on Top";
+            this.AlwaysOnTopToolStripMenuItem.Click += new System.EventHandler(this.OnClickAlwaysOnTopToolStripMenuItem);
             // 
-            // toolStripSeparator
+            // ToolStripSeparator
             // 
-            this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(177, 6);
+            this.ToolStripSeparator.Name = "ToolStripSeparator";
+            this.ToolStripSeparator.Size = new System.Drawing.Size(147, 6);
             // 
-            // settingsToolStripMenuItem
+            // SettingsToolStripMenuItem
             // 
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
+            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.SettingsToolStripMenuItem.Text = "Settings";
+            this.SettingsToolStripMenuItem.Click += new System.EventHandler(this.OnClickSettingsToolStripMenuItem);
             // 
-            // toolStripSeparator2
+            // ToolStripSeparator2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.ToolStripSeparator2.Name = "ToolStripSeparator2";
+            this.ToolStripSeparator2.Size = new System.Drawing.Size(147, 6);
             // 
-            // clearToolStripMenuItem
+            // ClearToolStripMenuItem
             // 
-            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.clearToolStripMenuItem.Text = "Clear Tracker";
-            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            this.ClearToolStripMenuItem.Name = "ClearToolStripMenuItem";
+            this.ClearToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.ClearToolStripMenuItem.Text = "Clear Tracker";
+            this.ClearToolStripMenuItem.Click += new System.EventHandler(this.OnClickClearToolStripMenuItem);
             // 
-            // closeToolStripMenuItem
+            // CloseToolStripMenuItem
             // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            this.CloseToolStripMenuItem.Name = "CloseToolStripMenuItem";
+            this.CloseToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.CloseToolStripMenuItem.Text = "Close";
+            this.CloseToolStripMenuItem.Click += new System.EventHandler(this.OnClickCloseToolStripMenuItem);
             // 
-            // labelBlank
+            // LabelBlank
             // 
-            this.labelBlank.AutoSize = true;
-            this.labelBlank.Location = new System.Drawing.Point(35, 36);
-            this.labelBlank.Name = "labelBlank";
-            this.labelBlank.Size = new System.Drawing.Size(0, 13);
-            this.labelBlank.TabIndex = 1;
+            this.LabelBlank.AutoSize = true;
+            this.LabelBlank.Location = new System.Drawing.Point(35, 36);
+            this.LabelBlank.Name = "LabelBlank";
+            this.LabelBlank.Size = new System.Drawing.Size(0, 13);
+            this.LabelBlank.TabIndex = 1;
             // 
             // Tracker
             // 
@@ -181,8 +181,8 @@ namespace OriDETracker
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(600, 600);
-            this.ContextMenuStrip = this.contextMenu_Tracker;
-            this.Controls.Add(this.labelBlank);
+            this.ContextMenuStrip = this.TrackerContextMenu;
+            this.Controls.Add(this.LabelBlank);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -195,24 +195,24 @@ namespace OriDETracker
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Tracker_FormClosing);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Tracker_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Tracker_MouseDown);
-            this.contextMenu_Tracker.ResumeLayout(false);
+            this.TrackerContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.ContextMenuStrip contextMenu_Tracker;
-        private System.Windows.Forms.ToolStripMenuItem autoUpdateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
-        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem alwaysOnTopToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
-        private System.Windows.Forms.Label labelBlank;
-        private System.Windows.Forms.FontDialog fontDialog_mapstone;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ContextMenuStrip TrackerContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem AutoUpdateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator ToolStripSeparator;
+        private System.Windows.Forms.ToolStripMenuItem CloseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MoveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AlwaysOnTopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ClearToolStripMenuItem;
+        private System.Windows.Forms.Label LabelBlank;
+        private System.Windows.Forms.FontDialog MapStoneFontDialog;
+        private System.Windows.Forms.ToolStripSeparator ToolStripSeparator2;
     }
 }
 
