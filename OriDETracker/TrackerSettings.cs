@@ -1,10 +1,11 @@
 ﻿using System.Configuration;
+using System.Drawing;
 
 namespace OriDETracker
 {
     public class TrackerSettings : ApplicationSettingsBase
     {
-        private static readonly TrackerSettings MainSettings = (TrackerSettings)ApplicationSettingsBase.Synchronized(new TrackerSettings());
+        private static readonly TrackerSettings MainSettings = (TrackerSettings)Synchronized(new TrackerSettings());
 
         public static TrackerSettings Default
         {
@@ -14,13 +15,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("rate10Hz")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("rate10Hz")]
         public AutoUpdateRefreshRates RefreshRate
         {
             get
             {
-                return ((AutoUpdateRefreshRates)(this["RefreshRate"]));
+                return (AutoUpdateRefreshRates)this["RefreshRate"];
             }
             set
             {
@@ -28,13 +29,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("1")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("1")]
         public double Opacity
         {
             get
             {
-                return ((double)(this["Opacity"]));
+                return (double)this["Opacity"];
             }
             set
             {
@@ -42,26 +43,26 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("false")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("false")]
         public bool Shards
         {
             get
             {
-                return ((bool)(this["Shards"]));
+                return (bool)this["Shards"];
             }
             set
             {
                 this["Shards"] = value;
             }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("true")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("true")]
         public bool Mapstones
         {
             get
             {
-                return ((bool)(this["Mapstones"]));
+                return (bool)this["Mapstones"];
             }
             set
             {
@@ -69,26 +70,26 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("true")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("true")]
         public bool Teleporters
         {
             get
             {
-                return ((bool)(this["Teleporters"]));
+                return (bool)this["Teleporters"];
             }
             set
             {
                 this["Teleporters"] = value;
             }
         }
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("true")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("true")]
         public bool Trees
         {
             get
             {
-                return ((bool)(this["Trees"]));
+                return (bool)this["Trees"];
             }
             set
             {
@@ -96,13 +97,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("false")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("false")]
         public bool Relics
         {
             get
             {
-                return ((bool)(this["Relics"]));
+                return (bool)this["Relics"];
             }
             set
             {
@@ -110,13 +111,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("true")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("true")]
         public bool DisplayEmptyRelics
         {
             get
             {
-                return ((bool)(this["DisplayEmptyRelics"]));
+                return (bool)this["DisplayEmptyRelics"];
             }
             set
             {
@@ -124,13 +125,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("false")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("false")]
         public bool DisplayEmptyTeleporters
         {
             get
             {
-                return ((bool)(this["DisplayEmptyTeleporters"]));
+                return (bool)this["DisplayEmptyTeleporters"];
             }
             set
             {
@@ -138,13 +139,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("true")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("true")]
         public bool DisplayEmptyTrees
         {
             get
             {
-                return ((bool)(this["DisplayEmptyTrees"]));
+                return (bool)this["DisplayEmptyTrees"];
             }
             set
             {
@@ -152,13 +153,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("true")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("true")]
         public bool AlwaysOnTop
         {
             get
             {
-                return ((bool)(this["AlwaysOnTop"]));
+                return (bool)this["AlwaysOnTop"];
             }
             set
             {
@@ -166,13 +167,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("false")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("false")]
         public bool AutoUpdate
         {
             get
             {
-                return ((bool)(this["AutoUpdate"]));
+                return (bool)this["AutoUpdate"];
             }
             set
             {
@@ -180,13 +181,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("true")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("true")]
         public bool Draggable
         {
             get
             {
-                return ((bool)(this["Draggable"]));
+                return (bool)this["Draggable"];
             }
             set
             {
@@ -194,13 +195,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("Medium")]
+        [UserScopedSetting()]
+        [DefaultSettingValue("Medium")]
         public TrackerPixelSizes Pixels
         {
             get
             {
-                return ((TrackerPixelSizes)(this["Pixels"]));
+                return (TrackerPixelSizes)this["Pixels"];
             }
             set
             {
@@ -208,13 +209,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("")]
-        public System.Drawing.FontFamily MapFont
+        [UserScopedSetting()]
+        [DefaultSettingValue("")]
+        public FontFamily MapFont
         {
             get
             {
-                return ((System.Drawing.FontFamily)(this["MapFont"]));
+                return (FontFamily)this["MapFont"];
             }
             set
             {
@@ -222,13 +223,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("White")]
-        public System.Drawing.Color FontColoring
+        [UserScopedSetting()]
+        [DefaultSettingValue("White")]
+        public Color FontColoring
         {
             get
             {
-                return ((System.Drawing.Color)(this["FontColoring"]));
+                return (Color)this["FontColoring"];
             }
             set
             {
@@ -236,13 +237,13 @@ namespace OriDETracker
             }
         }
 
-        [UserScopedSettingAttribute()]
-        [DefaultSettingValueAttribute("Black")]
-        public System.Drawing.Color Background
+        [UserScopedSetting()]
+        [DefaultSettingValue("Black")]
+        public Color Background
         {
             get
             {
-                return ((System.Drawing.Color)(this["Background"]));
+                return (Color)this["Background"];
             }
             set
             {
