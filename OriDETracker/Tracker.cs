@@ -527,11 +527,11 @@ namespace OriDETracker
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
-        protected void OnClickCloseToolStripMenuItem(object sender, EventArgs e)
+        protected void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-        protected void OnClickAutoUpdateToolStripMenuItem(object sender, EventArgs e)
+        protected void AutoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             auto_update = !(auto_update);
 
@@ -544,11 +544,11 @@ namespace OriDETracker
                 TurnOffAutoUpdate();
             }
         }
-        private void OnClickAlwaysOnTopToolStripMenuItem(object sender, EventArgs e)
+        private void AlwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.TopMost = AlwaysOnTopToolStripMenuItem.Checked;
         }
-        protected void OnClickMoveToolStripMenuItem(object sender, EventArgs e)
+        protected void MoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             draggable = !draggable;
         }
@@ -574,11 +574,11 @@ namespace OriDETracker
         {
             UpdateGraphics(e.Graphics);
         }
-        private void OnClickSettingsToolStripMenuItem(object sender, EventArgs e)
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             settings.Show();
         }
-        private void OnClickClearToolStripMenuItem(object sender, EventArgs e)
+        private void ClearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearAll();
             Refresh();

@@ -57,7 +57,7 @@
             this.TrackingOptionsPanel = new System.Windows.Forms.Panel();
             this.DisplayOptionsPanel = new System.Windows.Forms.Panel();
             this.DisplayExistingRelicsCheckbox = new System.Windows.Forms.CheckBox();
-            this.DisplayInactiveTeleportersCheckbox = new System.Windows.Forms.CheckBox();
+            this.DisplayGreyTeleportersCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayGreyTreesCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayOptionsLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.OpacityTrackBar)).BeginInit();
@@ -70,7 +70,7 @@
             // OpacityLabel
             // 
             this.OpacityLabel.AutoSize = true;
-            this.OpacityLabel.Location = new System.Drawing.Point(11, 285);
+            this.OpacityLabel.Location = new System.Drawing.Point(11, 277);
             this.OpacityLabel.Name = "OpacityLabel";
             this.OpacityLabel.Size = new System.Drawing.Size(43, 13);
             this.OpacityLabel.TabIndex = 8;
@@ -78,9 +78,9 @@
             // 
             // BackgroundColorButton
             // 
-            this.BackgroundColorButton.Location = new System.Drawing.Point(123, 114);
+            this.BackgroundColorButton.Location = new System.Drawing.Point(134, 108);
             this.BackgroundColorButton.Name = "BackgroundColorButton";
-            this.BackgroundColorButton.Size = new System.Drawing.Size(128, 23);
+            this.BackgroundColorButton.Size = new System.Drawing.Size(120, 23);
             this.BackgroundColorButton.TabIndex = 9;
             this.BackgroundColorButton.Text = "Background Color";
             this.BackgroundColorButton.UseVisualStyleBackColor = true;
@@ -88,10 +88,10 @@
             // 
             // OpacityTrackBar
             // 
-            this.OpacityTrackBar.Location = new System.Drawing.Point(61, 274);
+            this.OpacityTrackBar.Location = new System.Drawing.Point(61, 266);
             this.OpacityTrackBar.Maximum = 100;
             this.OpacityTrackBar.Name = "OpacityTrackBar";
-            this.OpacityTrackBar.Size = new System.Drawing.Size(185, 45);
+            this.OpacityTrackBar.Size = new System.Drawing.Size(183, 45);
             this.OpacityTrackBar.TabIndex = 11;
             this.OpacityTrackBar.Value = 100;
             this.OpacityTrackBar.Scroll += new System.EventHandler(this.OpacityTrackBarScroll_Scroll);
@@ -99,7 +99,7 @@
             // ImageSizeLabel
             // 
             this.ImageSizeLabel.AutoSize = true;
-            this.ImageSizeLabel.Location = new System.Drawing.Point(120, 151);
+            this.ImageSizeLabel.Location = new System.Drawing.Point(134, 151);
             this.ImageSizeLabel.Name = "ImageSizeLabel";
             this.ImageSizeLabel.Size = new System.Drawing.Size(59, 13);
             this.ImageSizeLabel.TabIndex = 13;
@@ -146,9 +146,9 @@
             this.ImageSizePanel.Controls.Add(this.SmallSizeRadioButton);
             this.ImageSizePanel.Controls.Add(this.LargeSizeRadioButton);
             this.ImageSizePanel.Controls.Add(this.MediumSizeRadioButton);
-            this.ImageSizePanel.Location = new System.Drawing.Point(123, 167);
+            this.ImageSizePanel.Location = new System.Drawing.Point(134, 167);
             this.ImageSizePanel.Name = "ImageSizePanel";
-            this.ImageSizePanel.Size = new System.Drawing.Size(77, 98);
+            this.ImageSizePanel.Size = new System.Drawing.Size(110, 98);
             this.ImageSizePanel.TabIndex = 17;
             // 
             // XLSizeRadioButton
@@ -174,9 +174,10 @@
             // 
             // MapstoneFontColorButton
             // 
-            this.MapstoneFontColorButton.Location = new System.Drawing.Point(128, 311);
+            this.MapstoneFontColorButton.AutoSize = true;
+            this.MapstoneFontColorButton.Location = new System.Drawing.Point(134, 306);
             this.MapstoneFontColorButton.Name = "MapstoneFontColorButton";
-            this.MapstoneFontColorButton.Size = new System.Drawing.Size(128, 23);
+            this.MapstoneFontColorButton.Size = new System.Drawing.Size(120, 23);
             this.MapstoneFontColorButton.TabIndex = 19;
             this.MapstoneFontColorButton.Text = "Mapstone Font Color";
             this.MapstoneFontColorButton.UseVisualStyleBackColor = true;
@@ -190,7 +191,7 @@
             this.UpdateRatePanel.Controls.Add(this.NormalUpdateRadioButton);
             this.UpdateRatePanel.Location = new System.Drawing.Point(11, 167);
             this.UpdateRatePanel.Name = "UpdateRatePanel";
-            this.UpdateRatePanel.Size = new System.Drawing.Size(89, 98);
+            this.UpdateRatePanel.Size = new System.Drawing.Size(110, 98);
             this.UpdateRatePanel.TabIndex = 21;
             // 
             // SlowUpdateRadioButton
@@ -241,7 +242,7 @@
             // UpdateRateLabel
             // 
             this.UpdateRateLabel.AutoSize = true;
-            this.UpdateRateLabel.Location = new System.Drawing.Point(12, 151);
+            this.UpdateRateLabel.Location = new System.Drawing.Point(11, 151);
             this.UpdateRateLabel.Name = "UpdateRateLabel";
             this.UpdateRateLabel.Size = new System.Drawing.Size(68, 13);
             this.UpdateRateLabel.TabIndex = 20;
@@ -287,7 +288,7 @@
             // TrackingOptionsLabel
             // 
             this.TrackingOptionsLabel.AutoSize = true;
-            this.TrackingOptionsLabel.Location = new System.Drawing.Point(12, 9);
+            this.TrackingOptionsLabel.Location = new System.Drawing.Point(11, 9);
             this.TrackingOptionsLabel.Name = "TrackingOptionsLabel";
             this.TrackingOptionsLabel.Size = new System.Drawing.Size(88, 13);
             this.TrackingOptionsLabel.TabIndex = 26;
@@ -308,9 +309,10 @@
             // 
             // MapstoneFontButton
             // 
-            this.MapstoneFontButton.Location = new System.Drawing.Point(11, 311);
+            this.MapstoneFontButton.AutoSize = true;
+            this.MapstoneFontButton.Location = new System.Drawing.Point(10, 306);
             this.MapstoneFontButton.Name = "MapstoneFontButton";
-            this.MapstoneFontButton.Size = new System.Drawing.Size(111, 23);
+            this.MapstoneFontButton.Size = new System.Drawing.Size(120, 23);
             this.MapstoneFontButton.TabIndex = 28;
             this.MapstoneFontButton.Text = "Mapstone Font";
             this.MapstoneFontButton.UseVisualStyleBackColor = true;
@@ -325,17 +327,17 @@
             this.TrackingOptionsPanel.Controls.Add(this.TrackRelicsCheckbox);
             this.TrackingOptionsPanel.Location = new System.Drawing.Point(11, 25);
             this.TrackingOptionsPanel.Name = "TrackingOptionsPanel";
-            this.TrackingOptionsPanel.Size = new System.Drawing.Size(89, 116);
+            this.TrackingOptionsPanel.Size = new System.Drawing.Size(110, 116);
             this.TrackingOptionsPanel.TabIndex = 29;
             // 
             // DisplayOptionsPanel
             // 
             this.DisplayOptionsPanel.Controls.Add(this.DisplayExistingRelicsCheckbox);
-            this.DisplayOptionsPanel.Controls.Add(this.DisplayInactiveTeleportersCheckbox);
+            this.DisplayOptionsPanel.Controls.Add(this.DisplayGreyTeleportersCheckbox);
             this.DisplayOptionsPanel.Controls.Add(this.DisplayGreyTreesCheckbox);
-            this.DisplayOptionsPanel.Location = new System.Drawing.Point(123, 28);
+            this.DisplayOptionsPanel.Location = new System.Drawing.Point(134, 25);
             this.DisplayOptionsPanel.Name = "DisplayOptionsPanel";
-            this.DisplayOptionsPanel.Size = new System.Drawing.Size(125, 73);
+            this.DisplayOptionsPanel.Size = new System.Drawing.Size(110, 73);
             this.DisplayOptionsPanel.TabIndex = 30;
             // 
             // DisplayExistingRelicsCheckbox
@@ -349,17 +351,17 @@
             this.DisplayExistingRelicsCheckbox.UseVisualStyleBackColor = true;
             this.DisplayExistingRelicsCheckbox.CheckedChanged += new System.EventHandler(this.DisplayExistingRelicsCheckbox_CheckedChanged);
             // 
-            // DisplayInactiveTeleportersCheckbox
+            // DisplayGreyTeleportersCheckbox
             // 
-            this.DisplayInactiveTeleportersCheckbox.AutoSize = true;
-            this.DisplayInactiveTeleportersCheckbox.Enabled = false;
-            this.DisplayInactiveTeleportersCheckbox.Location = new System.Drawing.Point(3, 26);
-            this.DisplayInactiveTeleportersCheckbox.Name = "DisplayInactiveTeleportersCheckbox";
-            this.DisplayInactiveTeleportersCheckbox.Size = new System.Drawing.Size(120, 17);
-            this.DisplayInactiveTeleportersCheckbox.TabIndex = 25;
-            this.DisplayInactiveTeleportersCheckbox.Text = "Inactive Teleporters";
-            this.DisplayInactiveTeleportersCheckbox.UseVisualStyleBackColor = true;
-            this.DisplayInactiveTeleportersCheckbox.CheckedChanged += new System.EventHandler(this.DisplayInactiveTeleportersCheckbox_CheckedChanged);
+            this.DisplayGreyTeleportersCheckbox.AutoSize = true;
+            this.DisplayGreyTeleportersCheckbox.Enabled = false;
+            this.DisplayGreyTeleportersCheckbox.Location = new System.Drawing.Point(3, 26);
+            this.DisplayGreyTeleportersCheckbox.Name = "DisplayGreyTeleportersCheckbox";
+            this.DisplayGreyTeleportersCheckbox.Size = new System.Drawing.Size(104, 17);
+            this.DisplayGreyTeleportersCheckbox.TabIndex = 25;
+            this.DisplayGreyTeleportersCheckbox.Text = "Grey Teleporters";
+            this.DisplayGreyTeleportersCheckbox.UseVisualStyleBackColor = true;
+            this.DisplayGreyTeleportersCheckbox.CheckedChanged += new System.EventHandler(this.DisplayGreyTeleportersCheckbox_CheckedChanged);
             // 
             // DisplayGreyTreesCheckbox
             // 
@@ -377,7 +379,7 @@
             // DisplayOptionsLabel
             // 
             this.DisplayOptionsLabel.AutoSize = true;
-            this.DisplayOptionsLabel.Location = new System.Drawing.Point(120, 9);
+            this.DisplayOptionsLabel.Location = new System.Drawing.Point(134, 9);
             this.DisplayOptionsLabel.Name = "DisplayOptionsLabel";
             this.DisplayOptionsLabel.Size = new System.Drawing.Size(80, 13);
             this.DisplayOptionsLabel.TabIndex = 31;
@@ -387,7 +389,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(268, 348);
+            this.ClientSize = new System.Drawing.Size(264, 343);
             this.Controls.Add(this.BackgroundColorButton);
             this.Controls.Add(this.DisplayOptionsLabel);
             this.Controls.Add(this.DisplayOptionsPanel);
@@ -403,9 +405,9 @@
             this.Controls.Add(this.OpacityLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(284, 387);
+            this.MaximumSize = new System.Drawing.Size(280, 382);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(284, 387);
+            this.MinimumSize = new System.Drawing.Size(280, 382);
             this.Name = "SettingsLayout";
             this.Text = "Tracker Layout Settings";
             this.TopMost = true;
@@ -456,7 +458,7 @@
         private System.Windows.Forms.Panel DisplayOptionsPanel;
         private System.Windows.Forms.Label DisplayOptionsLabel;
         private System.Windows.Forms.CheckBox DisplayExistingRelicsCheckbox;
-        private System.Windows.Forms.CheckBox DisplayInactiveTeleportersCheckbox;
+        private System.Windows.Forms.CheckBox DisplayGreyTeleportersCheckbox;
         private System.Windows.Forms.CheckBox DisplayGreyTreesCheckbox;
     }
 }

@@ -115,7 +115,7 @@ namespace OriDETracker
             this.MoveToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.MoveToolStripMenuItem.Text = "Draggable";
             this.MoveToolStripMenuItem.ToolTipText = "Allows the form to be moved";
-            this.MoveToolStripMenuItem.Click += new System.EventHandler(this.OnClickMoveToolStripMenuItem);
+            this.MoveToolStripMenuItem.Click += new System.EventHandler(this.MoveToolStripMenuItem_Click);
             // 
             // AutoUpdateToolStripMenuItem
             // 
@@ -123,7 +123,7 @@ namespace OriDETracker
             this.AutoUpdateToolStripMenuItem.Name = "AutoUpdateToolStripMenuItem";
             this.AutoUpdateToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.AutoUpdateToolStripMenuItem.Text = "Auto Update";
-            this.AutoUpdateToolStripMenuItem.Click += new System.EventHandler(this.OnClickAutoUpdateToolStripMenuItem);
+            this.AutoUpdateToolStripMenuItem.Click += new System.EventHandler(this.AutoUpdateToolStripMenuItem_Click);
             // 
             // AlwaysOnTopToolStripMenuItem
             // 
@@ -131,7 +131,7 @@ namespace OriDETracker
             this.AlwaysOnTopToolStripMenuItem.Name = "AlwaysOnTopToolStripMenuItem";
             this.AlwaysOnTopToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.AlwaysOnTopToolStripMenuItem.Text = "Always on Top";
-            this.AlwaysOnTopToolStripMenuItem.Click += new System.EventHandler(this.OnClickAlwaysOnTopToolStripMenuItem);
+            this.AlwaysOnTopToolStripMenuItem.Click += new System.EventHandler(this.AlwaysOnTopToolStripMenuItem_Click);
             // 
             // ToolStripSeparator
             // 
@@ -143,7 +143,7 @@ namespace OriDETracker
             this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
             this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.SettingsToolStripMenuItem.Text = "Settings";
-            this.SettingsToolStripMenuItem.Click += new System.EventHandler(this.OnClickSettingsToolStripMenuItem);
+            this.SettingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsToolStripMenuItem_Click);
             // 
             // ToolStripSeparator2
             // 
@@ -155,14 +155,14 @@ namespace OriDETracker
             this.ClearToolStripMenuItem.Name = "ClearToolStripMenuItem";
             this.ClearToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.ClearToolStripMenuItem.Text = "Clear Tracker";
-            this.ClearToolStripMenuItem.Click += new System.EventHandler(this.OnClickClearToolStripMenuItem);
+            this.ClearToolStripMenuItem.Click += new System.EventHandler(this.ClearToolStripMenuItem_Click);
             // 
             // CloseToolStripMenuItem
             // 
             this.CloseToolStripMenuItem.Name = "CloseToolStripMenuItem";
             this.CloseToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.CloseToolStripMenuItem.Text = "Close";
-            this.CloseToolStripMenuItem.Click += new System.EventHandler(this.OnClickCloseToolStripMenuItem);
+            this.CloseToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
             // LabelBlank
             // 
