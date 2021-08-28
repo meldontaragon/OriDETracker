@@ -232,9 +232,9 @@ namespace OriDETracker
             parent.DisplayEmptyTrees = DisplayGreyTreesCheckbox.Checked;
         }
 
-        private void DisplayInactiveTeleportersCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void DisplayGreyTeleportersCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            parent.DisplayEmptyTeleporters = DisplayInactiveTeleportersCheckbox.Checked;
+            parent.DisplayEmptyTeleporters = DisplayGreyTeleportersCheckbox.Checked;
         }
 
         private void DisplayExistingRelicsCheckbox_CheckedChanged(object sender, EventArgs e)
