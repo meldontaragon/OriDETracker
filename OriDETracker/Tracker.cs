@@ -15,11 +15,10 @@ namespace OriDETracker
         {
             DoubleBuffered = true;
 
-            // Settings options for Refresh Rate and Tracker Size
-            refresh_rate = TrackerSettings.Default.RefreshRate;
-            tracker_size = TrackerSettings.Default.Pixels;
+            // Settings options for Refresh Rate (and refresh_time) and Tracker Size (and image_pixel_size)
+            RefreshRate = TrackerSettings.Default.RefreshRate;
+            TrackerSize = TrackerSettings.Default.Pixels;
 
-            image_pixel_size = (int)tracker_size;
             scaled_size = new Size(image_pixel_size, image_pixel_size);
             UpdateImages();
 
