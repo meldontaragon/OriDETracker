@@ -46,9 +46,9 @@ namespace OriDETracker
             InitializeComponent();
 
             // Load settings for this form
-            this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
-            this.autoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
-            this.alwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
+            this.MoveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
+            this.AutoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
+            this.AlwaysOnTopToolStripMenuItem.Checked = TrackerSettings.Default.AlwaysOnTop;
             this.TopMost = TrackerSettings.Default.AlwaysOnTop;
 
             // Other Settings
@@ -116,9 +116,9 @@ namespace OriDETracker
             if (need_font && !found_fount)
             {
                 MessageBox.Show("It is recommended to install and use the included fonts: Amatic SC and Amatic SC Bold");
-                if (this.fontDialog_mapstone.ShowDialog() == DialogResult.OK)
+                if (this.MapStoneFontDialog.ShowDialog() == DialogResult.OK)
                 {
-                    font_family = fontDialog_mapstone.Font.FontFamily;
+                    font_family = MapStoneFontDialog.Font.FontFamily;
                 }
                 else
                 {
@@ -527,11 +527,11 @@ namespace OriDETracker
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
-        protected void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void OnClickCloseToolStripMenuItem(object sender, EventArgs e)
         {
             Application.Exit();
         }
-        protected void autoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void OnClickAutoUpdateToolStripMenuItem(object sender, EventArgs e)
         {
             auto_update = !(auto_update);
 
@@ -544,11 +544,11 @@ namespace OriDETracker
                 TurnOffAutoUpdate();
             }
         }
-        private void alwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OnClickAlwaysOnTopToolStripMenuItem(object sender, EventArgs e)
         {
-            this.TopMost = alwaysOnTopToolStripMenuItem.Checked;
+            this.TopMost = AlwaysOnTopToolStripMenuItem.Checked;
         }
-        protected void moveToolStripMenuItem_Click(object sender, EventArgs e)
+        protected void OnClickMoveToolStripMenuItem(object sender, EventArgs e)
         {
             draggable = !draggable;
         }
@@ -574,11 +574,11 @@ namespace OriDETracker
         {
             UpdateGraphics(e.Graphics);
         }
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OnClickSettingsToolStripMenuItem(object sender, EventArgs e)
         {
             settings.Show();
         }
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OnClickClearToolStripMenuItem(object sender, EventArgs e)
         {
             ClearAll();
             Refresh();
@@ -890,10 +890,10 @@ namespace OriDETracker
                 TurnOffAutoUpdate();
             }
             auto_update = TrackerSettings.Default.AutoUpdate;
-            this.autoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
+            this.AutoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
 
             draggable = TrackerSettings.Default.Draggable;
-            this.moveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
+            this.MoveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
         }
         #endregion
 
@@ -940,7 +940,7 @@ namespace OriDETracker
                     if (lastHooked != hooked)
                     {
                         lastHooked = hooked;
-                        this.Invoke((Action)delegate () { labelBlank.Visible = false; });
+                        this.Invoke((Action)delegate () { LabelBlank.Visible = false; });
                     }
                     Thread.Sleep((int)refresh_time);
                 }
