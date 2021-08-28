@@ -37,10 +37,10 @@ namespace OriDETracker
                     this.SlowUpdateRadioButton.Checked = true;
                     break;
                 case AutoUpdateRefreshRates.rate1Hz:
-                    this.NormalUpdateRadioButton.Checked = true;
+                    this.ModerateUpdateRadioButton.Checked = true;
                     break;
                 case AutoUpdateRefreshRates.rate10Hz:
-                    this.ModerateUpdateRadioButton.Checked = true;
+                    this.NormalUpdateRadioButton.Checked = true;
                     break;
                 case AutoUpdateRefreshRates.rate60Hz:
                     this.FastUpdateRadioButton.Checked = true;
