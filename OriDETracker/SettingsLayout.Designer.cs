@@ -409,7 +409,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(280, 382);
             this.Name = "SettingsLayout";
-            this.Text = "Tracker Layout Settings";
+            this.Text = "Tracker Layer vX.X.X.XXXX";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsLayout_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.OpacityTrackBar)).EndInit();

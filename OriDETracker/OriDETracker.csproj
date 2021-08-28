@@ -97,29 +97,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomNumericUpDown.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomNumericUpDown.Designer.cs">
-      <DependentUpon>CustomNumericUpDown.cs</DependentUpon>
-    </Compile>
     <Compile Include="Enums.cs" />
     <Compile Include="MapstoneText.cs" />
-    <Compile Include="PercentNumericUpDown.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsLayout.cs">
       <SubType>Form</SubType>
