@@ -10,16 +10,10 @@ namespace OriDETracker
         public SettingsLayout(Tracker par)
         {
             InitializeComponent();
+            this.Text = "Tracker Layer v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             parent = par;
-
-            OpacityTrackBar.Value = (int)(100 * par.Opacity);
-
-            SetRefreshRate();
-            SetTrackerSize();
-            SetTrackingOptions();
-
-            this.Text = "Tracker Layer v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Reset();
 
             Refresh();
         }
@@ -78,10 +72,14 @@ namespace OriDETracker
             this.TrackRelicsCheckbox.Checked = parent.TrackRelics;
             this.TrackMapstonesCheckbox.Checked = parent.TrackMapstones;
         }
+        private void SetOpacity()
+        {
+            OpacityTrackBar.Value = (int)(100 * parent.Opacity);
+        }
 
         public void Reset()
         {
-            RefreshOpacityBar();
+            SetOpacity();
             SetRefreshRate();
             SetTrackerSize();
             SetTrackingOptions();
@@ -123,10 +121,6 @@ namespace OriDETracker
 
             int tmp = OpacityTrackBar.Value;
             OpacityTrackBar.Value = tmp;
-        }
-        public void RefreshOpacityBar()
-        {
-            OpacityTrackBar.Value = (int)(100 * parent.Opacity);
         }
         #endregion
 
@@ -176,31 +170,19 @@ namespace OriDETracker
         #region ImageSizeRadioButtons
         private void SmallSizeRadioButton_Click(object sender, EventArgs e)
         {
-            parent.TrackerSize = TrackerPixelSizes.Small;
-            SetTrackerSize();
-            parent.UpdateImages();
-            parent.Refresh();
+            parent.UpdateTrackerSize(TrackerPixelSizes.Small);
         }
         private void MediumSizeRadioButton_Click(object sender, EventArgs e)
         {
-            parent.TrackerSize = TrackerPixelSizes.Medium;
-            SetTrackerSize();
-            parent.UpdateImages();
-            parent.Refresh();
+            parent.UpdateTrackerSize(TrackerPixelSizes.Medium);
         }
         private void LargeSizeRadioButton_Click(object sender, EventArgs e)
         {
-            parent.TrackerSize = TrackerPixelSizes.Large;
-            SetTrackerSize();
-            parent.UpdateImages();
-            parent.Refresh();
+            parent.UpdateTrackerSize(TrackerPixelSizes.Large);
         }
         private void XLSizeRadioButton_Click(object sender, EventArgs e)
         {
-            parent.TrackerSize = TrackerPixelSizes.XL;
-            SetTrackerSize();
-            parent.UpdateImages();
-            parent.Refresh();
+            parent.UpdateTrackerSize(TrackerPixelSizes.XL);
         }
         #endregion
 

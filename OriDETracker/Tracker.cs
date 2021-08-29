@@ -13,14 +13,13 @@ namespace OriDETracker
     {
         public Tracker()
         {
-            DoubleBuffered = true;
+            InitializeComponent();
 
-            // Settings options for Refresh Rate (and refresh_time) and Tracker Size (and image_pixel_size)
+            // Apply settings options for Refresh Rate (and refresh_time) 
             RefreshRate = TrackerSettings.Default.RefreshRate;
-            TrackerSize = TrackerSettings.Default.Pixels;
 
-            scaled_size = new Size(image_pixel_size, image_pixel_size);
-            UpdateImages();
+            // Apply settings options Tracker Size using UpdateTrackerSize
+            UpdateTrackerSize(TrackerSettings.Default.Pixels);
 
             // Settings options for what to track
             track_shards = TrackerSettings.Default.Shards;
@@ -43,8 +42,6 @@ namespace OriDETracker
                 Visible = false
             };
 
-            InitializeComponent();
-
             // Load settings for this form
             this.MoveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
             this.AutoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
@@ -57,15 +54,10 @@ namespace OriDETracker
             Opacity = TrackerSettings.Default.Opacity;
             BackColor = TrackerSettings.Default.Background;
 
-
-
-
             // Auto update boolean values
             auto_update = TrackerSettings.Default.AutoUpdate;
             started = false;
             paused = false;
-
-            settings.RefreshOpacityBar();
 
             if (font_color == null)
                 font_color = Color.White;
@@ -81,12 +73,6 @@ namespace OriDETracker
             };
             if (auto_update)
                 TurnOnAutoUpdate();
-
-            /* moved elsewhere in this load
-            scaled_size = new Size(image_pixel_size, image_pixel_size);
-            UpdateImages();
-            SetDefaults();
-            */
 
             font_brush = new SolidBrush(font_color);
 
@@ -133,7 +119,6 @@ namespace OriDETracker
         protected static int PIXEL_DEF = 667;
         protected int image_pixel_size;
 
-        protected Size scaled_size;
         protected TrackerPixelSizes tracker_size;
 
         protected Color font_color;
@@ -196,8 +181,7 @@ namespace OriDETracker
         }
         public Font MapFont
         {
-            set { font_family = value.FontFamily;
-                map_font = new Font(font_family, 24f, FontStyle.Bold); }
+            set { font_family = value.FontFamily; map_font = new Font(font_family, 24f, FontStyle.Bold); }
         }
         public TrackerPixelSizes TrackerSize
         {
@@ -311,7 +295,7 @@ namespace OriDETracker
         protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
 
-        public void UpdateImages()
+        private void UpdateImages()
         {
             var image_collection = typeof(Tracker).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.FieldType == typeof(Image));
             foreach (var img in image_collection)
@@ -689,17 +673,14 @@ namespace OriDETracker
             try
             {
                 /*
-				 * Drawing consists of the following steps:
-				 * (1) The background on which everything is drawn (this can be user selected)
-				 * (2) Drawing the Skills (either grayed out or colored in)
-				 * (3) Drawing the Events (same)
-				 * (4) Drawing the Tree locations
-				 * (5) Putting the skill wheel on top
-				 * */
-
-                scaled_size = new Size(image_pixel_size, image_pixel_size);
-                this.Size = scaled_size;
-                Rectangle drawRect = new Rectangle(new Point(0, 0), scaled_size);
+                 * Drawing consists of the following steps:
+                 * (1) The background on which everything is drawn (this can be user selected)
+                 * (2) Drawing the Skills (either grayed out or colored in)
+                 * (3) Drawing the Events (same)
+                 * (4) Drawing the Tree locations
+                 * (5) Putting the skill wheel on top
+                 * */
+                Rectangle drawRect = new Rectangle(new Point(0, 0), this.Size);
 
                 #region Draw
                 #region Skills
@@ -1051,6 +1032,13 @@ namespace OriDETracker
             mapstone_count = ms;
         }
         #endregion
+
+        internal void UpdateTrackerSize(TrackerPixelSizes trackerSize)
+        {
+            TrackerSize = trackerSize;
+            UpdateImages();
+            Size = new Size(image_pixel_size, image_pixel_size);
+        }
 
         private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
         {
