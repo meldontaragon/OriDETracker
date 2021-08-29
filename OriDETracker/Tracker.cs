@@ -177,10 +177,13 @@ namespace OriDETracker
         #region PublicProperties
         public Color FontColor
         {
+            get { return font_color; }
             set { font_color = value; font_brush = new SolidBrush(value); }
+            
         }
         public Font MapFont
         {
+            get { return map_font; }
             set { font_family = value.FontFamily; map_font = new Font(font_family, 24f, FontStyle.Bold); }
         }
         public TrackerPixelSizes TrackerSize

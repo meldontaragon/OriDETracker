@@ -94,7 +94,7 @@
             this.OpacityTrackBar.Size = new System.Drawing.Size(183, 45);
             this.OpacityTrackBar.TabIndex = 26;
             this.OpacityTrackBar.Value = 100;
-            this.OpacityTrackBar.Scroll += new System.EventHandler(this.OpacityTrackBarScroll_Scroll);
+            this.OpacityTrackBar.Scroll += new System.EventHandler(this.OpacityTrackBar_Scroll);
             // 
             // ImageSizeLabel
             // 
