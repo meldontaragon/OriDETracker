@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsLayout));
             this.BackgroundColorDialog = new System.Windows.Forms.ColorDialog();
             this.OpacityLabel = new System.Windows.Forms.Label();
             this.BackgroundColorButton = new System.Windows.Forms.Button();
@@ -37,15 +38,15 @@
             this.MediumSizeRadioButton = new System.Windows.Forms.RadioButton();
             this.LargeSizeRadioButton = new System.Windows.Forms.RadioButton();
             this.ImageSizePanel = new System.Windows.Forms.Panel();
-            this.XLSizeRadioButton = new System.Windows.Forms.RadioButton();
             this.SmallSizeRadioButton = new System.Windows.Forms.RadioButton();
+            this.XLSizeRadioButton = new System.Windows.Forms.RadioButton();
             this.MapstoneFontColorButton = new System.Windows.Forms.Button();
             this.MapstoneFontColorDialog = new System.Windows.Forms.ColorDialog();
             this.UpdateRatePanel = new System.Windows.Forms.Panel();
             this.SlowUpdateRadioButton = new System.Windows.Forms.RadioButton();
             this.ModerateUpdateRadioButton = new System.Windows.Forms.RadioButton();
-            this.FastUpdateRadioButton = new System.Windows.Forms.RadioButton();
             this.NormalUpdateRadioButton = new System.Windows.Forms.RadioButton();
+            this.FastUpdateRadioButton = new System.Windows.Forms.RadioButton();
             this.UpdateRateLabel = new System.Windows.Forms.Label();
             this.TrackTeleportersCheckbox = new System.Windows.Forms.CheckBox();
             this.TrackTreesCheckbox = new System.Windows.Forms.CheckBox();
@@ -56,9 +57,9 @@
             this.MapstoneFontDialog = new System.Windows.Forms.FontDialog();
             this.TrackingOptionsPanel = new System.Windows.Forms.Panel();
             this.DisplayOptionsPanel = new System.Windows.Forms.Panel();
-            this.DisplayExistingRelicsCheckbox = new System.Windows.Forms.CheckBox();
-            this.DisplayGreyTeleportersCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayGreyTreesCheckbox = new System.Windows.Forms.CheckBox();
+            this.DisplayGreyTeleportersCheckbox = new System.Windows.Forms.CheckBox();
+            this.DisplayExistingRelicsCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayOptionsLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.OpacityTrackBar)).BeginInit();
             this.ImageSizePanel.SuspendLayout();
@@ -151,6 +152,16 @@
             this.ImageSizePanel.Size = new System.Drawing.Size(110, 98);
             this.ImageSizePanel.TabIndex = 20;
             // 
+            // SmallSizeRadioButton
+            // 
+            this.SmallSizeRadioButton.AutoSize = true;
+            this.SmallSizeRadioButton.Location = new System.Drawing.Point(3, 5);
+            this.SmallSizeRadioButton.Name = "SmallSizeRadioButton";
+            this.SmallSizeRadioButton.Size = new System.Drawing.Size(50, 17);
+            this.SmallSizeRadioButton.TabIndex = 21;
+            this.SmallSizeRadioButton.Text = "Small";
+            this.SmallSizeRadioButton.Click += new System.EventHandler(this.SmallSizeRadioButton_Click);
+            // 
             // XLSizeRadioButton
             // 
             this.XLSizeRadioButton.AutoSize = true;
@@ -161,16 +172,6 @@
             this.XLSizeRadioButton.Text = "XL";
             this.XLSizeRadioButton.UseVisualStyleBackColor = true;
             this.XLSizeRadioButton.Click += new System.EventHandler(this.XLSizeRadioButton_Click);
-            // 
-            // SmallSizeRadioButton
-            // 
-            this.SmallSizeRadioButton.AutoSize = true;
-            this.SmallSizeRadioButton.Location = new System.Drawing.Point(3, 5);
-            this.SmallSizeRadioButton.Name = "SmallSizeRadioButton";
-            this.SmallSizeRadioButton.Size = new System.Drawing.Size(50, 17);
-            this.SmallSizeRadioButton.TabIndex = 21;
-            this.SmallSizeRadioButton.Text = "Small";
-            this.SmallSizeRadioButton.Click += new System.EventHandler(this.SmallSizeRadioButton_Click);
             // 
             // MapstoneFontColorButton
             // 
@@ -215,17 +216,6 @@
             this.ModerateUpdateRadioButton.Text = "1 Hz";
             this.ModerateUpdateRadioButton.Click += new System.EventHandler(this.ModerateUpdateRadioButton_Click);
             // 
-            // FastUpdateRadioButton
-            // 
-            this.FastUpdateRadioButton.AutoSize = true;
-            this.FastUpdateRadioButton.Location = new System.Drawing.Point(3, 74);
-            this.FastUpdateRadioButton.Name = "FastUpdateRadioButton";
-            this.FastUpdateRadioButton.Size = new System.Drawing.Size(53, 17);
-            this.FastUpdateRadioButton.TabIndex = 18;
-            this.FastUpdateRadioButton.Text = "60 Hz";
-            this.FastUpdateRadioButton.UseVisualStyleBackColor = true;
-            this.FastUpdateRadioButton.Click += new System.EventHandler(this.FastUpdateRadioButton_Click);
-            // 
             // NormalUpdateRadioButton
             // 
             this.NormalUpdateRadioButton.AutoSize = true;
@@ -238,6 +228,17 @@
             this.NormalUpdateRadioButton.Text = "10 Hz";
             this.NormalUpdateRadioButton.UseVisualStyleBackColor = true;
             this.NormalUpdateRadioButton.Click += new System.EventHandler(this.NormalUpdateRadioButton_Click);
+            // 
+            // FastUpdateRadioButton
+            // 
+            this.FastUpdateRadioButton.AutoSize = true;
+            this.FastUpdateRadioButton.Location = new System.Drawing.Point(3, 74);
+            this.FastUpdateRadioButton.Name = "FastUpdateRadioButton";
+            this.FastUpdateRadioButton.Size = new System.Drawing.Size(53, 17);
+            this.FastUpdateRadioButton.TabIndex = 18;
+            this.FastUpdateRadioButton.Text = "60 Hz";
+            this.FastUpdateRadioButton.UseVisualStyleBackColor = true;
+            this.FastUpdateRadioButton.Click += new System.EventHandler(this.FastUpdateRadioButton_Click);
             // 
             // UpdateRateLabel
             // 
@@ -340,16 +341,18 @@
             this.DisplayOptionsPanel.Size = new System.Drawing.Size(110, 73);
             this.DisplayOptionsPanel.TabIndex = 8;
             // 
-            // DisplayExistingRelicsCheckbox
+            // DisplayGreyTreesCheckbox
             // 
-            this.DisplayExistingRelicsCheckbox.AutoSize = true;
-            this.DisplayExistingRelicsCheckbox.Location = new System.Drawing.Point(3, 49);
-            this.DisplayExistingRelicsCheckbox.Name = "DisplayExistingRelicsCheckbox";
-            this.DisplayExistingRelicsCheckbox.Size = new System.Drawing.Size(94, 17);
-            this.DisplayExistingRelicsCheckbox.TabIndex = 11;
-            this.DisplayExistingRelicsCheckbox.Text = "Existing Relics";
-            this.DisplayExistingRelicsCheckbox.UseVisualStyleBackColor = true;
-            this.DisplayExistingRelicsCheckbox.CheckedChanged += new System.EventHandler(this.DisplayExistingRelicsCheckbox_CheckedChanged);
+            this.DisplayGreyTreesCheckbox.AutoSize = true;
+            this.DisplayGreyTreesCheckbox.Checked = true;
+            this.DisplayGreyTreesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DisplayGreyTreesCheckbox.Location = new System.Drawing.Point(3, 3);
+            this.DisplayGreyTreesCheckbox.Name = "DisplayGreyTreesCheckbox";
+            this.DisplayGreyTreesCheckbox.Size = new System.Drawing.Size(78, 17);
+            this.DisplayGreyTreesCheckbox.TabIndex = 9;
+            this.DisplayGreyTreesCheckbox.Text = "Grey Trees";
+            this.DisplayGreyTreesCheckbox.UseVisualStyleBackColor = true;
+            this.DisplayGreyTreesCheckbox.CheckedChanged += new System.EventHandler(this.DisplayGreyTreesCheckbox_CheckedChanged);
             // 
             // DisplayGreyTeleportersCheckbox
             // 
@@ -363,18 +366,16 @@
             this.DisplayGreyTeleportersCheckbox.UseVisualStyleBackColor = true;
             this.DisplayGreyTeleportersCheckbox.CheckedChanged += new System.EventHandler(this.DisplayGreyTeleportersCheckbox_CheckedChanged);
             // 
-            // DisplayGreyTreesCheckbox
+            // DisplayExistingRelicsCheckbox
             // 
-            this.DisplayGreyTreesCheckbox.AutoSize = true;
-            this.DisplayGreyTreesCheckbox.Checked = true;
-            this.DisplayGreyTreesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.DisplayGreyTreesCheckbox.Location = new System.Drawing.Point(3, 3);
-            this.DisplayGreyTreesCheckbox.Name = "DisplayGreyTreesCheckbox";
-            this.DisplayGreyTreesCheckbox.Size = new System.Drawing.Size(78, 17);
-            this.DisplayGreyTreesCheckbox.TabIndex = 9;
-            this.DisplayGreyTreesCheckbox.Text = "Grey Trees";
-            this.DisplayGreyTreesCheckbox.UseVisualStyleBackColor = true;
-            this.DisplayGreyTreesCheckbox.CheckedChanged += new System.EventHandler(this.DisplayGreyTreesCheckbox_CheckedChanged);
+            this.DisplayExistingRelicsCheckbox.AutoSize = true;
+            this.DisplayExistingRelicsCheckbox.Location = new System.Drawing.Point(3, 49);
+            this.DisplayExistingRelicsCheckbox.Name = "DisplayExistingRelicsCheckbox";
+            this.DisplayExistingRelicsCheckbox.Size = new System.Drawing.Size(94, 17);
+            this.DisplayExistingRelicsCheckbox.TabIndex = 11;
+            this.DisplayExistingRelicsCheckbox.Text = "Existing Relics";
+            this.DisplayExistingRelicsCheckbox.UseVisualStyleBackColor = true;
+            this.DisplayExistingRelicsCheckbox.CheckedChanged += new System.EventHandler(this.DisplayExistingRelicsCheckbox_CheckedChanged);
             // 
             // DisplayOptionsLabel
             // 
@@ -404,6 +405,7 @@
             this.Controls.Add(this.OpacityLabel);
             this.Controls.Add(this.OpacityTrackBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(280, 382);
             this.MinimizeBox = false;
