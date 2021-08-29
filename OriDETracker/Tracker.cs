@@ -851,6 +851,14 @@ namespace OriDETracker
             {
                 haveShards[haveShards.ElementAt(i).Key] = false;
             }
+            for (int i = 0; i < teleportersActive.Count; i++)
+            {
+                teleportersActive[teleportersActive.ElementAt(i).Key] = false;
+            }
+            for (int i = 0; i < relicFound.Count; i++)
+            {
+                relicFound[relicFound.ElementAt(i).Key] = false;
+            }
             mapstone_count = 0;
 
             if (tmp_auto_update)
