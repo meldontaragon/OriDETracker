@@ -77,6 +77,7 @@ namespace OriDETracker
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Tracker));
             this.TrackerContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AutoUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -185,11 +186,11 @@ namespace OriDETracker
             this.Controls.Add(this.LabelBlank);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Tracker";
             this.Opacity = 0D;
-            this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Ori DE Tracker";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Tracker_FormClosing);
