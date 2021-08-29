@@ -15,13 +15,12 @@ namespace OriDETracker
 
             parent = par;
             Reset();
-
-            Refresh();
         }
 
         internal void Reset()
         {
             SetTrackingOptions();
+            SetDisplayOptions();
             SetRefreshRate();
             SetTrackerSize();
             SetOpacity();
@@ -34,6 +33,12 @@ namespace OriDETracker
             this.TrackTreesCheckbox.Checked = parent.TrackTrees;
             this.TrackRelicsCheckbox.Checked = parent.TrackRelics;
             this.TrackMapstonesCheckbox.Checked = parent.TrackMapstones;
+        }
+        private void SetDisplayOptions()
+        {
+            this.DisplayGreyTreesCheckbox.Checked = parent.DisplayEmptyTrees;
+            this.DisplayGreyTeleportersCheckbox.Checked = parent.DisplayEmptyTeleporters;
+            this.DisplayExistingRelicsCheckbox.Checked = parent.DisplayEmptyRelics;
         }
         private void SetRefreshRate()
         {
@@ -130,11 +135,11 @@ namespace OriDETracker
 
         private void BackgroundColorButton_Click(object sender, EventArgs e)
         {
+            BackgroundColorDialog.Color = parent.BackColor;
             if (BackgroundColorDialog.ShowDialog() == DialogResult.OK)
             {
                 parent.BackColor = BackgroundColorDialog.Color;
             }
-            parent.Refresh();
         }
 
         #region RefreshRateRadioButtons
@@ -181,13 +186,9 @@ namespace OriDETracker
 
         #region Opacity
 
-        private void OpacityTrackBarScroll_Scroll(object sender, EventArgs e)
+        private void OpacityTrackBar_Scroll(object sender, EventArgs e)
         {
             parent.Opacity = (double)(OpacityTrackBar.Value / (decimal)100.0);
-            parent.Refresh();
-
-            int tmp = OpacityTrackBar.Value;
-            OpacityTrackBar.Value = tmp;
         }
 
         #endregion
@@ -196,19 +197,21 @@ namespace OriDETracker
 
         private void MapstoneFontColorButton_Click(object sender, EventArgs e)
         {
+            MapstoneFontColorDialog.Color = parent.FontColor;
             if (MapstoneFontColorDialog.ShowDialog() == DialogResult.OK)
             {
                 parent.FontColor = MapstoneFontColorDialog.Color;
-            }
-            parent.Refresh();
+                parent.Refresh();
+            }            
         }
         private void MapstoneFontButton_Click(object sender, EventArgs e)
         {
+            MapstoneFontDialog.Font = parent.MapFont;
             if (MapstoneFontDialog.ShowDialog() == DialogResult.OK)
             {
                 parent.MapFont = new Font(MapstoneFontDialog.Font.FontFamily, 24f, FontStyle.Bold);
+                parent.Refresh();
             }
-            parent.Refresh();
         }
 
         #endregion
