@@ -568,7 +568,6 @@ namespace OriDETracker
         private void ClearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearAll();
-            Refresh();
         }
         #endregion
 
