@@ -1,5 +1,6 @@
 ﻿using OriDE.Memory;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -251,14 +252,14 @@ namespace OriDETracker
         protected int mapstone_count = 0;
 
         //Skills, Trees, Events, Shards, Teleporters, and Relics
-        protected Dictionary<String, bool> haveSkill = new Dictionary<string, bool>();
-        protected Dictionary<String, bool> haveTree = new Dictionary<string, bool>();
-        protected Dictionary<String, bool> haveEvent = new Dictionary<string, bool>();
-        protected Dictionary<String, bool> haveShards = new Dictionary<string, bool>();
-        protected Dictionary<String, bool> teleportersActive = new Dictionary<string, bool>();
-        protected Dictionary<String, bool> teleportersInactive = new Dictionary<string, bool>();
-        protected Dictionary<String, bool> relicExists = new Dictionary<string, bool>();
-        protected Dictionary<String, bool> relicFound = new Dictionary<string, bool>();
+        protected ConcurrentDictionary<String, bool> haveSkill = new ConcurrentDictionary<string, bool>();
+        protected ConcurrentDictionary<String, bool> haveTree = new ConcurrentDictionary<string, bool>();
+        protected ConcurrentDictionary<String, bool> haveEvent = new ConcurrentDictionary<string, bool>();
+        protected ConcurrentDictionary<String, bool> haveShards = new ConcurrentDictionary<string, bool>();
+        protected ConcurrentDictionary<String, bool> teleportersActive = new ConcurrentDictionary<string, bool>();
+        protected ConcurrentDictionary<String, bool> teleportersInactive = new ConcurrentDictionary<string, bool>();
+        protected ConcurrentDictionary<String, bool> relicExists = new ConcurrentDictionary<string, bool>();
+        protected ConcurrentDictionary<String, bool> relicFound = new ConcurrentDictionary<string, bool>();
 
         //Bits
         private Dictionary<String, int> treeBits;
