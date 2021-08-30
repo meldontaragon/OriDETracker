@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -298,13 +297,50 @@ namespace OriDETracker
         protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
 
+        private void DisposeImages()
+        {
+            imageSkillWheelDouble?.Dispose();
+            imageBlackBackground?.Dispose();
+            imageGSkills?.Dispose();
+            imageGTrees?.Dispose();
+            imageMapStone?.Dispose();
+
+            foreach (string skill in skill_list)
+            {
+                skillImages[skill]?.Dispose();
+                treeImages[skill]?.Dispose();
+            }
+
+            foreach (string ev in event_list)
+            {
+                eventImages[ev]?.Dispose();
+                eventGreyImages[ev]?.Dispose();
+
+                if (ev == "Water Vein" || ev == "Gumon Seal" || ev == "Sunstone")
+                {
+                    shardImages[ev + " 1"]?.Dispose();
+                    shardImages[ev + " 2"]?.Dispose();
+                }
+            }
+
+            foreach (string zone in zone_list)
+            {
+                relicExistImages[zone]?.Dispose();
+                relicFoundImages[zone]?.Dispose();
+
+                if (zone != "Misty")
+                {
+                    teleporterActiveImages[zone]?.Dispose();
+                }
+            }
+        }
+
         private void UpdateImages()
         {
-            var image_collection = typeof(Tracker).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.FieldType == typeof(Image));
-            foreach (var img in image_collection)
+            // On startup, no tracker images are stored in dictionaries
+            if (imageSkillWheelDouble != null)
             {
-                var v = (Image)img.GetValue(this);
-                v?.Dispose();
+                DisposeImages();
             }
 
             DIR = "Assets_" + image_pixel_size.ToString() + @"/";
