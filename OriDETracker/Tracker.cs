@@ -55,8 +55,6 @@ namespace OriDETracker
 
             // Auto update boolean values
             auto_update = TrackerSettings.Default.AutoUpdate;
-            started = false;
-            paused = false;
 
             if (font_color == null)
                 font_color = Color.White;
@@ -65,19 +63,14 @@ namespace OriDETracker
 
             //initialize the OriMemory module that Devil/Eiko/Sigma wrote
             Mem = new OriMemory();
-            //start the background loop
+
+            // Initialize background update loop
             th = new Thread(UpdateLoop)
             {
                 IsBackground = true
             };
-            if (auto_update)
-                TurnOnAutoUpdate();
 
             font_brush = new SolidBrush(font_color);
-
-            //handles weird exceptions and lets me know if there are potential problems
-            if (destroy == 1)
-                this.SoftReset();
 
             bool need_font, found_fount = false;
 
@@ -166,8 +159,6 @@ namespace OriDETracker
             { (int) TrackerPixelSizes.XL, new MapstoneText(342+15, 471+15, 28) }
         };
 
-        private readonly int destroy = 1;
-
         private readonly string[] skill_list = { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
         private readonly string[] event_list = { "Water Vein", "Gumon Seal", "Sunstone", "Clean Water", "Wind Restored" };
         private readonly string[] zone_list = { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu" };
@@ -178,7 +169,7 @@ namespace OriDETracker
         {
             get { return font_color; }
             set { font_color = value; font_brush = new SolidBrush(value); }
-            
+
         }
         public Font MapFont
         {
@@ -542,6 +533,16 @@ namespace OriDETracker
         #endregion
 
         #region EventHandlers
+        private void Tracker_Load(object sender, EventArgs e)
+        {
+            // Start background update loop when the tracker is loaded
+            // Avoid modified collection exception of dictionaries conflicted between init and update loop
+            if (auto_update)
+            {
+                this.TurnOnAutoUpdate();
+            }
+        }
+
         private void Tracker_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && draggable)
@@ -556,7 +557,7 @@ namespace OriDETracker
         }
         protected void AutoUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            auto_update = !(auto_update);
+            auto_update = !auto_update;
 
             if (auto_update)
             {
@@ -604,6 +605,38 @@ namespace OriDETracker
         private void ClearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearAll();
+        }
+        private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Stop background update loop before closing
+            // Avoid an update on disposed objects
+            if (auto_update)
+            {
+                this.TurnOffAutoUpdate();
+            }
+
+            TrackerSettings.Default.FontColoring = font_color;
+            TrackerSettings.Default.MapFont = font_family;
+            TrackerSettings.Default.Background = BackColor;
+            TrackerSettings.Default.RefreshRate = refresh_rate;
+            TrackerSettings.Default.Opacity = Opacity;
+
+            TrackerSettings.Default.Shards = track_shards;
+            TrackerSettings.Default.Teleporters = track_teleporters;
+            TrackerSettings.Default.Trees = track_trees;
+            TrackerSettings.Default.Relics = track_relics;
+            TrackerSettings.Default.Mapstones = track_mapstones;
+
+            TrackerSettings.Default.DisplayEmptyRelics = display_empty_relics;
+            TrackerSettings.Default.DisplayEmptyTrees = display_empty_trees;
+            TrackerSettings.Default.DisplayEmptyTeleporters = display_empty_teleporters;
+
+            TrackerSettings.Default.Pixels = tracker_size;
+            TrackerSettings.Default.AlwaysOnTop = this.TopMost;
+            TrackerSettings.Default.Draggable = draggable;
+            TrackerSettings.Default.AutoUpdate = auto_update;
+
+            TrackerSettings.Default.Save();
         }
         #endregion
 
@@ -897,12 +930,12 @@ namespace OriDETracker
             }
             mapstone_count = 0;
 
+            Refresh();
+
             if (tmp_auto_update)
             {
                 this.TurnOnAutoUpdate();
             }
-
-            Refresh();
         }
         protected void SoftReset()
         {
@@ -944,7 +977,7 @@ namespace OriDETracker
         }
         protected void TurnOffAutoUpdate()
         {
-            if (!(paused) && started)
+            if (!paused && started)
             {
                 th.Suspend();
                 started = true;
@@ -1084,32 +1117,6 @@ namespace OriDETracker
             TrackerSize = trackerSize;
             UpdateImages();
             Size = new Size(image_pixel_size, image_pixel_size);
-        }
-
-        private void Tracker_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            TrackerSettings.Default.FontColoring = font_color;
-            TrackerSettings.Default.MapFont = font_family;
-            TrackerSettings.Default.Background = BackColor;
-            TrackerSettings.Default.RefreshRate = refresh_rate;
-            TrackerSettings.Default.Opacity = Opacity;
-
-            TrackerSettings.Default.Shards = track_shards;
-            TrackerSettings.Default.Teleporters = track_teleporters;
-            TrackerSettings.Default.Trees = track_trees;
-            TrackerSettings.Default.Relics = track_relics;
-            TrackerSettings.Default.Mapstones = track_mapstones;
-
-            TrackerSettings.Default.DisplayEmptyRelics = display_empty_relics;
-            TrackerSettings.Default.DisplayEmptyTrees = display_empty_trees;
-            TrackerSettings.Default.DisplayEmptyTeleporters = display_empty_teleporters;
-
-            TrackerSettings.Default.Pixels = tracker_size;
-            TrackerSettings.Default.AlwaysOnTop = this.TopMost;
-            TrackerSettings.Default.Draggable = draggable;
-            TrackerSettings.Default.AutoUpdate = auto_update;
-
-            TrackerSettings.Default.Save();
         }
     }
 }
