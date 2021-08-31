@@ -36,12 +36,6 @@ namespace OriDETracker
             // Load the default logic options, bitfields, and mouse mappings
             SetDefaults();
 
-            // Settings window display
-            settings = new SettingsLayout(this)
-            {
-                Visible = false
-            };
-
             // Load settings for this form
             this.MoveToolStripMenuItem.Checked = TrackerSettings.Default.Draggable;
             this.AutoUpdateToolStripMenuItem.Checked = TrackerSettings.Default.AutoUpdate;
@@ -61,15 +55,6 @@ namespace OriDETracker
                 font_color = Color.White;
             if (BackColor == null)
                 BackColor = Color.Black;
-
-            //initialize the OriMemory module that Devil/Eiko/Sigma wrote
-            Mem = new OriMemory();
-
-            // Initialize background update loop
-            th = new Thread(UpdateLoop)
-            {
-                IsBackground = true
-            };
 
             font_brush = new SolidBrush(font_color);
 
@@ -106,6 +91,21 @@ namespace OriDETracker
             }
             // finally load font
             map_font = new Font(font_family, 24f, FontStyle.Bold);
+
+            // Initialize the OriMemory module that Devil/Eiko/Sigma wrote
+            Mem = new OriMemory();
+
+            // Initialize background update loop
+            th = new Thread(UpdateLoop)
+            {
+                IsBackground = true
+            };
+
+            // Settings window display
+            settings = new SettingsLayout(this)
+            {
+                Visible = false
+            };
         }
 
         #region PrivateVariables
