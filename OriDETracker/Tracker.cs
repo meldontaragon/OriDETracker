@@ -754,17 +754,16 @@ namespace OriDETracker
                  * (4) Drawing the Tree locations
                  * (5) Putting the skill wheel on top
                  * */
-                Rectangle drawRect = new Rectangle(new Point(0, 0), this.Size);
 
                 #region Draw
                 #region Skills
 
-                g.DrawImage(imageGSkills, drawRect);
+                g.DrawImage(imageGSkills, ClientRectangle);
                 foreach (KeyValuePair<String, bool> sk in haveSkill)
                 {
                     if (sk.Value)
                     {
-                        g.DrawImage(skillImages[sk.Key], drawRect);
+                        g.DrawImage(skillImages[sk.Key], ClientRectangle);
                     }
                 }
                 #endregion
@@ -780,14 +779,14 @@ namespace OriDETracker
                     {
                         if (relic.Value)
                         {
-                            g.DrawImage(relicExistImages[relic.Key], drawRect);
+                            g.DrawImage(relicExistImages[relic.Key], ClientRectangle);
                         }
                     }
                     foreach (KeyValuePair<String, bool> relic in relicFound)
                     {
                         if (relic.Value)
                         {
-                            g.DrawImage(relicFoundImages[relic.Key], drawRect);
+                            g.DrawImage(relicFoundImages[relic.Key], ClientRectangle);
                         }
                     }
                 }
@@ -804,7 +803,7 @@ namespace OriDETracker
                     {
                         if (tp.Value)
                         {
-                            g.DrawImage(teleporterActiveImages[tp.Key], drawRect);
+                            g.DrawImage(teleporterActiveImages[tp.Key], ClientRectangle);
                         }
                     }
                     if (display_empty_teleporters)
@@ -813,7 +812,7 @@ namespace OriDETracker
                         {
                             if (tp.Value)
                             {
-                                g.DrawImage(teleporterInactiveImages[tp.Key], drawRect);
+                                g.DrawImage(teleporterInactiveImages[tp.Key], ClientRectangle);
                             }
                         }
                     }
@@ -831,13 +830,13 @@ namespace OriDETracker
                 {
                     if (display_empty_trees)
                     {
-                        g.DrawImage(imageGTrees, drawRect);
+                        g.DrawImage(imageGTrees, ClientRectangle);
                     }
                     foreach (KeyValuePair<String, bool> sk in haveTree)
                     {
                         if (sk.Value)
                         {
-                            g.DrawImage(treeImages[sk.Key], drawRect);
+                            g.DrawImage(treeImages[sk.Key], ClientRectangle);
                         }
                     }
                 }
@@ -848,11 +847,11 @@ namespace OriDETracker
                 {
                     if (ev.Value)
                     {
-                        g.DrawImage(eventImages[ev.Key], drawRect);
+                        g.DrawImage(eventImages[ev.Key], ClientRectangle);
                     }
                     else
                     {
-                        g.DrawImage(eventGreyImages[ev.Key], drawRect);
+                        g.DrawImage(eventGreyImages[ev.Key], ClientRectangle);
                     }
                 }
                 #endregion
@@ -868,7 +867,7 @@ namespace OriDETracker
                     {
                         if (ev.Value)
                         {
-                            g.DrawImage(shardImages[ev.Key], drawRect);
+                            g.DrawImage(shardImages[ev.Key], ClientRectangle);
                         }
                     }
                 }
@@ -881,7 +880,7 @@ namespace OriDETracker
                  */
                 if (track_mapstones || mode_force_maps)
                 {
-                    g.DrawImage(imageMapStone, drawRect);
+                    g.DrawImage(imageMapStone, ClientRectangle);
                     if (font_brush == null)
                     {
                         font_brush = new SolidBrush(Color.White);
@@ -892,7 +891,7 @@ namespace OriDETracker
                 #endregion
                 #endregion
 
-                g.DrawImage(imageSkillWheelDouble, drawRect);
+                g.DrawImage(imageSkillWheelDouble, ClientRectangle);
             }
             catch
             {
