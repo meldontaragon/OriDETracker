@@ -638,6 +638,8 @@ namespace OriDETracker
             TrackerSettings.Default.AutoUpdate = auto_update;
 
             TrackerSettings.Default.Save();
+
+            Mem?.Dispose();
         }
         #endregion
 
