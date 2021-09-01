@@ -357,7 +357,6 @@
             // DisplayGreyTeleportersCheckbox
             // 
             this.DisplayGreyTeleportersCheckbox.AutoSize = true;
-            this.DisplayGreyTeleportersCheckbox.Enabled = false;
             this.DisplayGreyTeleportersCheckbox.Location = new System.Drawing.Point(3, 26);
             this.DisplayGreyTeleportersCheckbox.Name = "DisplayGreyTeleportersCheckbox";
             this.DisplayGreyTeleportersCheckbox.Size = new System.Drawing.Size(104, 17);
