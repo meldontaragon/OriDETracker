@@ -256,8 +256,7 @@ namespace OriDETracker
         protected ConcurrentDictionary<String, bool> haveTree = new ConcurrentDictionary<string, bool>();
         protected ConcurrentDictionary<String, bool> haveEvent = new ConcurrentDictionary<string, bool>();
         protected ConcurrentDictionary<String, bool> haveShards = new ConcurrentDictionary<string, bool>();
-        protected ConcurrentDictionary<String, bool> teleportersActive = new ConcurrentDictionary<string, bool>();
-        protected ConcurrentDictionary<String, bool> teleportersInactive = new ConcurrentDictionary<string, bool>();
+        protected ConcurrentDictionary<String, bool> haveTeleporters = new ConcurrentDictionary<string, bool>();
         protected ConcurrentDictionary<String, bool> relicExists = new ConcurrentDictionary<string, bool>();
         protected ConcurrentDictionary<String, bool> relicFound = new ConcurrentDictionary<string, bool>();
 
@@ -277,6 +276,7 @@ namespace OriDETracker
         protected Image imageBlackBackground;
         protected Image imageGSkills;
         protected Image imageGTrees;
+        protected Image imageGTeleporters;
         protected Image imageMapStone;
 
         protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
@@ -284,8 +284,7 @@ namespace OriDETracker
         protected Dictionary<String, Image> eventImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> eventGreyImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> shardImages = new Dictionary<string, Image>();
-        protected Dictionary<String, Image> teleporterActiveImages = new Dictionary<String, Image>();
-        protected Dictionary<String, Image> teleporterInactiveImages = new Dictionary<String, Image>();
+        protected Dictionary<String, Image> teleporterImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicExistImages = new Dictionary<String, Image>();
         protected Dictionary<String, Image> relicFoundImages = new Dictionary<String, Image>();
 
@@ -295,6 +294,7 @@ namespace OriDETracker
             imageBlackBackground?.Dispose();
             imageGSkills?.Dispose();
             imageGTrees?.Dispose();
+            imageGTeleporters?.Dispose();
             imageMapStone?.Dispose();
 
             foreach (string skill in skill_list)
@@ -322,7 +322,7 @@ namespace OriDETracker
 
                 if (zone != "Misty")
                 {
-                    teleporterActiveImages[zone]?.Dispose();
+                    teleporterImages[zone]?.Dispose();
                 }
             }
         }
@@ -341,6 +341,7 @@ namespace OriDETracker
             imageBlackBackground = Image.FromFile(DIR + @"BlackBackground.png");
             imageGSkills = Image.FromFile(DIR + @"GreySkillTree.png");
             imageGTrees = Image.FromFile(DIR + @"GreyTrees.png");
+            imageGTeleporters = Image.FromFile(DIR + @"GreyTeleporters.png");
             imageMapStone = Image.FromFile(DIR + @"MapStone.png");
 
             foreach (string skill in skill_list)
@@ -368,7 +369,7 @@ namespace OriDETracker
 
                 if (zone != "Misty")
                 {
-                    teleporterActiveImages[zone] = Image.FromFile(DIR + zone + "TP.png");
+                    teleporterImages[zone] = Image.FromFile(DIR + zone + "TP.png");
                 }
             }
         }
@@ -421,7 +422,7 @@ namespace OriDETracker
                 relicFound[zn] = false;
                 if (zn != "Misty")
                 {
-                    teleportersActive[zn] = false;
+                    haveTeleporters[zn] = false;
                 }
             }
         }
@@ -795,28 +796,22 @@ namespace OriDETracker
                 #region Teleporters
                 /* Teleporters are drawn if:
                  * (a) track_teleporters is on
-                 * (*) only drawn grey teleporters if display_emptry_teleporters is set
+                 * (*) only drawn grey teleporters if display_empty_teleporters is on
                  */
                 if (track_teleporters)
                 {
-                    foreach (KeyValuePair<String, bool> tp in teleportersActive)
+                    if (display_empty_teleporters)
+                    {
+                        g.DrawImage(imageGTeleporters, ClientRectangle);
+                    }
+
+                    foreach (KeyValuePair<String, bool> tp in haveTeleporters)
                     {
                         if (tp.Value)
                         {
-                            g.DrawImage(teleporterActiveImages[tp.Key], ClientRectangle);
+                            g.DrawImage(teleporterImages[tp.Key], ClientRectangle);
                         }
                     }
-                    if (display_empty_teleporters)
-                    {
-                        foreach (KeyValuePair<String, bool> tp in teleportersInactive)
-                        {
-                            if (tp.Value)
-                            {
-                                g.DrawImage(teleporterInactiveImages[tp.Key], ClientRectangle);
-                            }
-                        }
-                    }
-
                 }
                 #endregion
 
@@ -832,6 +827,7 @@ namespace OriDETracker
                     {
                         g.DrawImage(imageGTrees, ClientRectangle);
                     }
+
                     foreach (KeyValuePair<String, bool> sk in haveTree)
                     {
                         if (sk.Value)
@@ -922,9 +918,9 @@ namespace OriDETracker
             {
                 haveShards[haveShards.ElementAt(i).Key] = false;
             }
-            for (int i = 0; i < teleportersActive.Count; i++)
+            for (int i = 0; i < haveTeleporters.Count; i++)
             {
-                teleportersActive[teleportersActive.ElementAt(i).Key] = false;
+                haveTeleporters[haveTeleporters.ElementAt(i).Key] = false;
             }
             for (int i = 0; i < relicFound.Count; i++)
             {
@@ -1078,7 +1074,7 @@ namespace OriDETracker
         {
             foreach (KeyValuePair<string, int> tp in teleporterBits)
             {
-                teleportersActive[tp.Key] = Mem.GetBit(Mem.TeleporterBitfield, tp.Value);
+                haveTeleporters[tp.Key] = Mem.GetBit(Mem.TeleporterBitfield, tp.Value);
             }
         }
         private void UpdateRelics()

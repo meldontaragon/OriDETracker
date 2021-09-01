@@ -28,6 +28,7 @@ namespace OriDETracker
             this.imageBlackBackground?.Dispose();
             this.imageGSkills?.Dispose();
             this.imageGTrees?.Dispose();
+            this.imageGTeleporters?.Dispose();
             this.imageMapStone?.Dispose();
 
             foreach (KeyValuePair<String, Image> k in skillImages)
@@ -50,7 +51,7 @@ namespace OriDETracker
             {
                 k.Value?.Dispose();
             }
-            foreach (KeyValuePair<String, Image> k in teleporterActiveImages)
+            foreach (KeyValuePair<String, Image> k in teleporterImages)
             {
                 k.Value?.Dispose();
             }
