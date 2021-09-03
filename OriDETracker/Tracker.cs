@@ -163,6 +163,7 @@ namespace OriDETracker
         private readonly string[] skill_list = { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
         private readonly string[] event_list = { "Water Vein", "Gumon Seal", "Sunstone", "Clean Water", "Wind Restored" };
         private readonly string[] zone_list = { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu" };
+        private readonly string[] teleporter_list = { "Valley", "Misty", "Forlorn", "Sorrow", "Horu", "Blackroot", "Glades", "Grove", "Grotto", "Ginso", "Swamp"};
         #endregion
 
         #region PublicProperties
@@ -378,10 +379,11 @@ namespace OriDETracker
         #region SetLayout
         //points for mouse clicks (with certain tolerance defined by TOL)
         private const int TOL = 25;
-        private Point mapstoneMousePoint = new Point(305, 343);
+        private Point mapstoneMousePoint = new Point(333, 380);
         private Dictionary<String, Point> eventMousePoint;
         private Dictionary<String, Point> treeMouseLocation;
         private Dictionary<String, Point> skillMousePoint;
+        private Dictionary<String, Point> teleporterMouseLocation;
 
         private void SetDefaults()
         {
@@ -512,26 +514,40 @@ namespace OriDETracker
         {
             skillMousePoint = new Dictionary<String, Point>();
             treeMouseLocation = new Dictionary<String, Point>();
+            teleporterMouseLocation = new Dictionary<string, Point>();
 
             for (int i = 0; i < 11; ++i)
             {
                 skillMousePoint.Add(skill_list[i], new Point((int)(320 + 13 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                          (int)(320 + 13 - 205 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
+
             for (int i = 0; i < 11; ++i)
             {
                 treeMouseLocation.Add(skill_list[i], new Point((int)(320 + 13 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                            (int)(320 + 13 - 286 * Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
 
+            for (int i = 0; i < 11; i++)
+            {
+                if (teleporter_list[i] == "Misty")
+                {
+                    continue;
+                }
+
+                teleporterMouseLocation.Add(teleporter_list[i], new Point((int)(320 + 13 + 240 * -Math.Sin(2.0 * i * Math.PI / 11.0)),
+                                                                        (int)(320 + 13 - 240 * -Math.Cos(2.0 * i * Math.PI / 11.0))));
+            }
+
             eventMousePoint = new Dictionary<string, Point>(){
                 {"Water Vein", new Point(221+13, 258+13)},
-                {"Gumon Seal", new Point(328+13, 215+13)},
+                {"Gumon Seal", new Point(320+13, 215+13)},
                 {"Sunstone",   new Point(428+13, 257+13)},
                 {"Wind Restored", new Point(423+13, 365+13)},
                 {"Clean Water", new Point(220+13, 360+13)}
             };
         }
+
         #endregion
 
         #region EventHandlers
@@ -676,21 +692,9 @@ namespace OriDETracker
                 }
             }
 
-            foreach (KeyValuePair<String, Point> sk in treeMouseLocation)
-            {
-                if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL)
-                {
-                    if (haveTree.ContainsKey(sk.Key))
-                    {
-                        haveTree[sk.Key] = !haveTree[sk.Key];
-                        return true;
-                    }
-                }
-            }
-
             foreach (KeyValuePair<String, Point> sk in eventMousePoint)
             {
-                if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL)
+                if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL + 10)
                 {
                     if (haveEvent.ContainsKey(sk.Key))
                     {
@@ -741,6 +745,37 @@ namespace OriDETracker
                     }
                 }
             }
+
+            if (track_trees)
+            {
+                foreach (KeyValuePair<String, Point> sk in treeMouseLocation)
+                {
+                    if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL)
+                    {
+                        if (haveTree.ContainsKey(sk.Key))
+                        {
+                            haveTree[sk.Key] = !haveTree[sk.Key];
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            if (track_teleporters)
+            {
+                foreach (KeyValuePair<String, Point> sk in teleporterMouseLocation)
+                {
+                    if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL)
+                    {
+                        if (haveTeleporters.ContainsKey(sk.Key))
+                        {
+                            haveTeleporters[sk.Key] = !haveTeleporters[sk.Key];
+                            return true;
+                        }
+                    }
+                }
+            }
+
             return false;
         }
         protected void UpdateGraphics(Graphics g)
@@ -888,12 +923,43 @@ namespace OriDETracker
                 #endregion
 
                 g.DrawImage(imageSkillWheelDouble, ClientRectangle);
+
+#if DEBUG
+                // Disable by default only used for debug purpose
+                // DrawMouseLocation(g);
+#endif
             }
             catch
             {
 
             }
         }
+
+        private void DrawMouseLocation(Graphics g)
+        {
+            g.FillRectangle(Brushes.Green, mapstoneMousePoint.X, mapstoneMousePoint.Y, 1, 1);
+
+            foreach (var skillMP in skillMousePoint)
+            {
+                g.FillRectangle(Brushes.Red, skillMP.Value.X, skillMP.Value.Y, 1, 1);
+            }
+
+            foreach (var treeMP in treeMouseLocation)
+            {
+                g.FillRectangle(Brushes.Yellow, treeMP.Value.X, treeMP.Value.Y, 1, 1);
+            }
+
+            foreach (var eventMP in eventMousePoint)
+            {
+                g.FillRectangle(Brushes.Cyan, eventMP.Value.X, eventMP.Value.Y, 1, 1);
+            }
+
+            foreach (var teleporterMP in teleporterMouseLocation)
+            {
+                g.FillRectangle(Brushes.Magenta, teleporterMP.Value.X, teleporterMP.Value.Y, 1, 1);
+            }
+        }
+
         protected void ClearAll()
         {
             bool tmp_auto_update = this.auto_update;
