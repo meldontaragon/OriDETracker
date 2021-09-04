@@ -163,7 +163,8 @@ namespace OriDETracker
         private readonly string[] skill_list = { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
         private readonly string[] event_list = { "Water Vein", "Gumon Seal", "Sunstone", "Clean Water", "Wind Restored" };
         private readonly string[] zone_list = { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu" };
-        private readonly string[] teleporter_list = { "Valley", "Misty", "Forlorn", "Sorrow", "Horu", "Blackroot", "Glades", "Grove", "Grotto", "Ginso", "Swamp"};
+        private readonly string[] teleporter_list = { "Valley", "Misty", "Forlorn", "Sorrow", "Horu", "Blackroot", "Glades", "Grove", "Grotto", "Ginso", "Swamp" };
+        private readonly string[] relic_list = { "Valley", "Misty", "Forlorn", "Sorrow", "Horu", "Blackroot", "Glades", "Grove", "Grotto", "Ginso", "Swamp" };
         #endregion
 
         #region PublicProperties
@@ -208,7 +209,7 @@ namespace OriDETracker
         public bool TrackRelics
         {
             get { return track_relics; }
-            set { track_relics = value; this.SetRelicDefaults(); this.Refresh(); }
+            set { track_relics = value; this.Refresh(); }
         }
         public bool TrackMapstones
         {
@@ -384,6 +385,7 @@ namespace OriDETracker
         private Dictionary<String, Point> treeMouseLocation;
         private Dictionary<String, Point> skillMousePoint;
         private Dictionary<String, Point> teleporterMouseLocation;
+        private Dictionary<String, Point> relicMouseLocation;
 
         private void SetDefaults()
         {
@@ -420,7 +422,7 @@ namespace OriDETracker
             //relicExists, relicFound, and teleporterActive Dictionaries
             foreach (var zn in zone_list)
             {
-                relicExists[zn] = !auto_update;
+                relicExists[zn] = true;
                 relicFound[zn] = false;
                 if (zn != "Misty")
                 {
@@ -515,6 +517,7 @@ namespace OriDETracker
             skillMousePoint = new Dictionary<String, Point>();
             treeMouseLocation = new Dictionary<String, Point>();
             teleporterMouseLocation = new Dictionary<string, Point>();
+            relicMouseLocation = new Dictionary<string, Point>();
 
             for (int i = 0; i < 11; ++i)
             {
@@ -537,6 +540,12 @@ namespace OriDETracker
 
                 teleporterMouseLocation.Add(teleporter_list[i], new Point((int)(320 + 13 + 240 * -Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                                         (int)(320 + 13 - 240 * -Math.Cos(2.0 * i * Math.PI / 11.0))));
+            }
+
+            for (int i = 0; i < 11; i++)
+            {
+                relicMouseLocation.Add(relic_list[i], new Point((int)(320 + 13 + 300 * -Math.Sin(2.0 * i * Math.PI / 11.0)),
+                                                            (int)(320 + 13 - 300 * -Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
 
             eventMousePoint = new Dictionary<string, Point>(){
@@ -776,6 +785,22 @@ namespace OriDETracker
                 }
             }
 
+            if (track_relics)
+            {
+                foreach (KeyValuePair<String, Point> sk in relicMouseLocation)
+                {
+                    if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= 2 * CUR_TOL)
+                    {
+                        if (relicExists.ContainsKey(sk.Key) && relicFound.ContainsKey(sk.Key))
+                        {
+                            relicExists[sk.Key] = !relicExists[sk.Key];
+                            relicFound[sk.Key] = !relicFound[sk.Key];
+                            return true;
+                        }
+                    }
+                }
+            }
+
             return false;
         }
         protected void UpdateGraphics(Graphics g)
@@ -807,17 +832,22 @@ namespace OriDETracker
                 #region Relic
                 /* Relics are drawn if:
                  * (a) auto_update and world tour are on
-                 * (b) track_relics is on and display_emptry_relics is on
+                 * (b) track_relics is on
+                 * (*) only drawn grey relics if display_empty_relics is on
                  */
-                if ((auto_update && mode_world_tour) || (track_relics && display_empty_relics))
+                if (track_relics || (auto_update && mode_world_tour))
                 {
-                    foreach (KeyValuePair<String, bool> relic in relicExists)
+                    if (display_empty_relics)
                     {
-                        if (relic.Value)
+                        foreach (KeyValuePair<String, bool> relic in relicExists)
                         {
-                            g.DrawImage(relicExistImages[relic.Key], ClientRectangle);
+                            if (relic.Value)
+                            {
+                                g.DrawImage(relicExistImages[relic.Key], ClientRectangle);
+                            }
                         }
                     }
+
                     foreach (KeyValuePair<String, bool> relic in relicFound)
                     {
                         if (relic.Value)
@@ -939,24 +969,29 @@ namespace OriDETracker
         {
             g.FillRectangle(Brushes.Green, mapstoneMousePoint.X, mapstoneMousePoint.Y, 1, 1);
 
-            foreach (var skillMP in skillMousePoint)
+            foreach (var location in skillMousePoint)
             {
-                g.FillRectangle(Brushes.Red, skillMP.Value.X, skillMP.Value.Y, 1, 1);
+                g.FillRectangle(Brushes.Red, location.Value.X, location.Value.Y, 1, 1);
             }
 
-            foreach (var treeMP in treeMouseLocation)
+            foreach (var location in treeMouseLocation)
             {
-                g.FillRectangle(Brushes.Yellow, treeMP.Value.X, treeMP.Value.Y, 1, 1);
+                g.FillRectangle(Brushes.Yellow, location.Value.X, location.Value.Y, 1, 1);
             }
 
-            foreach (var eventMP in eventMousePoint)
+            foreach (var location in eventMousePoint)
             {
-                g.FillRectangle(Brushes.Cyan, eventMP.Value.X, eventMP.Value.Y, 1, 1);
+                g.FillRectangle(Brushes.Cyan, location.Value.X, location.Value.Y, 1, 1);
             }
 
-            foreach (var teleporterMP in teleporterMouseLocation)
+            foreach (var location in teleporterMouseLocation)
             {
-                g.FillRectangle(Brushes.Magenta, teleporterMP.Value.X, teleporterMP.Value.Y, 1, 1);
+                g.FillRectangle(Brushes.Magenta, location.Value.X, location.Value.Y, 1, 1);
+            }
+
+            foreach (var location in relicMouseLocation)
+            {
+                g.FillRectangle(Brushes.LightSkyBlue, location.Value.X, location.Value.Y, 1, 1);
             }
         }
 
@@ -991,6 +1026,7 @@ namespace OriDETracker
             for (int i = 0; i < relicFound.Count; i++)
             {
                 relicFound[relicFound.ElementAt(i).Key] = false;
+                relicExists[relicExists.ElementAt(i).Key] = true;
             }
             mapstone_count = 0;
 
