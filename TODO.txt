@@ -1,9 +1,4 @@
 # To Do
-+ Lower CPU usage
-+ Fix redraw problems with threading
 + Add most recent pickup to the tracker (especially good for tourney)
   - This might be hard to do with the new ability pickups
   - Current best options seems to just check for what has changed
-+ Add manual tracking for relics
-+ Add grey teleporter icons
-+ Add manual tracking for teleporters
