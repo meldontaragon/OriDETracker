@@ -143,6 +143,7 @@ namespace OriDETracker
         protected bool display_empty_relics = TrackerSettings.Default.DisplayEmptyRelics;
         protected bool display_empty_trees = TrackerSettings.Default.DisplayEmptyTrees;
         protected bool display_empty_teleporters = TrackerSettings.Default.DisplayEmptyTeleporters;
+        protected bool display_empty_shards = TrackerSettings.Default.DisplayEmptyShards;
 
         protected OriMemory Mem
         {
@@ -237,6 +238,11 @@ namespace OriDETracker
             get { return display_empty_teleporters; }
             set { display_empty_teleporters = value; this.Refresh(); }
         }
+        public bool DisplayEmptyShards
+        {
+            get { return display_empty_shards; }
+            set { display_empty_shards = value; this.Refresh(); }
+        }
         #endregion
 
         #region FrameMoving
@@ -278,6 +284,7 @@ namespace OriDETracker
         protected Image imageGSkills;
         protected Image imageGTrees;
         protected Image imageGTeleporters;
+        protected Image imageGShards;
         protected Image imageMapStone;
 
         protected Dictionary<String, Image> skillImages = new Dictionary<String, Image>();
@@ -295,6 +302,7 @@ namespace OriDETracker
             imageGSkills?.Dispose();
             imageGTrees?.Dispose();
             imageGTeleporters?.Dispose();
+            imageGShards?.Dispose();
             imageMapStone?.Dispose();
 
             foreach (string skill in skill_list)
@@ -341,6 +349,7 @@ namespace OriDETracker
             imageGSkills = Image.FromFile(DIR + @"GreySkillTree.png");
             imageGTrees = Image.FromFile(DIR + @"GreyTrees.png");
             imageGTeleporters = Image.FromFile(DIR + @"GreyTeleporters.png");
+            imageGShards = Image.FromFile(DIR + @"GreyShards.png");
             imageMapStone = Image.FromFile(DIR + @"MapStone.png");
 
             foreach (string skill in skill_list)
@@ -378,11 +387,12 @@ namespace OriDETracker
         //points for mouse clicks (with certain tolerance defined by TOL)
         private const int TOL = 25;
         private Point mapstoneMousePoint = new Point(333, 380);
-        private Dictionary<String, Point> eventMousePoint;
+        private Dictionary<String, Point> eventMousePoint = new Dictionary<String, Point>();
         private Dictionary<String, Point> treeMouseLocation = new Dictionary<String, Point>();
         private Dictionary<String, Point> skillMousePoint = new Dictionary<String, Point>();
-        private Dictionary<String, Point> teleporterMouseLocation = new Dictionary<string, Point>();
-        private Dictionary<String, Point> relicMouseLocation = new Dictionary<string, Point>();
+        private Dictionary<String, Point> teleporterMouseLocation = new Dictionary<String, Point>();
+        private Dictionary<String, Point> relicMouseLocation = new Dictionary<String, Point>();
+        private Dictionary<String, Point> shardsMouseLocation = new Dictionary<String, Point>();
 
         private void SetDefaults()
         {
@@ -391,6 +401,7 @@ namespace OriDETracker
             SetSkillDefaults();
             SetEventDefaults();
             SetRelicDefaults();
+            SetTeleportersDefaults();
         }
         private void SetSkillDefaults()
         {
@@ -416,15 +427,23 @@ namespace OriDETracker
         }
         private void SetRelicDefaults()
         {
-            //relicExists, relicFound, and teleporterActive Dictionaries
+            //relicExists and relicFound dictionaries
             foreach (var zn in zone_list)
             {
                 relicExists[zn] = true;
                 relicFound[zn] = false;
-                if (zn != "Misty")
+            }
+        }
+        private void SetTeleportersDefaults()
+        {
+            foreach (var tp in teleporter_list)
+            {
+                if (tp == "Misty")
                 {
-                    haveTeleporters[zn] = false;
+                    continue;
                 }
+
+                haveTeleporters[tp] = false;
             }
         }
         private void SetBitDefaults()
@@ -518,7 +537,7 @@ namespace OriDETracker
 
                 treeMouseLocation.Add(skill_list[i], new Point((int)(320 + 13 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                            (int)(320 + 13 - 286 * Math.Cos(2.0 * i * Math.PI / 11.0))));
-                
+
                 relicMouseLocation.Add(relic_list[i], new Point((int)(320 + 13 + 300 * -Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                             (int)(320 + 13 - 300 * -Math.Cos(2.0 * i * Math.PI / 11.0))));
 
@@ -531,13 +550,19 @@ namespace OriDETracker
                                                                         (int)(320 + 13 - 240 * -Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
 
-            eventMousePoint = new Dictionary<string, Point>(){
-                {"Water Vein", new Point(221+13, 258+13)},
-                {"Gumon Seal", new Point(320+13, 215+13)},
-                {"Sunstone",   new Point(428+13, 257+13)},
-                {"Wind Restored", new Point(423+13, 365+13)},
-                {"Clean Water", new Point(220+13, 360+13)}
-            };
+
+            eventMousePoint.Add("Water Vein", new Point(221 + 13, 258 + 13));
+            eventMousePoint.Add("Gumon Seal", new Point(320 + 13, 215 + 13));
+            eventMousePoint.Add("Sunstone", new Point(428 + 13, 257 + 13));
+            eventMousePoint.Add("Wind Restored", new Point(423 + 13, 365 + 13));
+            eventMousePoint.Add("Clean Water", new Point(220 + 13, 360 + 13));
+
+            shardsMouseLocation.Add("Water Vein 1", new Point(261 + 13, 305 + 13));
+            shardsMouseLocation.Add("Water Vein 2", new Point(280 + 13, 280 + 13));
+            shardsMouseLocation.Add("Gumon Seal 1", new Point(310 + 13, 267 + 13));
+            shardsMouseLocation.Add("Gumon Seal 2", new Point(345 + 13, 267 + 13));
+            shardsMouseLocation.Add("Sunstone 2", new Point(376 + 13, 280 + 13));
+            shardsMouseLocation.Add("Sunstone 1", new Point(398 + 13, 305 + 13));
         }
 
         #endregion
@@ -576,6 +601,8 @@ namespace OriDETracker
             else
             {
                 TurnOffAutoUpdate();
+                SetRelicDefaults();
+                Refresh();
             }
         }
         private void AlwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
@@ -640,6 +667,7 @@ namespace OriDETracker
             TrackerSettings.Default.DisplayEmptyRelics = display_empty_relics;
             TrackerSettings.Default.DisplayEmptyTrees = display_empty_trees;
             TrackerSettings.Default.DisplayEmptyTeleporters = display_empty_teleporters;
+            TrackerSettings.Default.DisplayEmptyShards = display_empty_shards;
 
             TrackerSettings.Default.Pixels = tracker_size;
             TrackerSettings.Default.AlwaysOnTop = this.TopMost;
@@ -784,6 +812,21 @@ namespace OriDETracker
                 }
             }
 
+            if (track_shards)
+            {
+                foreach (KeyValuePair<String, Point> sk in shardsMouseLocation)
+                {
+                    if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL / 2)
+                    {
+                        if (haveShards.ContainsKey(sk.Key))
+                        {
+                            haveShards[sk.Key] = !haveShards[sk.Key];
+                            return true;
+                        }
+                    }
+                }
+            }
+
             return false;
         }
         protected void UpdateGraphics(Graphics g)
@@ -792,11 +835,14 @@ namespace OriDETracker
             {
                 /*
                  * Drawing consists of the following steps:
-                 * (1) The background on which everything is drawn (this can be user selected)
-                 * (2) Drawing the Skills (either grayed out or colored in)
-                 * (3) Drawing the Events (same)
-                 * (4) Drawing the Tree locations
-                 * (5) Putting the skill wheel on top
+                 * (1) Drawing the Skills (either grayed out or colored in)
+                 * (2) Drawing the Trees
+                 * (3) Drawing the Events
+                 * (4) Drawing the Shards
+                 * (5) Drawing the Teleporters
+                 * (6) Drawing the Relics
+                 * (7) Drawing the Mapstone
+                 * (8) Putting the skill wheel on top
                  * */
 
                 #region Draw
@@ -812,64 +858,13 @@ namespace OriDETracker
                 }
                 #endregion
 
-                #region Relic
-                /* Relics are drawn if:
-                 * (a) auto_update and world tour are on
-                 * (b) track_relics is on
-                 * (*) only drawn grey relics if display_empty_relics is on
-                 */
-                if (track_relics || (auto_update && mode_world_tour))
-                {
-                    if (display_empty_relics)
-                    {
-                        foreach (KeyValuePair<String, bool> relic in relicExists)
-                        {
-                            if (relic.Value)
-                            {
-                                g.DrawImage(relicExistImages[relic.Key], ClientRectangle);
-                            }
-                        }
-                    }
-
-                    foreach (KeyValuePair<String, bool> relic in relicFound)
-                    {
-                        if (relic.Value)
-                        {
-                            g.DrawImage(relicFoundImages[relic.Key], ClientRectangle);
-                        }
-                    }
-                }
-                #endregion
-
-                #region Teleporters
-                /* Teleporters are drawn if:
-                 * (a) track_teleporters is on
-                 * (*) only drawn grey teleporters if display_empty_teleporters is on
-                 */
-                if (track_teleporters)
-                {
-                    if (display_empty_teleporters)
-                    {
-                        g.DrawImage(imageGTeleporters, ClientRectangle);
-                    }
-
-                    foreach (KeyValuePair<String, bool> tp in haveTeleporters)
-                    {
-                        if (tp.Value)
-                        {
-                            g.DrawImage(teleporterImages[tp.Key], ClientRectangle);
-                        }
-                    }
-                }
-                #endregion
-
-                #region Tree
+                #region Trees
                 /* Trees are drawn if:
                  * (a) track_trees is on
-                 * (b) mode_force_trees is on
+                 * (b) auto_update and mode_force_trees are on
                  * (*) only draw grey trees if display_empty_trees is on
                  */
-                if (track_trees || mode_force_trees)
+                if (track_trees || (auto_update && mode_force_trees))
                 {
                     if (display_empty_trees)
                     {
@@ -902,11 +897,17 @@ namespace OriDETracker
 
                 #region Shards
                 /* Shards are drawn if
-                 * (a) Shards mode is active
-                 * (b) track_shards is on (manual only)
+                 * (a) auto_update is off and track_shards is on (manual only)
+                 * (b) auto_update and mode_shards are on
+                 * (*) only draw grey shards if display_empty_shards is on
                  */
-                if (track_shards || mode_shards)
+                if ((!auto_update && track_shards) || (auto_update && mode_shards))
                 {
+                    if (display_empty_shards)
+                    {
+                        g.DrawImage(imageGShards, ClientRectangle);
+                    }
+
                     foreach (KeyValuePair<String, bool> ev in haveShards)
                     {
                         if (ev.Value)
@@ -917,12 +918,63 @@ namespace OriDETracker
                 }
                 #endregion
 
-                #region Mapstone
-                /* Mapstone count is displayed if
-                 * (a) track_mapstones is on
-                 * (b) mode all maps is on
+                #region Teleporters
+                /* Teleporters are drawn if:
+                 * (a) track_teleporters is on
+                 * (*) only drawn grey teleporters if display_empty_teleporters is on
                  */
-                if (track_mapstones || mode_force_maps)
+                if (track_teleporters)
+                {
+                    if (display_empty_teleporters)
+                    {
+                        g.DrawImage(imageGTeleporters, ClientRectangle);
+                    }
+
+                    foreach (KeyValuePair<String, bool> tp in haveTeleporters)
+                    {
+                        if (tp.Value)
+                        {
+                            g.DrawImage(teleporterImages[tp.Key], ClientRectangle);
+                        }
+                    }
+                }
+                #endregion
+
+                #region Relic
+                /* Relics are drawn if:
+                 * (a) track_relics is on
+                 * (b) auto_update and world tour are on
+                 * (*) only drawn grey relics if display_empty_relics is on
+                 */
+                if (track_relics || (auto_update && mode_world_tour))
+                {
+                    if (display_empty_relics)
+                    {
+                        foreach (KeyValuePair<String, bool> relic in relicExists)
+                        {
+                            if (relic.Value)
+                            {
+                                g.DrawImage(relicExistImages[relic.Key], ClientRectangle);
+                            }
+                        }
+                    }
+
+                    foreach (KeyValuePair<String, bool> relic in relicFound)
+                    {
+                        if (relic.Value)
+                        {
+                            g.DrawImage(relicFoundImages[relic.Key], ClientRectangle);
+                        }
+                    }
+                }
+                #endregion
+
+                #region Mapstone
+                /* Mapstone count is drawn if:
+                 * (a) track_mapstones is on
+                 * (b) auto_update and mode_force_maps are on
+                 */
+                if (track_mapstones ||  (auto_update && mode_force_maps))
                 {
                     g.DrawImage(imageMapStone, ClientRectangle);
                     if (font_brush == null)
@@ -932,8 +984,7 @@ namespace OriDETracker
                     map_font = new Font(font_family, mapstone_text_parameters[image_pixel_size].TextSize, FontStyle.Bold);
                     g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new Point(mapstone_text_parameters[image_pixel_size].X, mapstone_text_parameters[image_pixel_size].Y));
                 }
-                #endregion
-                #endregion
+                #endregion                
 
                 g.DrawImage(imageSkillWheelDouble, ClientRectangle);
 
@@ -941,6 +992,7 @@ namespace OriDETracker
                 // Disable by default only used for debug purpose
                 // DrawMouseLocation(g);
 #endif
+                #endregion
             }
             catch
             {
@@ -950,32 +1002,27 @@ namespace OriDETracker
 
         private void DrawMouseLocation(Graphics g)
         {
-            g.FillRectangle(Brushes.Green, mapstoneMousePoint.X, mapstoneMousePoint.Y, 1, 1);
+            DrawMouseLocation(g, mapstoneMousePoint, Brushes.LightCoral);
+            DrawMouseLocation(g, skillMousePoint.Values, Brushes.Red);
+            DrawMouseLocation(g, treeMouseLocation.Values, Brushes.Yellow);
+            DrawMouseLocation(g, eventMousePoint.Values, Brushes.Cyan);
+            DrawMouseLocation(g, teleporterMouseLocation.Values, Brushes.Magenta);
+            DrawMouseLocation(g, relicMouseLocation.Values, Brushes.LightSkyBlue);
+            DrawMouseLocation(g, shardsMouseLocation.Values, Brushes.Pink);
+            DrawMouseLocation(g, skillMousePoint.Values, Brushes.Red);
+        }
 
-            foreach (var location in skillMousePoint)
+        private void DrawMouseLocation(Graphics g, ICollection<Point> locations, Brush brush)
+        {
+            foreach (var location in locations)
             {
-                g.FillRectangle(Brushes.Red, location.Value.X, location.Value.Y, 1, 1);
+                DrawMouseLocation(g, location, brush);
             }
+        }
 
-            foreach (var location in treeMouseLocation)
-            {
-                g.FillRectangle(Brushes.Yellow, location.Value.X, location.Value.Y, 1, 1);
-            }
-
-            foreach (var location in eventMousePoint)
-            {
-                g.FillRectangle(Brushes.Cyan, location.Value.X, location.Value.Y, 1, 1);
-            }
-
-            foreach (var location in teleporterMouseLocation)
-            {
-                g.FillRectangle(Brushes.Magenta, location.Value.X, location.Value.Y, 1, 1);
-            }
-
-            foreach (var location in relicMouseLocation)
-            {
-                g.FillRectangle(Brushes.LightSkyBlue, location.Value.X, location.Value.Y, 1, 1);
-            }
+        private void DrawMouseLocation(Graphics g, Point location, Brush brush)
+        {
+            g.FillRectangle(brush, location.X, location.Y, 1, 1);
         }
 
         protected void ClearAll()
