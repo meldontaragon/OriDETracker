@@ -94,6 +94,7 @@ namespace OriDETracker
 
             // Initialize the OriMemory module that Devil/Eiko/Sigma wrote
             Mem = new OriMemory();
+            trackerBitfields = MemoryBitfields.Empty;
 
             // Initialize background update loop
             th = new Thread(UpdateLoop)
@@ -145,11 +146,8 @@ namespace OriDETracker
         protected bool display_empty_teleporters = TrackerSettings.Default.DisplayEmptyTeleporters;
         protected bool display_empty_shards = TrackerSettings.Default.DisplayEmptyShards;
 
-        protected OriMemory Mem
-        {
-            get;
-            set;
-        }
+        protected OriMemory Mem { get; set; }
+        protected MemoryBitfields trackerBitfields;
 
         protected Thread th;
         protected SettingsLayout settings;
@@ -612,10 +610,16 @@ namespace OriDETracker
                 bool tmp_auto_update = auto_update;
                 //try turning off auto update for a moment
                 if (tmp_auto_update)
+                {
                     this.TurnOffAutoUpdate();
+                    trackerBitfields = MemoryBitfields.Empty;
+                }
+
                 this.Refresh();
                 if (tmp_auto_update)
+                {
                     this.TurnOnAutoUpdate();
+                }
             }
         }
         protected override void OnPaint(PaintEventArgs e)
@@ -1013,6 +1017,7 @@ namespace OriDETracker
             if (tmp_auto_update)
             {
                 this.TurnOffAutoUpdate();
+                trackerBitfields = MemoryBitfields.Empty;
             }
 
             for (int i = 0; i < haveSkill.Count; i++)
@@ -1127,22 +1132,33 @@ namespace OriDETracker
         {
             try
             {
-                Mem.GetBitfields();
-                UpdateSkills();
-                UpdateTrees();
-                UpdateEvents();
-                UpdateRelics();
-                UpdateTeleporters();
-                UpdateWarmthFrags();
-                UpdateMapstoneProgression();
-
-                //the following works but is "incorrect"
-                if (this.InvokeRequired)
+                var bitFields = Mem.GetBitfields();
+                if (bitFields.TreeBitfield != trackerBitfields.TreeBitfield
+                    || bitFields.MapstoneBitfield != trackerBitfields.MapstoneBitfield
+                    || bitFields.TeleporterBitfield != trackerBitfields.TeleporterBitfield
+                    || bitFields.RelicBitfield != trackerBitfields.RelicBitfield                    
+                    || bitFields.KeyEventBitfield != trackerBitfields.KeyEventBitfield)
                 {
-                    this.Invoke(new MethodInvoker(delegate { this.Refresh(); }));
+                    trackerBitfields = bitFields;
+
+                    UpdateSkills();
+                    UpdateTrees();
+                    UpdateEvents();
+                    UpdateRelics();
+                    UpdateTeleporters();
+                    UpdateWarmthFrags();
+                    UpdateMapstoneProgression();
+
+                    //the following works but is "incorrect"
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(new MethodInvoker(delegate { this.Refresh(); }));
+                    }
+                    else
+                    {
+                        this.Refresh();
+                    }                        
                 }
-                else
-                    this.Refresh();
             }
             catch (Exception exc)
             {
@@ -1155,19 +1171,19 @@ namespace OriDETracker
         {
             foreach (KeyValuePair<string, int> skill in skillBits)
             {
-                haveSkill[skill.Key] = Mem.GetBit(Mem.TreeBitfield, skill.Value);
+                haveSkill[skill.Key] = Mem.GetBit(trackerBitfields.TreeBitfield, skill.Value);
             }
         }
         private void UpdateTrees()
         {
             foreach (KeyValuePair<string, int> tree in treeBits)
             {
-                haveTree[tree.Key] = Mem.GetBit(Mem.TreeBitfield, tree.Value);
+                haveTree[tree.Key] = Mem.GetBit(trackerBitfields.TreeBitfield, tree.Value);
             }
         }
         private void UpdateEvents()
         {
-            int bf = Mem.KeyEventBitfield;
+            int bf = trackerBitfields.KeyEventBitfield;
             haveShards["Water Vein 1"] = Mem.GetBit(bf, 0);
             haveShards["Water Vein 2"] = Mem.GetBit(bf, 1);
             haveShards["Gumon Seal 1"] = Mem.GetBit(bf, 3);
@@ -1188,14 +1204,17 @@ namespace OriDETracker
         {
             foreach (KeyValuePair<string, int> tp in teleporterBits)
             {
-                haveTeleporters[tp.Key] = Mem.GetBit(Mem.TeleporterBitfield, tp.Value);
+                haveTeleporters[tp.Key] = Mem.GetBit(trackerBitfields.TeleporterBitfield, tp.Value);
             }
         }
         private void UpdateRelics()
         {
             int bf = 0;
             if (mode_world_tour)
-                bf = Mem.RelicBitfield;
+            {
+                bf = trackerBitfields.RelicBitfield;
+            }
+
             foreach (KeyValuePair<string, int> relic in relicExistsBits)
             {
                 relicExists[relic.Key] = Mem.GetBit(bf, relic.Value);
@@ -1208,17 +1227,22 @@ namespace OriDETracker
         private void UpdateWarmthFrags()
         {
             if (!mode_warmth_fragments)
+            {
                 return;
-            current_frags = Mem.MapstoneBitfield >> 9;
-            max_frags = Mem.TeleporterBitfield >> 10;
+            }
+
+            current_frags = trackerBitfields.MapstoneBitfield >> 9;
+            max_frags = trackerBitfields.TeleporterBitfield >> 10;
         }
         private void UpdateMapstoneProgression()
         {
             int ms = 0;
             foreach (int bit in mapstoneBits.Values)
             {
-                if (Mem.GetBit(Mem.MapstoneBitfield, bit))
+                if (Mem.GetBit(trackerBitfields.MapstoneBitfield, bit))
+                {
                     ms++;
+                }
             }
             mapstone_count = ms;
         }
