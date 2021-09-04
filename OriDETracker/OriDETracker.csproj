@@ -143,9 +143,6 @@
     <Content Include="Assets_312\Bash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_312\BlackBackground.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets_312\BlackrootTP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -393,9 +390,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_437\Bash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets_437\BlackBackground.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_437\BlackrootTP.png">
@@ -647,9 +641,6 @@
     <Content Include="Assets_667\Bash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets_667\BlackBackground.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets_667\BlackrootTP.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -892,9 +883,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_750\Bash.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets_750\BlackBackground.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_750\Blackroot.png">
