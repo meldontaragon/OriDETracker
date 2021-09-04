@@ -275,7 +275,6 @@ namespace OriDETracker
         protected String DIR = @"Assets_667/";
 
         protected Image imageSkillWheelDouble;
-        protected Image imageBlackBackground;
         protected Image imageGSkills;
         protected Image imageGTrees;
         protected Image imageGTeleporters;
@@ -293,7 +292,6 @@ namespace OriDETracker
         private void DisposeImages()
         {
             imageSkillWheelDouble?.Dispose();
-            imageBlackBackground?.Dispose();
             imageGSkills?.Dispose();
             imageGTrees?.Dispose();
             imageGTeleporters?.Dispose();
@@ -340,7 +338,6 @@ namespace OriDETracker
             DIR = "Assets_" + image_pixel_size.ToString() + @"/";
 
             imageSkillWheelDouble = Image.FromFile(DIR + @"SkillRing_Double.png");
-            imageBlackBackground = Image.FromFile(DIR + @"BlackBackground.png");
             imageGSkills = Image.FromFile(DIR + @"GreySkillTree.png");
             imageGTrees = Image.FromFile(DIR + @"GreyTrees.png");
             imageGTeleporters = Image.FromFile(DIR + @"GreyTeleporters.png");

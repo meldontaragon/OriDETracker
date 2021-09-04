@@ -25,7 +25,6 @@ namespace OriDETracker
             this.map_font?.Dispose();
 
             this.imageSkillWheelDouble?.Dispose();
-            this.imageBlackBackground?.Dispose();
             this.imageGSkills?.Dispose();
             this.imageGTrees?.Dispose();
             this.imageGTeleporters?.Dispose();
