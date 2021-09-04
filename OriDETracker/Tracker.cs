@@ -382,10 +382,10 @@ namespace OriDETracker
         private const int TOL = 25;
         private Point mapstoneMousePoint = new Point(333, 380);
         private Dictionary<String, Point> eventMousePoint;
-        private Dictionary<String, Point> treeMouseLocation;
-        private Dictionary<String, Point> skillMousePoint;
-        private Dictionary<String, Point> teleporterMouseLocation;
-        private Dictionary<String, Point> relicMouseLocation;
+        private Dictionary<String, Point> treeMouseLocation = new Dictionary<String, Point>();
+        private Dictionary<String, Point> skillMousePoint = new Dictionary<String, Point>();
+        private Dictionary<String, Point> teleporterMouseLocation = new Dictionary<string, Point>();
+        private Dictionary<String, Point> relicMouseLocation = new Dictionary<string, Point>();
 
         private void SetDefaults()
         {
@@ -514,25 +514,17 @@ namespace OriDETracker
         }
         private void SetMouseLocations()
         {
-            skillMousePoint = new Dictionary<String, Point>();
-            treeMouseLocation = new Dictionary<String, Point>();
-            teleporterMouseLocation = new Dictionary<string, Point>();
-            relicMouseLocation = new Dictionary<string, Point>();
-
-            for (int i = 0; i < 11; ++i)
+            for (int i = 0; i < 11; i++)
             {
                 skillMousePoint.Add(skill_list[i], new Point((int)(320 + 13 + 205 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                          (int)(320 + 13 - 205 * Math.Cos(2.0 * i * Math.PI / 11.0))));
-            }
 
-            for (int i = 0; i < 11; ++i)
-            {
                 treeMouseLocation.Add(skill_list[i], new Point((int)(320 + 13 + 286 * Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                            (int)(320 + 13 - 286 * Math.Cos(2.0 * i * Math.PI / 11.0))));
-            }
+                
+                relicMouseLocation.Add(relic_list[i], new Point((int)(320 + 13 + 300 * -Math.Sin(2.0 * i * Math.PI / 11.0)),
+                                                            (int)(320 + 13 - 300 * -Math.Cos(2.0 * i * Math.PI / 11.0))));
 
-            for (int i = 0; i < 11; i++)
-            {
                 if (teleporter_list[i] == "Misty")
                 {
                     continue;
@@ -540,12 +532,6 @@ namespace OriDETracker
 
                 teleporterMouseLocation.Add(teleporter_list[i], new Point((int)(320 + 13 + 240 * -Math.Sin(2.0 * i * Math.PI / 11.0)),
                                                                         (int)(320 + 13 - 240 * -Math.Cos(2.0 * i * Math.PI / 11.0))));
-            }
-
-            for (int i = 0; i < 11; i++)
-            {
-                relicMouseLocation.Add(relic_list[i], new Point((int)(320 + 13 + 300 * -Math.Sin(2.0 * i * Math.PI / 11.0)),
-                                                            (int)(320 + 13 - 300 * -Math.Cos(2.0 * i * Math.PI / 11.0))));
             }
 
             eventMousePoint = new Dictionary<string, Point>(){
