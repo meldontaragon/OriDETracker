@@ -61,6 +61,7 @@
             this.DisplayGreyTeleportersCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayExistingRelicsCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayOptionsLabel = new System.Windows.Forms.Label();
+            this.DisplayGreyShardsCheckbox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.OpacityTrackBar)).BeginInit();
             this.ImageSizePanel.SuspendLayout();
             this.UpdateRatePanel.SuspendLayout();
@@ -71,7 +72,7 @@
             // OpacityLabel
             // 
             this.OpacityLabel.AutoSize = true;
-            this.OpacityLabel.Location = new System.Drawing.Point(11, 277);
+            this.OpacityLabel.Location = new System.Drawing.Point(11, 274);
             this.OpacityLabel.Name = "OpacityLabel";
             this.OpacityLabel.Size = new System.Drawing.Size(43, 13);
             this.OpacityLabel.TabIndex = 25;
@@ -79,17 +80,17 @@
             // 
             // BackgroundColorButton
             // 
-            this.BackgroundColorButton.Location = new System.Drawing.Point(134, 108);
+            this.BackgroundColorButton.Location = new System.Drawing.Point(69, 332);
             this.BackgroundColorButton.Name = "BackgroundColorButton";
             this.BackgroundColorButton.Size = new System.Drawing.Size(120, 23);
-            this.BackgroundColorButton.TabIndex = 12;
+            this.BackgroundColorButton.TabIndex = 29;
             this.BackgroundColorButton.Text = "Background Color";
             this.BackgroundColorButton.UseVisualStyleBackColor = true;
             this.BackgroundColorButton.Click += new System.EventHandler(this.BackgroundColorButton_Click);
             // 
             // OpacityTrackBar
             // 
-            this.OpacityTrackBar.Location = new System.Drawing.Point(61, 266);
+            this.OpacityTrackBar.Location = new System.Drawing.Point(61, 263);
             this.OpacityTrackBar.Maximum = 100;
             this.OpacityTrackBar.Name = "OpacityTrackBar";
             this.OpacityTrackBar.Size = new System.Drawing.Size(183, 45);
@@ -100,7 +101,7 @@
             // ImageSizeLabel
             // 
             this.ImageSizeLabel.AutoSize = true;
-            this.ImageSizeLabel.Location = new System.Drawing.Point(134, 151);
+            this.ImageSizeLabel.Location = new System.Drawing.Point(134, 148);
             this.ImageSizeLabel.Name = "ImageSizeLabel";
             this.ImageSizeLabel.Size = new System.Drawing.Size(59, 13);
             this.ImageSizeLabel.TabIndex = 19;
@@ -109,10 +110,10 @@
             // TrackShardsCheckbox
             // 
             this.TrackShardsCheckbox.AutoSize = true;
-            this.TrackShardsCheckbox.Location = new System.Drawing.Point(3, 95);
+            this.TrackShardsCheckbox.Location = new System.Drawing.Point(3, 72);
             this.TrackShardsCheckbox.Name = "TrackShardsCheckbox";
             this.TrackShardsCheckbox.Size = new System.Drawing.Size(59, 17);
-            this.TrackShardsCheckbox.TabIndex = 6;
+            this.TrackShardsCheckbox.TabIndex = 5;
             this.TrackShardsCheckbox.Text = "Shards";
             this.TrackShardsCheckbox.UseVisualStyleBackColor = true;
             this.TrackShardsCheckbox.Click += new System.EventHandler(this.TrackShardsCheckbox_Click);
@@ -147,7 +148,7 @@
             this.ImageSizePanel.Controls.Add(this.MediumSizeRadioButton);
             this.ImageSizePanel.Controls.Add(this.LargeSizeRadioButton);
             this.ImageSizePanel.Controls.Add(this.XLSizeRadioButton);
-            this.ImageSizePanel.Location = new System.Drawing.Point(134, 167);
+            this.ImageSizePanel.Location = new System.Drawing.Point(134, 164);
             this.ImageSizePanel.Name = "ImageSizePanel";
             this.ImageSizePanel.Size = new System.Drawing.Size(110, 98);
             this.ImageSizePanel.TabIndex = 20;
@@ -176,7 +177,7 @@
             // MapstoneFontColorButton
             // 
             this.MapstoneFontColorButton.AutoSize = true;
-            this.MapstoneFontColorButton.Location = new System.Drawing.Point(134, 306);
+            this.MapstoneFontColorButton.Location = new System.Drawing.Point(134, 303);
             this.MapstoneFontColorButton.Name = "MapstoneFontColorButton";
             this.MapstoneFontColorButton.Size = new System.Drawing.Size(120, 23);
             this.MapstoneFontColorButton.TabIndex = 28;
@@ -190,7 +191,7 @@
             this.UpdateRatePanel.Controls.Add(this.ModerateUpdateRadioButton);
             this.UpdateRatePanel.Controls.Add(this.NormalUpdateRadioButton);
             this.UpdateRatePanel.Controls.Add(this.FastUpdateRadioButton);
-            this.UpdateRatePanel.Location = new System.Drawing.Point(11, 167);
+            this.UpdateRatePanel.Location = new System.Drawing.Point(11, 164);
             this.UpdateRatePanel.Name = "UpdateRatePanel";
             this.UpdateRatePanel.Size = new System.Drawing.Size(110, 98);
             this.UpdateRatePanel.TabIndex = 14;
@@ -243,7 +244,7 @@
             // UpdateRateLabel
             // 
             this.UpdateRateLabel.AutoSize = true;
-            this.UpdateRateLabel.Location = new System.Drawing.Point(11, 151);
+            this.UpdateRateLabel.Location = new System.Drawing.Point(11, 148);
             this.UpdateRateLabel.Name = "UpdateRateLabel";
             this.UpdateRateLabel.Size = new System.Drawing.Size(68, 13);
             this.UpdateRateLabel.TabIndex = 13;
@@ -300,10 +301,10 @@
             this.TrackMapstonesCheckbox.AutoSize = true;
             this.TrackMapstonesCheckbox.Checked = true;
             this.TrackMapstonesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TrackMapstonesCheckbox.Location = new System.Drawing.Point(3, 72);
+            this.TrackMapstonesCheckbox.Location = new System.Drawing.Point(3, 95);
             this.TrackMapstonesCheckbox.Name = "TrackMapstonesCheckbox";
             this.TrackMapstonesCheckbox.Size = new System.Drawing.Size(78, 17);
-            this.TrackMapstonesCheckbox.TabIndex = 5;
+            this.TrackMapstonesCheckbox.TabIndex = 6;
             this.TrackMapstonesCheckbox.Text = "Mapstones";
             this.TrackMapstonesCheckbox.UseVisualStyleBackColor = true;
             this.TrackMapstonesCheckbox.Click += new System.EventHandler(this.TrackMapstonesCheckbox_Click);
@@ -311,7 +312,7 @@
             // MapstoneFontButton
             // 
             this.MapstoneFontButton.AutoSize = true;
-            this.MapstoneFontButton.Location = new System.Drawing.Point(10, 306);
+            this.MapstoneFontButton.Location = new System.Drawing.Point(10, 303);
             this.MapstoneFontButton.Name = "MapstoneFontButton";
             this.MapstoneFontButton.Size = new System.Drawing.Size(120, 23);
             this.MapstoneFontButton.TabIndex = 27;
@@ -324,11 +325,11 @@
             this.TrackingOptionsPanel.Controls.Add(this.TrackTreesCheckbox);
             this.TrackingOptionsPanel.Controls.Add(this.TrackTeleportersCheckbox);
             this.TrackingOptionsPanel.Controls.Add(this.TrackRelicsCheckbox);
-            this.TrackingOptionsPanel.Controls.Add(this.TrackMapstonesCheckbox);
             this.TrackingOptionsPanel.Controls.Add(this.TrackShardsCheckbox);
+            this.TrackingOptionsPanel.Controls.Add(this.TrackMapstonesCheckbox);
             this.TrackingOptionsPanel.Location = new System.Drawing.Point(11, 25);
             this.TrackingOptionsPanel.Name = "TrackingOptionsPanel";
-            this.TrackingOptionsPanel.Size = new System.Drawing.Size(110, 116);
+            this.TrackingOptionsPanel.Size = new System.Drawing.Size(110, 114);
             this.TrackingOptionsPanel.TabIndex = 1;
             // 
             // DisplayOptionsPanel
@@ -336,9 +337,10 @@
             this.DisplayOptionsPanel.Controls.Add(this.DisplayGreyTreesCheckbox);
             this.DisplayOptionsPanel.Controls.Add(this.DisplayGreyTeleportersCheckbox);
             this.DisplayOptionsPanel.Controls.Add(this.DisplayExistingRelicsCheckbox);
+            this.DisplayOptionsPanel.Controls.Add(this.DisplayGreyShardsCheckbox);
             this.DisplayOptionsPanel.Location = new System.Drawing.Point(134, 25);
             this.DisplayOptionsPanel.Name = "DisplayOptionsPanel";
-            this.DisplayOptionsPanel.Size = new System.Drawing.Size(110, 73);
+            this.DisplayOptionsPanel.Size = new System.Drawing.Size(110, 114);
             this.DisplayOptionsPanel.TabIndex = 8;
             // 
             // DisplayGreyTreesCheckbox
@@ -346,7 +348,7 @@
             this.DisplayGreyTreesCheckbox.AutoSize = true;
             this.DisplayGreyTreesCheckbox.Checked = true;
             this.DisplayGreyTreesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.DisplayGreyTreesCheckbox.Location = new System.Drawing.Point(3, 3);
+            this.DisplayGreyTreesCheckbox.Location = new System.Drawing.Point(3, 4);
             this.DisplayGreyTreesCheckbox.Name = "DisplayGreyTreesCheckbox";
             this.DisplayGreyTreesCheckbox.Size = new System.Drawing.Size(78, 17);
             this.DisplayGreyTreesCheckbox.TabIndex = 9;
@@ -385,30 +387,41 @@
             this.DisplayOptionsLabel.TabIndex = 7;
             this.DisplayOptionsLabel.Text = "Display Options";
             // 
+            // DisplayGreyShardsCheckbox
+            // 
+            this.DisplayGreyShardsCheckbox.AutoSize = true;
+            this.DisplayGreyShardsCheckbox.Location = new System.Drawing.Point(3, 72);
+            this.DisplayGreyShardsCheckbox.Name = "DisplayGreyShardsCheckbox";
+            this.DisplayGreyShardsCheckbox.Size = new System.Drawing.Size(84, 17);
+            this.DisplayGreyShardsCheckbox.TabIndex = 12;
+            this.DisplayGreyShardsCheckbox.Text = "Grey Shards";
+            this.DisplayGreyShardsCheckbox.UseVisualStyleBackColor = true;
+            this.DisplayGreyShardsCheckbox.CheckedChanged += new System.EventHandler(this.DisplayGreyShardsCheckboxx_CheckedChanged);
+            // 
             // SettingsLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(264, 343);
+            this.ClientSize = new System.Drawing.Size(264, 363);
             this.Controls.Add(this.TrackingOptionsLabel);
             this.Controls.Add(this.TrackingOptionsPanel);
             this.Controls.Add(this.DisplayOptionsLabel);
             this.Controls.Add(this.DisplayOptionsPanel);
-            this.Controls.Add(this.BackgroundColorButton);
             this.Controls.Add(this.UpdateRateLabel);
             this.Controls.Add(this.UpdateRatePanel);
             this.Controls.Add(this.ImageSizeLabel);
             this.Controls.Add(this.ImageSizePanel);
             this.Controls.Add(this.MapstoneFontButton);
             this.Controls.Add(this.MapstoneFontColorButton);
+            this.Controls.Add(this.BackgroundColorButton);
             this.Controls.Add(this.OpacityLabel);
             this.Controls.Add(this.OpacityTrackBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(280, 382);
+            this.MaximumSize = new System.Drawing.Size(280, 402);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(280, 382);
+            this.MinimumSize = new System.Drawing.Size(280, 402);
             this.Name = "SettingsLayout";
             this.Text = "Tracker Layer vX.X.X.XXXX";
             this.TopMost = true;
@@ -461,5 +474,6 @@
         private System.Windows.Forms.CheckBox DisplayExistingRelicsCheckbox;
         private System.Windows.Forms.CheckBox DisplayGreyTeleportersCheckbox;
         private System.Windows.Forms.CheckBox DisplayGreyTreesCheckbox;
+        private System.Windows.Forms.CheckBox DisplayGreyShardsCheckbox;
     }
 }
