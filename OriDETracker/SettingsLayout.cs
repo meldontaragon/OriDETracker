@@ -39,6 +39,7 @@ namespace OriDETracker
             this.DisplayGreyTreesCheckbox.Checked = parent.DisplayEmptyTrees;
             this.DisplayGreyTeleportersCheckbox.Checked = parent.DisplayEmptyTeleporters;
             this.DisplayExistingRelicsCheckbox.Checked = parent.DisplayEmptyRelics;
+            this.DisplayGreyShardsCheckbox.Checked = parent.DisplayEmptyShards;
         }
         private void SetRefreshRate()
         {
@@ -129,6 +130,10 @@ namespace OriDETracker
         private void DisplayExistingRelicsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             parent.DisplayEmptyRelics = DisplayExistingRelicsCheckbox.Checked;
+        }
+        private void DisplayGreyShardsCheckboxx_CheckedChanged(object sender, EventArgs e)
+        {
+            parent.DisplayEmptyShards = DisplayGreyShardsCheckbox.Checked;
         }
 
         #endregion

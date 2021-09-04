@@ -182,6 +182,9 @@
     <Content Include="Assets_312\Glide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets_312\GreyShards.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets_312\GreySkillTree.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -431,6 +434,9 @@
     <Content Include="Assets_437\Glide.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets_437\GreyShards.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets_437\GreySkillTree.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -678,6 +684,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_667\Glide.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_667\GreyShards.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_667\GreySkillTree.png">
@@ -934,6 +943,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_750\Glide.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets_750\GreyShards.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets_750\GreySkillTree.png">

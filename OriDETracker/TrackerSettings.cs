@@ -154,6 +154,20 @@ namespace OriDETracker
         }
 
         [UserScopedSetting()]
+        [DefaultSettingValue("false")]
+        public bool DisplayEmptyShards
+        {
+            get
+            {
+                return (bool)this["DisplayEmptyShards"];
+            }
+            set
+            {
+                this["DisplayEmptyShards"] = value;
+            }
+        }        
+
+        [UserScopedSetting()]
         [DefaultSettingValue("true")]
         public bool AlwaysOnTop
         {

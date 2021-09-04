@@ -28,6 +28,7 @@ namespace OriDETracker
             this.imageGSkills?.Dispose();
             this.imageGTrees?.Dispose();
             this.imageGTeleporters?.Dispose();
+            this.imageGShards?.Dispose();
             this.imageMapStone?.Dispose();
 
             foreach (KeyValuePair<String, Image> k in skillImages)
