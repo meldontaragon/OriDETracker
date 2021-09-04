@@ -13,20 +13,17 @@ namespace OriDE.Memory
         private bool IsHooked;
         private DateTime lastHooked;
 
-        public int TreeBitfield { get; private set; }
-        public int RelicBitfield { get; private set; }
-        public int MapstoneBitfield { get; private set; }
-        public int TeleporterBitfield { get; private set; }
-        public int KeyEventBitfield { get; private set; }
-
-        public void GetBitfields()
+        public MemoryBitfields GetBitfields()
         {
             var bitfields = TrackerBitfields.ReadBytes(Program, 20);
-            TreeBitfield = BitConverter.ToInt32(bitfields, 0);
-            MapstoneBitfield = BitConverter.ToInt32(bitfields, 4);
-            TeleporterBitfield = BitConverter.ToInt32(bitfields, 8);
-            RelicBitfield = BitConverter.ToInt32(bitfields, 12);
-            KeyEventBitfield = BitConverter.ToInt32(bitfields, 16);
+            return new MemoryBitfields
+            {
+                TreeBitfield = BitConverter.ToInt32(bitfields, 0),
+                MapstoneBitfield = BitConverter.ToInt32(bitfields, 4),
+                TeleporterBitfield = BitConverter.ToInt32(bitfields, 8),
+                RelicBitfield = BitConverter.ToInt32(bitfields, 12),
+                KeyEventBitfield = BitConverter.ToInt32(bitfields, 16)
+            };
         }
 
         public bool GetBit(int bitfield, int bit)
@@ -62,7 +59,7 @@ namespace OriDE.Memory
     {
         V1
     }
-    
+
     public enum AutoDeref
     {
         None,
