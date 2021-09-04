@@ -173,18 +173,22 @@ namespace OriDETracker
         private void SmallSizeRadioButton_Click(object sender, EventArgs e)
         {
             parent.UpdateTrackerSize(TrackerPixelSizes.Small);
+            parent.MapstoneFont = MapstoneFontFactory.Create(TrackerPixelSizes.Small, parent.MapstoneFont.Font.Name, parent.MapstoneFont.Brush);
         }
         private void MediumSizeRadioButton_Click(object sender, EventArgs e)
         {
             parent.UpdateTrackerSize(TrackerPixelSizes.Medium);
+            parent.MapstoneFont = MapstoneFontFactory.Create(TrackerPixelSizes.Medium, parent.MapstoneFont.Font.Name, parent.MapstoneFont.Brush);
         }
         private void LargeSizeRadioButton_Click(object sender, EventArgs e)
         {
             parent.UpdateTrackerSize(TrackerPixelSizes.Large);
+            parent.MapstoneFont = MapstoneFontFactory.Create(TrackerPixelSizes.Large, parent.MapstoneFont.Font.Name, parent.MapstoneFont.Brush);
         }
         private void XLSizeRadioButton_Click(object sender, EventArgs e)
         {
             parent.UpdateTrackerSize(TrackerPixelSizes.XL);
+            parent.MapstoneFont = MapstoneFontFactory.Create(TrackerPixelSizes.XL, parent.MapstoneFont.Font.Name, parent.MapstoneFont.Brush);
         }
 
         #endregion
@@ -202,19 +206,19 @@ namespace OriDETracker
 
         private void MapstoneFontColorButton_Click(object sender, EventArgs e)
         {
-            MapstoneFontColorDialog.Color = parent.FontColor;
+            MapstoneFontColorDialog.Color = (parent.MapstoneFont.Brush as SolidBrush).Color;
             if (MapstoneFontColorDialog.ShowDialog() == DialogResult.OK)
             {
-                parent.FontColor = MapstoneFontColorDialog.Color;
+                parent.MapstoneFont = MapstoneFontFactory.Create(parent.TrackerSize, MapstoneFontDialog.Font.FontFamily.Name, new SolidBrush(MapstoneFontColorDialog.Color));
                 parent.Refresh();
             }            
         }
         private void MapstoneFontButton_Click(object sender, EventArgs e)
         {
-            MapstoneFontDialog.Font = parent.MapFont;
+            MapstoneFontDialog.Font = parent.MapstoneFont.Font;
             if (MapstoneFontDialog.ShowDialog() == DialogResult.OK)
             {
-                parent.MapFont = new Font(MapstoneFontDialog.Font.FontFamily, 24f, FontStyle.Bold);
+                parent.MapstoneFont = MapstoneFontFactory.Create(parent.TrackerSize, MapstoneFontDialog.Font.FontFamily.Name, parent.MapstoneFont.Brush);
                 parent.Refresh();
             }
         }

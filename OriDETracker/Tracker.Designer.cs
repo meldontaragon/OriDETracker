@@ -22,7 +22,7 @@ namespace OriDETracker
                 components.Dispose();
             }
             this.font_brush?.Dispose();
-            this.map_font?.Dispose();
+            this.mapstoneFont?.Dispose();
 
             this.imageSkillWheelDouble?.Dispose();
             this.imageGSkills?.Dispose();
