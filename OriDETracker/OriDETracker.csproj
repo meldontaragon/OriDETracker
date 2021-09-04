@@ -103,7 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
+    <Compile Include="MapstoneFont.cs" />
     <Compile Include="MapstoneText.cs" />
+    <Compile Include="MapstoneFontFactory.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsLayout.cs">
       <SubType>Form</SubType>

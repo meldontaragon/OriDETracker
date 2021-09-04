@@ -58,7 +58,7 @@ namespace OriDETracker
 
             font_brush = new SolidBrush(font_color);
 
-            bool need_font, found_fount = false;
+            bool need_font, found_font = false;
 
             if (font_family == null)
                 need_font = true;
@@ -72,12 +72,12 @@ namespace OriDETracker
                     if (ff.Name.ToLower() == "amatic sc")
                     {
                         font_family = new FontFamily("Amatic SC");
-                        found_fount = true;
+                        found_font = true;
                         break;
                     }
                 }
             // if not found then ask for a font
-            if (need_font && !found_fount)
+            if (need_font && !found_font)
             {
                 MessageBox.Show("It is recommended to install and use the included fonts: Amatic SC and Amatic SC Bold");
                 if (this.MapStoneFontDialog.ShowDialog() == DialogResult.OK)
@@ -90,7 +90,7 @@ namespace OriDETracker
                 }
             }
             // finally load font
-            map_font = new Font(font_family, 24f, FontStyle.Bold);
+            mapstoneFont = MapstoneFontFactory.Create(TrackerSize, font_family.Name, font_brush);
 
             // Initialize the OriMemory module that Devil/Eiko/Sigma wrote
             Mem = new OriMemory();
@@ -117,7 +117,7 @@ namespace OriDETracker
         protected Color font_color;
         protected FontFamily font_family;
         protected Brush font_brush;
-        protected Font map_font;
+        private MapstoneFont mapstoneFont;
 
         protected AutoUpdateRefreshRates refresh_rate;
         protected int refresh_time;
@@ -154,13 +154,6 @@ namespace OriDETracker
         protected Thread th;
         protected SettingsLayout settings;
 
-        private readonly Dictionary<int, MapstoneText> mapstone_text_parameters = new Dictionary<int, MapstoneText>(){
-            { (int) TrackerPixelSizes.Small, new MapstoneText(140+6, 190+6, 14) },
-            { (int) TrackerPixelSizes.Medium, new MapstoneText(195+9, 268+9, 18) },
-            { (int) TrackerPixelSizes.Large, new MapstoneText(304+13, 417+13, 24) },
-            { (int) TrackerPixelSizes.XL, new MapstoneText(342+15, 471+15, 28) }
-        };
-
         private readonly string[] skill_list = { "Spirit Flame", "Wall Jump", "Charge Flame", "Double Jump", "Bash", "Stomp", "Glide", "Climb", "Charge Jump", "Grenade", "Dash" };
         private readonly string[] event_list = { "Water Vein", "Gumon Seal", "Sunstone", "Clean Water", "Wind Restored" };
         private readonly string[] zone_list = { "Glades", "Grove", "Grotto", "Ginso", "Swamp", "Valley", "Misty", "Blackroot", "Sorrow", "Forlorn", "Horu" };
@@ -169,16 +162,10 @@ namespace OriDETracker
         #endregion
 
         #region PublicProperties
-        public Color FontColor
+        internal MapstoneFont MapstoneFont
         {
-            get { return font_color; }
-            set { font_color = value; font_brush = new SolidBrush(value); }
-
-        }
-        public Font MapFont
-        {
-            get { return map_font; }
-            set { font_family = value.FontFamily; map_font = new Font(font_family, 24f, FontStyle.Bold); }
+            get { return mapstoneFont; }
+            set { mapstoneFont = value; }
         }
         public TrackerPixelSizes TrackerSize
         {
@@ -387,12 +374,12 @@ namespace OriDETracker
         //points for mouse clicks (with certain tolerance defined by TOL)
         private const int TOL = 25;
         private Point mapstoneMousePoint = new Point(333, 380);
-        private Dictionary<String, Point> eventMousePoint = new Dictionary<String, Point>();
-        private Dictionary<String, Point> treeMouseLocation = new Dictionary<String, Point>();
-        private Dictionary<String, Point> skillMousePoint = new Dictionary<String, Point>();
-        private Dictionary<String, Point> teleporterMouseLocation = new Dictionary<String, Point>();
-        private Dictionary<String, Point> relicMouseLocation = new Dictionary<String, Point>();
-        private Dictionary<String, Point> shardsMouseLocation = new Dictionary<String, Point>();
+        private readonly Dictionary<String, Point> eventMousePoint = new Dictionary<String, Point>();
+        private readonly Dictionary<String, Point> treeMouseLocation = new Dictionary<String, Point>();
+        private readonly Dictionary<String, Point> skillMousePoint = new Dictionary<String, Point>();
+        private readonly Dictionary<String, Point> teleporterMouseLocation = new Dictionary<String, Point>();
+        private readonly Dictionary<String, Point> relicMouseLocation = new Dictionary<String, Point>();
+        private readonly Dictionary<String, Point> shardsMouseLocation = new Dictionary<String, Point>();
 
         private void SetDefaults()
         {
@@ -974,17 +961,12 @@ namespace OriDETracker
                  * (a) track_mapstones is on
                  * (b) auto_update and mode_force_maps are on
                  */
-                if (track_mapstones ||  (auto_update && mode_force_maps))
+                if (track_mapstones || (auto_update && mode_force_maps))
                 {
                     g.DrawImage(imageMapStone, ClientRectangle);
-                    if (font_brush == null)
-                    {
-                        font_brush = new SolidBrush(Color.White);
-                    }
-                    map_font = new Font(font_family, mapstone_text_parameters[image_pixel_size].TextSize, FontStyle.Bold);
-                    g.DrawString(mapstone_count.ToString() + "/9", map_font, font_brush, new Point(mapstone_text_parameters[image_pixel_size].X, mapstone_text_parameters[image_pixel_size].Y));
+                    g.DrawString(mapstone_count.ToString() + "/9", mapstoneFont.Font, mapstoneFont.Brush, mapstoneFont.Location.X, mapstoneFont.Location.Y);
                 }
-                #endregion                
+                #endregion
 
                 g.DrawImage(imageSkillWheelDouble, ClientRectangle);
 
