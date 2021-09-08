@@ -16,16 +16,16 @@ namespace OriDETracker
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValue("rate10Hz")]
+        [DefaultSettingValue(nameof(AutoUpdateRefreshRates.rate10Hz))]
         public AutoUpdateRefreshRates RefreshRate
         {
             get
             {
-                return (AutoUpdateRefreshRates)this["RefreshRate"];
+                return (AutoUpdateRefreshRates)this[nameof(RefreshRate)];
             }
             set
             {
-                this["RefreshRate"] = value;
+                this[nameof(RefreshRate)] = value;
             }
         }
 
@@ -35,11 +35,11 @@ namespace OriDETracker
         {
             get
             {
-                return (double)this["Opacity"];
+                return (double)this[nameof(Opacity)];
             }
             set
             {
-                this["Opacity"] = value;
+                this[nameof(Opacity)] = value;
             }
         }
 
@@ -49,11 +49,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["Shards"];
+                return (bool)this[nameof(Shards)];
             }
             set
             {
-                this["Shards"] = value;
+                this[nameof(Shards)] = value;
             }
         }
         [UserScopedSetting()]
@@ -62,11 +62,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["Mapstones"];
+                return (bool)this[nameof(Mapstones)];
             }
             set
             {
-                this["Mapstones"] = value;
+                this[nameof(Mapstones)] = value;
             }
         }
 
@@ -76,11 +76,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["Teleporters"];
+                return (bool)this[nameof(Teleporters)];
             }
             set
             {
-                this["Teleporters"] = value;
+                this[nameof(Teleporters)] = value;
             }
         }
         [UserScopedSetting()]
@@ -89,11 +89,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["Trees"];
+                return (bool)this[nameof(Trees)];
             }
             set
             {
-                this["Trees"] = value;
+                this[nameof(Trees)] = value;
             }
         }
 
@@ -103,11 +103,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["Relics"];
+                return (bool)this[nameof(Relics)];
             }
             set
             {
-                this["Relics"] = value;
+                this[nameof(Relics)] = value;
             }
         }
 
@@ -117,11 +117,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["DisplayEmptyRelics"];
+                return (bool)this[nameof(DisplayEmptyRelics)];
             }
             set
             {
-                this["DisplayEmptyRelics"] = value;
+                this[nameof(DisplayEmptyRelics)] = value;
             }
         }
 
@@ -131,11 +131,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["DisplayEmptyTeleporters"];
+                return (bool)this[nameof(DisplayEmptyTeleporters)];
             }
             set
             {
-                this["DisplayEmptyTeleporters"] = value;
+                this[nameof(DisplayEmptyTeleporters)] = value;
             }
         }
 
@@ -145,11 +145,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["DisplayEmptyTrees"];
+                return (bool)this[nameof(DisplayEmptyTrees)];
             }
             set
             {
-                this["DisplayEmptyTrees"] = value;
+                this[nameof(DisplayEmptyTrees)] = value;
             }
         }
 
@@ -159,11 +159,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["DisplayEmptyShards"];
+                return (bool)this[nameof(DisplayEmptyShards)];
             }
             set
             {
-                this["DisplayEmptyShards"] = value;
+                this[nameof(DisplayEmptyShards)] = value;
             }
         }        
 
@@ -173,11 +173,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["AlwaysOnTop"];
+                return (bool)this[nameof(AlwaysOnTop)];
             }
             set
             {
-                this["AlwaysOnTop"] = value;
+                this[nameof(AlwaysOnTop)] = value;
             }
         }
 
@@ -187,11 +187,11 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["AutoUpdate"];
+                return (bool)this[nameof(AutoUpdate)];
             }
             set
             {
-                this["AutoUpdate"] = value;
+                this[nameof(AutoUpdate)] = value;
             }
         }
 
@@ -201,25 +201,25 @@ namespace OriDETracker
         {
             get
             {
-                return (bool)this["Draggable"];
+                return (bool)this[nameof(Draggable)];
             }
             set
             {
-                this["Draggable"] = value;
+                this[nameof(Draggable)] = value;
             }
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValue("Medium")]
+        [DefaultSettingValue(nameof(TrackerPixelSizes.Medium))]
         public TrackerPixelSizes Pixels
         {
             get
             {
-                return (TrackerPixelSizes)this["Pixels"];
+                return (TrackerPixelSizes)this[nameof(Pixels)];
             }
             set
             {
-                this["Pixels"] = value;
+                this[nameof(Pixels)] = value;
             }
         }
 
@@ -229,39 +229,39 @@ namespace OriDETracker
         {
             get
             {
-                return (string)this["MapFontFamilyName"];
+                return (string)this[nameof(MapFontFamilyName)];
             }
             set
             {
-                this["MapFontFamilyName"] = value;
+                this[nameof(MapFontFamilyName)] = value;
             }
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValue("White")]
+        [DefaultSettingValue(nameof(Color.White))]
         public Color MapFontColor
         {
             get
             {
-                return (Color)this["MapFontColor"];
+                return (Color)this[nameof(MapFontColor)];
             }
             set
             {
-                this["MapFontColor"] = value;
+                this[nameof(MapFontColor)] = value;
             }
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValue("Black")]
+        [DefaultSettingValue(nameof(Color.Black))]
         public Color Background
         {
             get
             {
-                return (Color)this["Background"];
+                return (Color)this[nameof(Background)];
             }
             set
             {
-                this["Background"] = value;
+                this[nameof(Background)] = value;
             }
         }
     }
