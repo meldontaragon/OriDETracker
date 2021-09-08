@@ -18,6 +18,7 @@ namespace OriDETracker
 
         public void Dispose()
         {
+            Brush?.Dispose();
             Font?.Dispose();
         }
     }

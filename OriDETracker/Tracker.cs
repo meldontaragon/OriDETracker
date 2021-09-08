@@ -43,24 +43,24 @@ namespace OriDETracker
             this.TopMost = TrackerSettings.Default.AlwaysOnTop;
 
             // Other Settings
-            font_color = TrackerSettings.Default.FontColoring;
-            font_family = TrackerSettings.Default.MapFont;
+            var fontColor = TrackerSettings.Default.MapFontColor;
+            var fontFamilyName = TrackerSettings.Default.MapFontFamilyName;
             Opacity = TrackerSettings.Default.Opacity;
             BackColor = TrackerSettings.Default.Background;
 
             // Auto update boolean values
             auto_update = TrackerSettings.Default.AutoUpdate;
 
-            if (font_color == null)
-                font_color = Color.White;
+            if (fontColor == null)
+                fontColor = Color.White;
             if (BackColor == null)
                 BackColor = Color.Black;
 
-            font_brush = new SolidBrush(font_color);
+            var font_brush = new SolidBrush(fontColor);
 
             bool need_font, found_font = false;
 
-            if (font_family == null)
+            if (string.IsNullOrEmpty(fontFamilyName))
                 need_font = true;
             else
                 need_font = false;
@@ -71,7 +71,7 @@ namespace OriDETracker
                 {
                     if (ff.Name.ToLower() == "amatic sc")
                     {
-                        font_family = new FontFamily("Amatic SC");
+                        fontFamilyName = "Amatic SC";
                         found_font = true;
                         break;
                     }
@@ -82,15 +82,15 @@ namespace OriDETracker
                 MessageBox.Show("It is recommended to install and use the included fonts: Amatic SC and Amatic SC Bold");
                 if (this.MapStoneFontDialog.ShowDialog() == DialogResult.OK)
                 {
-                    font_family = MapStoneFontDialog.Font.FontFamily;
+                    fontFamilyName = MapStoneFontDialog.Font.FontFamily.Name;
                 }
                 else
                 {
-                    font_family = FontFamily.GenericSansSerif;
+                    fontFamilyName = FontFamily.GenericSansSerif.Name;
                 }
             }
             // finally load font
-            mapstoneFont = MapstoneFontFactory.Create(TrackerSize, font_family.Name, font_brush);
+            mapstoneFont = MapstoneFontFactory.Create(TrackerSize, fontFamilyName, font_brush);
 
             // Initialize the OriMemory module that Devil/Eiko/Sigma wrote
             Mem = new OriMemory();
@@ -115,9 +115,6 @@ namespace OriDETracker
 
         protected TrackerPixelSizes tracker_size;
 
-        protected Color font_color;
-        protected FontFamily font_family;
-        protected Brush font_brush;
         private MapstoneFont mapstoneFont;
 
         protected AutoUpdateRefreshRates refresh_rate;
@@ -643,8 +640,8 @@ namespace OriDETracker
                 this.TurnOffAutoUpdate();
             }
 
-            TrackerSettings.Default.FontColoring = font_color;
-            TrackerSettings.Default.MapFont = font_family;
+            TrackerSettings.Default.MapFontColor = (MapstoneFont.Brush as SolidBrush).Color;
+            TrackerSettings.Default.MapFontFamilyName = MapstoneFont.Font.FontFamily.Name;
             TrackerSettings.Default.Background = BackColor;
             TrackerSettings.Default.RefreshRate = refresh_rate;
             TrackerSettings.Default.Opacity = Opacity;
