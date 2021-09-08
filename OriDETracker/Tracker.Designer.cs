@@ -21,7 +21,6 @@ namespace OriDETracker
             {
                 components.Dispose();
             }
-            this.font_brush?.Dispose();
             this.mapstoneFont?.Dispose();
 
             this.imageSkillWheelDouble?.Dispose();

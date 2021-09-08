@@ -225,29 +225,29 @@ namespace OriDETracker
 
         [UserScopedSetting()]
         [DefaultSettingValue("")]
-        public FontFamily MapFont
+        public string MapFontFamilyName
         {
             get
             {
-                return (FontFamily)this["MapFont"];
+                return (string)this["MapFontFamilyName"];
             }
             set
             {
-                this["MapFont"] = value;
+                this["MapFontFamilyName"] = value;
             }
         }
 
         [UserScopedSetting()]
         [DefaultSettingValue("White")]
-        public Color FontColoring
+        public Color MapFontColor
         {
             get
             {
-                return (Color)this["FontColoring"];
+                return (Color)this["MapFontColor"];
             }
             set
             {
-                this["FontColoring"] = value;
+                this["MapFontColor"] = value;
             }
         }
 
