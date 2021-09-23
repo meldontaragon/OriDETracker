@@ -702,7 +702,7 @@ namespace OriDETracker
 
             foreach (KeyValuePair<String, Point> sk in eventMousePoint)
             {
-                if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL + 10)
+                if (Math.Sqrt(Square(x - (int)(sk.Value.X * mouse_scaling)) + Square(y - (int)(sk.Value.Y * mouse_scaling))) <= CUR_TOL * 1.5)
                 {
                     if (haveEvent.ContainsKey(sk.Key))
                     {
@@ -711,7 +711,7 @@ namespace OriDETracker
                             case "Water Vein":
                             case "Gumon Seal":
                             case "Sunstone":
-                                if (track_shards)
+                                if ((!auto_update && track_shards) || (auto_update && mode_shards))
                                 {
                                     if (haveEvent[sk.Key])
                                     {
